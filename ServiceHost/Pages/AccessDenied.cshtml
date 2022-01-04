@@ -1,0 +1,14 @@
+﻿@page
+@model ServiceHost.Pages.AccessDenied;
+@{
+    ViewData["Title"] = "Access Denied";
+}
+@await Component.InvokeAsync("Mobile")
+<div class="h-75 col-10 p-0 m-0">
+    <div class="text-left d-flex flex-column ">
+        <h2>404</h2>
+        <h3 class="ltr">Sorry, You don't have enough permission to access this page.</h3>
+    </div>
+</div>
+
+

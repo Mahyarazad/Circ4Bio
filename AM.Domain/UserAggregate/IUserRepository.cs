@@ -1,4 +1,7 @@
-﻿namespace AM.Domain.UserAggregate
+﻿using AM.Application.Contracts.User;
+using System.Collections.Generic;
+
+namespace AM.Domain.UserAggregate
 {
     public interface IUserRepository
     {
