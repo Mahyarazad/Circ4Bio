@@ -1,0 +1,98 @@
+﻿@page
+@model ServiceHost.Areas.Dashboard.Pages.Users.Role.IndexModel
+@{
+
+}
+
+
+<div class='row'>
+    <div class="col-sm-12">
+        <h1 class="page-title text-dark"> @ViewData["title"] </h1>
+        <p class="pull-right">
+            <a asp-page="Create"
+               class="btn btn-success wave-effect wave-light">
+                <i class="fa fa-plus-circle"></i>
+                Register a new Role
+            </a>
+        </p>
+    </div>
+</div>
+
+<div class="panel-heading">
+    <h3 class="panel-title">Roles</h3>
+</div>
+<div class="panel-body">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <table id="myTable" class="display table-condensed table-bordered table-dark table-striped text-center col-md-12">
+                <thead style="white-space: nowrap;">
+                    <tr>
+                        <th class="text-center">#</th>
+                        <th class="text-center">Creation Date</th>
+                        <th class="text-center">Name</th>
+                        <th class="text-center">Modify</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Roles)
+                    {
+                        <tr>
+                            <td> @item.Id</td>
+                            <td> @item.CreationTime</td>
+                            <td> @item.Name</td>
+
+                            <td class="col-md-4">
+                                <a asp-page="Edit" asp-route-id="@item.Id"
+                                   class="btn btn-warning waves-effect waves-light col-md-4">
+                                <i class="fa fa-edit"></i> Modify
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts
+{
+    @if (TempData["Message"] != null)
+    {
+        if (TempData["Message"].ToString() == "Operation has been successfully proceeded.")
+        {
+            <script>
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Your work has been saved',
+                    showConfirmButton: false,
+                    timer: 1000
+                })
+            </script>
+        }
+        else
+        {
+            <script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: @TempData["Message"],
+                    footer: '<a href="">Why do I have this issue?</a>'
+                })
+            </script>
+        }
+
+    }
+    <script>
+        $(document).ready(function () {
+            $('#myTable').DataTable({
+                language: { search: 'Search:', searchPlaceholder: "Search ..." }
+            });
+            $('input[type="search"]').css('border-width', '1px');
+        })
+    </script>
+}

@@ -63,6 +63,17 @@ namespace AM.Infrastructure.Repository
             }).FirstOrDefault(x => x.UserId == username);
         }
 
+        public EditUser GetDetailByActivationUrl(string guid)
+        {
+            var query = _amContext.Users.Select(x => new EditUser
+            {
+                Id = x.Id,
+                ActivationGuid = x.ActivationGuid.ToString()
+            });
+            query = query.Where(x => x.ActivationGuid.Contains(guid));
+            return query.First();
+        }
+
         public ChangePassword getDetailforChangePassword(long Id)
         {
             return _amContext.Users.Select(x => new ChangePassword

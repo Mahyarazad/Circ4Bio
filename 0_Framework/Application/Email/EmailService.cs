@@ -10,7 +10,7 @@ namespace _0_Framework.Application.Email
         {
             var message = new MimeMessage();
 
-            message.From.Add(new MailboxAddress("Admin", "admin@domainName.com"));
+            message.From.Add(new MailboxAddress("Admin", "admin@maahyarazad.ir"));
 
             message.To.Add(new MailboxAddress("Recipient", recipient));
             message.Subject = title;
@@ -22,8 +22,8 @@ namespace _0_Framework.Application.Email
             message.Body = bodyBuilder.ToMessageBody();
 
             var client = new SmtpClient();
-            client.Connect(host: "mail.domainName.com", port: 587, SecureSocketOptions.None);
-            client.Authenticate("admin@domainName.com", "password");
+            client.Connect(host: "mail.maahyarazad.ir", port: 587, SecureSocketOptions.None);
+            client.Authenticate("admin@maahyarazad.ir", "g5kv,foljqIpnmacsbhr");
             client.Send(message);
             client.Disconnect(true);
             client.Dispose();

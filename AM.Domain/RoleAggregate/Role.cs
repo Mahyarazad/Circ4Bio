@@ -13,12 +13,12 @@ namespace AM.Domain.RoleAggregate
         public Role(string name, List<Permission> permissions)
         {
             Name = name;
-            Accounts = new List<User>();
+            Users = new List<User>();
             Permissions = permissions;
         }
 
         public string Name { get; private set; }
-        public List<User> Accounts { get; private set; }
+        public List<User> Users { get; private set; }
         public List<Permission> Permissions { get; private set; }
 
         public void Edit(string name, List<Permission> permissions)

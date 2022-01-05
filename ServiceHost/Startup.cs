@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using _0_Framework.Application;
 using _0_Framework.Application.Email;
+using AM.Infrastructure.Core;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -28,10 +29,12 @@ namespace ServiceHost
         public void ConfigureServices(IServiceCollection services)
         {
 
-
             services.AddHttpContextAccessor();
-            var connectionString = Configuration.GetConnectionString("SMContext");
-            // AccountManagementConfiguration.Config(services, connectionString);
+            var connectionString = Configuration.GetConnectionString("AMContext");
+            AccountConfiguration.Configure(services, connectionString);
+
+            services.AddTransient<IEmailService, EmailService>();
+
             services.AddTransient<IFileUploader, FileUploader>();
             services.AddTransient<IAutenticateHelper, AuthenticateHelper>();
             services.AddTransient<IEmailService, EmailService>();
@@ -55,7 +58,7 @@ namespace ServiceHost
                     builder.RequireRole(AuthorizationRoles.Admin));
             });
 
-
+            services.AddRazorPages();
             services.AddRazorPages().AddRazorPagesOptions(options =>
             {
                 options.Conventions.AuthorizeAreaFolder("Administrator", "/", "AdminArea");

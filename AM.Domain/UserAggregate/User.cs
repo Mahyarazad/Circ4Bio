@@ -10,35 +10,15 @@ namespace AM.Domain.UserAggregate
         {
 
         }
-        public User(string firstName, string lastName, string email, string password, string address,
-            string city, string country, long postalCode, double latitude, double longitude,
-            string description, string companyName, long vatNumber, int status, int type, int userType,
-            string avatar, string webUrl, string linkdinUrl, string twitterUrl, string instagramUrl,
-            string faceBookUrl, int roleId)
+        public User(string email, string password, int type, Guid activationGuid, int roleId)
         {
-            FirstName = firstName;
-            LastName = lastName;
+
             Email = email;
             Password = password;
-            Address = address;
-            City = city;
-            Country = country;
-            PostalCode = postalCode;
-            Latitude = latitude;
-            Longitude = longitude;
-            Description = description;
-            CompanyName = companyName;
-            VatNumber = vatNumber;
-            Status = status;
+            IsActive = false;
             Type = type;
-            User_Type = userType;
-            Avatar = avatar;
-            WebUrl = webUrl;
-            LinkdinUrl = linkdinUrl;
-            TwitterUrl = twitterUrl;
-            InstagramUrl = instagramUrl;
-            FaceBookUrl = faceBookUrl;
-            RoleId = roleId;
+            ActivationGuid = activationGuid;
+            RoleId = 1;
         }
 
         public void Edit(string firstName, string lastName, string email, string password
@@ -78,6 +58,11 @@ namespace AM.Domain.UserAggregate
             Password = password;
         }
 
+        public void ActivateUser()
+        {
+            IsActive = true;
+        }
+
         public string FirstName { get; private set; }
         public string LastName { get; private set; }
         public string Email { get; private set; }
@@ -101,6 +86,8 @@ namespace AM.Domain.UserAggregate
         public string TwitterUrl { get; private set; }
         public string InstagramUrl { get; private set; }
         public string FaceBookUrl { get; private set; }
+        public bool IsActive { get; private set; }
+        public Guid ActivationGuid { get; private set; }
         public int RoleId { get; private set; }
         public Role Role { get; private set; }
     }
