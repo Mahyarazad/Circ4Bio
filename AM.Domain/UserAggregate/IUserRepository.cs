@@ -9,6 +9,7 @@ namespace AM.Domain.UserAggregate
         List<UserViewModel> Search(UserSearchModel searchModel);
         EditUser GetDetail(long Id);
         EditUser GetDetailByUser(string username);
+        EditUser GetDetailByEmail(string email);
         EditUser GetDetailByActivationUrl(string guid);
         ChangePassword getDetailforChangePassword(long Id);
     }

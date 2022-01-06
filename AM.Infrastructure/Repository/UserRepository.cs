@@ -48,6 +48,18 @@ namespace AM.Infrastructure.Repository
                 Email = x.Email,
                 PhoneNumber = x.PhoneNumber,
                 RoleId = x.RoleId,
+                Address = x.Address,
+                City = x.City,
+                Country = x.Country,
+                CompanyName = x.CompanyName,
+                Description = x.Description,
+                FaceBookUrl = x.FaceBookUrl,
+                InstagramUrl = x.InstagramUrl,
+                PostalCode = x.PostalCode,
+                LinkdinUrl = x.LinkdinUrl,
+                VatNumber = x.VatNumber,
+                TwitterUrl = x.TwitterUrl,
+
             }).FirstOrDefault(x => x.Id == Id);
         }
 
@@ -61,6 +73,18 @@ namespace AM.Infrastructure.Repository
                 RoleId = x.RoleId,
                 Password = x.Password,
             }).FirstOrDefault(x => x.UserId == username);
+        }
+
+        public EditUser GetDetailByEmail(string email)
+        {
+            return _amContext.Users.Select(x => new EditUser
+            {
+                Id = x.Id,
+                Email = x.Email,
+                Password = x.Password,
+                RoleId = x.RoleId
+            }).FirstOrDefault(x => x.Email == email);
+
         }
 
         public EditUser GetDetailByActivationUrl(string guid)

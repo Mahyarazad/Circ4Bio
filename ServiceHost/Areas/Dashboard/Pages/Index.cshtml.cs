@@ -15,7 +15,7 @@ namespace ServiceHost.Areas.Dashboard.Pages
             _logger = logger;
         }
 
-        public void OnGet(string slug)
+        public void OnGet()
         {
         }
 

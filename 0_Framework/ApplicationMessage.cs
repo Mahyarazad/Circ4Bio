@@ -9,6 +9,7 @@
         public const string WrongPassword = "The input password is not correct";
         public const string SuccessfulRegister = "Your Account has successfully registered, Please login.";
         public const string AccountVerification = "Please Verify Your Account";
+        public const string SuccessLogin = "Successfully logged in";
 
     }
 }

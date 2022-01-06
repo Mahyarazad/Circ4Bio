@@ -44,16 +44,21 @@ namespace ServiceHost
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, c =>
                 {
-                    c.LoginPath = new PathString("/Registration");
+                    c.LoginPath = new PathString("/Authentication/Login");
                     c.LogoutPath = new PathString("/Index");
                     c.AccessDeniedPath = new PathString("/AccessDenied");
                 });
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("AdminArea", builder =>
+                options.AddPolicy("DashboardArea", builder =>
                     builder.RequireRole(
-                        new List<string> { AuthorizationRoles.Admin, AuthorizationRoles.ContentProducer }));
+                        new List<string>
+                        {
+                            AuthorizationRoles.Admin, AuthorizationRoles.CustomerofRawMaterial,
+                            AuthorizationRoles.Plant, AuthorizationRoles.SupplierofRawMaterial,
+                            AuthorizationRoles.TechnologyProvider
+                        }));
                 options.AddPolicy("Inventory", builder =>
                     builder.RequireRole(AuthorizationRoles.Admin));
             });
@@ -61,7 +66,7 @@ namespace ServiceHost
             services.AddRazorPages();
             services.AddRazorPages().AddRazorPagesOptions(options =>
             {
-                options.Conventions.AuthorizeAreaFolder("Administrator", "/", "AdminArea");
+                options.Conventions.AuthorizeAreaFolder("Dashboard", "/", "DashboardArea");
                 options.Conventions.AuthorizeAreaFolder("Administrator", "/Inventory", "Inventory");
             });
             // WEB API

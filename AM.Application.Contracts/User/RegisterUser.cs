@@ -10,17 +10,18 @@ namespace AM.Application.Contracts.User
     {
         public string? FullName { get; set; }
         public string? UserId { get; set; }
-        [Required(ErrorMessage = ValidationMessages.IsRequired)]
+        [Required(ErrorMessage = ValidationMessages.EmailRequired)]
         public string? Email { get; set; }
         public int Type { get; set; }
         public string? PhoneNumber { get; set; }
-        [Required(ErrorMessage = ValidationMessages.IsRequired)]
+        [Required(ErrorMessage = ValidationMessages.Password)]
         public string? Password { get; set; }
-        [Required(ErrorMessage = ValidationMessages.IsRequired)]
+        [Required(ErrorMessage = ValidationMessages.ConfirmPassword)]
+        [Compare("Password", ErrorMessage = ValidationMessages.ConfirmPassword)]
         public string? ConfirmPassword { get; set; }
         public IFormFile? ProfilePicture { get; set; }
         public string? PictureString { get; set; }
-        [Required(ErrorMessage = ValidationMessages.IsRequired)]
+        [Required(ErrorMessage = ValidationMessages.SelectUserType)]
         public int RoleId { get; set; }
 
         public List<Usertype>? TypeList { get; set; }

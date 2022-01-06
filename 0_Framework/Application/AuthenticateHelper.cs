@@ -22,11 +22,11 @@ namespace _0_Framework.Application
             var permissions = JsonConvert.SerializeObject(model.Permissions);
             var claims = new List<Claim>
             {
-                new Claim("Account Id", model.Id.ToString()),
-                new Claim(ClaimTypes.Name, model.Fullname),
+                new Claim("User Id", model.Id.ToString()),
+                new Claim(ClaimTypes.Email, model.Email),
                 new Claim(ClaimTypes.Role, model.RoleId.ToString()),
-                new Claim("Username", model.Username),
-                new Claim("ProfilePicture", model.ProfilePicture),
+                // new Claim("Username", model.Username),
+                // new Claim("ProfilePicture", model.ProfilePicture),
                 new Claim("Permissions", permissions)
             };
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -61,11 +61,12 @@ namespace _0_Framework.Application
                 return new AuthViewModel();
             var claims = _httpContextAccessor.HttpContext.User.Claims.ToList();
             var result = new AuthViewModel();
-            result.Id = long.Parse(claims.FirstOrDefault(x => x.Type == "Account Id")?.Value);
-            result.Username = claims.FirstOrDefault(x => x.Type == "Username")?.Value;
-            result.Fullname = claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
+            // result.Id = long.Parse(claims.FirstOrDefault(x => x.Type == "Account Id")?.Value);
+            // result.Username = claims.FirstOrDefault(x => x.Type == "Username")?.Value;
+            // result.Fullname = claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
             result.RoleId = claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
-            result.ProfilePicture = claims.FirstOrDefault(x => x.Type == "ProfilePicture")?.Value;
+            result.Email = claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
+            // result.ProfilePicture = claims.FirstOrDefault(x => x.Type == "ProfilePicture")?.Value;
             return result;
         }
 

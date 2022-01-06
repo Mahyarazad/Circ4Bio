@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using _0_Framework;
 using _0_Framework.Application;
 using _0_Framework.Application.Email;
@@ -93,7 +94,8 @@ namespace AM.Application
 
         public EditUser GetDetail(long Id)
         {
-            throw new System.NotImplementedException();
+            var user = _userRepository.GetDetail(Id);
+            return user;
         }
 
         public ChangePassword getDetailforChangePassword(long Id)
@@ -103,12 +105,29 @@ namespace AM.Application
 
         public OperationResult Login(EditUser command)
         {
-            throw new System.NotImplementedException();
+            var result = new OperationResult();
+            var user = _userRepository.GetDetailByEmail(command.Email);
+            if (user == null)
+                return result.Failed(ApplicationMessage.UserNotExists);
+
+            var (verified, needsUpgrade) = _passwordHasher.Check(user.Password, command.Password);
+            if (!verified)
+                return result.Failed(ApplicationMessage.WrongPassword);
+
+            var permissions = _roleRepository.GetDetail(user.RoleId)
+                .MappedPermissions
+                .Select(x => x.Code)
+                .ToList();
+
+            var authModel = new AuthViewModel(user.Id, user.Email, user.FullName,
+                user.RoleId.ToString(), user.PictureString, permissions);
+            _autenticateHelper.Login(authModel);
+            return result.Succeeded();
         }
 
         public void Logout()
         {
-            throw new System.NotImplementedException();
+            _autenticateHelper.Logout();
         }
 
         public List<Usertype> GetUsertypes()
