@@ -82,7 +82,8 @@ namespace AM.Infrastructure.Repository
                 Id = x.Id,
                 Email = x.Email,
                 Password = x.Password,
-                RoleId = x.RoleId
+                RoleId = x.RoleId,
+                IsActive = x.IsActive
             }).FirstOrDefault(x => x.Email == email);
 
         }
@@ -94,8 +95,14 @@ namespace AM.Infrastructure.Repository
                 Id = x.Id,
                 ActivationGuid = x.ActivationGuid.ToString()
             });
-            query = query.Where(x => x.ActivationGuid.Contains(guid));
-            return query.First();
+            if (query.FirstOrDefault(x => x.ActivationGuid == guid) != null)
+            {
+                return query.FirstOrDefault(x => x.ActivationGuid == guid);
+            }
+            else
+            {
+                return new EditUser();
+            }
         }
 
         public ChangePassword getDetailforChangePassword(long Id)

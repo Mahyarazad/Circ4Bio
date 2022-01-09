@@ -1,4 +1,24 @@
 ﻿@page "{id}"
-@model ServiceHost.Pages.ActivateUserModel
+@model ServiceHost.Pages.Authentication.ActivateUserModel
 @{
+}
+
+
+@if(!string.IsNullOrWhiteSpace(Model.RegisterMessage)) {
+    <p class="text-danger text-center pt-3">
+        @Model.RegisterMessage
+    </p>
+}
+@if(!string.IsNullOrWhiteSpace(Model.RegisterSuccess)) {
+    <p class="text-success text-center pt-3">
+        @Model.RegisterSuccess
+    </p>
+}
+<div class="flex justify-center pt-12 pb-12">
+    <div class="lds-ripple mt-8 sm:max-w-md sm:mx-auto sm:w-full"><div></div><div></div></div>
+</div>
+
+
+@section CSS{
+    <link rel="stylesheet" href="~/css/Loader.css"/>
 }

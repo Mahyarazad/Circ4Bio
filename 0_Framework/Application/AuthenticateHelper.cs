@@ -5,6 +5,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
+using Nancy.Json;
 using Newtonsoft.Json;
 
 namespace _0_Framework.Application
@@ -20,15 +21,14 @@ namespace _0_Framework.Application
         public void Login(AuthViewModel model)
         {
             var permissions = JsonConvert.SerializeObject(model.Permissions);
-            var claims = new List<Claim>
-            {
+            var claims = new List<Claim> {
                 new Claim("User Id", model.Id.ToString()),
                 new Claim(ClaimTypes.Email, model.Email),
                 new Claim(ClaimTypes.Role, model.RoleId.ToString()),
-                // new Claim("Username", model.Username),
-                // new Claim("ProfilePicture", model.ProfilePicture),
                 new Claim("Permissions", permissions)
             };
+
+
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var authProperties = new AuthenticationProperties
             {

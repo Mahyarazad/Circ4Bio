@@ -3,7 +3,7 @@ using AM.Application.Contracts.User;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace ServiceHost.Pages
+namespace ServiceHost.Pages.Authentication
 {
     public class RegistrationIndex : PageModel
     {
@@ -29,12 +29,10 @@ namespace ServiceHost.Pages
             if (result.IsSucceeded)
             {
                 RegisterSuccess = ApplicationMessage.SuccessfulRegister;
-                return RedirectToPage("./Authenticate");
+                return RedirectToAction("./Authentication/Registration");
             }
             RegisterMessage = result.Message;
-            return RedirectToPage("./Index");
+            return RedirectToAction("./Authentication/Registration");
         }
-
-        
     }
 }

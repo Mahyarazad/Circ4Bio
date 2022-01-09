@@ -32,7 +32,7 @@
             <div class="hidden md:flex md:items-center md:space-x-6">
                 @if (AutenticateHelper.IsAuthenticated())
                 {
-                    <a asp-page="./Authentication/Login" asp-page-handler="Logout"
+                    <a asp-page="/Authentication/Login" asp-page-handler="Logout"
                        class="text-base font-medium text-white hover:text-gray-300">
                         Logout
                     </a>
@@ -43,7 +43,7 @@
                 }
                 else
                 {
-                    <a asp-page="./Authentication/Login" class="text-base font-medium text-white hover:text-gray-300">
+                    <a asp-page="/Authentication/Login" class="text-base font-medium text-white hover:text-gray-300">
                         Log in
                     </a>
                 }
@@ -65,7 +65,7 @@
         From: "opacity-100 scale-100"
         To: "opacity-0 scale-95"
     -->
-    <div class="absolute top-0 inset-x-0 p-2 transition transform origin-top md:hidden">
+    <div class="absolute top-0 inset-x-0 p-2 transition transform origin-top md:hidden" id="mobile-menu">
         <div class="rounded-lg shadow-md bg-white ring-1 ring-black ring-opacity-5 overflow-hidden">
             <div class="px-5 pt-4 flex items-center justify-between">
                 <div>

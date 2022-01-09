@@ -16,7 +16,7 @@ namespace _0_Framework.Application.Email
             message.Subject = title;
             var bodyBuilder = new BodyBuilder
             {
-                HtmlBody = $"<h1>{messageBody}<h1>"
+                HtmlBody = $"<p1>{messageBody}<p1>"
             };
 
             message.Body = bodyBuilder.ToMessageBody();

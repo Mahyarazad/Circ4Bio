@@ -7,9 +7,13 @@
         public const string PasswordsAreNotMatched = "Passwords are not macth, Please try again";
         public const string UserNotExists = "This user does not exit in database";
         public const string WrongPassword = "The input password is not correct";
-        public const string SuccessfulRegister = "Your Account has successfully registered, Please login.";
+        public const string UserNotActive = "You've not activated your account, please check your emial for activation link";
+        public const string SuccessfulRegister = "Activation link has been sent to your email, Please activate your account.";
+        public const string SuccessfulActivation = "Your account has been activated. You can login to your account now.";
         public const string AccountVerification = "Please Verify Your Account";
         public const string SuccessLogin = "Successfully logged in";
+        public const string SomethingWentWrong = "Something went wrong, please try again!";
+        public const string ActivationUrlError = "Activation link is not valid, please check your email for the valid link.";
 
     }
 }

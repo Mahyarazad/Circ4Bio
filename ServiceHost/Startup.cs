@@ -63,7 +63,7 @@ namespace ServiceHost
                     builder.RequireRole(AuthorizationRoles.Admin));
             });
 
-            services.AddRazorPages();
+            // services.AddRazorPages().WithRazorPagesRoot("/Index");
             services.AddRazorPages().AddRazorPagesOptions(options =>
             {
                 options.Conventions.AuthorizeAreaFolder("Dashboard", "/", "DashboardArea");
@@ -106,6 +106,16 @@ namespace ServiceHost
             app.UseCookiePolicy();
 
             app.UseStaticFiles();
+
+            app.Use(async (context, next) =>
+            {
+                await next();
+                if (context.Response.StatusCode == 404)
+                {
+                    context.Request.Path = "/Shared/_PageNotFound";
+                    await next();
+                }
+            });
 
             app.UseRouting();
 

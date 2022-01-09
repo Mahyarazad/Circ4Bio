@@ -7,7 +7,7 @@ using AM.Application.Contracts.User;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace ServiceHost.Pages
+namespace ServiceHost.Pages.Authentication
 {
     public class ActivateUserModel : PageModel
     {
@@ -20,16 +20,21 @@ namespace ServiceHost.Pages
             _userApplication = userApplication;
         }
 
-        public IActionResult OnGet(string id)
+        public void OnGet(string id)
         {
+            RegisterSuccess = "";
+            RegisterMessage = "";
             var result = _userApplication.ActivateUser(id);
             if (result.IsSucceeded)
             {
-                RegisterSuccess = ApplicationMessage.SuccessfulRegister;
-                return RedirectToPage("./Authenticate");
+                RegisterSuccess = ApplicationMessage.SuccessfulActivation;
+                // return RedirectToAction("./Authenticate/ActivateUser");
             }
-            RegisterMessage = result.Message;
-            return RedirectToPage("./Index");
+            else
+            {
+                RegisterMessage = result.Message;
+            }
+            // return RedirectToAction("./Authenticate/ActivateUser");
         }
     }
 }

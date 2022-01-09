@@ -20,5 +20,7 @@
         public string? TwitterUrl { get; set; }
         public string? InstagramUrl { get; set; }
         public string? FaceBookUrl { get; set; }
+        public bool IsActive { get; set; }
+        public bool RememberMe { get; set; }
     }
 }

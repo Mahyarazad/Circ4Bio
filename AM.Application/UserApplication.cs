@@ -7,6 +7,9 @@ using _0_Framework.Application.Email;
 using AM.Application.Contracts.User;
 using AM.Domain.RoleAggregate;
 using AM.Domain.UserAggregate;
+using Microsoft.AspNetCore.Http;
+using Nancy.Json;
+using Org.BouncyCastle.Asn1.Ocsp;
 
 namespace AM.Application
 {
@@ -18,12 +21,14 @@ namespace AM.Application
         private readonly IAutenticateHelper _autenticateHelper;
         private readonly IRoleRepository _roleRepository;
         private readonly IEmailService _emailService;
+        private readonly IHttpContextAccessor _contextAccessor;
 
         public UserApplication(IUserRepository userRepository,
             IPasswordHasher passwordHasher,
             IAutenticateHelper authenticateHelper,
             IFileUploader fileUploader,
             IRoleRepository roleRepository,
+            IHttpContextAccessor contextAccessor,
             IEmailService emailService)
         {
             _userRepository = userRepository;
@@ -32,6 +37,7 @@ namespace AM.Application
             _autenticateHelper = authenticateHelper;
             _roleRepository = roleRepository;
             _emailService = emailService;
+            _contextAccessor = contextAccessor;
         }
 
         public List<UserViewModel> Search(UserSearchModel searchModel)
@@ -51,8 +57,10 @@ namespace AM.Application
             //     profilePicture = "DefaultProfile.png";
             var password = _passwordHasher.Hash(command.Password);
             var activationGuid = Guid.NewGuid();
-
-            _emailService.SendEmail(ApplicationMessage.AccountVerification, activationGuid.ToString(), command.Email);
+            var request = _contextAccessor.HttpContext.Request;
+            _emailService.SendEmail(ApplicationMessage.AccountVerification
+                , $"https://{request.Host}/Authentication/ActivateUser/{activationGuid.ToString()}"
+                , command.Email);
             var user = new User(command.Email, password, command.Type, activationGuid, command.Type);
 
 
@@ -73,12 +81,15 @@ namespace AM.Application
             if (!string.IsNullOrWhiteSpace(command))
             {
                 var user = _userRepository.Get(_userRepository.GetDetailByActivationUrl(command).Id);
-                user.ActivateUser();
-                _userRepository.SaveChanges();
-                return result.Succeeded();
+                if (user != null)
+                {
+                    user.ActivateUser();
+                    _userRepository.SaveChanges();
+                    return result.Succeeded();
+                }
+                return result.Failed(ApplicationMessage.ActivationUrlError);
             }
-
-            return result.Failed(ApplicationMessage.RecordNotFound);
+            return result.Failed(ApplicationMessage.SomethingWentWrong);
 
         }
 
@@ -107,6 +118,31 @@ namespace AM.Application
         {
             var result = new OperationResult();
             var user = _userRepository.GetDetailByEmail(command.Email);
+
+            if (command.RememberMe)
+            {
+                var cookieOptions = new CookieOptions()
+                {
+                    Path = "/",
+                    HttpOnly = false,
+                    IsEssential = true, //<- there
+                    Expires = DateTime.Now.AddDays(15),
+                };
+                var userToRemember = new RememberMe
+                {
+                    Email = command.Email,
+                    Password = command.Password
+                };
+                _contextAccessor.HttpContext.Response.Cookies
+                    .Append("user-token", new JavaScriptSerializer().Serialize(userToRemember), cookieOptions);
+            }
+            else
+            {
+                _contextAccessor.HttpContext.Response.Cookies.Delete("user-token");
+            }
+
+            if (!user.IsActive)
+                return result.Failed(ApplicationMessage.UserNotActive);
             if (user == null)
                 return result.Failed(ApplicationMessage.UserNotExists);
 
@@ -120,7 +156,7 @@ namespace AM.Application
                 .ToList();
 
             var authModel = new AuthViewModel(user.Id, user.Email, user.FullName,
-                user.RoleId.ToString(), user.PictureString, permissions);
+                user.RoleId.ToString(), command.RememberMe, user.PictureString, permissions, command.Password);
             _autenticateHelper.Login(authModel);
             return result.Succeeded();
         }
