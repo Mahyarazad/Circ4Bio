@@ -7,7 +7,7 @@
 
 <div class="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
     <div class="sm:mx-auto sm:w-full sm:max-w-md">
-        <img class="mx-auto h-12 w-auto" src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg" alt="Workflow">
+        <img class="mx-auto h-12 w-auto" src="~/Images/Circ4Bio.jpeg" alt="Workflow">
         <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
             Register your account
         </h2>
@@ -25,13 +25,15 @@
         <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
             <form method="post" asp-page-handler="Register"
                   class="space-y-6">
-                @if(!string.IsNullOrWhiteSpace(Model.RegisterMessage)) {
-                    <p class="text-danger pb-2">
+                @if (!string.IsNullOrWhiteSpace(Model.RegisterMessage))
+                {
+                    <p class="text-red-500 pb-2">
                         @Model.RegisterMessage
                     </p>
                 }
-                @if(!string.IsNullOrWhiteSpace(Model.RegisterSuccess)) {
-                    <p class="text-success pb-2">
+                @if (!string.IsNullOrWhiteSpace(Model.RegisterSuccess))
+                {
+                    <p class="text-green-500 pb-2">
                         @Model.RegisterSuccess
                     </p>
                 }
@@ -43,7 +45,7 @@
                         <input type="email" asp-for="Command.Email"
                                autocomplete="email" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                     </div>
-                    <span asp-validation-for="Command.Email" class="text-danger"></span>
+                    <span asp-validation-for="Command.Email" class="text-red-500"></span>
                 </div>
 
                 <div>
@@ -54,7 +56,7 @@
                         <input id="password" asp-for="Command.Password"
                                type="password" autocomplete="current-password" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                     </div>
-                    <span asp-validation-for="Command.Password" class="text-danger"></span>
+                    <span asp-validation-for="Command.Password" class="text-red-500"></span>
                 </div>
 
                 <div>
@@ -65,7 +67,7 @@
                         <input id="repassword" type="password" asp-for="Command.ConfirmPassword"
                                autocomplete="current-repassword" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                     </div>
-                    <span asp-validation-for="Command.ConfirmPassword" class="text-danger"></span>
+                    <span asp-validation-for="Command.ConfirmPassword" class="text-red-500"></span>
                 </div>
 
                 <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
@@ -73,27 +75,15 @@
                         User Type
                     </label>
                     <div class="mt-1 sm:mt-0 sm:col-span-2">
-                        <select id="user-type" asp-items='new SelectList(UserApplication.GetUsertypes(), "TypeId", "TypeName")' asp-for="Command.RoleId" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
-                            <option value="0">
+                        <select id="user-type"
+                                asp-for="Command.RoleId"
+                                asp-items='new SelectList(UserApplication.GetUsertypes(), "TypeId", "TypeName")'
+                                class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                            <option value="">
                                 Please select a type
                             </option>
                         </select>
-                        <span asp-validation-for="Command.RoleId" class="text-danger"></span>
-                    </div>
-                </div>
-
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center">
-                        <input id="remember-me" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
-                        <label for="remember-me" class="ml-2 block text-sm text-gray-900">
-                            Remember me
-                        </label>
-                    </div>
-
-                    <div class="text-sm">
-                        <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500">
-                            Forgot your password?
-                        </a>
+                        <span asp-validation-for="Command.RoleId" class="text-red-500"></span>
                     </div>
                 </div>
 

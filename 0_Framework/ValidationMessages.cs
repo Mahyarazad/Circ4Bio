@@ -9,7 +9,7 @@
         public const string Password = "Please enter password";
         public const string ConfirmPassword = "Please enter confirm password";
         public const string SelectUserType = "Please select the user type";
-        public const string PasswordNotMatch = "Password and confirm password does not match";
+        public const string PasswordNotMatch = "Password and confirm password do not match";
 
     }
 }

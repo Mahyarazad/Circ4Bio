@@ -9,7 +9,7 @@ namespace _0_Framework.Domain
             CreationTime = DateTime.Now;
         }
 
-        public T Id { get; set; }
+        public T? Id { get; set; }
         public DateTime CreationTime { get; set; }
     }
 }

@@ -13,13 +13,17 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Nancy" Version="1.4.1" />
+    <PackageReference Include="Nancy" Version="2.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\0_Framework\0_Framework.csproj" />
     <ProjectReference Include="..\AM.Application.Contracts\AM.Application.Contracts.csproj" />
     <ProjectReference Include="..\AM.Infrastructure.Core\AM.Infrastructure.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\Images\" />
   </ItemGroup>
 
 </Project>

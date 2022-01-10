@@ -5,12 +5,12 @@
 
 
 @if(!string.IsNullOrWhiteSpace(Model.RegisterMessage)) {
-    <p class="text-danger text-center pt-3">
+    <p class="text-red-500 text-center pt-3">
         @Model.RegisterMessage
     </p>
 }
 @if(!string.IsNullOrWhiteSpace(Model.RegisterSuccess)) {
-    <p class="text-success text-center pt-3">
+    <p class="text-green-500 text-center pt-3">
         @Model.RegisterSuccess
     </p>
 }

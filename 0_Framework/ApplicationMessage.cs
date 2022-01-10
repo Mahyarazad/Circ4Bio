@@ -14,6 +14,10 @@
         public const string SuccessLogin = "Successfully logged in";
         public const string SomethingWentWrong = "Something went wrong, please try again!";
         public const string ActivationUrlError = "Activation link is not valid, please check your email for the valid link.";
+        public const string ResetPasswordGuidance = "Reset password link has been sent to your email, please check your email.";
+        public const string ResetPasswordLinkExipre = "Reset password link has been expired, please try again.";
+        public const string ResetPasswordSuccess = "Your password has been changed successfully.";
+        public const string ResetPasswordLinkIsInvalid = "Reset password link is not valid.";
 
     }
 }

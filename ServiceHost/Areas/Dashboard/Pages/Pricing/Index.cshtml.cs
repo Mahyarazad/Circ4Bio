@@ -17,8 +17,6 @@ namespace ServiceHost.Areas.Dashboard.Pages.Pricing
 
         public void OnGet(string slug)
         {
-            Guid kir = new Guid();
         }
-
     }
 }

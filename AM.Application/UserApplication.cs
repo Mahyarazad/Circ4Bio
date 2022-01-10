@@ -4,6 +4,7 @@ using System.Linq;
 using _0_Framework;
 using _0_Framework.Application;
 using _0_Framework.Application.Email;
+using AM.Application.Contracts.ResetPassword;
 using AM.Application.Contracts.User;
 using AM.Domain.RoleAggregate;
 using AM.Domain.UserAggregate;
@@ -22,6 +23,7 @@ namespace AM.Application
         private readonly IRoleRepository _roleRepository;
         private readonly IEmailService _emailService;
         private readonly IHttpContextAccessor _contextAccessor;
+        private readonly IResetPasswordApplication _resetPasswordApplication;
 
         public UserApplication(IUserRepository userRepository,
             IPasswordHasher passwordHasher,
@@ -29,6 +31,7 @@ namespace AM.Application
             IFileUploader fileUploader,
             IRoleRepository roleRepository,
             IHttpContextAccessor contextAccessor,
+            IResetPasswordApplication resetPasswordApplication,
             IEmailService emailService)
         {
             _userRepository = userRepository;
@@ -38,6 +41,7 @@ namespace AM.Application
             _roleRepository = roleRepository;
             _emailService = emailService;
             _contextAccessor = contextAccessor;
+            _resetPasswordApplication = resetPasswordApplication;
         }
 
         public List<UserViewModel> Search(UserSearchModel searchModel)
@@ -58,16 +62,21 @@ namespace AM.Application
             var password = _passwordHasher.Hash(command.Password);
             var activationGuid = Guid.NewGuid();
             var request = _contextAccessor.HttpContext.Request;
-            _emailService.SendEmail(ApplicationMessage.AccountVerification
+            var emailServiceResult = _emailService.SendEmail(ApplicationMessage.AccountVerification
                 , $"https://{request.Host}/Authentication/ActivateUser/{activationGuid.ToString()}"
                 , command.Email);
-            var user = new User(command.Email, password, command.Type, activationGuid, command.Type);
 
-
-
-            _userRepository.Create(user);
-            _userRepository.SaveChanges();
-            return result.Succeeded();
+            if (emailServiceResult.IsSucceeded)
+            {
+                var user = new User(command.Email, password, command.Type, activationGuid, command.Type);
+                _userRepository.Create(user);
+                _userRepository.SaveChanges();
+                return result.Succeeded();
+            }
+            else
+            {
+                return emailServiceResult;
+            }
         }
 
         public OperationResult RegisterUser(RegisterUser command)
@@ -98,10 +107,14 @@ namespace AM.Application
             throw new System.NotImplementedException();
         }
 
-        public OperationResult ChangePassword(ChangePassword command)
+        public OperationResult ChangePassword(ResetPasswordModel command)
         {
-            throw new System.NotImplementedException();
+            var result = new OperationResult();
+            var user = _userRepository.Get(command.UserId);
+
+            return result.Succeeded();
         }
+
 
         public EditUser GetDetail(long Id)
         {
@@ -112,6 +125,17 @@ namespace AM.Application
         public ChangePassword getDetailforChangePassword(long Id)
         {
             throw new System.NotImplementedException();
+        }
+
+        public OperationResult ResetPassword(ResetPasswordModel command)
+        {
+            var result = new OperationResult();
+            var user = _userRepository.Get(command.UserId);
+            var password = _passwordHasher.Hash(command.Password);
+            user.ChangePassword(password);
+            _userRepository.SaveChanges();
+            return result.Succeeded(ApplicationMessage.ResetPasswordSuccess);
+
         }
 
         public OperationResult Login(EditUser command)
@@ -131,7 +155,6 @@ namespace AM.Application
                 var userToRemember = new RememberMe
                 {
                     Email = command.Email,
-                    Password = command.Password
                 };
                 _contextAccessor.HttpContext.Response.Cookies
                     .Append("user-token", new JavaScriptSerializer().Serialize(userToRemember), cookieOptions);

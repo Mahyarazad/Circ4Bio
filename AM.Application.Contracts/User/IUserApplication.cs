@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using _0_Framework.Application;
+using AM.Application.Contracts.ResetPassword;
 
 namespace AM.Application.Contracts.User
 {
@@ -10,9 +11,10 @@ namespace AM.Application.Contracts.User
         OperationResult RegisterUser(RegisterUser command);
         OperationResult ActivateUser(string command);
         OperationResult Edit(EditUser command);
-        OperationResult ChangePassword(ChangePassword command);
+        OperationResult ChangePassword(ResetPasswordModel command);
         EditUser GetDetail(long Id);
         ChangePassword getDetailforChangePassword(long Id);
+        OperationResult ResetPassword(ResetPasswordModel command);
         OperationResult Login(EditUser command);
         void Logout();
         List<Usertype> GetUsertypes();

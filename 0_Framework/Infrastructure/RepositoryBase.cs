@@ -17,6 +17,7 @@ namespace _0_Framework.Infrastructure
             _dbContext = dbContext;
         }
 
+
         public void Create(T entity)
         {
             _dbContext.Add<T>(entity);

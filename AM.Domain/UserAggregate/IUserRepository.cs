@@ -1,6 +1,8 @@
-﻿using AM.Application.Contracts.User;
+﻿using System;
+using AM.Application.Contracts.User;
 using System.Collections.Generic;
 using _0_Framework.Domain;
+using AM.Application.Contracts.ResetPassword;
 
 namespace AM.Domain.UserAggregate
 {
@@ -11,6 +13,5 @@ namespace AM.Domain.UserAggregate
         EditUser GetDetailByUser(string username);
         EditUser GetDetailByEmail(string email);
         EditUser GetDetailByActivationUrl(string guid);
-        ChangePassword getDetailforChangePassword(long Id);
     }
 }

@@ -9,6 +9,7 @@ namespace AM.Infrastructure
     {
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
+        public DbSet<ResetPassword> UserResetPasswords { get; set; }
         public AMContext(DbContextOptions<AMContext> options) : base(options)
         {
         }

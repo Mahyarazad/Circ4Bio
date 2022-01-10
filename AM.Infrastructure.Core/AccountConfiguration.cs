@@ -1,5 +1,6 @@
 ﻿using _0_Framework.Infrastructure;
 using AM.Application;
+using AM.Application.Contracts.ResetPassword;
 using AM.Application.Contracts.Role;
 using AM.Application.Contracts.User;
 using AM.Domain.RoleAggregate;
@@ -20,6 +21,10 @@ namespace AM.Infrastructure.Core
 
             services.AddTransient<IRoleApplication, RoleApplication>();
             services.AddTransient<IRoleRepository, RoleRepository>();
+
+            services.AddTransient<IResetPasswordApplication, ResetPasswordApplication>();
+            services.AddTransient<IResetPasswordRepository, ResetPasswordRepository>();
+
             services.AddTransient<IPermissionExposer, UserPermissionExposer>();
 
             services.AddDbContext<AMContext>(x => x.UseSqlServer(connectionString));

@@ -1,3 +1,28 @@
 ﻿@tailwind base;
+
+@font-face {
+    font-family: 'Inter var';
+    src: local('tailwindcss-font-inter'),
+}
+
 @tailwind components;
 @tailwind utilities;
+
+@supports (font-variation-settings: normal) {
+    :root {
+        font-family: 'Inter var';
+    }
+}
+
+
+/* @layer base { */
+/*     @font-face { */
+/*         font-family: Proxima Nova; */
+/*         src: url(/fonts/proxima-nova/400-regular.woff) format("woff"); */
+/*     } */
+/* @font-face { */
+/*     font-family: Proxima Nova; */
+/*     font-weight: 500; */
+/*     src: url(/fonts/proxima-nova/500-medium.woff) format("woff"); */
+/* } */
+/* } */

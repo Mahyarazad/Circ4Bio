@@ -5,6 +5,7 @@ using AM.Domain.UserAggregate;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using _0_Framework.Application;
+using AM.Application.Contracts.ResetPassword;
 
 namespace AM.Infrastructure.Repository
 {
@@ -103,15 +104,6 @@ namespace AM.Infrastructure.Repository
             {
                 return new EditUser();
             }
-        }
-
-        public ChangePassword getDetailforChangePassword(long Id)
-        {
-            return _amContext.Users.Select(x => new ChangePassword
-            {
-                Email = x.Email,
-                Id = x.Id
-            }).FirstOrDefault(x => x.Id == Id);
         }
     }
 }
