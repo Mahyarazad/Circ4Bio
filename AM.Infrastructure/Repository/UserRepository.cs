@@ -27,6 +27,7 @@ namespace AM.Infrastructure.Repository
                     Email = x.Email,
                     PhoneNumber = x.PhoneNumber,
                     Role = x.Role.Name,
+                    IsActive = x.IsActive,
                     CreationTime = TruncateDateTime.TruncateToDefault(x.CreationTime).ToString()
                 });
             if (!string.IsNullOrEmpty(searchModel.Email))
@@ -46,7 +47,12 @@ namespace AM.Infrastructure.Repository
             return _amContext.Users.Select(x => new EditUser
             {
                 Id = x.Id,
+                FirstName = x.FirstName,
+                LastName = x.LastName,
                 Email = x.Email,
+                UserId = x.UserId,
+                Latitude = x.Latitude,
+                Longitude = x.Longitude,
                 PhoneNumber = x.PhoneNumber,
                 RoleId = x.RoleId,
                 Address = x.Address,

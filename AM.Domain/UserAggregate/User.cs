@@ -14,6 +14,7 @@ namespace AM.Domain.UserAggregate
         {
 
             Email = email;
+            UserId = email.Substring(0, email.IndexOf('@'));
             Password = password;
             IsActive = false;
             Type = type;
@@ -21,16 +22,16 @@ namespace AM.Domain.UserAggregate
             RoleId = 1;
         }
 
-        public void Edit(string firstName, string lastName, string email, string password
+        public void Edit(string firstName, string lastName, string userId
             , string address, string city, string country, long postalCode
-            , double latitude, double longitude, string description, string companyName, long vatNumber
-            , int status, int type, int userType, string avatar, string webUrl, string linkdinUrl
+            , double latitude, double longitude, string description, string companyName, long vatNumber,
+            // , int status, int type, int userType,
+            string avatar, string webUrl, string linkdinUrl
             , string twitterUrl, string instagramUrl, string faceBookUrl, int roleID)
         {
             FirstName = firstName;
             LastName = lastName;
-            Email = email;
-            Password = password;
+            UserId = userId;
             Address = address;
             City = city;
             Country = country;
@@ -40,9 +41,9 @@ namespace AM.Domain.UserAggregate
             Description = description;
             CompanyName = companyName;
             VatNumber = vatNumber;
-            Status = status;
-            Type = type;
-            User_Type = userType;
+            // Status = status;
+            // Type = type;
+            // User_Type = userType;
             if (!string.IsNullOrWhiteSpace(avatar))
                 Avatar = avatar;
             WebUrl = webUrl;
@@ -63,11 +64,17 @@ namespace AM.Domain.UserAggregate
             IsActive = true;
         }
 
+        public void DeactivateUser()
+        {
+            IsActive = false;
+        }
+
         public string? FirstName { get; private set; }
         public string? LastName { get; private set; }
         public string? Email { get; private set; }
         public string? PhoneNumber { get; private set; }
         public string? Password { get; private set; }
+        public string? UserId { get; private set; }
         public string? Address { get; private set; }
         public string? City { get; private set; }
         public string? Country { get; private set; }
@@ -89,6 +96,6 @@ namespace AM.Domain.UserAggregate
         public bool IsActive { get; private set; }
         public Guid ActivationGuid { get; private set; }
         public int RoleId { get; private set; }
-        public Role? Role { get; private set; }
+        public Role Role { get; private set; }
     }
 }

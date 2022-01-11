@@ -10,7 +10,7 @@ using AM.Domain.RoleAggregate;
 using AM.Domain.UserAggregate;
 using Microsoft.AspNetCore.Http;
 using Nancy.Json;
-using Org.BouncyCastle.Asn1.Ocsp;
+
 
 namespace AM.Application
 {
@@ -46,7 +46,7 @@ namespace AM.Application
 
         public List<UserViewModel> Search(UserSearchModel searchModel)
         {
-            throw new System.NotImplementedException();
+            return _userRepository.Search(searchModel);
         }
 
         public OperationResult Register(RegisterUser command)
@@ -102,9 +102,49 @@ namespace AM.Application
 
         }
 
+        public OperationResult AdminActivateUser(long Id)
+        {
+            var result = new OperationResult();
+
+            var user = _userRepository.Get(Id);
+            if (user != null)
+            {
+                user.ActivateUser();
+                _userRepository.SaveChanges();
+                return result.Succeeded();
+            }
+
+            return result.Failed(ApplicationMessage.RecordNotFound);
+
+        }
+
+        public OperationResult AdminDectivateUser(long Id)
+        {
+            var result = new OperationResult();
+
+            var user = _userRepository.Get(Id);
+            if (user != null)
+            {
+                user.DeactivateUser();
+                _userRepository.SaveChanges();
+                return result.Succeeded();
+            }
+
+            return result.Failed(ApplicationMessage.RecordNotFound);
+        }
+
         public OperationResult Edit(EditUser command)
         {
-            throw new System.NotImplementedException();
+            var result = new OperationResult();
+            var user = _userRepository.Get(command.Id);
+            user.Edit(command.FirstName, command.LastName, command.UserId, command.Email, command.City, command.Country,
+                command.PostalCode, command.Latitude, command.Longitude, command.Description,
+                command.CompanyName, command.VatNumber, command.Avatar, command.WebUrl, command.LinkdinUrl,
+                command.TwitterUrl, command.InstagramUrl, command.FaceBookUrl, command.RoleId);
+
+            _userRepository.SaveChanges();
+
+            return result.Succeeded();
         }
 
         public OperationResult ChangePassword(ResetPasswordModel command)

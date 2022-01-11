@@ -1,10 +1,9 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using AM.Application.Contracts.User;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace ServiceHost.Areas.Dashboard.Pages
+namespace ServiceHost.Areas.Dashboard.Pages.Users
 {
     public class ProfileModel : PageModel
     {

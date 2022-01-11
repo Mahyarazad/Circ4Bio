@@ -10,6 +10,8 @@ namespace AM.Application.Contracts.User
         OperationResult Register(RegisterUser command);
         OperationResult RegisterUser(RegisterUser command);
         OperationResult ActivateUser(string command);
+        OperationResult AdminActivateUser(long Id);
+        OperationResult AdminDectivateUser(long Id);
         OperationResult Edit(EditUser command);
         OperationResult ChangePassword(ResetPasswordModel command);
         EditUser GetDetail(long Id);

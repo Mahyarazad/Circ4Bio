@@ -14,6 +14,7 @@ namespace AM.Infrastructure.Mapping
 
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Name).IsRequired().HasMaxLength(50);
+            builder.HasMany(x => x.Users).WithOne(x => x.Role).HasForeignKey(x => x.RoleId);
 
             builder.OwnsMany(x => x.Permissions, NavigationBuilder =>
             {
