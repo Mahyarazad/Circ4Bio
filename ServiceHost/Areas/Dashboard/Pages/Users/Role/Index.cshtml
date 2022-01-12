@@ -1,65 +1,129 @@
 ﻿@page
 @model ServiceHost.Areas.Dashboard.Pages.Users.Role.IndexModel
-@{
+@{ ViewData["Title"] = "Dashboard | Role"; }
 
-}
+<div class="divide-y divide-gray-200 lg:col-span-9">
+    <div class="flex flex-col">
+        <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                    <!-- operation-result -->
+                    <div class="rounded-md bg-green-50 p-4 transition ease-in-out duration-75" id="operation-result" style="display: none">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <!-- Heroicon name: solid/check-circle -->
+                                <svg class="h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                </svg>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm font-medium text-green-800" id="operation-result-message">
 
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end -->
+                    <a asp-page="Create"
+                       class="m-2 inline-flex items-center px-2 py-2 border border-gray-200 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-green-300 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                        <i class="fa fa-plus-circle"></i>
+                        Register a new Role
+                    </a>
 
-<div class='row'>
-    <div class="col-sm-12">
-        <h1 class="page-title text-dark"> @ViewData["title"] </h1>
-        <p class="pull-right">
-            <a asp-page="Create"
-               class="btn btn-success wave-effect wave-light">
-                <i class="fa fa-plus-circle"></i>
-                Register a new Role
-            </a>
-        </p>
-    </div>
-</div>
-
-<div class="panel-heading">
-    <h3 class="panel-title">Roles</h3>
-</div>
-<div class="panel-body">
-    <div class="row">
-        <div class="col-md-12 col-sm-12 col-xs-12">
-            <table id="myTable" class="display table-condensed table-bordered table-dark table-striped text-center col-md-12">
-                <thead style="white-space: nowrap;">
-                    <tr>
-                        <th class="text-center">#</th>
-                        <th class="text-center">Creation Date</th>
-                        <th class="text-center">Name</th>
-                        <th class="text-center">Modify</th>
-
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model.Roles)
-                    {
+                    <table id="myTable" class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
                         <tr>
-                            <td> @item.Id</td>
-                            <td> @item.CreationTime</td>
-                            <td> @item.Name</td>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 tracking-wider">
+                                #
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 tracking-wider">
+                                Creation Date
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 tracking-wider">
+                                Name
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 tracking-wider">
+                                Modify
+                            </th>
 
-                            <td class="col-md-4">
-                                <a asp-page="Edit" asp-route-id="@item.Id"
-                                   class="btn btn-warning waves-effect waves-light col-md-4">
-                                <i class="fa fa-edit"></i> Modify
-                                </a>
-                            </td>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                        @foreach (var item in Model.Roles)
+                        {
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"> @item.Id</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"> @item.CreationTime</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"> @item.Name</td>
+
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    <a asp-page="Edit" asp-route-id="@item.Id"
+                                       class="inline-flex items-center px-2 py-2 border border-gray-300 shadow-sm text-xs font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                                        <i class="fa fa-edit"></i> Modify
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
 
+@section CSS{
+    <link href="~/js/jquery-multi-select/multi-select.css" rel="stylesheet" type="text/css"/>
+}
 
 @section Scripts
 {
+    <script type="text/javascript" src="~/js/jquery-multi-select/jquery.multi-select.js"></script>
+    <script type="text/javascript" src="~/js/jquery-multi-select/jquery.quicksearch.js"></script>
+    <script>
+    //multiselect start
+
+    $('#permissions').multiSelect({
+        selectableOptgroup: true,
+        selectableHeader: "<input type='text' class='form-control search-input' autocomplete='off' placeholder='search...'>",
+        selectionHeader: "<input type='text' class='form-control search-input' autocomplete='off' placeholder='search...'>",
+        afterInit: function(ms) {
+            var that = this,
+                $selectableSearch = that.$selectableUl.prev(),
+                $selectionSearch = that.$selectionUl.prev(),
+                selectableSearchString = '#' + that.$container.attr('id') + ' .ms-elem-selectable:not(.ms-selected)',
+                selectionSearchString = '#' + that.$container.attr('id') + ' .ms-elem-selection.ms-selected';
+
+            that.qs1 = $selectableSearch.quicksearch(selectableSearchString)
+                .on('keydown',
+                    function(e) {
+                        if (e.which === 40) {
+                            that.$selectableUl.focus();
+                            return false;
+                        }
+                    });
+
+            that.qs2 = $selectionSearch.quicksearch(selectionSearchString)
+                .on('keydown',
+                    function(e) {
+                        if (e.which == 40) {
+                            that.$selectionUl.focus();
+                            return false;
+                        }
+                    });
+        },
+        afterSelect: function() {
+            this.qs1.cache();
+            this.qs2.cache();
+        },
+        afterDeselect: function() {
+            this.qs1.cache();
+            this.qs2.cache();
+        }
+    });
+    <
+    script /  >
     @if (TempData["Message"] != null)
     {
         if (TempData["Message"].ToString() == "Operation has been successfully proceeded.")
@@ -72,7 +136,7 @@
                     showConfirmButton: false,
                     timer: 1000
                 })
-            </script>
+    </script>
         }
         else
         {
@@ -85,14 +149,14 @@
                 })
             </script>
         }
-
     }
-    <script>
-        $(document).ready(function () {
-            $('#myTable').DataTable({
-                language: { search: 'Search:', searchPlaceholder: "Search ..." }
-            });
-            $('input[type="search"]').css('border-width', '1px');
-        })
-    </script>
-}
+
+            <script>
+                $(document).ready(function() {
+                    $('#myTable').DataTable({
+                        language: { search: 'Search:', searchPlaceholder: "Search ..." }
+                    });
+                    $('input[type="search"]').css('border-width', '1px');
+                })
+            </script>
+            }

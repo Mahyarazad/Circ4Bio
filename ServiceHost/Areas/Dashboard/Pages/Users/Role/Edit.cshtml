@@ -1,57 +1,49 @@
 ﻿@page
 @model ServiceHost.Areas.Dashboard.Pages.Users.Role.EditModel
-@{
-}
+@{ ViewData["Title"] = "Dashboard | Role | Modify"; }
 
+<div class="divide-y divide-gray-200 lg:col-span-9">
+    <div class="flex flex-col">
+        <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
 
-<div class='row'>
-    <div class="col-sm-12">
-        <h1 class="page-title text-dark"> @ViewData["title"] </h1>
-        <p class="pull-right">
-            <a class="btn btn-default fa-2x wave-effect wave-light" asp-page="Index">
-                <i class="fa fa-arrow-circle-left"></i>
-            </a>
-        </p>
+                        <h2 class="m-2">@Model.Role.Name</h2>
+                    <form asp-page-handler="Edit" class="divide-y divide-gray-200 lg:col-span-9 m-2"
+                          method="post">
+                        <div class="mt-6 grid grid-cols-12 gap-6">
+                            <div class="col-span-12 sm:col-span-6">
+                                        <label asp-for="@Model.Role.Name" class="block text-sm font-medium text-gray-700"> Name </label>
+                                        <input asp-for="@Model.Role.Name" type="text" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm" />
+                                        <span asp-validation-for="@Model.Role.Name" class="text-danger"></span>
+                            </div>
+                            <div class="col-span-12 sm:col-span-6">
+                                    <label class="block text-sm font-medium text-gray-700" >Permissions</label>
+                                    <select asp-items="Model.PermissionItems" asp-for="@Model.Role.Permissions"
+                                            multiple="multiple" class="multi-select" id="permissions">
+                                    </select>
+                                </div>
+                        </div>
+
+                        <input type="hidden" asp-for="@Model.Role.Id" value="@Model.Role.Id"/>
+                        <div class="mt-4 py-4 px-4 flex justify-end sm:px-6">
+                            <a asp-page="Index" class="bg-white border border-gray-300 rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+                                Back
+                            </a>
+                            <button type="submit" class="ml-5 bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+                                Save
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
-<div class="panel-heading">
-    <h3 class="panel-title">@Model.Role.Name</h3>
-</div>
-            <form asp-page-handler="Edit"
-                  method="post">
-                <div class="d-flex col-md-12 p-t-10">
-                    <div class="col-md-4">
-                        <div clas="form-group col-md-12">
-                            <div class="col-md-12">
-                                <label asp-for="@Model.Role.Name"> Name </label>
-                                <input asp-for="@Model.Role.Name" type="text" class="form-control"/>
-                                <span asp-validation-for="@Model.Role.Name" class="text-danger"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-8">
-                        <div class="form-group col-md-12">
-                            <label>Permissions</label>
-                            <select asp-items="Model.PermissionItems" asp-for="@Model.Role.Permissions"
-                                    multiple="multiple" class="multi-select" id="permissions">
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <input type="hidden" asp-for="@Model.Role.Id" value="@Model.Role.Id" />
-                <div class="modal-footer">
-                    <a class="btn btn-default waves-effect" asp-page="Index"> Back to Roles </a>
-                    <button id="submitModal" type="submit" class="btn btn-inverse waves-effect waves-light">
-                        <i class="fa fa-save"></i>
-                        Save Changes
-                    </button>
-                </div>
-            </form>
 
 @section CSS{
-    <link href="~/js/jquery-multi-select/multi-select.css" rel="stylesheet" type="text/css" />
+    <link href="~/js/jquery-multi-select/multi-select.css" rel="stylesheet" type="text/css"/>
 }
 
 @section Scripts
@@ -63,36 +55,38 @@
 
         $('#permissions').multiSelect({
             selectableOptgroup: true,
-            selectableHeader: "<input type='text' class='form-control search-input' autocomplete='off' placeholder='search...'>",
-            selectionHeader: "<input type='text' class='form-control search-input' autocomplete='off' placeholder='search...'>",
-            afterInit: function (ms) {
+            selectableHeader: "<input type='text' class='mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 mb-2 px-3 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm' autocomplete='off' placeholder='search...'>",
+            selectionHeader: "<input type='text' class='mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 mb-2 px-3 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm' autocomplete='off' placeholder='search...'>",
+            afterInit: function(ms) {
                 var that = this,
-                    $selectableSearch = that.$selectableUl.prev(),
+                    $selectableSearch = that.$selectableUl.prev
                     $selectionSearch = that.$selectionUl.prev(),
                     selectableSearchString = '#' + that.$container.attr('id') + ' .ms-elem-selectable:not(.ms-selected)',
                     selectionSearchString = '#' + that.$container.attr('id') + ' .ms-elem-selection.ms-selected';
 
                 that.qs1 = $selectableSearch.quicksearch(selectableSearchString)
-                    .on('keydown', function (e) {
-                        if (e.which === 40) {
-                            that.$selectableUl.focus();
-                            return false;
-                        }
-                    });
+                    .on('keydown',
+                        function(e) {
+                            if (e.which === 40) {
+                                that.$selectableUl.focus();
+                                return false;
+                            }
+                        });
 
                 that.qs2 = $selectionSearch.quicksearch(selectionSearchString)
-                    .on('keydown', function (e) {
-                        if (e.which == 40) {
-                            that.$selectionUl.focus();
-                            return false;
-                        }
-                    });
+                    .on('keydown',
+                        function(e) {
+                            if (e.which == 40) {
+                                that.$selectionUl.focus();
+                                return false;
+                            }
+                        });
             },
-            afterSelect: function () {
+            afterSelect: function() {
                 this.qs1.cache();
                 this.qs2.cache();
             },
-            afterDeselect: function () {
+            afterDeselect: function() {
                 this.qs1.cache();
                 this.qs2.cache();
             }

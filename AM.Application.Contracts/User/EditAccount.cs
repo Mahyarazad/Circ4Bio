@@ -16,7 +16,7 @@
         public string? Description { get; set; }
         public string? CompanyName { get; set; }
         public long VatNumber { get; set; }
-        public int Status { get; set; }
+        public bool Status { get; set; }
         public string? Avatar { get; set; }
         public string? WebUrl { get; set; }
         public string? LinkdinUrl { get; set; }

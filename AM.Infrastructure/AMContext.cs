@@ -1,4 +1,6 @@
-﻿using AM.Domain.RoleAggregate;
+﻿using AM.Domain.ContactUsAggregate;
+using AM.Domain.ResetPasswordAggregate;
+using AM.Domain.RoleAggregate;
 using AM.Domain.UserAggregate;
 using AM.Infrastructure.Mapping;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +12,7 @@ namespace AM.Infrastructure
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<ResetPassword> UserResetPasswords { get; set; }
+        public DbSet<ContactUs> ContactUsMessages { get; set; }
         public AMContext(DbContextOptions<AMContext> options) : base(options)
         {
         }

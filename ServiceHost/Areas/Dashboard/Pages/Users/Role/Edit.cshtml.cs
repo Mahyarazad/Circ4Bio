@@ -23,7 +23,6 @@ namespace ServiceHost.Areas.Dashboard.Pages.Users.Role
 
         public void OnGet(int id)
         {
-            @ViewData["title"] = "Account Management";
             Role = _roleApplication.GetRole(id);
             var permissions = new List<PermissionDTO>();
             foreach (var exposer in _exposers)

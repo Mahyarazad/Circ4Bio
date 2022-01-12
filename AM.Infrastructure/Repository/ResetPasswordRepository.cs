@@ -3,6 +3,7 @@ using System.Linq;
 using _0_Framework.Domain;
 using _0_Framework.Infrastructure;
 using AM.Application.Contracts.ResetPassword;
+using AM.Domain.ResetPasswordAggregate;
 using AM.Domain.UserAggregate;
 using Microsoft.EntityFrameworkCore;
 

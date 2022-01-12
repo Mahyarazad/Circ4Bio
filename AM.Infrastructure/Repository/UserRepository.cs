@@ -90,6 +90,7 @@ namespace AM.Infrastructure.Repository
                 Email = x.Email,
                 Password = x.Password,
                 RoleId = x.RoleId,
+                Status = x.Status,
                 IsActive = x.IsActive
             }).FirstOrDefault(x => x.Email == email);
 

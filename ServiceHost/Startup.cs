@@ -84,6 +84,8 @@ namespace ServiceHost
             {
                 options.Cookie.IsEssential = true;
             });
+
+            services.AddRouting(options => options.LowercaseUrls = true);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

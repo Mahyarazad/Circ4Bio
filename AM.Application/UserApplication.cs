@@ -54,21 +54,29 @@ namespace AM.Application
             var result = new OperationResult();
             if (_userRepository.Exist(x => x.Email == command.Email))
                 return result.Failed(ApplicationMessage.RecordExists);
-
+            // Check the role for status management
+            var roles = _roleRepository.GetAll();
+            command.Status = false;
+            var check = roles.FirstOrDefault(x => x.Name == "Customer of Raw Material").Id;
+            if (command.RoleId == check)
+                command.Status = true;
+            // Handle the image upload
             // var profilePicture =
             //     _fileUploader.Uploader(command.ProfilePicture, "\\ProfilePicture\\", command.UserId);
             // if (command.ProfilePicture == null)
             //     profilePicture = "DefaultProfile.png";
+
             var password = _passwordHasher.Hash(command.Password);
             var activationGuid = Guid.NewGuid();
             var request = _contextAccessor.HttpContext.Request;
+
             var emailServiceResult = _emailService.SendEmail(ApplicationMessage.AccountVerification
                 , $"https://{request.Host}/Authentication/ActivateUser/{activationGuid.ToString()}"
                 , command.Email);
 
             if (emailServiceResult.IsSucceeded)
             {
-                var user = new User(command.Email, password, command.Type, activationGuid, command.Type);
+                var user = new User(command.Email, password, activationGuid, command.RoleId, command.Status);
                 _userRepository.Create(user);
                 _userRepository.SaveChanges();
                 return result.Succeeded();
@@ -133,14 +141,27 @@ namespace AM.Application
             return result.Failed(ApplicationMessage.RecordNotFound);
         }
 
-        public OperationResult Edit(EditUser command)
+        public OperationResult EditByAdmin(EditUser command)
         {
             var result = new OperationResult();
             var user = _userRepository.Get(command.Id);
             user.Edit(command.FirstName, command.LastName, command.UserId, command.Email, command.City, command.Country,
                 command.PostalCode, command.Latitude, command.Longitude, command.Description,
-                command.CompanyName, command.VatNumber, command.Avatar, command.WebUrl, command.LinkdinUrl,
+                command.CompanyName, command.VatNumber, command.Status, command.Avatar, command.WebUrl, command.LinkdinUrl,
                 command.TwitterUrl, command.InstagramUrl, command.FaceBookUrl, command.RoleId);
+
+            _userRepository.SaveChanges();
+
+            return result.Succeeded();
+        }
+        public OperationResult EditByUser(EditUser command)
+        {
+            var result = new OperationResult();
+            var user = _userRepository.Get(command.Id);
+            user.Edit(command.FirstName, command.LastName, command.UserId, command.Email, command.City, command.Country,
+                command.PostalCode, command.Latitude, command.Longitude, command.Description,
+                command.CompanyName, command.VatNumber, command.Status, command.Avatar, command.WebUrl, command.LinkdinUrl,
+                command.TwitterUrl, command.InstagramUrl, command.FaceBookUrl, user.RoleId);
 
             _userRepository.SaveChanges();
 
@@ -203,11 +224,11 @@ namespace AM.Application
             {
                 _contextAccessor.HttpContext.Response.Cookies.Delete("user-token");
             }
-
-            if (!user.IsActive)
-                return result.Failed(ApplicationMessage.UserNotActive);
             if (user == null)
                 return result.Failed(ApplicationMessage.UserNotExists);
+            if (!user.IsActive)
+                return result.Failed(ApplicationMessage.UserNotActive);
+
 
             var (verified, needsUpgrade) = _passwordHasher.Check(user.Password, command.Password);
             if (!verified)

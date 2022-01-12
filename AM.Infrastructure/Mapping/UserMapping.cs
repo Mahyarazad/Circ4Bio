@@ -15,8 +15,8 @@ namespace AM.Infrastructure.Mapping
             builder.Property(x => x.Email).HasMaxLength(100).IsRequired();
             builder.Property(x => x.Password).HasMaxLength(100).IsRequired();
             builder.Property(x => x.UserId).HasMaxLength(100).IsRequired(false);
-            builder.Property(x => x.Type).IsRequired();
             builder.Property(x => x.IsActive).IsRequired();
+            builder.Property(x => x.Status).IsRequired();
             builder.Property(x => x.ActivationGuid).HasMaxLength(36).IsRequired();
             builder.Property(x => x.Avatar).HasMaxLength(200).IsRequired(false);
             builder.Property(x => x.Address).HasMaxLength(300).IsRequired(false);

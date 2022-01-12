@@ -1,12 +1,23 @@
 ﻿@page
 @model ServiceHost.Pages.Authentication.ConfirmEmailIndex
-@{
+@{ ViewData["Title"] = "Confirm Email"; }
 
-}
+<div class='overlay'>
+    <div class="lds-roller">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+</div>
 
 <div class="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
     <div class="sm:mx-auto sm:w-full sm:max-w-md">
-        <img class="mx-auto h-12 w-auto" src="~/Images/Circ4Bio.jpeg" alt="Workflow">
+        <img class="mx-auto h-12 w-auto" src="~/Images/Circ4Bio.png" alt="Workflow">
         <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
             Forgot password?
         </h2>
@@ -44,7 +55,7 @@
 
 
                 <div>
-                    <button type="submit" id="login-button"
+                    <button type="submit" id="login-button" onclick="loading()"
                             class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         Confirm Email
                     </button>
@@ -60,7 +71,10 @@
     </div>
 </div>
 
+@section CSS{
+    <link rel="stylesheet" href="~/css/Loader.css" />
+}
+
 @section Scripts{
     <script src="~/js/MenuHandlers.js"></script>
-    <script src="~/js/RememberMe.js"></script>
 }

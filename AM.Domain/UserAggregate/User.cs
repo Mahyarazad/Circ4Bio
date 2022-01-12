@@ -10,22 +10,22 @@ namespace AM.Domain.UserAggregate
         {
 
         }
-        public User(string email, string password, int type, Guid activationGuid, int roleId)
+        public User(string email, string password, Guid activationGuid, int roleId, bool status)
         {
 
             Email = email;
             UserId = email.Substring(0, email.IndexOf('@'));
             Password = password;
             IsActive = false;
-            Type = type;
+            Status = status;
             ActivationGuid = activationGuid;
-            RoleId = 1;
+            RoleId = roleId;
         }
 
         public void Edit(string firstName, string lastName, string userId
             , string address, string city, string country, long postalCode
-            , double latitude, double longitude, string description, string companyName, long vatNumber,
-            // , int status, int type, int userType,
+            , double latitude, double longitude, string description, string companyName, long vatNumber
+            , bool status,
             string avatar, string webUrl, string linkdinUrl
             , string twitterUrl, string instagramUrl, string faceBookUrl, int roleID)
         {
@@ -41,9 +41,7 @@ namespace AM.Domain.UserAggregate
             Description = description;
             CompanyName = companyName;
             VatNumber = vatNumber;
-            // Status = status;
-            // Type = type;
-            // User_Type = userType;
+            Status = status;
             if (!string.IsNullOrWhiteSpace(avatar))
                 Avatar = avatar;
             WebUrl = webUrl;
@@ -84,7 +82,7 @@ namespace AM.Domain.UserAggregate
         public string? Description { get; private set; }
         public string? CompanyName { get; private set; }
         public long VatNumber { get; private set; }
-        public int Status { get; private set; }
+        public bool Status { get; private set; }
         public int Type { get; private set; }
         public int User_Type { get; private set; }
         public string? Avatar { get; private set; }

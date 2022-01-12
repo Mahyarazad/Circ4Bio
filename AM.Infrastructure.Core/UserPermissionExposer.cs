@@ -10,9 +10,14 @@ namespace AM.Infrastructure.Core
             return new Dictionary<string, List<PermissionDTO>>
             {
                 {
-                    "Users", new List<PermissionDTO>
+                    "Account Management", new List<PermissionDTO>
                     {
                         new PermissionDTO(UserPermission.RegisterUser, "Register User"),
+                        new PermissionDTO(UserPermission.ActivateUser, "Activate User"),
+                        new PermissionDTO(UserPermission.DeactivateUser, "Deactivate User"),
+                        new PermissionDTO(UserPermission.CreateRole, "Create Role"),
+                        new PermissionDTO(UserPermission.EditRole, "Edit Role"),
+                        new PermissionDTO(UserPermission.GetContactUsMEssages, "Get Contact Us Messages"),
                     }
                 }
             };

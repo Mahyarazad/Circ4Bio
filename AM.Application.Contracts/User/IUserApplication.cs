@@ -12,7 +12,8 @@ namespace AM.Application.Contracts.User
         OperationResult ActivateUser(string command);
         OperationResult AdminActivateUser(long Id);
         OperationResult AdminDectivateUser(long Id);
-        OperationResult Edit(EditUser command);
+        OperationResult EditByAdmin(EditUser command);
+        OperationResult EditByUser(EditUser command);
         OperationResult ChangePassword(ResetPasswordModel command);
         EditUser GetDetail(long Id);
         ChangePassword getDetailforChangePassword(long Id);

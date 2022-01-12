@@ -3,6 +3,7 @@ using _0_Framework;
 using _0_Framework.Application;
 using _0_Framework.Application.Email;
 using AM.Application.Contracts.ResetPassword;
+using AM.Domain.ResetPasswordAggregate;
 using AM.Domain.UserAggregate;
 using Microsoft.AspNetCore.Http;
 

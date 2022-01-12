@@ -1,4 +1,5 @@
-﻿using AM.Domain.RoleAggregate;
+﻿using AM.Domain.ResetPasswordAggregate;
+using AM.Domain.RoleAggregate;
 using AM.Domain.UserAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
