@@ -28,17 +28,17 @@
         <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
             <form method="post"
                   class="space-y-6">
-                <div>
+                <div id="message-container">
                     @if (!string.IsNullOrWhiteSpace(Model.Message))
                     {
-                        <p class="pb-2 text-red-500">
+                        <p class="pb-2 text-red-500" id="failure">
                             @Model.Message
                         </p>
                     }
 
                     @if (!string.IsNullOrWhiteSpace(Model.SuccessMessage))
                     {
-                        <p class="pb-2 text-green-500">
+                        <p class="pb-2 text-green-500" id="success">
                             @Model.SuccessMessage
                         </p>
                     }
@@ -77,4 +77,5 @@
 
 @section Scripts{
     <script src="~/js/MenuHandlers.js"></script>
+
 }

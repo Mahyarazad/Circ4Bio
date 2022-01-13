@@ -27,7 +27,6 @@ namespace ServiceHost.Areas.Dashboard.Pages.Users
         {
             user = _userApplication.GetDetail(Id);
             CountrlyList = new SelectList(GenerateCountryList.GetList());
-            Role = _userApplication.GetUsertypes().FirstOrDefault(x => x.TypeId == user.RoleId).TypeName;
         }
 
         public JsonResult OnPost(EditUser user)

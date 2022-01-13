@@ -2,7 +2,6 @@
 using _0_Framework;
 using _0_Framework.Application;
 using AM.Application.Contracts.Role;
-using AM.Domain;
 using AM.Domain.RoleAggregate;
 
 namespace AM.Application

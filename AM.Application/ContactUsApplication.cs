@@ -61,8 +61,27 @@ namespace AM.Application
                 CreationTime = x.CreationTime,
                 FullName = x.FullName,
                 Email = x.Email,
-                Body = x.Body
+                Body = x.Body,
+                Subject = x.Subject,
+                Phone = x.Phone,
+                IsReed = x.IsRead
             }).OrderByDescending(x => x.Id).ToList();
+        }
+
+        public ContactUsViewModel GetSingleMessages(long Id)
+        {
+            var model = _contactUsRepository.Get(Id);
+            return new ContactUsViewModel
+            {
+                Id = model.Id,
+                CreationTime = model.CreationTime,
+                FullName = model.FullName,
+                Email = model.Email,
+                Body = model.Body,
+                Subject = model.Subject,
+                Phone = model.Phone,
+                IsReed = model.IsRead
+            };
         }
     }
 }

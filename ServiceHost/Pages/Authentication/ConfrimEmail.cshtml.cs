@@ -45,10 +45,10 @@ namespace ServiceHost.Pages.Authentication
             {
 
                 SuccessMessage = ApplicationMessage.ResetPasswordGuidance;
-                return RedirectToAction("/Authentication/ResetPassword");
+                return RedirectToAction("/Authentication/ConfirmPassword");
             }
             Message = result.Message;
-            return RedirectToAction("/Authentication/ResetPassword");
+            return RedirectToAction("/Authentication/ConfirmPassword");
         }
     }
 }

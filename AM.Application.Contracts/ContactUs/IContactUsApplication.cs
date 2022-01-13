@@ -8,5 +8,6 @@ namespace AM.Application.Contracts.ContactUs
         OperationResult CreateMessage(CreateMessage command);
 
         List<ContactUsViewModel> GetContactUsMessages();
+        ContactUsViewModel GetSingleMessages(long Id);
     }
 }

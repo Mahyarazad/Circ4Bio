@@ -26,6 +26,7 @@ namespace ServiceHost.Pages.Authentication
 
         public void OnGet()
         {
+            LoginMessage = "";
             if (!string.IsNullOrWhiteSpace(_httpContextAccessor.HttpContext.Request.Cookies["user-token"]))
             {
                 UserToken = new JavaScriptSerializer()

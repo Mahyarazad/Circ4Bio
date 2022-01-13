@@ -40,7 +40,7 @@ namespace ServiceHost.Pages.Authentication
         }
 
 
-        public IActionResult OnPostUpdate(ResetPasswordModel command)
+        public void OnPostUpdate(ResetPasswordModel command)
         {
             Message = "";
             SuccessMessage = "";
@@ -48,10 +48,13 @@ namespace ServiceHost.Pages.Authentication
             if (result.IsSucceeded)
             {
                 SuccessMessage = result.Message;
-                return RedirectToAction("/Authentication/ResetPassword");
+                Command = new ResetPasswordModel();
             }
-            Message = result.Message;
-            return RedirectToAction("/Authentication/ResetPassword");
+            else
+            {
+                Message = result.Message;
+            }
+
         }
 
     }

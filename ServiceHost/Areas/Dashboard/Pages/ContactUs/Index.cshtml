@@ -1,0 +1,104 @@
+﻿@page
+@model ServiceHost.Areas.Dashboard.Pages.ContactUs.IndexModel;
+@inject _0_Framework.Application.IAutenticateHelper AutenticateHelper;
+@{ ViewData["Title"] = "Dashboard | Contact Us"; }
+
+<div class="divide-y divide-gray-200 lg:col-span-9">
+    <div class="flex flex-col">
+        <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                    <!-- operation-result -->
+                    <div class="rounded-md bg-green-50 p-4 transition ease-in-out duration-75" id="operation-result" style="display: none">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <!-- Heroicon name: solid/check-circle -->
+                                <svg class="h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                </svg>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm font-medium text-green-800" id="operation-result-message">
+
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end -->
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 tracking-wider">
+                                    Inquirer Info
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 tracking-wider">
+                                    Creation Time
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 tracking-wider">
+                                    Subject
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 tracking-wider">
+                                    Message Body
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 tracking-wider">
+                                    Mark Read
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                        @foreach (var item in Model.ContactUsMessagList)
+                        {
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="ml-4">
+                                            <div class="text-sm font-medium text-gray-900">
+                                                @item.FullName
+                                            </div>
+                                            <div class="text-sm text-gray-500">
+                                                @item.Email
+                                            </div>
+                                            <div class="text-sm text-gray-500">
+                                                @item.Phone
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-500">@item.CreationTime</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">@item.Subject</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <a asp-page="MessageBody" asp-route-id="@item.Id" class="inline-flex items-center px-2 py-2 border border-gray-300 shadow-sm text-xs font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                                        Message
+                                    </a>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
+                                    <form asp-page="./Index" asp-page-handler="IsReed"
+                                          data-callback="" data-ajax="true" method="post" data-action="Refresh">
+                                        <input type="hidden" name="Id" id="Id" value="@item.Id" />
+                                        <button type="submit"
+                                                class="inline-flex items-center p-1 border border-transparent rounded-full shadow-sm text-white bg-green-400 hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                                            <!-- Heroicon name: solid/plus-sm -->
+                                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                                      clip-rule="evenodd" />
+                                            </svg>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+
+
+                        <!-- More people... -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

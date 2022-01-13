@@ -42,8 +42,9 @@ namespace AM.Application
 
             var request = _contextAccessor.HttpContext.Request;
             var emailServiceResult = _emailService.SendEmail("Reset Password"
-                , $"https://{request.Host}/Authentication/ResetPassword/{resetUrl.ToString()}"
+                , ($"https://{request.Host}/Authentication/ResetPassword/{resetUrl.ToString()}").ToLower()
                 , email);
+
             if (emailServiceResult.IsSucceeded)
             {
                 var passwordReset = new ResetPassword(userId, resetUrl);

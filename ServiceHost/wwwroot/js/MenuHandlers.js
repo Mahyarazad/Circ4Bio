@@ -28,3 +28,15 @@ $('#login-button').on('click', function () {
         };
     }, 500)
 })
+
+$(document).ready(function () {
+    var childNode = $('#message-container').children();
+    if (childNode.attr('id') === 'success') {
+        console.log('=====================');
+        $("#login-button").prop("disabled", true);
+        $("#login-button").addClass("bg-gray-200");
+        $("#login-button").removeClass("hover:bg-indigo-700");
+        $("#user-email").prop("disabled", true);
+        $("#user-email").addClass("bg-gray-100");
+    }
+});
