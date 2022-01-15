@@ -14,7 +14,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.ContactUs
 
         private readonly IContactUsApplication _contactUsApplication;
         private readonly IHttpContextAccessor _contextAccessor;
-        public UserSearchModel Command;
+        public ContactUsViewModel Command;
         public List<ContactUsViewModel> ContactUsMessagList;
         [TempData]
         public string SuccessMessage { get; set; }
@@ -36,8 +36,16 @@ namespace ServiceHost.Areas.Dashboard.Pages.ContactUs
 
         public JsonResult OnPostIsReed(long id)
         {
-
-            return new JsonResult(new OperationResult().Succeeded());
+            var result = _contactUsApplication.MarkAsRead(id);
+            return new JsonResult(result);
+        }
+        public void OnPostGetAll(ContactUsViewModel Command)
+        {
+            ContactUsMessagList = _contactUsApplication.GetAllContactUsMessages();
+        }
+        public void OnPostGetReadMessages(ContactUsViewModel Command)
+        {
+            ContactUsMessagList = _contactUsApplication.GetReadContactUsMessages();
         }
     }
 }

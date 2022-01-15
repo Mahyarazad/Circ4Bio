@@ -25,25 +25,48 @@
                         </div>
                     </div>
                     <!-- end -->
-                    <table class="min-w-full divide-y divide-gray-200">
+                    <div class="mx-3 my-3 mr-96">
+                        <div class="flex flex-row">
+                            <form method="post" asp-page-handler="GetAll">
+                                <div class="flex items-center justify-between">
+                                    <input id="remember-me" asp-for="Command.IsReed" type="hidden" value="true">
+                                    <button type="submit" class="ml-5 bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+                                        View All Messages
+                                    </button>
+                                </div>
+                            </form>
+                            <form method="post" asp-page-handler="GetReadMessages">
+                                <div class="flex items-center justify-between">
+                                    <input id="remember-me" asp-for="Command.IsReed" type="hidden" value="true">
+                                    <button type="submit" class="ml-5 bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+                                        Filter Unread Messages
+                                    </button>
+                                </div>
+                            </form>
+                            <a asp-page="./Index" class="ml-5 bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+                                Filter Read Messages
+                            </a>
+                        </div>
+                    </div>
+                    <table class="min-w-full divide-y divide-gray-200" id="main-table">
                         <thead class="bg-gray-50">
-                            <tr>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 tracking-wider">
-                                    Inquirer Info
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 tracking-wider">
-                                    Creation Time
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 tracking-wider">
-                                    Subject
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 tracking-wider">
-                                    Message Body
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 tracking-wider">
-                                    Mark Read
-                                </th>
-                            </tr>
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 tracking-wider">
+                                Inquirer Info
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 tracking-wider">
+                                Creation Time
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 tracking-wider">
+                                Subject
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 tracking-wider">
+                                Message Body
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 tracking-wider">
+                                Mark Read
+                            </th>
+                        </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
                         @foreach (var item in Model.ContactUsMessagList)
@@ -75,20 +98,34 @@
                                         Message
                                     </a>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
-                                    <form asp-page="./Index" asp-page-handler="IsReed"
-                                          data-callback="" data-ajax="true" method="post" data-action="Refresh">
-                                        <input type="hidden" name="Id" id="Id" value="@item.Id" />
-                                        <button type="submit"
-                                                class="inline-flex items-center p-1 border border-transparent rounded-full shadow-sm text-white bg-green-400 hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
-                                            <!-- Heroicon name: solid/plus-sm -->
+                                @if (item.IsReed)
+                                {
+                                    <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
+                                        <div class="inline-flex items-center p-1 border border-transparent rounded-full shadow-sm text-white bg-green-400">
                                             <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                                      clip-rule="evenodd" />
+                                                      clip-rule="evenodd"/>
                                             </svg>
-                                        </button>
-                                    </form>
-                                </td>
+                                        </div>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
+                                        <form asp-page="./Index" asp-page-handler="IsReed"
+                                              data-callback="" data-ajax="true" method="post" data-action="Refresh">
+                                            <input type="hidden" name="Id" id="Id" value="@item.Id"/>
+                                            <button type="submit"
+                                                    class="inline-flex items-center p-1 border border-transparent rounded-full shadow-sm text-white bg-red-400 hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                                                <!-- Heroicon name: solid/plus-sm -->
+                                                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                                                          clip-rule="evenodd"/>
+                                                </svg>
+                                            </button>
+                                        </form>
+                                    </td>
+                                }
                             </tr>
                         }
 
@@ -102,3 +139,66 @@
     </div>
 </div>
 
+@section Scripts{
+    <script type="text/javascript" src="~/js/pagination.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#main-table').DataTable({
+                language: { searchPlaceholder: "Search Everthing ..." }
+            });
+            $('input[type="search"]').addClass('mt-1');
+            $('input[type="search"]').addClass('w-1/2');
+            $('input[type="search"]').addClass('border-gray-300');
+            $('input[type="search"]').addClass('rounded-md');
+            $('input[type="search"]').addClass('shadow-sm');
+            $('input[type="search"]').addClass('py-2');
+            $('input[type="search"]').addClass('mb-2');
+            $('input[type="search"]').addClass('px-3');
+            $('input[type="search"]').addClass('focus:outline-none');
+            $('input[type="search"]').addClass('focus:border-sky-500');
+            $('input[type="search"]').addClass('focus:ring-sky-500');
+            $('input[type="search"]').addClass('sm:text-sm');
+            $('input[type="search"]').addClass('float-left');
+            $('input[type="search"]').addClass('font-medium');
+
+            $('select[name="main-table_length"]').addClass('mt-1');
+            $('select[name="main-table_length"]').addClass('w-full');
+            $('select[name="main-table_length"]').addClass('border-gray-300');
+            $('select[name="main-table_length"]').addClass('rounded-md');
+            $('select[name="main-table_length"]').addClass('shadow-sm');
+            $('select[name="main-table_length"]').addClass('mb-2');
+            $('select[name="main-table_length"]').addClass('px-3');
+            $('select[name="main-table_length"]').addClass('focus:outline-none');
+            $('select[name="main-table_length"]').addClass('focus:border-sky-500');
+            $('select[name="main-table_length"]').addClass('focus:ring-sky-500');
+            $('select[name="main-table_length"]').addClass('sm:text-sm');
+            $('select[name="main-table_length"]').addClass('font-medium');
+
+
+            $('div[id="main-table_length"]').addClass('sm:text-sm');
+            $('div[id="main-table_length"]').addClass('mx-3');
+            $('div[id="main-table_length"]').addClass('pt-2');
+            $('div[id="main-table_length"]').addClass('text-gray-700');
+            $('div[id="main-table_length"]').addClass('font-medium');
+            $('div[id="main-table_length"]').addClass('float-right');
+
+            $('div[id="main-table_info"]').addClass('sm:text-sm');
+            $('div[id="main-table_info"]').addClass('mx-3');
+            $('div[id="main-table_info"]').addClass('mt-1');
+            $('div[id="main-table_info"]').addClass('text-gray-700');
+            $('div[id="main-table_info"]').addClass('font-medium');
+            $('div[id="main-table_info"]').addClass('float-left');
+            $('div[id="main-table_info"]').addClass('px-3');
+
+            $('div[id="main-table_paginate"]').addClass('sm:text-sm');
+            $('div[id="main-table_paginate"]').addClass('text-gray-700');
+            $('div[id="main-table_paginate"]').addClass('font-medium');
+            $('div[id="main-table_paginate"]').addClass('float-right');
+            $('div[id="main-table_paginate"]').addClass('px-3');
+            $('div[id="main-table_paginate"]').addClass('py-3');
+
+            $('div[class="row"]').addClass('border-t');
+        });
+    </script>
+}

@@ -1,4 +1,5 @@
 ﻿using AM.Application.Contracts.ContactUs;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace ServiceHost.Areas.Dashboard.Pages.ContactUs
@@ -15,6 +16,11 @@ namespace ServiceHost.Areas.Dashboard.Pages.ContactUs
         public void OnGet(long id)
         {
             Message = _contactUsApplication.GetSingleMessages(id);
+        }
+        public JsonResult OnPostIsReed(long id)
+        {
+            var result = _contactUsApplication.MarkAsRead(id);
+            return new JsonResult(result);
         }
     }
 }

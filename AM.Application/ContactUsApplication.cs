@@ -53,7 +53,52 @@ namespace AM.Application
             return result.Failed(ApplicationMessage.SomethingWentWrong);
         }
 
+        public OperationResult MarkAsRead(long Id)
+        {
+            var result = new OperationResult();
+            if (_contactUsRepository.Exist(x => x.Id == Id))
+            {
+                var target = _contactUsRepository.Get(Id);
+                target.MarkAsReed();
+                _contactUsRepository.SaveChanges();
+                return result.Succeeded();
+            }
+
+            return result.Failed(ApplicationMessage.RecordNotFound);
+
+        }
+
         public List<ContactUsViewModel> GetContactUsMessages()
+        {
+            return _contactUsRepository.GetList().Select(x => new ContactUsViewModel
+            {
+                Id = x.Id,
+                CreationTime = x.CreationTime,
+                FullName = x.FullName,
+                Email = x.Email,
+                Body = x.Body,
+                Subject = x.Subject,
+                Phone = x.Phone,
+                IsReed = x.IsRead
+            }).Where(x => !x.IsReed).OrderByDescending(x => x.Id).ToList();
+        }
+
+        public List<ContactUsViewModel> GetReadContactUsMessages()
+        {
+            return _contactUsRepository.GetList().Select(x => new ContactUsViewModel
+            {
+                Id = x.Id,
+                CreationTime = x.CreationTime,
+                FullName = x.FullName,
+                Email = x.Email,
+                Body = x.Body,
+                Subject = x.Subject,
+                Phone = x.Phone,
+                IsReed = x.IsRead
+            }).Where(x => x.IsReed).OrderByDescending(x => x.Id).ToList();
+        }
+
+        public List<ContactUsViewModel> GetAllContactUsMessages()
         {
             return _contactUsRepository.GetList().Select(x => new ContactUsViewModel
             {
