@@ -22,11 +22,12 @@ namespace ServiceHost.Pages.Authentication
             _userApplication = userApplication;
         }
 
-        [TempData] public string LoginMessage { get; set; }
+        [TempData] public string SuccessMessage { get; set; }
+        [TempData] public string FailureMessage { get; set; }
+        [TempData] public string ActivationFailureMessage { get; set; }
 
         public void OnGet()
         {
-            LoginMessage = "";
             if (!string.IsNullOrWhiteSpace(_httpContextAccessor.HttpContext.Request.Cookies["user-token"]))
             {
                 UserToken = new JavaScriptSerializer()
@@ -37,23 +38,34 @@ namespace ServiceHost.Pages.Authentication
 
         public IActionResult OnGetLogout()
         {
-            LoginMessage = "";
+            SuccessMessage = "";
+            FailureMessage = "";
+            ActivationFailureMessage = "";
             _userApplication.Logout();
             return RedirectToPage("./Index");
         }
 
         public IActionResult OnPostLogin(EditUser command)
         {
-            LoginMessage = "";
-
+            SuccessMessage = "";
+            FailureMessage = "";
+            ActivationFailureMessage = "";
             var result = _userApplication.Login(command);
             if (result.IsSucceeded)
             {
-                LoginMessage = ApplicationMessage.SuccessLogin;
+                SuccessMessage = ApplicationMessage.SuccessLogin;
                 return RedirectToPage("/Index", new { area = "Dashboard" });
             }
-            LoginMessage = result.Message;
-            return RedirectToAction("/Authentication/Login");
+
+            if (result.Message == ApplicationMessage.UserNotActive)
+            {
+                ActivationFailureMessage = result.Message;
+            }
+            else
+            {
+                FailureMessage = result.Message;
+            }
+            return RedirectToAction("/Login");
         }
 
     }

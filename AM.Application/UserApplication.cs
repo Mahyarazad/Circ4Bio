@@ -71,7 +71,7 @@ namespace AM.Application
             var request = _contextAccessor.HttpContext.Request;
 
             var emailServiceResult = _emailService.SendEmail(ApplicationMessage.AccountVerification
-                , $"https://{request.Host}/Authentication/ActivateUser/{activationGuid.ToString()}"
+                , $"https://{request.Host}/Authentication/ActivateUser/{activationGuid.ToString()}".ToLower()
                 , command.Email);
 
             if (emailServiceResult.IsSucceeded)
@@ -124,6 +124,28 @@ namespace AM.Application
 
             return result.Failed(ApplicationMessage.RecordNotFound);
 
+        }
+
+        public OperationResult SendActivationEmail(string command)
+        {
+            var result = new OperationResult();
+            if (!_userRepository.Exist(x => x.Email == command))
+                return result.Failed(ApplicationMessage.RecordNotFound);
+
+            var request = _contextAccessor.HttpContext.Request;
+            var activationGuid = _userRepository.ResendActivationLink(command).ActivationGuid;
+            var emailServiceResult = _emailService.SendEmail(ApplicationMessage.AccountVerification
+                , $"https://{request.Host}/Authentication/ActivateUser/{activationGuid.ToString()}".ToLower()
+                , command);
+
+            if (emailServiceResult.IsSucceeded)
+            {
+                return result.Succeeded();
+            }
+            else
+            {
+                return emailServiceResult;
+            }
         }
 
         public OperationResult AdminDectivateUser(long Id)

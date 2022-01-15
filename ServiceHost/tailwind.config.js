@@ -24,6 +24,9 @@ module.exports = {
             }
         },
     },
+    variants: {
+        animation: ['responsive', 'motion-safe', 'motion-reduce', 'hover']
+    },
     plugins: [
         // ...
         require('@tailwindcss/forms'),

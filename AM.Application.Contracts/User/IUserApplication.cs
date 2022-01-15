@@ -11,6 +11,7 @@ namespace AM.Application.Contracts.User
         OperationResult RegisterUser(RegisterUser command);
         OperationResult ActivateUser(string command);
         OperationResult AdminActivateUser(long Id);
+        OperationResult SendActivationEmail(string command);
         OperationResult AdminDectivateUser(long Id);
         OperationResult EditByAdmin(EditUser command);
         OperationResult EditByUser(EditUser command);

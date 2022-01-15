@@ -1,6 +1,6 @@
 ﻿@page
-@model ServiceHost.Pages.Authentication.ConfirmEmailIndex
-@{ ViewData["Title"] = "Confirm Email"; }
+@model ServiceHost.Pages.Authentication.ResendActivationEmailIndex
+@{ ViewData["Title"] = "Resend Activation Email"; }
 
 <div class='overlay'>
     <div class="lds-roller">
@@ -19,9 +19,9 @@
     <div class="sm:mx-auto sm:w-full sm:max-w-md">
         <img class="mx-auto h-12 w-auto" src="~/Images/Circ4Bio.png" alt="Workflow">
         <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Forgot password?
+            Activate Your Account
         </h2>
-        <p class="mt-6 text-center text-gray-600">Reset password in two quick steps</p>
+        <p class="mt-6 text-center text-gray-600">Didn't get the activation link, resend it again.</p>
     </div>
 
     <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
@@ -75,7 +75,18 @@
     <link rel="stylesheet" href="~/css/Loader.css" />
 }
 
-@section Scripts{
-    <script src="~/js/MenuHandlers.js"></script>
-
+@section Scripts
+{
+<script>
+    $(document).ready(function () {
+        var childNode = $('#message-container').children();
+        if (childNode.attr('id') === 'success') {
+            $("#login-button").prop("disabled", true);
+            $("#login-button").addClass("bg-gray-200");
+            $("#login-button").removeClass("hover:bg-indigo-700");
+            $("#user-email").prop("disabled", true);
+            $("#user-email").addClass("bg-gray-100");
+        }
+    });
+</script>
 }

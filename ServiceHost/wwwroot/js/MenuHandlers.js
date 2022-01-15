@@ -26,17 +26,25 @@ $('#login-button').on('click', function () {
         if ($('#password-error').length == 1 || $('#user-email-error').length == 1) {
             $(".overlay").hide();
         };
-    }, 500)
+    }, 100)
+})
+$('#register-button').on('click', function () {
+    setInterval(function () {
+        if ($('#password-error').length == 1 || $('#user-email-error').length == 1
+            || $('#repassword-error').length == 1 || $('#user-type-error').length == 1) {
+            $(".overlay").hide();
+        };
+    }, 100)
 })
 
-$(document).ready(function () {
-    var childNode = $('#message-container').children();
-    if (childNode.attr('id') === 'success') {
-        console.log('=====================');
-        $("#login-button").prop("disabled", true);
-        $("#login-button").addClass("bg-gray-200");
-        $("#login-button").removeClass("hover:bg-indigo-700");
-        $("#user-email").prop("disabled", true);
-        $("#user-email").addClass("bg-gray-100");
-    }
-});
+$('#contact-us-button').on('click', function () {
+    setInterval(function () {
+        if ($('#Command_FullName-error').length == 1 || $('#Command_Email-error').length == 1
+            || $('#Command_Subject-error').length == 1 || $('#Command_Body-error').length == 1) {
+            $(".overlay").hide();
+        };
+    }, 100)
+})
+
+
+

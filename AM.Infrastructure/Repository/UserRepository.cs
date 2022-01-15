@@ -82,6 +82,16 @@ namespace AM.Infrastructure.Repository
             }).FirstOrDefault(x => x.UserId == username);
         }
 
+        public ResendActivationEmail ResendActivationLink(string email)
+        {
+            return _amContext.Users.Select(x => new ResendActivationEmail
+            {
+                ActivationGuid = x.ActivationGuid,
+                Email = x.Email
+            })
+                .FirstOrDefault(x => x.Email == email);
+        }
+
         public EditUser GetDetailByEmail(string email)
         {
             return _amContext.Users.Select(x => new EditUser
@@ -91,7 +101,7 @@ namespace AM.Infrastructure.Repository
                 Password = x.Password,
                 RoleId = x.RoleId,
                 Status = x.Status,
-                IsActive = x.IsActive
+                IsActive = x.IsActive,
             }).FirstOrDefault(x => x.Email == email);
 
         }
