@@ -1,10 +1,12 @@
 ﻿using _0_Framework.Infrastructure;
 using AM.Application;
 using AM.Application.Contracts.ContactUs;
+using AM.Application.Contracts.Notification;
 using AM.Application.Contracts.ResetPassword;
 using AM.Application.Contracts.Role;
 using AM.Application.Contracts.User;
 using AM.Domain.ContactUsAggregate;
+using AM.Domain.NotificationAggregate;
 using AM.Domain.ResetPasswordAggregate;
 using AM.Domain.RoleAggregate;
 using AM.Domain.UserAggregate;
@@ -29,6 +31,9 @@ namespace AM.Infrastructure.Core
 
             services.AddTransient<IContactUsApplication, ContactUsApplication>();
             services.AddTransient<IContactUsRepository, ContactUsRepository>();
+
+            services.AddTransient<INotificationApplication, NotificationApplicaiton>();
+            services.AddTransient<INotificationRepository, NotificationRepository>();
 
             services.AddTransient<IPermissionExposer, UserPermissionExposer>();
 

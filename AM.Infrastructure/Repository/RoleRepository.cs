@@ -3,12 +3,10 @@ using System.Linq;
 using _0_Framework.Application;
 using _0_Framework.Infrastructure;
 using AM.Application.Contracts.Role;
-using Microsoft.EntityFrameworkCore;
-using System;
 using AM.Domain.RoleAggregate;
+using Microsoft.EntityFrameworkCore;
 
-
-namespace AM.Infrastructure
+namespace AM.Infrastructure.Repository
 {
     public class RoleRepository : RepositoryBase<int, Role>, IRoleRepository
     {

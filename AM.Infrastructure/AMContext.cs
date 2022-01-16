@@ -1,4 +1,5 @@
 ﻿using AM.Domain.ContactUsAggregate;
+using AM.Domain.NotificationAggregate;
 using AM.Domain.ResetPasswordAggregate;
 using AM.Domain.RoleAggregate;
 using AM.Domain.UserAggregate;
@@ -13,6 +14,7 @@ namespace AM.Infrastructure
         public DbSet<Role> Roles { get; set; }
         public DbSet<ResetPassword> UserResetPasswords { get; set; }
         public DbSet<ContactUs> ContactUsMessages { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
         public AMContext(DbContextOptions<AMContext> options) : base(options)
         {
         }

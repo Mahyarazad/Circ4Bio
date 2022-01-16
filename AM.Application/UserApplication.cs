@@ -4,6 +4,7 @@ using System.Linq;
 using _0_Framework;
 using _0_Framework.Application;
 using _0_Framework.Application.Email;
+using AM.Application.Contracts.Notification;
 using AM.Application.Contracts.ResetPassword;
 using AM.Application.Contracts.User;
 using AM.Domain.RoleAggregate;
@@ -16,15 +17,15 @@ namespace AM.Application
 {
     public class UserApplication : IUserApplication
     {
+        private readonly IFileUploader _fileUploader;
+        private readonly IEmailService _emailService;
         private readonly IUserRepository _userRepository;
         private readonly IPasswordHasher _passwordHasher;
-        private readonly IFileUploader _fileUploader;
-        private readonly IAutenticateHelper _autenticateHelper;
         private readonly IRoleRepository _roleRepository;
-        private readonly IEmailService _emailService;
         private readonly IHttpContextAccessor _contextAccessor;
+        private readonly IAutenticateHelper _autenticateHelper;
         private readonly IResetPasswordApplication _resetPasswordApplication;
-
+        private readonly INotificationApplication _notificationApplication;
         public UserApplication(IUserRepository userRepository,
             IPasswordHasher passwordHasher,
             IAutenticateHelper authenticateHelper,
@@ -32,15 +33,17 @@ namespace AM.Application
             IRoleRepository roleRepository,
             IHttpContextAccessor contextAccessor,
             IResetPasswordApplication resetPasswordApplication,
+            INotificationApplication notificationApplication,
             IEmailService emailService)
         {
+            _fileUploader = fileUploader;
+            _emailService = emailService;
             _userRepository = userRepository;
             _passwordHasher = passwordHasher;
-            _fileUploader = fileUploader;
-            _autenticateHelper = authenticateHelper;
             _roleRepository = roleRepository;
-            _emailService = emailService;
             _contextAccessor = contextAccessor;
+            _autenticateHelper = authenticateHelper;
+            _notificationApplication = notificationApplication;
             _resetPasswordApplication = resetPasswordApplication;
         }
 
@@ -60,9 +63,10 @@ namespace AM.Application
             var check = roles.FirstOrDefault(x => x.Name == "Customer of Raw Material").Id;
             if (command.RoleId == check)
                 command.Status = true;
+
             // Handle the image upload
             // var profilePicture =
-            //     _fileUploader.Uploader(command.ProfilePicture, "\\ProfilePicture\\", command.UserId);
+            //     _fileUploader.Uploader(command.ProfilePicture, "\\ProfilePicture\\", command.UserName);
             // if (command.ProfilePicture == null)
             //     profilePicture = "DefaultProfile.png";
 
@@ -79,6 +83,26 @@ namespace AM.Application
                 var user = new User(command.Email, password, activationGuid, command.RoleId, command.Status);
                 _userRepository.Create(user);
                 _userRepository.SaveChanges();
+
+                /// Notification
+                var res = _notificationApplication
+                    .PushNotification(new NotificationViewModel
+                    {
+                        RecipientList = new List<RecipientViewModel>()
+                        {
+                            new RecipientViewModel
+                            {
+                                RoleId = command.RoleId,
+                                UserId = user.Id
+                            }
+                        },
+                        SenderId = 1,
+                        NotificationBody = ApplicationMessage.SubmitRequiredInfo,
+                        NotificationTitle = ApplicationMessage.SystemMessage,
+                        UserId = user.Id
+                    });
+
+
                 return result.Succeeded();
             }
             else

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AM.Infrastructure.Migrations
 {
     [DbContext(typeof(AMContext))]
-    [Migration("20220112120453_contactUs-update2")]
-    partial class contactUsupdate2
+    [Migration("20220116134237_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -61,6 +61,40 @@ namespace AM.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ContactUs", "dbo");
+                });
+
+            modelBuilder.Entity("AM.Domain.NotificationAggregate.Notification", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsReed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("NotificationBody")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<long>("SenderId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<bool>("isDeleted")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Notification", "dbo");
                 });
 
             modelBuilder.Entity("AM.Domain.ResetPasswordAggregate.ResetPassword", b =>
@@ -198,8 +232,8 @@ namespace AM.Infrastructure.Migrations
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
 
                     b.Property<string>("TwitterUrl")
                         .HasMaxLength(200)
@@ -208,7 +242,7 @@ namespace AM.Infrastructure.Migrations
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserId")
+                    b.Property<string>("UserName")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
@@ -227,6 +261,45 @@ namespace AM.Infrastructure.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("Users", "dbo");
+                });
+
+            modelBuilder.Entity("AM.Domain.NotificationAggregate.Notification", b =>
+                {
+                    b.HasOne("AM.Domain.UserAggregate.User", "User")
+                        .WithMany("Notifications")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.OwnsMany("AM.Domain.NotificationAggregate.Recipient", "Recipient", b1 =>
+                        {
+                            b1.Property<long>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("bigint")
+                                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                            b1.Property<long>("NotificationId")
+                                .HasColumnType("bigint");
+
+                            b1.Property<long>("RoleId")
+                                .HasColumnType("bigint");
+
+                            b1.Property<long>("UserId")
+                                .HasColumnType("bigint");
+
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("NotificationId");
+
+                            b1.ToTable("Recipient");
+
+                            b1.WithOwner()
+                                .HasForeignKey("NotificationId");
+                        });
+
+                    b.Navigation("Recipient");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("AM.Domain.RoleAggregate.Role", b =>
@@ -273,6 +346,11 @@ namespace AM.Infrastructure.Migrations
             modelBuilder.Entity("AM.Domain.RoleAggregate.Role", b =>
                 {
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("AM.Domain.UserAggregate.User", b =>
+                {
+                    b.Navigation("Notifications");
                 });
 #pragma warning restore 612, 618
         }

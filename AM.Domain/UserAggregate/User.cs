@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using _0_Framework.Domain;
+using AM.Domain.NotificationAggregate;
 using AM.Domain.RoleAggregate;
 
 namespace AM.Domain.UserAggregate
@@ -14,12 +16,13 @@ namespace AM.Domain.UserAggregate
         {
 
             Email = email;
-            UserId = email.Substring(0, email.IndexOf('@'));
+            UserName = email.Substring(0, email.IndexOf('@'));
             Password = password;
             IsActive = false;
             Status = status;
             ActivationGuid = activationGuid;
             RoleId = roleId;
+            Notifications = new List<Notification>();
         }
 
         public void Edit(string firstName, string lastName, string userId
@@ -31,7 +34,7 @@ namespace AM.Domain.UserAggregate
         {
             FirstName = firstName;
             LastName = lastName;
-            UserId = userId;
+            UserName = userId;
             Address = address;
             City = city;
             Country = country;
@@ -72,7 +75,7 @@ namespace AM.Domain.UserAggregate
         public string? Email { get; private set; }
         public string? PhoneNumber { get; private set; }
         public string? Password { get; private set; }
-        public string? UserId { get; private set; }
+        public string? UserName { get; private set; }
         public string? Address { get; private set; }
         public string? City { get; private set; }
         public string? Country { get; private set; }
@@ -95,5 +98,6 @@ namespace AM.Domain.UserAggregate
         public Guid ActivationGuid { get; private set; }
         public int RoleId { get; private set; }
         public Role Role { get; private set; }
+        public List<Notification> Notifications { get; private set; }
     }
 }

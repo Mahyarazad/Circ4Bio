@@ -1,4 +1,5 @@
-﻿using AM.Domain.RoleAggregate;
+﻿using System.Security.Cryptography.Xml;
+using AM.Domain.RoleAggregate;
 using AM.Domain.UserAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -14,7 +15,7 @@ namespace AM.Infrastructure.Mapping
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Email).HasMaxLength(100).IsRequired();
             builder.Property(x => x.Password).HasMaxLength(100).IsRequired();
-            builder.Property(x => x.UserId).HasMaxLength(100).IsRequired(false);
+            builder.Property(x => x.UserName).HasMaxLength(100).IsRequired(false);
             builder.Property(x => x.IsActive).IsRequired();
             builder.Property(x => x.Status).IsRequired();
             builder.Property(x => x.ActivationGuid).HasMaxLength(36).IsRequired();
@@ -34,6 +35,7 @@ namespace AM.Infrastructure.Mapping
             builder.Property(x => x.PhoneNumber).HasMaxLength(20).IsRequired(false);
 
             builder.HasOne(x => x.Role).WithMany(x => x.Users).HasForeignKey(x => x.RoleId);
+            builder.HasMany(x => x.Notifications).WithOne(x => x.User).HasForeignKey(x => x.UserId);
         }
     }
 }

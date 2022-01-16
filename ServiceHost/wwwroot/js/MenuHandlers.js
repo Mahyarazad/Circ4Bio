@@ -8,12 +8,25 @@ $('#menu-trigger').on('click', function () {
     }
 })
 
-$('#main-menu').on('click', function () {
-    $('#mobile-menu').css('display', 'block');
-    $('#mobile-menu').css('z-index', '999');
+$('#mobile-menu-trigger').on('click', function () {
+    var status = $('#mobile-menu').css("display");
+    if (status === 'block') {
+        $('#mobile-menu').css('display', 'none');
+        $('#mobile-menu').css('z-index', '0');
+    } else {
+        $('#mobile-menu').css('display', 'block');
+        $('#mobile-menu').css('z-index', '999');
+    }
+
 })
-$('#mobile-menu-close').on('click', function () {
-    $('#mobile-menu').css('display', 'none');
+
+$('#notification-handler').on('click', function () {
+    var status = $('#notification-panel').css("display");
+    if (status === 'block') {
+        $('#notification-panel').css('display', 'none');
+    } else {
+        $('#notification-panel').css('display', 'block');
+    }
 })
 
 

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AM.Infrastructure.Migrations
 {
     [DbContext(typeof(AMContext))]
-    [Migration("20220111160722_initialization")]
-    partial class initialization
+    [Migration("20220116145518_notification-titile")]
+    partial class notificationtitile
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,27 +21,88 @@ namespace AM.Infrastructure.Migrations
                 .HasAnnotation("ProductVersion", "5.0.13")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("AM.Domain.RoleAggregate.Role", b =>
+            modelBuilder.Entity("AM.Domain.ContactUsAggregate.ContactUs", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Body")
+                        .IsRequired()
+                        .HasMaxLength(1500)
+                        .HasColumnType("nvarchar(1500)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Phone")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("Subject")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ContactUs", "dbo");
+                });
+
+            modelBuilder.Entity("AM.Domain.NotificationAggregate.Notification", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Name")
+                    b.Property<bool>("IsReed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("NotificationBody")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("NotificationTitle")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<long>("SenderId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<bool>("isDeleted")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Roles", "dbo");
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Notification", "dbo");
                 });
 
-            modelBuilder.Entity("AM.Domain.UserAggregate.ResetPassword", b =>
+            modelBuilder.Entity("AM.Domain.ResetPasswordAggregate.ResetPassword", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -67,6 +128,26 @@ namespace AM.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ResetPassword", "dbo");
+                });
+
+            modelBuilder.Entity("AM.Domain.RoleAggregate.Role", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles", "dbo");
                 });
 
             modelBuilder.Entity("AM.Domain.UserAggregate.User", b =>
@@ -156,8 +237,8 @@ namespace AM.Infrastructure.Migrations
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
 
                     b.Property<string>("TwitterUrl")
                         .HasMaxLength(200)
@@ -166,7 +247,7 @@ namespace AM.Infrastructure.Migrations
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserId")
+                    b.Property<string>("UserName")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
@@ -185,6 +266,45 @@ namespace AM.Infrastructure.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("Users", "dbo");
+                });
+
+            modelBuilder.Entity("AM.Domain.NotificationAggregate.Notification", b =>
+                {
+                    b.HasOne("AM.Domain.UserAggregate.User", "User")
+                        .WithMany("Notifications")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.OwnsMany("AM.Domain.NotificationAggregate.Recipient", "Recipient", b1 =>
+                        {
+                            b1.Property<long>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("bigint")
+                                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                            b1.Property<long>("NotificationId")
+                                .HasColumnType("bigint");
+
+                            b1.Property<long>("RoleId")
+                                .HasColumnType("bigint");
+
+                            b1.Property<long>("UserId")
+                                .HasColumnType("bigint");
+
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("NotificationId");
+
+                            b1.ToTable("Recipient");
+
+                            b1.WithOwner()
+                                .HasForeignKey("NotificationId");
+                        });
+
+                    b.Navigation("Recipient");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("AM.Domain.RoleAggregate.Role", b =>
@@ -231,6 +351,11 @@ namespace AM.Infrastructure.Migrations
             modelBuilder.Entity("AM.Domain.RoleAggregate.Role", b =>
                 {
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("AM.Domain.UserAggregate.User", b =>
+                {
+                    b.Navigation("Notifications");
                 });
 #pragma warning restore 612, 618
         }

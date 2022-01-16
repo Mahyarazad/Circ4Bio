@@ -20,6 +20,7 @@
         public const string ResetPasswordLinkIsInvalid = "Reset password link is not valid.";
         public const string ContactUsSuccess = "Your message has been successfully sent, thanks for your inquery.";
         public const string SubmitRequiredInfo = "Please provide the required information to post requests and messages to other clients.";
+        public const string SystemMessage = "System Message";
 
     }
 }

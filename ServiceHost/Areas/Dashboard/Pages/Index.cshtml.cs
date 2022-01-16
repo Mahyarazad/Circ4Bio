@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using AM.Application.Contracts.Notification;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 
@@ -6,17 +8,17 @@ namespace ServiceHost.Areas.Dashboard.Pages
 {
     public class IndexModel : PageModel
     {
-        public Guid token = Guid.NewGuid();
+        public List<NotificationViewModel> Command;
+        private readonly INotificationApplication _notificationApplication;
 
-        private readonly ILogger<IndexModel> _logger;
-
-        public IndexModel(ILogger<IndexModel> logger)
+        public IndexModel(INotificationApplication notificationApplication)
         {
-            _logger = logger;
+            _notificationApplication = notificationApplication;
         }
 
         public void OnGet()
         {
+            Command = _notificationApplication.GetAll();
         }
 
     }

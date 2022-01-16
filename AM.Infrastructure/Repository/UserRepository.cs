@@ -5,7 +5,9 @@ using AM.Domain.UserAggregate;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using _0_Framework.Application;
+using AM.Application.Contracts.Notification;
 using AM.Application.Contracts.ResetPassword;
+using AM.Domain.NotificationAggregate;
 
 namespace AM.Infrastructure.Repository
 {
@@ -50,7 +52,7 @@ namespace AM.Infrastructure.Repository
                 FirstName = x.FirstName,
                 LastName = x.LastName,
                 Email = x.Email,
-                UserId = x.UserId,
+                UserId = x.UserName,
                 Latitude = x.Latitude,
                 Longitude = x.Longitude,
                 PhoneNumber = x.PhoneNumber,
