@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using _0_Framework.Domain;
+using AM.Domain.BlogAggregate;
+using AM.Domain.ListingAggregate;
 using AM.Domain.NotificationAggregate;
 using AM.Domain.RoleAggregate;
+using AM.Domain.Supplied.PurchasedAggregate;
 
 namespace AM.Domain.UserAggregate
 {
@@ -28,8 +31,7 @@ namespace AM.Domain.UserAggregate
         public void Edit(string firstName, string lastName, string userId
             , string address, string city, string country, long postalCode
             , double latitude, double longitude, string description, string companyName, long vatNumber
-            , bool status,
-            string avatar, string webUrl, string linkdinUrl
+            , bool status, string avatar, string webUrl, string linkdinUrl
             , string twitterUrl, string instagramUrl, string faceBookUrl, int roleID)
         {
             FirstName = firstName;
@@ -97,7 +99,16 @@ namespace AM.Domain.UserAggregate
         public bool IsActive { get; private set; }
         public Guid ActivationGuid { get; private set; }
         public int RoleId { get; private set; }
-        public Role Role { get; private set; }
-        public List<Notification> Notifications { get; private set; }
+        public Role? Role { get; private set; }
+        public List<Listing>? Listings { get; private set; }
+        public long? DealId { get; private set; }
+        public Deal? Deal { get; private set; }
+        public long? SuppliedItemId { get; private set; }
+        public SuppliedItem? SuppliedItem { get; private set; }
+        public long? PurchasedItemId { get; private set; }
+        public PurchasedItem? PurchasedItem { get; private set; }
+        public List<Notification>? Notifications { get; private set; }
+        public List<Blog>? Blogs { get; private set; }
+
     }
 }

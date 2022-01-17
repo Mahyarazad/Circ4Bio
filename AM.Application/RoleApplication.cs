@@ -33,8 +33,10 @@ namespace AM.Application
             var role = _roleRepository.Get(command.Id);
             if (_roleRepository.Exist(x => x.Id != command.Id && x.Name == command.Name))
                 return result.Failed(ApplicationMessage.RecordExists);
+
             var permissionList = new List<Permission>();
-            command.Permissions.ForEach(code => permissionList.Add(new Permission(code)));
+            if (command.Permissions != null)
+                command.Permissions.ForEach(code => permissionList.Add(new Permission(code)));
             role.Edit(command.Name, permissionList);
             _roleRepository.SaveChanges();
             return result.Succeeded();

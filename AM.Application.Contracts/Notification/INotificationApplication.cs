@@ -8,7 +8,7 @@ namespace AM.Application.Contracts.Notification
         OperationResult MarkRead(long Id);
         OperationResult MarkReadAll();
         OperationResult PushNotification(NotificationViewModel Command);
-        List<NotificationViewModel> GetAll();
+        List<NotificationViewModel> GetAll(long Id);
 
     }
 }

@@ -5,9 +5,6 @@ using AM.Domain.UserAggregate;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using _0_Framework.Application;
-using AM.Application.Contracts.Notification;
-using AM.Application.Contracts.ResetPassword;
-using AM.Domain.NotificationAggregate;
 
 namespace AM.Infrastructure.Repository
 {

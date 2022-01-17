@@ -17,7 +17,6 @@ $('#mobile-menu-trigger').on('click', function () {
         $('#mobile-menu').css('display', 'block');
         $('#mobile-menu').css('z-index', '999');
     }
-
 })
 
 $('#notification-handler').on('click', function () {
@@ -41,6 +40,7 @@ $('#login-button').on('click', function () {
         };
     }, 100)
 })
+
 $('#register-button').on('click', function () {
     setInterval(function () {
         if ($('#password-error').length == 1 || $('#user-email-error').length == 1

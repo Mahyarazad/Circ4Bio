@@ -36,7 +36,7 @@ namespace AM.Domain.NotificationAggregate
         public long SenderId { get; private set; }
         public bool isDeleted { get; private set; }
         public long UserId { get; private set; }
-        public User User { get; private set; }
+        public User? User { get; private set; }
         public List<Recipient>? Recipient { get; private set; }
     }
 }

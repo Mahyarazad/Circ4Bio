@@ -61,7 +61,7 @@ namespace _0_Framework.Application
                 return new AuthViewModel();
             var claims = _httpContextAccessor.HttpContext.User.Claims.ToList();
             var result = new AuthViewModel();
-            result.Id = long.Parse(claims.FirstOrDefault(x => x.Type == "User Id")?.Value);
+            result.Id = long.Parse(claims.FirstOrDefault(x => x.Type == "User Id").Value);
             // result.Username = claims.FirstOrDefault(x => x.Type == "Username")?.Value;
             // result.Fullname = claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
             result.RoleId = claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;

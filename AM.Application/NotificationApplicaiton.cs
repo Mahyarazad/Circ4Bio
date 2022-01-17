@@ -6,16 +6,19 @@ using _0_Framework;
 using _0_Framework.Application;
 using AM.Application.Contracts.Notification;
 using AM.Domain.NotificationAggregate;
+using Microsoft.AspNetCore.Http;
 
 namespace AM.Application
 {
     public class NotificationApplicaiton : INotificationApplication
     {
         private readonly INotificationRepository _notificationRepository;
-
-        public NotificationApplicaiton(INotificationRepository notificationRepository)
+        private readonly IHttpContextAccessor _contextAccessor;
+        public NotificationApplicaiton(INotificationRepository notificationRepository,
+            IHttpContextAccessor contextAccessor)
         {
             _notificationRepository = notificationRepository;
+            _contextAccessor = contextAccessor;
         }
 
         public OperationResult MarkRead(long Id)
@@ -63,9 +66,10 @@ namespace AM.Application
             return result.Succeeded();
         }
 
-        public List<NotificationViewModel> GetAll()
+        public List<NotificationViewModel> GetAll(long Id)
         {
             return _notificationRepository.GetList()
+                .Where(x => x.UserId == Id)
                 .Select(x => new NotificationViewModel
                 {
                     Id = x.Id,
