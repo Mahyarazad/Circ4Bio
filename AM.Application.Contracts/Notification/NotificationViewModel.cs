@@ -9,6 +9,7 @@ namespace AM.Application.Contracts.Notification
         public string? NotificationTitle { get; set; }
         public long SenderId { get; set; }
         public long UserId { get; set; }
+        public bool IsReed { get; set; }
         public List<RecipientViewModel>? RecipientList { get; set; }
     }
     public class RecipientViewModel

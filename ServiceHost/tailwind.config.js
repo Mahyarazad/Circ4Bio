@@ -21,6 +21,18 @@ module.exports = {
             },
             fontFamily: {
                 sans: ['Inter var', ...defaultTheme.fontFamily.sans],
+            },
+            transitionDuration: {
+                '0': '0ms',
+                '300': '300ms',
+            },
+            transitionTimingFunction: {
+                'in-expo': 'cubic-bezier(0.95, 0.05, 0.795, 0.035)',
+                'out-expo': 'cubic-bezier(0.19, 1, 0.22, 1)',
+            },
+            transitionProperty: {
+                'height': 'height',
+                'spacing': 'margin, padding',
             }
         },
     },

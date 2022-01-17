@@ -24,7 +24,7 @@ namespace AM.Application
         public OperationResult MarkRead(long Id)
         {
             var result = new OperationResult();
-            if (_notificationRepository.Exist(x => x.Id == Id))
+            if (!_notificationRepository.Exist(x => x.Id == Id) || Id == 0)
                 return result.Failed(ApplicationMessage.RecordNotFound);
             var target = _notificationRepository.Get(Id);
             target.MarkRead();
@@ -77,6 +77,7 @@ namespace AM.Application
                     SenderId = x.SenderId,
                     NotificationBody = x.NotificationBody,
                     NotificationTitle = x.NotificationTitle,
+                    IsReed = x.IsReed,
                     RecipientList = _notificationRepository.GetRecipientViewModel(x.Id)
                 }).OrderByDescending(x => x.Id).ToList();
         }

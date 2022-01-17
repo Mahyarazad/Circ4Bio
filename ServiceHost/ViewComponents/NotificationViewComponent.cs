@@ -1,34 +1,35 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using AM.Application.Contracts.Notification;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace ServiceHost.Areas.Dashboard.Pages
+namespace ServiceHost.ViewComponents
 {
-    public class IndexModel : PageModel
+    public class NotificationViewComponent : ViewComponent
     {
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly INotificationApplication _notificationApplication;
         public List<NotificationViewModel> Command;
 
-        public IndexModel(IHttpContextAccessor contextAccessor, INotificationApplication notificationApplication)
+        public NotificationViewComponent(IHttpContextAccessor contextAccessor, INotificationApplication notificationApplication)
         {
             _contextAccessor = contextAccessor;
             _notificationApplication = notificationApplication;
         }
 
-        public void OnGet()
+        public IViewComponentResult Invoke()
         {
             Command = _notificationApplication.GetAll(
                 long.Parse(_contextAccessor.HttpContext.User.Claims
                     .FirstOrDefault(x => x.Type == "User Id").Value));
+            return View(Command);
         }
-        public void OnPostMarkRead(long Id)
+        public IViewComponentResult OnPostMarkRead(long Id)
         {
             var result = _notificationApplication.MarkRead(Id);
+            return View();
         }
     }
 }

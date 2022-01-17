@@ -23,8 +23,20 @@ $('#notification-handler').on('click', function () {
     var status = $('#notification-panel').css("display");
     if (status === 'block') {
         $('#notification-panel').css('display', 'none');
+        $('#notification-panel').removeClass('translate-y-0');
+        $('#notification-panel').removeClass('opacity-100');
+        $('#notification-panel').addClass('translate-y-2');
+        $('#notification-panel').addClass('opacity-0');
     } else {
         $('#notification-panel').css('display', 'block');
+        $('#notification-panel').removeClass('translate-y-2');
+        $('#notification-panel').removeClass('opacity-0');
+        $('#notification-panel').addClass('translate-y-0');
+        $('#notification-panel').addClass('opacity-100');
+        $('#notification-panel').addClass('duration-1000');
+        $('#notification-panel').addClass('transition');
+        $('#notification-panel').addClass('ease-out');
+        $('#notification-panel').addClass('transform');
     }
 })
 

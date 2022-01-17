@@ -1,15 +1,16 @@
 ﻿@page "{id}"
 @model ServiceHost.Pages.Authentication.ActivateUserModel
-@{
-}
+@{ ViewData["Title"] = "Activate User"; }
 
 
-@if(!string.IsNullOrWhiteSpace(Model.RegisterMessage)) {
+@if (!string.IsNullOrWhiteSpace(Model.RegisterMessage))
+{
     <p class="text-red-500 text-center pt-3">
         @Model.RegisterMessage
     </p>
 }
-@if(!string.IsNullOrWhiteSpace(Model.RegisterSuccess)) {
+@if (!string.IsNullOrWhiteSpace(Model.RegisterSuccess))
+{
     <p class="text-green-500 text-center pt-3">
         @Model.RegisterSuccess
     </p>
@@ -20,5 +21,5 @@
 
 
 @section CSS{
-    <link rel="stylesheet" href="~/css/Loader.css"/>
+    <link rel="stylesheet" href="~/css/Loader.css" />
 }
