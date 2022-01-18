@@ -62,6 +62,7 @@ namespace AM.Domain.UserAggregate
             Password = password;
         }
 
+
         public void ActivateUser()
         {
             IsActive = true;

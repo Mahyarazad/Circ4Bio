@@ -22,6 +22,7 @@ namespace AM.Domain
         public string? ContractFile { get; private set; }
         public int ClosingStatus { get; private set; }
         public bool PaymentStatus { get; private set; }
+        public bool IsDeleted { get; private set; }
         public DateTime StartTime { get; private set; }
         public DateTime DueTime { get; private set; }
     }

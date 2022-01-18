@@ -65,6 +65,7 @@ namespace AM.Infrastructure.Repository
                 LinkdinUrl = x.LinkdinUrl,
                 VatNumber = x.VatNumber,
                 TwitterUrl = x.TwitterUrl,
+                Status = x.Status
 
             }).FirstOrDefault(x => x.Id == Id);
         }

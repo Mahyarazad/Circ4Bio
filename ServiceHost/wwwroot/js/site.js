@@ -70,19 +70,27 @@ function handleAjaxPost(formData, url, action) {
         success: function (data) {
             // Notify the user about the proccess detail
             if (!data.isSucceeded) {
-                Swal.fire({
-                    icon: `error`,
-                    title: 'Invalid Input',
-                    html: `<p style="font-size: 15px">${data.message}</p>`,
-                }).then(result => {
-
-                })
-            } else {
                 var resultDom = $('#operation-result');
                 var resultDomMessage = $('#operation-result-message');
 
                 resultDomMessage.text(data.message);
                 resultDom.css('display', 'block');
+            } else {
+                var url = window.location.href;
+                var splited = url.split('/');
+                if (typeof parseInt(splited[splited.length - 1]) == 'number') {
+                    var updatedUrl = splited.slice(0, splited.length - 2);
+                    url = updatedUrl.join('/', updatedUrl);
+                }
+                var resultDom = $('#operation-result');
+                var resultDomMessage = $('#operation-result-message');
+
+                resultDomMessage.text(data.message);
+                resultDom.css('display', 'block');
+                setTimeout(() => {
+                    window.location.replace(url);
+                }, 200)
+
 
             }
             setInterval(function () {

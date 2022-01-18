@@ -1,4 +1,6 @@
-﻿using AM.Domain.ContactUsAggregate;
+﻿using AM.Domain;
+using AM.Domain.ContactUsAggregate;
+using AM.Domain.ListingAggregate;
 using AM.Domain.NotificationAggregate;
 using AM.Domain.ResetPasswordAggregate;
 using AM.Domain.RoleAggregate;
@@ -15,6 +17,8 @@ namespace AM.Infrastructure
         public DbSet<ResetPassword> UserResetPasswords { get; set; }
         public DbSet<ContactUs> ContactUsMessages { get; set; }
         public DbSet<Notification> Notifications { get; set; }
+        public DbSet<Listing> Listing { get; set; }
+        public DbSet<Deal> Deals { get; set; }
         public AMContext(DbContextOptions<AMContext> options) : base(options)
         {
         }

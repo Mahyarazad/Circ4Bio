@@ -10,7 +10,7 @@ namespace AM.Infrastructure.Mapping
         {
             builder.ToTable("Listing", schema: "dbo");
             builder.HasKey(x => x.Id);
-            builder.Property(x => x.Type).IsRequired().HasMaxLength(50);
+            builder.Property(x => x.Type).IsRequired();
             builder.Property(x => x.Amount).IsRequired().HasMaxLength(50);
             builder.Property(x => x.Unit).IsRequired();
             builder.Property(x => x.Amount).IsRequired();

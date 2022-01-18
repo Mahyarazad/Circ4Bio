@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using _0_Framework;
 using _0_Framework.Application;
 using _0_Framework.Application.Email;
@@ -191,6 +192,8 @@ namespace AM.Application
         {
             var result = new OperationResult();
             var user = _userRepository.Get(command.Id);
+            if (command.RoleId == 0)
+                command.RoleId = int.Parse(_contextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role).Value);
             user.Edit(command.FirstName, command.LastName, command.UserId, command.Email, command.City, command.Country,
                 command.PostalCode, command.Latitude, command.Longitude, command.Description,
                 command.CompanyName, command.VatNumber, command.Status, command.Avatar, command.WebUrl, command.LinkdinUrl,
@@ -225,8 +228,7 @@ namespace AM.Application
 
         public EditUser GetDetail(long Id)
         {
-            var user = _userRepository.GetDetail(Id);
-            return user;
+            return _userRepository.GetDetail(Id);
         }
 
         public ChangePassword getDetailforChangePassword(long Id)
