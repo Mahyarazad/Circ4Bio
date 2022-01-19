@@ -25,6 +25,7 @@ namespace AM.Domain.UserAggregate
             Status = status;
             ActivationGuid = activationGuid;
             RoleId = roleId;
+            Avatar = "default-avatar.png";
             Notifications = new List<Notification>();
         }
 
@@ -71,6 +72,16 @@ namespace AM.Domain.UserAggregate
         public void DeactivateUser()
         {
             IsActive = false;
+        }
+
+        public void ActivateUserStatus()
+        {
+            Status = true;
+        }
+
+        public void DeactivateUserStatus()
+        {
+            Status = false;
         }
 
         public string? FirstName { get; private set; }

@@ -12,7 +12,7 @@ namespace AM.Application.Contracts.Listing
         public string? Email { get; set; }
         public string? PhoneNumber { get; set; }
         public string? Name { get; set; }
-        public long? Type { get; set; }
+        public string? Type { get; set; }
         public string? Description { get; set; }
         public string? Image { get; set; }
         public string? DeliveryMethod { get; set; }

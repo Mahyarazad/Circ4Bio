@@ -56,7 +56,7 @@
                     </label>
                     <div class="mt-1">
                         <input type="email" asp-for="Command.Email" id="user-email"
-                               autocomplete="email" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-lime-400 focus:border-lime-400 sm:text-sm">
+                               autocomplete="email" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-sky-700 focus:border-sky-700 sm:text-sm">
                     </div>
                     <span asp-validation-for="Command.Email" class="text-red-500"></span>
                 </div>
@@ -67,7 +67,7 @@
                     </label>
                     <div class="mt-1">
                         <input id="password" asp-for="Command.Password"
-                               type="password" autocomplete="current-password" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-lime-400 focus:border-lime-400 sm:text-sm">
+                               type="password" autocomplete="current-password" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-sky-700 focus:border-sky-700 sm:text-sm">
                     </div>
                     <span asp-validation-for="Command.Password" class="text-red-500"></span>
                 </div>
@@ -75,14 +75,14 @@
 
                 <div class="flex items-center justify-between">
                     <div class="flex items-center">
-                        <input id="remember-me" asp-for="Command.RememberMe" type="checkbox" class="h-4 w-4 text-lime-500 focus:ring-lime-400 border-gray-300 rounded">
+                        <input id="remember-me" asp-for="Command.RememberMe" type="checkbox" class="h-4 w-4 text-sky-800 focus:ring-sky-700 border-gray-300 rounded">
                         <label asp-for="Command.RememberMe" class="ml-2 block text-sm text-gray-900">
                             Remember me
                         </label>
                     </div>
 
                     <div class="text-sm">
-                        <a asp-page="./ConfirmEmail" class="font-medium text-lime-500 hover:text-lime-400">
+                        <a asp-page="./ConfirmEmail" class="font-medium text-sky-700 hover:text-sky-800">
                             Forgot your password?
                         </a>
                     </div>
@@ -90,13 +90,13 @@
 
                 <div>
                     <button type="submit" id="login-button" onclick="loading()"
-                            class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-lime-500 hover:bg-lime-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-400">
+                            class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-sky-700 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-700">
                         Sign-in
                     </button>
                 </div>
                 <div>
                     <a asp-page="./Registration"
-                       class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-lime-500 hover:bg-lime-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lime-400">
+                       class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-sky-700 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-700">
                         Don't have a user, sign up here
                     </a>
                 </div>

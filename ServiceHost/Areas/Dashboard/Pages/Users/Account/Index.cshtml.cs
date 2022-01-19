@@ -46,5 +46,15 @@ namespace ServiceHost.Areas.Dashboard.Pages.Users.Account
             var result = _userApplication.AdminDectivateUser(id);
             return new JsonResult(result);
         }
+        public JsonResult OnPostActivateUserStatus(long id)
+        {
+            var result = _userApplication.AdminActivateUserStatus(id);
+            return new JsonResult(result);
+        }
+        public JsonResult OnPostDeactivateUserStatus(long id)
+        {
+            var result = _userApplication.AdminDectivateUserStatus(id);
+            return new JsonResult(result);
+        }
     }
 }

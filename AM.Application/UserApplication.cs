@@ -65,12 +65,6 @@ namespace AM.Application
             if (command.RoleId == check)
                 command.Status = true;
 
-            // Handle the image upload
-            // var profilePicture =
-            //     _fileUploader.Uploader(command.ProfilePicture, "\\ProfilePicture\\", command.UserName);
-            // if (command.ProfilePicture == null)
-            //     profilePicture = "DefaultProfile.png";
-
             var password = _passwordHasher.Hash(command.Password);
             var activationGuid = Guid.NewGuid();
             var request = _contextAccessor.HttpContext.Request;
@@ -110,11 +104,6 @@ namespace AM.Application
             {
                 return emailServiceResult;
             }
-        }
-
-        public OperationResult RegisterUser(RegisterUser command)
-        {
-            throw new System.NotImplementedException();
         }
 
         public OperationResult ActivateUser(string command)
@@ -188,10 +177,82 @@ namespace AM.Application
             return result.Failed(ApplicationMessage.RecordNotFound);
         }
 
+        public OperationResult AdminActivateUserStatus(long Id)
+        {
+            var result = new OperationResult();
+
+            var user = _userRepository.Get(Id);
+            if (user != null)
+            {
+                user.ActivateUserStatus();
+                _userRepository.SaveChanges();
+                return result.Succeeded();
+            }
+
+            return result.Failed(ApplicationMessage.RecordNotFound);
+        }
+
+        public OperationResult AdminDectivateUserStatus(long Id)
+        {
+            var result = new OperationResult();
+
+            var user = _userRepository.Get(Id);
+            if (user != null)
+            {
+                user.DeactivateUserStatus();
+                _userRepository.SaveChanges();
+                return result.Succeeded();
+            }
+
+            return result.Failed(ApplicationMessage.RecordNotFound);
+        }
+
         public OperationResult EditByAdmin(EditUser command)
         {
             var result = new OperationResult();
             var user = _userRepository.Get(command.Id);
+
+            if (_userRepository.Exist(x => x.UserName == command.UserId && x.Id != command.Id))
+                return result.Failed(ApplicationMessage.RecordExists);
+
+            if (command.CompanyName != null)
+            {
+                if (_userRepository.Exist(x => x.CompanyName == command.CompanyName && x.Id != command.Id))
+                    return result.Failed(ApplicationMessage.RecordExists);
+            }
+
+            if (command.VatNumber != 0)
+            {
+                if (_userRepository.Exist(x => x.VatNumber == command.VatNumber && x.Id != command.Id))
+                    return result.Failed(ApplicationMessage.RecordExists);
+            }
+
+            if (command.FaceBookUrl != null)
+            {
+                if (_userRepository.Exist(x => x.FaceBookUrl == command.FaceBookUrl && x.Id != command.Id))
+                    return result.Failed(ApplicationMessage.RecordExists);
+            }
+
+            if (command.TwitterUrl != null)
+            {
+                if (_userRepository.Exist(x => x.TwitterUrl == command.TwitterUrl && x.Id != command.Id))
+                    return result.Failed(ApplicationMessage.RecordExists);
+            }
+
+            if (command.InstagramUrl != null)
+            {
+                if (_userRepository.Exist(x => x.InstagramUrl == command.InstagramUrl && x.Id != command.Id))
+                    return result.Failed(ApplicationMessage.RecordExists);
+            }
+
+            if (command.WebUrl != null)
+            {
+                if (_userRepository.Exist(x => x.WebUrl == command.WebUrl && x.Id != command.Id))
+                    return result.Failed(ApplicationMessage.RecordExists);
+            }
+
+
+
             if (command.RoleId == 0)
                 command.RoleId = int.Parse(_contextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role).Value);
             user.Edit(command.FirstName, command.LastName, command.UserId, command.Email, command.City, command.Country,
@@ -207,9 +268,51 @@ namespace AM.Application
         {
             var result = new OperationResult();
             var user = _userRepository.Get(command.Id);
+
+            if (_userRepository.Exist(x => x.UserName == command.UserId && x.Id != command.Id))
+                return result.Failed(ApplicationMessage.RecordExists);
+
+            if (command.CompanyName != null)
+            {
+                if (_userRepository.Exist(x => x.CompanyName == command.CompanyName && x.Id != command.Id))
+                    return result.Failed(ApplicationMessage.RecordExists);
+            }
+
+            if (command.VatNumber != 0)
+            {
+                if (_userRepository.Exist(x => x.VatNumber == command.VatNumber && x.Id != command.Id))
+                    return result.Failed(ApplicationMessage.RecordExists);
+            }
+
+            if (command.FaceBookUrl != null)
+            {
+                if (_userRepository.Exist(x => x.FaceBookUrl == command.FaceBookUrl && x.Id != command.Id))
+                    return result.Failed(ApplicationMessage.RecordExists);
+            }
+
+            if (command.TwitterUrl != null)
+            {
+                if (_userRepository.Exist(x => x.TwitterUrl == command.TwitterUrl && x.Id != command.Id))
+                    return result.Failed(ApplicationMessage.RecordExists);
+            }
+
+            if (command.InstagramUrl != null)
+            {
+                if (_userRepository.Exist(x => x.InstagramUrl == command.InstagramUrl && x.Id != command.Id))
+                    return result.Failed(ApplicationMessage.RecordExists);
+            }
+
+            if (command.WebUrl != null)
+            {
+                if (_userRepository.Exist(x => x.WebUrl == command.WebUrl && x.Id != command.Id))
+                    return result.Failed(ApplicationMessage.RecordExists);
+            }
+
+            var avatarFileName = _fileUploader.Uploader(command.ProfilePicture, "Profile_Images", user.Id.ToString());
+
             user.Edit(command.FirstName, command.LastName, command.UserId, command.Email, command.City, command.Country,
                 command.PostalCode, command.Latitude, command.Longitude, command.Description,
-                command.CompanyName, command.VatNumber, command.Status, command.Avatar, command.WebUrl, command.LinkdinUrl,
+                command.CompanyName, command.VatNumber, command.Status, avatarFileName, command.WebUrl, command.LinkdinUrl,
                 command.TwitterUrl, command.InstagramUrl, command.FaceBookUrl, user.RoleId);
 
             _userRepository.SaveChanges();
@@ -225,15 +328,9 @@ namespace AM.Application
             return result.Succeeded();
         }
 
-
         public EditUser GetDetail(long Id)
         {
             return _userRepository.GetDetail(Id);
-        }
-
-        public ChangePassword getDetailforChangePassword(long Id)
-        {
-            throw new System.NotImplementedException();
         }
 
         public OperationResult ResetPassword(ResetPasswordModel command)

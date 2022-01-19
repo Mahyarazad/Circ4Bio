@@ -27,6 +27,10 @@ namespace AM.Infrastructure.Repository
                     PhoneNumber = x.PhoneNumber,
                     Role = x.Role.Name,
                     IsActive = x.IsActive,
+                    Avatar = x.Avatar,
+                    Status = x.Status,
+                    UserId = x.UserName,
+                    FullName = $"{x.FirstName} {x.LastName}",
                     CreationTime = TruncateDateTime.TruncateToDefault(x.CreationTime).ToString()
                 });
             if (!string.IsNullOrEmpty(searchModel.Email))
@@ -65,7 +69,8 @@ namespace AM.Infrastructure.Repository
                 LinkdinUrl = x.LinkdinUrl,
                 VatNumber = x.VatNumber,
                 TwitterUrl = x.TwitterUrl,
-                Status = x.Status
+                Status = x.Status,
+                Avatar = x.Avatar
 
             }).FirstOrDefault(x => x.Id == Id);
         }

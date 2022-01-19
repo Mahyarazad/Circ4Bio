@@ -58,7 +58,7 @@ namespace AM.Infrastructure.Repository
                     Name = x.Name,
                     Unit = x.Unit,
                     Status = x.Status,
-                    Image = x.Image,
+                    ImageString = x.Image,
                     UnitPrice = x.UnitPrice,
                     Id = x.Id
                 }).First();

@@ -4,6 +4,7 @@ using AM.Domain.ListingAggregate;
 using AM.Domain.NotificationAggregate;
 using AM.Domain.ResetPasswordAggregate;
 using AM.Domain.RoleAggregate;
+using AM.Domain.Supplied.PurchasedAggregate;
 using AM.Domain.UserAggregate;
 using AM.Infrastructure.Mapping;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +20,8 @@ namespace AM.Infrastructure
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<Listing> Listing { get; set; }
         public DbSet<Deal> Deals { get; set; }
+        public DbSet<SuppliedItem> SuppliedItems { get; set; }
+        public DbSet<PurchasedItem> PurchasedItems { get; set; }
         public AMContext(DbContextOptions<AMContext> options) : base(options)
         {
         }

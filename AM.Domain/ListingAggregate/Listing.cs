@@ -11,35 +11,31 @@ namespace AM.Domain.ListingAggregate
         {
         }
 
-        public Listing(string? name, long type,
-            string? description, string? image, string? deliveryMethod,
-            string? unit, double unitPrice, double amount, bool status,
-            long userId, List<Deal>? dealList, List<PurchasedItem>? purchasedItems
-            , List<SuppliedItem>? suppliedItems)
+        public Listing(string name, string type,
+            string description, string image, string deliveryMethod,
+            string unit, double unitPrice, double amount, bool status,
+            long userId)
         {
             Name = name;
             Type = type;
             Description = description;
-            Image = image;
             DeliveryMethod = deliveryMethod;
+            Image = image;
             Unit = unit;
             UnitPrice = unitPrice;
             Amount = amount;
             Status = status;
             IsDeleted = false;
             UserId = userId;
-            DealList = dealList;
-            PurchaseList = purchasedItems;
-            SupplyList = suppliedItems;
-
         }
-        public void Edit(string? name,
-            string? description, string? image, string? deliveryMethod,
-            string? unit, double unitPrice, double amount)
+        public void Edit(string name,
+            string description, string image, string deliveryMethod,
+            string unit, double unitPrice, double amount)
         {
             Name = name;
             Description = description;
-            Image = image;
+            if (!string.IsNullOrWhiteSpace(image))
+                Image = image;
             DeliveryMethod = deliveryMethod;
             Unit = unit;
             UnitPrice = unitPrice;
@@ -60,7 +56,7 @@ namespace AM.Domain.ListingAggregate
         }
 
         public string? Name { get; private set; }
-        public long Type { get; private set; }
+        public string? Type { get; private set; }
         public string? Description { get; private set; }
         public string? Image { get; private set; }
         public string? DeliveryMethod { get; private set; }

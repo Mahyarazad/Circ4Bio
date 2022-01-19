@@ -26,9 +26,11 @@ namespace ServiceHost.Areas.Dashboard.Pages
                 long.Parse(_contextAccessor.HttpContext.User.Claims
                     .FirstOrDefault(x => x.Type == "User Id").Value));
         }
-        public void OnPostMarkRead(long Id)
+        public IActionResult OnPostMarkRead(long Id)
         {
             var result = _notificationApplication.MarkRead(Id);
+            var reqUrl = _contextAccessor.HttpContext.Request.Headers.FirstOrDefault(x => x.Key == "Referer").Value;
+            return Redirect(reqUrl);
         }
     }
 }

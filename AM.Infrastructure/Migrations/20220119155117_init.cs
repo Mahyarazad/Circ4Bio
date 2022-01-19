@@ -136,6 +136,32 @@ namespace AM.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Blog",
+                schema: "dbo",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    ShortDescription = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    Body = table.Column<string>(type: "nvarchar(3000)", maxLength: 3000, nullable: false),
+                    Image = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    UserId = table.Column<long>(type: "bigint", nullable: false),
+                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Blog", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Blog_Users_UserId",
+                        column: x => x.UserId,
+                        principalSchema: "dbo",
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Listing",
                 schema: "dbo",
                 columns: table => new
@@ -145,12 +171,13 @@ namespace AM.Infrastructure.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Type = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    Image = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    Image = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     DeliveryMethod = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Unit = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UnitPrice = table.Column<double>(type: "float", nullable: false),
                     Amount = table.Column<double>(type: "float", maxLength: 50, nullable: false),
                     Status = table.Column<bool>(type: "bit", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     UserId = table.Column<long>(type: "bigint", nullable: false),
                     CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -208,6 +235,7 @@ namespace AM.Infrastructure.Migrations
                     ContractFile = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ClosingStatus = table.Column<int>(type: "int", nullable: false),
                     PaymentStatus = table.Column<bool>(type: "bit", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     StartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DueTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -289,6 +317,12 @@ namespace AM.Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Blog_UserId",
+                schema: "dbo",
+                table: "Blog",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Deals_ListingId",
@@ -388,19 +422,13 @@ namespace AM.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Deals_Listing_ListingId",
+                name: "FK_Listing_Users_UserId",
                 schema: "dbo",
-                table: "Deals");
+                table: "Listing");
 
-            migrationBuilder.DropForeignKey(
-                name: "FK_PurchasedItem_Listing_ListingId",
-                schema: "dbo",
-                table: "PurchasedItem");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_SuppliedItem_Listing_ListingId",
-                schema: "dbo",
-                table: "SuppliedItem");
+            migrationBuilder.DropTable(
+                name: "Blog",
+                schema: "dbo");
 
             migrationBuilder.DropTable(
                 name: "ContactUs",
@@ -421,10 +449,6 @@ namespace AM.Infrastructure.Migrations
                 schema: "dbo");
 
             migrationBuilder.DropTable(
-                name: "Listing",
-                schema: "dbo");
-
-            migrationBuilder.DropTable(
                 name: "Users",
                 schema: "dbo");
 
@@ -442,6 +466,10 @@ namespace AM.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "SuppliedItem",
+                schema: "dbo");
+
+            migrationBuilder.DropTable(
+                name: "Listing",
                 schema: "dbo");
         }
     }

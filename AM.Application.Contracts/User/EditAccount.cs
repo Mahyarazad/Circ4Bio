@@ -1,4 +1,8 @@
-﻿namespace AM.Application.Contracts.User
+﻿using _0_Framework;
+using _0_Framework.Application;
+using Microsoft.AspNetCore.Http;
+
+namespace AM.Application.Contracts.User
 {
     public class EditUser : RegisterUser
     {
@@ -7,6 +11,11 @@
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public string? UserId { get; set; }
+
+        [MaxFileSize(2 * 1024 * 1024, ErrorMessage = ValidationMessages.SizeError2M)]
+        [FileExtensionLimit(new string[] { "jpeg", "jpg", "png" }, ErrorMessage = ValidationMessages.InvalidFileFormat)]
+
+        public IFormFile? ProfilePicture { get; set; }
         public string? Address { get; set; }
         public string? City { get; set; }
         public string? Country { get; set; }

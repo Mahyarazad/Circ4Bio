@@ -70,16 +70,19 @@ function handleAjaxPost(formData, url, action) {
         success: function (data) {
             // Notify the user about the proccess detail
             if (!data.isSucceeded) {
-                var resultDom = $('#operation-result');
-                var resultDomMessage = $('#operation-result-message');
+                var resultDom = $('#operation-result-failed');
+                var resultDomMessage = $('#operation-result-failed-message');
 
                 resultDomMessage.text(data.message);
                 resultDom.css('display', 'block');
             } else {
                 var url = window.location.href;
                 var splited = url.split('/');
-                if (typeof parseInt(splited[splited.length - 1]) == 'number') {
+                if (parseInt(splited[splited.length - 1]) > 0) {
                     var updatedUrl = splited.slice(0, splited.length - 2);
+                    url = updatedUrl.join('/', updatedUrl);
+                } else if (splited[splited.length - 1] === "create") {
+                    var updatedUrl = splited.slice(0, splited.length - 1);
                     url = updatedUrl.join('/', updatedUrl);
                 }
                 var resultDom = $('#operation-result');
@@ -89,14 +92,12 @@ function handleAjaxPost(formData, url, action) {
                 resultDom.css('display', 'block');
                 setTimeout(() => {
                     window.location.replace(url);
-                }, 200)
-
-
+                },
+                    200)
             }
             setInterval(function () {
                 CallBackHandler(data, action, formData);;
-            },
-                1500);
+            }, 1500);
         },
         error: function (data) {
             // Notify the user about the proccess detail
@@ -142,17 +143,29 @@ function CallBackHandler(data, action, form) {
         case "Message":
             alert(data.Message);
             break;
+            window.location.reload();
+            setInterval(function () {
+                var resultDom = $('#operation-result');
+                resultDom.css('display', 'none');
+            },
+                1500)
         case "Refresh":
             if (data.isSucceeded) {
                 window.location.reload();
                 setInterval(function () {
                     var resultDom = $('#operation-result');
                     resultDom.css('display', 'none');
-                }, 1500)
+                },
+                    1500)
             } else {
-                alert(data.message);
+                window.location.reload();
+                setInterval(function () {
+                    var resultDom = $('#operation-result-failed');
+                    resultDom.css('display', 'none');
+                },
+                    2000)
             }
-            break;
+        //            break;
         case "RefereshList":
             {
                 hideModal();
@@ -296,5 +309,3 @@ jQuery.validator.addMethod("fileExtensionLimit",
         return validFormat.indexOf(fileExtension) > -1;
     });
 jQuery.validator.unobtrusive.adapters.addBool("fileExtensionLimit");
-
-
