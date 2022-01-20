@@ -39,7 +39,7 @@ namespace AM.Infrastructure.Repository
         {
             return _amContext.Notifications
                 .AsNoTracking()
-                .Where(x => !x.IsReed)
+                .Where(x => !x.IsReed && x.Id == Id)
                 .Select(x => x.UserId == Id).ToList().Count;
         }
     }

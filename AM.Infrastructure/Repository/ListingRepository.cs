@@ -119,6 +119,7 @@ namespace AM.Infrastructure.Repository
                     Name = x.Name,
                     Unit = x.Unit,
                     Status = x.Status,
+                    Type = x.Type,
                     ImageString = x.Image,
                     UnitPrice = x.UnitPrice,
                     Id = x.Id

@@ -35,6 +35,7 @@
                 </label>
                 <div class="mt-1 rounded-md shadow-sm flex">
                     <input type="text" asp-for="@Model.Command.Name" class="focus:ring-sky-500 focus:border-sky-500 flex-grow block w-full min-w-0 rounded sm:text-sm border-gray-300">
+                    <span class="text-red-500 sm:text-sm" asp-validation-for="@Model.Command.Name"></span>
                 </div>
             </div>
 
@@ -68,6 +69,7 @@
                             </label>
                             <input id="mobile-user-photo" asp-for="@Model.Command.Image" type="file" accept="image/*"
                                    class="absolute w-full h-full opacity-0 cursor-pointer border-gray-300 rounded-md">
+                            <span class="text-red-500 sm:text-sm" asp-validation-for="@Model.Command.Image"></span>
                         </div>
                     </div>
                 </div>
@@ -80,6 +82,7 @@
                     <span class="sr-only"> user photo</span>
                     <input type="file" id="desktop-user-photo" asp-for="@Model.Command.Image" accept="image/*"
                            class="absolute inset-0 w-full h-full opacity-0 cursor-pointer border-gray-300 rounded-md">
+                    <span class="text-red-500 sm:text-sm" asp-validation-for="@Model.Command.Image"></span>
                 </label>
             </div>
         </div>
@@ -90,22 +93,26 @@
             <label asp-for="@Model.Command.DeliveryMethod" class="block text-sm font-medium text-gray-700"></label>
             <input type="text" asp-for="@Model.Command.DeliveryMethod"
                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
+            <span class="text-red-500 sm:text-sm" asp-validation-for="@Model.Command.DeliveryMethod"></span>
         </div>
 
         <div class="col-span-12 sm:col-span-6">
             <label asp-for="@Model.Command.Unit" class="block text-sm font-medium text-gray-700"></label>
             <input type="text" asp-for="@Model.Command.Unit"
                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
+            <span class="text-red-500 sm:text-sm" asp-validation-for="@Model.Command.Unit"></span>
         </div>
         <div class="col-span-12 sm:col-span-6">
             <label asp-for="@Model.Command.UnitPrice" class="block text-sm font-medium text-gray-700"></label>
             <input type="text" asp-for="@Model.Command.UnitPrice"
                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
+            <span class="text-red-500 sm:text-sm" asp-validation-for="@Model.Command.UnitPrice"></span>
         </div>
         <div class="col-span-12 sm:col-span-6">
             <label asp-for="@Model.Command.Amount" class="block text-sm font-medium text-gray-700"></label>
             <input type="text" asp-for="@Model.Command.Amount"
                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
+            <span class="text-red-500 sm:text-sm" asp-validation-for="@Model.Command.Amount"></span>
         </div>
         <div class="col-span-12 sm:col-span-6">
             <input asp-for="Command.Status" type="checkbox" class="h-4 w-4 text-sky-800 focus:ring-sky-700 border-gray-300 rounded">

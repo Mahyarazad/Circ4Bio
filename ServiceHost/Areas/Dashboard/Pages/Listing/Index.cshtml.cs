@@ -15,10 +15,8 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
     public class IndexModel : PageModel
     {
         public EditUser user;
-        public List<NotificationViewModel> Notifications;
         public List<ListingViewModel> Listing;
         public bool ShowDeleted = false;
-        public int NotificationCount;
         private readonly IUserApplication _userApplication;
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly INotificationApplication _notificationApplication;
@@ -42,8 +40,6 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
             var userId = long.Parse(_contextAccessor.HttpContext.User.Claims
                 .FirstOrDefault(x => x.Type == "User Id").Value);
 
-            Notifications = _notificationApplication.GetAll(userId);
-            NotificationCount = _notificationApplication.CountUnread(userId);
             user = _userApplication.GetDetail(userId);
 
             var AdminCheck = _contextAccessor.HttpContext.User.Claims
@@ -64,9 +60,6 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
             ShowDeleted = true;
             user = _userApplication.GetDetail(
                 long.Parse(_contextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "User Id").Value));
-            Notifications = _notificationApplication.GetAll(
-                long.Parse(_contextAccessor.HttpContext.User.Claims
-                    .FirstOrDefault(x => x.Type == "User Id").Value));
 
             Listing = _listingApplication.GetDeletedUserListing(user.Id);
         }
@@ -86,7 +79,6 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
             var result = _listingApplication.MarkPrivate(id);
             return new JsonResult(result);
         }
-
         public IActionResult OnPostMarkRead(long Id)
         {
             var result = _notificationApplication.MarkRead(Id);

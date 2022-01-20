@@ -1,11 +1,14 @@
-﻿using _0_Framework;
+﻿using System.ComponentModel.DataAnnotations;
+using _0_Framework;
 using _0_Framework.Application;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 
 namespace AM.Application.Contracts.Listing
 {
     public class CreateListing
     {
+        [Required(ErrorMessage = ValidationMessages.IsRequired)]
         public string? Name { get; set; }
         public string? Type { get; set; }
         public string? Description { get; set; }
@@ -13,10 +16,16 @@ namespace AM.Application.Contracts.Listing
         [FileExtensionLimit(new string[] { "jpeg", "jpg", "png" }, ErrorMessage = ValidationMessages.InvalidFileFormat)]
         public IFormFile? Image { get; set; }
         public string? ImageString { get; set; }
+        [Required(ErrorMessage = ValidationMessages.IsRequired)]
         public string? DeliveryMethod { get; set; }
         // It can be kg, lit, ton, peice and etc.
+        [Required(ErrorMessage = ValidationMessages.IsRequired)]
         public string? Unit { get; set; }
+        [Range(1, 9999999999)]
+        [Required(ErrorMessage = ValidationMessages.IsRequired)]
         public double UnitPrice { get; set; }
+        [Range(1, 9999999999)]
+        [Required(ErrorMessage = ValidationMessages.IsRequired)]
         public double Amount { get; set; }
         // 0 for public and 1 for private
         public bool Status { get; set; }

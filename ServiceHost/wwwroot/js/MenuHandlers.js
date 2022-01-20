@@ -72,13 +72,6 @@ $('#contact-us-button').on('click', function () {
     }, 100)
 })
 
-//
-//const btn = document.getElementById('save');
-//
-//btn.addEventListener('click', () => window.scrollTo({
-//    top: 0,
-//    behavior: 'smooth',
-//}));
 
 $("button[id='save']").on('click',
     function () {
@@ -87,6 +80,4 @@ $("button[id='save']").on('click',
             behavior: 'smooth',
         })
     });
-
-
 

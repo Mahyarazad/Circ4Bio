@@ -22,11 +22,9 @@ namespace ServiceHost.Areas.Dashboard.Pages
 
         public void OnGet()
         {
-            var userId = long.Parse(_contextAccessor.HttpContext.User.Claims
-                .FirstOrDefault(x => x.Type == "User Id").Value);
-            Notifications = _notificationApplication.GetAll(userId);
-            NotificationCount = _notificationApplication.CountUnread(userId);
+
         }
+
         public IActionResult OnPostMarkRead(long Id)
         {
             var result = _notificationApplication.MarkRead(Id);

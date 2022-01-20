@@ -11,7 +11,8 @@
 </head>
 <body>
 
-    <partial name="_Header" />
+<partial name="_Header" />
+<partial name="_Notification" />
     <div class="container">
         <main role="main">
 
@@ -47,9 +48,7 @@
                         <div class="bg-white rounded-lg shadow overflow-hidden">
                             <div class="divide-y divide-gray-200 lg:grid lg:grid-cols-12 lg:divide-y-0 lg:divide-x">
                                 <partial name="Shared/_Aside" />
-
                                 @RenderBody()
-
                             </div>
                         </div>
                     </div>

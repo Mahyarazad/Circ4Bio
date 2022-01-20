@@ -58,7 +58,7 @@
                 <div class="mt-1 lg:hidden">
                     <div class="flex items-center">
                         <div class="flex-shrink-0 inline-block rounded-full overflow-hidden h-12 w-12" aria-hidden="true">
-                            <img class="rounded-full h-full w-full" src="https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=320&h=320&q=80" alt="">
+                            <img class="rounded-full h-full w-full" src="~/Images/Listing_Images/@Model.Command.Type/@Model.Command.ImageString" alt="">
                         </div>
                         <div class="ml-5 rounded-md shadow-sm">
                             <div class="group relative border border-gray-300 rounded-md py-2 px-3 flex items-center justify-center hover:bg-gray-50 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-sky-500">
@@ -66,18 +66,20 @@
                                     <span>Change</span>
                                     <span class="sr-only"> user photo</span>
                                 </label>
-                                <input id="mobile-user-photo" asp-for="@Model.Command.ImageString" type="file" class="absolute w-full h-full opacity-0 cursor-pointer border-gray-300 rounded-md">
+                                <input id="mobile-user-photo" asp-for="@Model.Command.Image" type="file" class="absolute w-full h-full opacity-0 cursor-pointer border-gray-300 rounded-md">
+                                <span class="text-red-500 sm:text-sm" asp-validation-for="@Model.Command.Image"></span>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="hidden relative rounded-full overflow-hidden lg:block">
-                    <img class="relative rounded-full w-40 h-40" src="~/Images/" alt="">
+                    <img class="relative rounded-full w-40 h-40" src="~/Images/Listing_Images/@Model.Command.Type/@Model.Command.ImageString" alt="">
                     <label for="desktop-user-photo" class="absolute inset-0 w-full h-full bg-black bg-opacity-75 flex items-center justify-center text-sm font-medium text-white opacity-0 hover:opacity-100 focus-within:opacity-100">
                         <span>Change</span>
                         <span class="sr-only"> user photo</span>
-                        <input type="file" id="desktop-user-photo" asp-for="@Model.Command.ImageString" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer border-gray-300 rounded-md">
+                        <input type="file" id="desktop-user-photo" asp-for="@Model.Command.Image" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer border-gray-300 rounded-md">
+                        <span class="text-red-500 sm:text-sm" asp-validation-for="@Model.Command.Image"></span>
                     </label>
                 </div>
             </div>
@@ -94,16 +96,19 @@
                 <label asp-for="@Model.Command.Unit" class="block text-sm font-medium text-gray-700"></label>
                 <input type="text" asp-for="@Model.Command.Unit"
                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
+                <span class="text-red-500 sm:text-sm" asp-validation-for="@Model.Command.Unit"></span>
             </div>
             <div class="col-span-12 sm:col-span-6">
                 <label asp-for="@Model.Command.UnitPrice" class="block text-sm font-medium text-gray-700"></label>
                 <input type="text" asp-for="@Model.Command.UnitPrice"
                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
+                <span class="text-red-500 sm:text-sm" asp-validation-for="@Model.Command.UnitPrice"></span>
             </div>
             <div class="col-span-12 sm:col-span-6">
                 <label asp-for="@Model.Command.Amount" class="block text-sm font-medium text-gray-700"></label>
                 <input type="text" asp-for="@Model.Command.Amount"
                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
+                <span class="text-red-500 sm:text-sm" asp-validation-for="@Model.Command.Amount"></span>
             </div>
         </div>
         <input type="hidden" value="@Model.Command.Id" asp-for="@Model.Command.Id" />
