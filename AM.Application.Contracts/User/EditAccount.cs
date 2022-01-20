@@ -1,4 +1,5 @@
-﻿using _0_Framework;
+﻿using System.ComponentModel.DataAnnotations;
+using _0_Framework;
 using _0_Framework.Application;
 using Microsoft.AspNetCore.Http;
 
@@ -10,11 +11,10 @@ namespace AM.Application.Contracts.User
         public string? ActivationGuid { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
+        [Required(ErrorMessage = ValidationMessages.IsRequired)]
         public string? UserId { get; set; }
-
         [MaxFileSize(2 * 1024 * 1024, ErrorMessage = ValidationMessages.SizeError2M)]
         [FileExtensionLimit(new string[] { "jpeg", "jpg", "png" }, ErrorMessage = ValidationMessages.InvalidFileFormat)]
-
         public IFormFile? ProfilePicture { get; set; }
         public string? Address { get; set; }
         public string? City { get; set; }

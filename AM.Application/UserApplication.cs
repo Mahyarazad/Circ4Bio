@@ -255,9 +255,12 @@ namespace AM.Application
 
             if (command.RoleId == 0)
                 command.RoleId = int.Parse(_contextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role).Value);
+
+            var avatarFileName = _fileUploader.Uploader(command.ProfilePicture, "Profile_Images", user.Id.ToString());
+
             user.Edit(command.FirstName, command.LastName, command.UserId, command.Email, command.City, command.Country,
                 command.PostalCode, command.Latitude, command.Longitude, command.Description,
-                command.CompanyName, command.VatNumber, command.Status, command.Avatar, command.WebUrl, command.LinkdinUrl,
+                command.CompanyName, command.VatNumber, command.Status, avatarFileName, command.WebUrl, command.LinkdinUrl,
                 command.TwitterUrl, command.InstagramUrl, command.FaceBookUrl, command.RoleId);
 
             _userRepository.SaveChanges();

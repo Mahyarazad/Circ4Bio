@@ -4,7 +4,8 @@
 @inject IHttpContextAccessor _ContextAccessor;
 @{ ViewData["Title"] = "Dashboard | Account | Modify"; }
 
-<form class="divide-y divide-gray-200 lg:col-span-9" method="post" id="edit-user-form" data-ajax="true" data-action="Refresh">
+<form class="divide-y divide-gray-200 lg:col-span-9" method="post" id="edit-user-form"
+      data-ajax="true" data-action="Refresh" enctype="multipart/form-data">
     <!-- operation-result -->
 <div class="rounded-md bg-green-50 p-4 transition ease-in-out duration-75" id="operation-result" style="display: none">
     <div class="flex">
@@ -68,7 +69,8 @@
                         <span class="bg-gray-50 border border-r-0 border-gray-300 rounded-l-md px-3 inline-flex items-center text-gray-500 sm:text-sm">
                             @_ContextAccessor.HttpContext.Request.Host
                         </span>
-                        <input type="text" asp-for="@Model.user.UserId" class="focus:ring-sky-500 focus:border-sky-500 flex-grow block w-full min-w-0 rounded-none rounded-r-md sm:text-sm border-gray-300">
+                        <input type="text" asp-for="@Model.user.UserId"
+                               class="focus:ring-sky-500 focus:border-sky-500 flex-grow block w-full min-w-0 rounded-none rounded-r-md sm:text-sm border-gray-300">
                     </div>
                 </div>
 
@@ -100,7 +102,8 @@
                                     <span>Change</span>
                                     <span class="sr-only"> user photo</span>
                                 </label>
-                                <input id="mobile-user-photo" name="user-photo" type="file" class="absolute w-full h-full opacity-0 cursor-pointer border-gray-300 rounded-md">
+                                <input type="file" id="mobile-user-photo" accept="image/*"
+                                       asp-for="@Model.user.ProfilePicture" class="absolute w-full h-full opacity-0 cursor-pointer border-gray-300 rounded-md">
                             </div>
                         </div>
                     </div>
@@ -111,7 +114,8 @@
                     <label for="desktop-user-photo" class="absolute inset-0 w-full h-full bg-black bg-opacity-75 flex items-center justify-center text-sm font-medium text-white opacity-0 hover:opacity-100 focus-within:opacity-100">
                         <span>Change</span>
                         <span class="sr-only"> user photo</span>
-                        <input type="file" id="desktop-user-photo" name="user-photo" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer border-gray-300 rounded-md">
+                        <input type="file" asp-for="@Model.user.ProfilePicture"  accept="image/*"
+                               class="absolute inset-0 w-full h-full opacity-0 cursor-pointer border-gray-300 rounded-md">
                     </label>
                 </div>
             </div>
@@ -227,7 +231,7 @@
         <a asp-page="Index" class="bg-white border border-gray-300 rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
             Back
         </a>
-        <button type="submit" class="ml-5 bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+        <button type="submit" id="save" class="ml-5 bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
             Save
         </button>
 

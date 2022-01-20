@@ -12,8 +12,8 @@ namespace ServiceHost.Areas.Dashboard.Pages
     {
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly INotificationApplication _notificationApplication;
-        public List<NotificationViewModel> Command;
-
+        public List<NotificationViewModel> Notifications;
+        public int NotificationCount;
         public IndexModel(IHttpContextAccessor contextAccessor, INotificationApplication notificationApplication)
         {
             _contextAccessor = contextAccessor;
@@ -22,9 +22,10 @@ namespace ServiceHost.Areas.Dashboard.Pages
 
         public void OnGet()
         {
-            Command = _notificationApplication.GetAll(
-                long.Parse(_contextAccessor.HttpContext.User.Claims
-                    .FirstOrDefault(x => x.Type == "User Id").Value));
+            var userId = long.Parse(_contextAccessor.HttpContext.User.Claims
+                .FirstOrDefault(x => x.Type == "User Id").Value);
+            Notifications = _notificationApplication.GetAll(userId);
+            NotificationCount = _notificationApplication.CountUnread(userId);
         }
         public IActionResult OnPostMarkRead(long Id)
         {

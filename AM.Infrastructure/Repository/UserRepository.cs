@@ -32,7 +32,7 @@ namespace AM.Infrastructure.Repository
                     UserId = x.UserName,
                     FullName = $"{x.FirstName} {x.LastName}",
                     CreationTime = TruncateDateTime.TruncateToDefault(x.CreationTime).ToString()
-                });
+                }).AsNoTracking();
             if (!string.IsNullOrEmpty(searchModel.Email))
                 query = query.Where(x => x.Email.Contains(searchModel.Email));
 
@@ -72,7 +72,7 @@ namespace AM.Infrastructure.Repository
                 Status = x.Status,
                 Avatar = x.Avatar
 
-            }).FirstOrDefault(x => x.Id == Id);
+            }).AsNoTracking().FirstOrDefault(x => x.Id == Id);
         }
 
         public EditUser GetDetailByUser(string username)
@@ -84,7 +84,7 @@ namespace AM.Infrastructure.Repository
                 PhoneNumber = x.PhoneNumber,
                 RoleId = x.RoleId,
                 Password = x.Password,
-            }).FirstOrDefault(x => x.UserId == username);
+            }).AsNoTracking().FirstOrDefault(x => x.UserId == username);
         }
 
         public ResendActivationEmail ResendActivationLink(string email)
@@ -93,7 +93,7 @@ namespace AM.Infrastructure.Repository
             {
                 ActivationGuid = x.ActivationGuid,
                 Email = x.Email
-            })
+            }).AsNoTracking()
                 .FirstOrDefault(x => x.Email == email);
         }
 
@@ -107,7 +107,7 @@ namespace AM.Infrastructure.Repository
                 RoleId = x.RoleId,
                 Status = x.Status,
                 IsActive = x.IsActive,
-            }).FirstOrDefault(x => x.Email == email);
+            }).AsNoTracking().FirstOrDefault(x => x.Email == email);
 
         }
 
@@ -117,7 +117,7 @@ namespace AM.Infrastructure.Repository
             {
                 Id = x.Id,
                 ActivationGuid = x.ActivationGuid.ToString()
-            });
+            }).AsNoTracking();
             if (query.FirstOrDefault(x => x.ActivationGuid == guid) != null)
             {
                 return query.FirstOrDefault(x => x.ActivationGuid == guid);

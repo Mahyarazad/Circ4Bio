@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using _0_Framework.Application;
 using AM.Application.Contracts.Listing;
 using AM.Application.Contracts.Notification;
@@ -14,10 +15,10 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
     public class IndexModel : PageModel
     {
         public EditUser user;
-        public SelectList CountrlyList;
-        public string Role;
         public List<NotificationViewModel> Notifications;
         public List<ListingViewModel> Listing;
+        public bool ShowDeleted = false;
+        public int NotificationCount;
         private readonly IUserApplication _userApplication;
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly INotificationApplication _notificationApplication;
@@ -36,13 +37,61 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
 
         public void OnGet()
         {
+            ShowDeleted = false;
+
+            var userId = long.Parse(_contextAccessor.HttpContext.User.Claims
+                .FirstOrDefault(x => x.Type == "User Id").Value);
+
+            Notifications = _notificationApplication.GetAll(userId);
+            NotificationCount = _notificationApplication.CountUnread(userId);
+            user = _userApplication.GetDetail(userId);
+
+            var AdminCheck = _contextAccessor.HttpContext.User.Claims
+                .FirstOrDefault(x => x.Type == ClaimTypes.Role).Value;
+            if (AdminCheck == "1")
+            {
+                Listing = _listingApplication.GetAllListing();
+            }
+            else
+            {
+                Listing = _listingApplication.GetUserListing(user.Id);
+            }
+
+        }
+
+        public void OnGetDeleted()
+        {
+            ShowDeleted = true;
             user = _userApplication.GetDetail(
                 long.Parse(_contextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "User Id").Value));
             Notifications = _notificationApplication.GetAll(
                 long.Parse(_contextAccessor.HttpContext.User.Claims
                     .FirstOrDefault(x => x.Type == "User Id").Value));
-            Listing = _listingApplication.GetUserListing(user.Id);
+
+            Listing = _listingApplication.GetDeletedUserListing(user.Id);
         }
 
+        public JsonResult OnPostMarkDelete(long id)
+        {
+            var result = _listingApplication.Delete(id);
+            return new JsonResult(result);
+        }
+        public JsonResult OnPostMarkPublic(long id)
+        {
+            var result = _listingApplication.MarkPublic(id);
+            return new JsonResult(result);
+        }
+        public JsonResult OnPostMarkPrivate(long id)
+        {
+            var result = _listingApplication.MarkPrivate(id);
+            return new JsonResult(result);
+        }
+
+        public IActionResult OnPostMarkRead(long Id)
+        {
+            var result = _notificationApplication.MarkRead(Id);
+            var reqUrl = _contextAccessor.HttpContext.Request.Headers.FirstOrDefault(x => x.Key == "Referer").Value;
+            return Redirect(reqUrl);
+        }
     }
 }

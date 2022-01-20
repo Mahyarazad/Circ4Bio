@@ -93,7 +93,7 @@ function handleAjaxPost(formData, url, action) {
                 setTimeout(() => {
                     window.location.replace(url);
                 },
-                    200)
+                    1000)
             }
             setInterval(function () {
                 CallBackHandler(data, action, formData);;

@@ -25,7 +25,8 @@ namespace AM.Infrastructure.Repository
                 CreationTime = TruncateDateTime.TruncateToDefault(x.CreationTime).ToString(),
                 Name = x.Name,
                 Id = x.Id
-            }).OrderByDescending(x => x.Id).ToList();
+            }).AsNoTracking()
+                .OrderByDescending(x => x.Id).ToList();
         }
 
         public EditRole GetDetail(int Id)

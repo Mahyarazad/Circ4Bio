@@ -1,11 +1,14 @@
 ﻿@page "{id}"
 @using _0_Framework
+@using AM.Application.Contracts.Notification
 @using Microsoft.AspNetCore.Http
-@model ServiceHost.Areas.Dashboard.Pages.Users.ProfileModel;
+@model ServiceHost.Areas.Dashboard.Pages.ProfileModel;
 @inject IHttpContextAccessor _ContextAccessor;
 @{ ViewData["Title"] = "Dashboard | Profile"; }
 
-<div style="display: none" id="notification-panel" aria-live="assertive" class="fixed inset-0 flex items-end px-4 py-6 pointer-events-none sm:p-6 sm:items-start">
+<!--Notification Section-->
+<div style="display: none" id="notification-panel" aria-live="assertive"
+     class="fixed inset-0 flex items-end px-4 py-6 pointer-events-none sm:p-6 sm:items-start open:bg-white">
     <div class="w-full flex flex-col items-center space-y-4 sm:items-end">
         <!--
         Notification panel, dynamically insert this into the live region when it needs to be displayed
@@ -17,7 +20,51 @@
         From: "opacity-100"
         To: "opacity-0"
         -->
-        @foreach (var item in Model.Command)
+        @if (Model.Notifications != null)
+        {
+@foreach (var item in Model.Notifications)
+{
+@if (!item.IsReed)
+{
+    <div class="mt-10 max-w-sm w-full bg-white shadow-lg rounded-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden">
+        <div class="p-4">
+
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <!-- Heroicon name: outline/inbox -->
+                    <svg class="h-6 w-6 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
+                    </svg>
+                </div>
+                <div class="ml-3 w-0 flex-1 pt-0.5">
+                    <p class="text-sm font-medium text-gray-900">
+                        @item.NotificationTitle
+                    </p>
+                    <p class="mt-1 text-sm text-gray-500">
+                        @item.NotificationBody
+                    </p>
+                </div>
+                <div class="ml-4 flex-shrink-0 flex">
+                    <form method="post" asp-page-handler="MarkRead">
+                        <input type="hidden" name="Id" id="Id" value="@item.Id"/>
+                        <button type="submit"
+                                class="bg-white rounded-md inline-flex text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            <span class="sr-only">Close</span>
+                            <!-- Heroicon name: solid/x -->
+                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+
+        </div>
+    </div>}
+}
+        }
+        @if (Model.NotificationCount == 0)
         {
             <div class="mt-10 max-w-sm w-full bg-white shadow-lg rounded-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden">
                 <div class="p-4">
@@ -31,48 +78,24 @@
                         </div>
                         <div class="ml-3 w-0 flex-1 pt-0.5">
                             <p class="text-sm font-medium text-gray-900">
-                                @item.NotificationTitle
+                                System Message
                             </p>
                             <p class="mt-1 text-sm text-gray-500">
-                                @item.NotificationBody
+                                There is no new notification
                             </p>
-                            @* <div class="mt-3 flex space-x-7">
-                *@
-                            @*     <button type="button" class="bg-white rounded-md text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                *@
-                            @*         Undo *@
-                            @*
-                    </button> *@
-                            @*     <button type="button" class="bg-white rounded-md text-sm font-medium text-gray-700 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                *@
-                            @*         Dismiss *@
-                            @*
-                    </button> *@
-                            @*
-                    </div> *@
                         </div>
                         <div class="ml-4 flex-shrink-0 flex">
-                            <form method="post" data-ajax="true" data-action="Refresh" asp-page-handler="MarkRead">
-                                <input type="hidden" asp-for="@item.Id" value="@item.Id"/>
-                                <button type="submit"
-                                        class="bg-white rounded-md inline-flex text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                    <span class="sr-only">Close</span>
-                                    <!-- Heroicon name: solid/x -->
-                                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
-                                    </svg>
-                                </button>
-                            </form>
                         </div>
                     </div>
-
                 </div>
-            </div>}
+            </div>
+        }
     </div>
 </div>
-<div class="divide-y divide-gray-200 lg:col-span-9" id="edit-user-form"
-      data-callback="" data-ajax="true" method="post" data-action="Refresh"
-      enctype="multipart/form-data">
+<!--End of Notification Section-->
+
+
+<form class="divide-y divide-gray-200 lg:col-span-9" method="POST" id="edit-user-form" data-ajax="true" data-action="Refresh" enctype="multipart/form-data">
 <!-- operation-result -->
 <div class="rounded-md bg-green-50 p-4 transition ease-in-out duration-75" id="operation-result" style="display: none">
     <div class="flex">
@@ -89,6 +112,21 @@
         </div>
     </div>
 </div>
+<div class="rounded-md bg-red-50 p-4 transition ease-in-out duration-75" id="operation-result-failed" style="display: none">
+    <div class="flex">
+        <div class="flex-shrink-0">
+            <!-- Heroicon name: solid/check-circle -->
+            <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+            </svg>
+        </div>
+        <div class="ml-3">
+            <p class="text-sm font-medium text-red-800" id="operation-result-failed-message">
+
+            </p>
+        </div>
+    </div>
+</div>
 <!-- end -->
 <!-- Profile section -->
 <div class="py-6 px-4 sm:p-6 lg:pb-8">
@@ -96,8 +134,7 @@
     <h2 class="text-lg leading-6 font-medium text-gray-900">Profile</h2>
     @if (!Model.user.Status)
     {
-        <span class="text-red-500 pb-3"> @ApplicationMessage.SubmitRequiredInfo</span>
-    }
+        <span class="text-red-500 pb-3"> @ApplicationMessage.SubmitRequiredInfo</span>}
     <p class="mt-1 text-sm text-gray-500">
         This information will be displayed publicly so be careful what you share.
     </p>
@@ -115,6 +152,7 @@
                 </span>
                 <input type="text" asp-for="@Model.user.UserId" class="focus:ring-sky-500 focus:border-sky-500 flex-grow block w-full min-w-0 rounded-none rounded-r-md sm:text-sm border-gray-300">
             </div>
+            <span asp-validation-for="@Model.user.UserId" class="text-red-500"></span>
         </div>
 
         <div>
@@ -137,7 +175,7 @@
         <div class="mt-1 lg:hidden">
             <div class="flex items-center">
                 <div class="flex-shrink-0 inline-block rounded-full overflow-hidden h-12 w-12" aria-hidden="true">
-                    <img class="rounded-full h-full w-full" src="https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=320&h=320&q=80" alt="">
+                    <img class="rounded-full h-full w-full" src="~/Images/Profile_Images/@Model.user.Avatar" alt="">
                 </div>
                 <div class="ml-5 rounded-md shadow-sm">
                     <div class="group relative border border-gray-300 rounded-md py-2 px-3 flex items-center justify-center hover:bg-gray-50 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-sky-500">
@@ -145,7 +183,9 @@
                             <span>Change</span>
                             <span class="sr-only"> user photo</span>
                         </label>
-                        <input id="mobile-user-photo" name="user-photo" type="file" class="absolute w-full h-full opacity-0 cursor-pointer border-gray-300 rounded-md">
+                        <input id="mobile-user-photo" asp-for="@Model.user.ProfilePicture" accept="image/*"
+                               type="file" class="absolute w-full h-full opacity-0 cursor-pointer border-gray-300 rounded-md">
+                        <span asp-validation-for="@Model.user.ProfilePicture" class="text-red-500"></span>
                     </div>
                 </div>
             </div>
@@ -156,8 +196,8 @@
             <label for="desktop-user-photo" class="absolute inset-0 w-full h-full bg-black bg-opacity-75 flex items-center justify-center text-sm font-medium text-white opacity-0 hover:opacity-100 focus-within:opacity-100">
                 <span>Change</span>
                 <span class="sr-only"> user photo</span>
-                <input type="file" asp-for="@Model.user.ProfilePicture" accept="image/*"
-                       class="absolute inset-0 w-full h-full opacity-0 cursor-pointer border-gray-300 rounded-md">
+                <input type="file" id="desktop-user-photo" accept="image/*"
+                       asp-for="@Model.user.ProfilePicture" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer border-gray-300 rounded-md">
             </label>
             <span asp-validation-for="@Model.user.ProfilePicture" class="text-red-500"></span>
         </div>
@@ -269,13 +309,13 @@
     <a asp-page="/Index" asp-area="Dashboard" class="bg-white border border-gray-300 rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
         Back
     </a>
-    <button type="submit" class="ml-5 bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+    <button type="submit" id="save" class="ml-5 bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
         Save
     </button>
 
 </div>
 
-</div>
+</form>
 <form asp-page="./Index" asp-page-handler="DeactivateUser" class="divide-y divide-gray-200 lg:col-span-9"
       data-callback="" data-ajax="true" method="post" data-action="Refresh">
     <label class="block text-sm font-medium text-gray-700"> Deactivate Account</label>
@@ -298,5 +338,54 @@
 @section Scripts
 {
     <script src="~/js/mapbox-gl.js"></script>
-    <script src="~/js/GrabGeoLocation.js"></script>
+
+    <script>
+        var x = document.getElementById("edit-user-form");
+        mapboxgl.accessToken = 'pk.eyJ1IjoibWFoeWFyYXphZCIsImEiOiJjazhzaG9pNjIwYzJ4M2VyczJlNnNndzF6In0.ZFGc5daAFPaXObvBKA20CA';
+
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition, showError);
+            } else {
+                x.innerHTML = "Geolocation is not supported by this browser.";
+            }
+        }
+
+        function showPosition(position) {
+            $("#latitude").val(position.coords.latitude);
+            $("#longitude").val(position.coords.longitude);
+            $("#mapholder").css('display', 'block');
+            $("#hideMap").css('display', 'block');
+            const map = new mapboxgl.Map({
+                container: 'mapholder', // container ID
+                style: 'mapbox://styles/mapbox/streets-v11', // style URL
+                center: [position.coords.longitude, position.coords.latitude], // starting position [lng, lat]
+                zoom: 9 // starting zoom
+            });
+            // Create a default Marker and add it to the map.
+            const marker = new mapboxgl.Marker({ color: 'red', rotation: 0 })
+                .setLngLat([position.coords.longitude, position.coords.latitude])
+                .addTo(map);
+            //var img_url = "http://maps.googleapis.com/maps/api/staticmap?center="
+            //    + latlondata + "&zoom=14&size=400x300&sensor=false";
+            //document.getElementById("mapholder").innerHTML = "<img src='" + img_url + "' />";
+        }
+
+        function hideMap() {
+            $("#mapholder").css('display', 'none');
+            $("#hideMap").css('display', 'none');
+        }
+
+        function showError(error) {
+            if (error.code == 1) {
+                x.innerHTML = "User denied the request for Geolocation."
+            } else if (err.code == 2) {
+                x.innerHTML = "Location information is unavailable."
+            } else if (err.code == 3) {
+                x.innerHTML = "The request to get user location timed out."
+            } else {
+                x.innerHTML = "An unknown error occurred."
+            }
+        }
+    </script>
 }

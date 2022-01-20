@@ -29,6 +29,7 @@ $('#notification-handler').on('click', function () {
         $('#notification-panel').addClass('opacity-0');
     } else {
         $('#notification-panel').css('display', 'block');
+        $('#notification-panel').css('z-index', '10');
         $('#notification-panel').removeClass('translate-y-2');
         $('#notification-panel').removeClass('opacity-0');
         $('#notification-panel').addClass('translate-y-0');
@@ -70,6 +71,22 @@ $('#contact-us-button').on('click', function () {
         };
     }, 100)
 })
+
+//
+//const btn = document.getElementById('save');
+//
+//btn.addEventListener('click', () => window.scrollTo({
+//    top: 0,
+//    behavior: 'smooth',
+//}));
+
+$("button[id='save']").on('click',
+    function () {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+        })
+    });
 
 
 

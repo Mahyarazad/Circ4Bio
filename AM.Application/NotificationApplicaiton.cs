@@ -81,5 +81,10 @@ namespace AM.Application
                     RecipientList = _notificationRepository.GetRecipientViewModel(x.Id)
                 }).OrderByDescending(x => x.Id).ToList();
         }
+
+        public int CountUnread(long Id)
+        {
+            return _notificationRepository.CountUnRead(Id);
+        }
     }
 }

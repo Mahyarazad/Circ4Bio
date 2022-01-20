@@ -15,14 +15,13 @@ namespace AM.Infrastructure.Repository
             _amContext = amContext;
         }
 
-        public List<ListingViewModel> GetUserListing(long id)
+        public List<ListingViewModel> GetAllListing()
         {
             var query = _amContext.Listing
                 .Include(x => x.User)
                 .Include(x => x.DealList)
                 .Include(x => x.SupplyList)
                 .Include(x => x.PurchaseList)
-                .Where(x => x.UserId == id)
                 .Select(x => new ListingViewModel
                 {
                     Amount = x.Amount,
@@ -40,7 +39,69 @@ namespace AM.Infrastructure.Repository
                     UnitPrice = x.UnitPrice,
                     Status = x.Status,
                     IsDeleted = x.IsDeleted,
-                })
+                }).AsNoTracking()
+                .OrderByDescending(x => x.Id).ToList();
+
+            return query;
+        }
+
+        public List<ListingViewModel> GetUserListing(long Id)
+        {
+            var query = _amContext.Listing
+                .Include(x => x.User)
+                .Include(x => x.DealList)
+                .Include(x => x.SupplyList)
+                .Include(x => x.PurchaseList)
+                .Where(x => x.UserId == Id)
+                .Select(x => new ListingViewModel
+                {
+                    Amount = x.Amount,
+                    CreationTime = x.CreationTime,
+                    DeliveryMethod = x.DeliveryMethod,
+                    Description = x.Description,
+                    Id = x.Id,
+                    Name = x.Name,
+                    FullName = x.User.FirstName + x.User.LastName,
+                    Email = x.User.Email,
+                    PhoneNumber = x.User.PhoneNumber,
+                    Type = x.Type,
+                    Image = x.Image,
+                    Unit = x.Unit,
+                    UnitPrice = x.UnitPrice,
+                    Status = x.Status,
+                    IsDeleted = x.IsDeleted,
+                }).AsNoTracking()
+                .OrderByDescending(x => x.Id).ToList();
+
+            return query;
+        }
+
+        public List<ListingViewModel> GetDeletedUserListing(long Id)
+        {
+            var query = _amContext.Listing
+                .Include(x => x.User)
+                .Include(x => x.DealList)
+                .Include(x => x.SupplyList)
+                .Include(x => x.PurchaseList)
+                .Where(x => x.UserId == Id && x.IsDeleted)
+                .Select(x => new ListingViewModel
+                {
+                    Amount = x.Amount,
+                    CreationTime = x.CreationTime,
+                    DeliveryMethod = x.DeliveryMethod,
+                    Description = x.Description,
+                    Id = x.Id,
+                    Name = x.Name,
+                    FullName = x.User.FirstName + x.User.LastName,
+                    Email = x.User.Email,
+                    PhoneNumber = x.User.PhoneNumber,
+                    Type = x.Type,
+                    Image = x.Image,
+                    Unit = x.Unit,
+                    UnitPrice = x.UnitPrice,
+                    Status = x.Status,
+                    IsDeleted = x.IsDeleted,
+                }).AsNoTracking()
                 .OrderByDescending(x => x.Id).ToList();
 
             return query;
@@ -61,7 +122,7 @@ namespace AM.Infrastructure.Repository
                     ImageString = x.Image,
                     UnitPrice = x.UnitPrice,
                     Id = x.Id
-                }).First();
+                }).AsNoTracking().First();
         }
     }
 }

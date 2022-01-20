@@ -38,11 +38,11 @@ namespace AM.Application
                 .FirstOrDefault(x => x.Type == "User Id").Value);
             var roleId = long.Parse(_contextAccessor.HttpContext.User.Claims
                 .FirstOrDefault(x => x.Type == ClaimTypes.Role).Value);
-            // var typeofListing = _userApplication.GetUsertypes()
-            //     .FirstOrDefault(x => x.TypeId == roleId).TypeName;
-            var typeofListing = "admin";
+            var typeofListing = _userApplication.GetUsertypes()
+                .FirstOrDefault(x => x.TypeId == roleId).TypeName;
+
             command.ImageString = _fileUploader
-                    .Uploader(command.Image, $"Listing_Images/${typeofListing}", Guid.NewGuid().ToString());
+                    .Uploader(command.Image, $"Listing_Images/{typeofListing}", Guid.NewGuid().ToString());
             if (command.Image == null)
                 command.ImageString = "listing-default.png";
 
@@ -80,10 +80,55 @@ namespace AM.Application
         {
             return _listingRepository.GetUserListing(id);
         }
+        public List<ListingViewModel> GetAllListing()
+        {
+            return _listingRepository.GetAllListing();
+        }
+
+        public List<ListingViewModel> GetDeletedUserListing(long id)
+        {
+            return _listingRepository.GetUserListing(id);
+        }
 
         public EditListing GetEditListing(long listingId)
         {
             return _listingRepository.GetListingDetail(listingId);
         }
+
+        public OperationResult Delete(long id)
+        {
+            var result = new OperationResult();
+            if (!_listingRepository.Exist(x => x.Id == id))
+                return result.Failed(ApplicationMessage.RecordNotFound);
+            var target = _listingRepository.Get(id);
+            target.MarkDeleted();
+            _listingRepository.SaveChanges();
+            return result.Succeeded();
+
+        }
+
+        public OperationResult MarkPrivate(long id)
+        {
+            var result = new OperationResult();
+            if (!_listingRepository.Exist(x => x.Id == id))
+                return result.Failed(ApplicationMessage.RecordNotFound);
+            var target = _listingRepository.Get(id);
+            target.MarkPrivate();
+            _listingRepository.SaveChanges();
+            return result.Succeeded();
+        }
+
+        public OperationResult MarkPublic(long id)
+        {
+            var result = new OperationResult();
+            if (!_listingRepository.Exist(x => x.Id == id))
+                return result.Failed(ApplicationMessage.RecordNotFound);
+            var target = _listingRepository.Get(id);
+            target.MarkPublic();
+            _listingRepository.SaveChanges();
+            return result.Succeeded();
+        }
+
+
     }
 }

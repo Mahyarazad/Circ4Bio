@@ -25,7 +25,8 @@ namespace AM.Infrastructure.Repository
                 UserId = x.UserId,
                 CreationTime = x.CreationTime,
                 ExpirationTime = x.ExprateDateTime
-            }).FirstOrDefault(x => x.Guid.ToString() == command);
+            }).AsNoTracking()
+                .FirstOrDefault(x => x.Guid.ToString() == command);
         }
     }
 
