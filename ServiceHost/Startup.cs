@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using _0_Framework.Application;
 using _0_Framework.Application.Email;
 using AM.Infrastructure.Core;
+using AM.Management.API;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -68,10 +69,8 @@ namespace ServiceHost
             {
                 options.Conventions.AuthorizeAreaFolder("Dashboard", "/", "DashboardArea");
                 options.Conventions.AuthorizeAreaFolder("Administrator", "/Inventory", "Inventory");
-            });
-            // WEB API
-            //.AddApplicationPart(typeof(ClassName).Assembly)
-            //.AddApplicationPart(typeof(ClassName).Assembly);
+            })
+            .AddApplicationPart(typeof(NotificationController).Assembly);
 
 
             services.Configure<CookiePolicyOptions>(options =>

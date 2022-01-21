@@ -1,12 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.Xml;
 using _0_Framework.Infrastructure;
 using AM.Application.Contracts.Notification;
 using AM.Domain.NotificationAggregate;
 using Microsoft.EntityFrameworkCore;
-using Org.BouncyCastle.Math.EC;
-using Org.BouncyCastle.Utilities.Zlib;
 
 namespace AM.Infrastructure.Repository
 {
@@ -39,7 +36,7 @@ namespace AM.Infrastructure.Repository
         {
             return _amContext.Notifications
                 .AsNoTracking()
-                .Where(x => !x.IsReed && x.Id == Id)
+                .Where(x => !x.IsReed && x.UserId == Id)
                 .Select(x => x.UserId == Id).ToList().Count;
         }
     }

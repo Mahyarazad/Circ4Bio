@@ -90,6 +90,7 @@ function handleAjaxPost(formData, url, action) {
 
                 resultDomMessage.text(data.message);
                 resultDom.css('display', 'block');
+
                 setTimeout(() => {
                     window.location.replace(url);
                 },
@@ -129,6 +130,34 @@ $(document).on("submit",
             var formData = new FormData(this);
             handleAjaxPost(formData, url, action);
         }
+        return false;
+    });
+
+$(document).on("submit",
+    //We listen to submit on any form that does not have data-ajax attribute to handel it
+    'form[data-ajax="false"]',
+    function (e) {
+        e.preventDefault();
+        var form = $(this);
+        const method = form.attr("method").toLocaleLowerCase();
+        const url = form.attr("action");
+        var action = form.attr("data-action");
+
+        if (method === "get") {
+            const data = form.serializeArray();
+            handleAjaxGet(formData, url, action, data)
+        } else {
+            var formData = new FormData(this);
+            handleAjaxPost(formData, url, action);
+        }
+        $("button[id='notification-markread']").on('click',
+
+            function (e) {
+                var Id = $(this).attr('data-notification-id');
+                var stringBuilder = "div[data-notification-label='" + Id + "']"
+                $(stringBuilder).remove();
+
+            });
         return false;
     });
 
@@ -309,3 +338,4 @@ jQuery.validator.addMethod("fileExtensionLimit",
         return validFormat.indexOf(fileExtension) > -1;
     });
 jQuery.validator.unobtrusive.adapters.addBool("fileExtensionLimit");
+

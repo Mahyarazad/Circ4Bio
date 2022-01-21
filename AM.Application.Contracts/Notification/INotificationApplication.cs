@@ -9,6 +9,7 @@ namespace AM.Application.Contracts.Notification
         OperationResult MarkReadAll();
         OperationResult PushNotification(NotificationViewModel Command);
         List<NotificationViewModel> GetAll(long Id);
+        List<NotificationViewModel> GetAllUnread(long Id);
         int CountUnread(long Id);
 
     }

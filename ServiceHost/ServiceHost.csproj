@@ -20,6 +20,7 @@
     <ProjectReference Include="..\0_Framework\0_Framework.csproj" />
     <ProjectReference Include="..\AM.Application.Contracts\AM.Application.Contracts.csproj" />
     <ProjectReference Include="..\AM.Infrastructure.Core\AM.Infrastructure.Core.csproj" />
+    <ProjectReference Include="..\AM.Management.API\AM.Management.API.csproj" />
   </ItemGroup>
 
   <ItemGroup>

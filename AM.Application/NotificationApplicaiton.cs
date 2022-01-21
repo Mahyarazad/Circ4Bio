@@ -82,6 +82,22 @@ namespace AM.Application
                 }).OrderByDescending(x => x.Id).ToList();
         }
 
+        public List<NotificationViewModel> GetAllUnread(long Id)
+        {
+            return _notificationRepository.GetList()
+                .Where(x => x.UserId == Id && !x.IsReed)
+                .Select(x => new NotificationViewModel
+                {
+                    Id = x.Id,
+                    UserId = x.UserId,
+                    SenderId = x.SenderId,
+                    NotificationBody = x.NotificationBody,
+                    NotificationTitle = x.NotificationTitle,
+                    IsReed = x.IsReed,
+                    RecipientList = _notificationRepository.GetRecipientViewModel(x.Id)
+                }).OrderByDescending(x => x.Id).ToList();
+        }
+
         public int CountUnread(long Id)
         {
             return _notificationRepository.CountUnRead(Id);

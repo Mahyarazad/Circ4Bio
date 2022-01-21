@@ -67,8 +67,8 @@
                 </div>
                 <div class="hidden lg:block lg:ml-4">
                     <div class="flex items-center">
-                        <span class="absolute text-red-500 sm:text-sm font-bold z-50" style="bottom: 2rem; right: 2.8rem"
-                            > @NotificationApplication.CountUnread(AutenticateHelper.CurrentAccountRole().Id)</span>
+                        <span id="notification-counter" class="absolute text-red-500 sm:text-sm font-bold z-50" style="bottom: 2rem; right: 2.8rem"
+                            ></span>
                         <button type="button" id="notification-handler"
                                 class="flex-shrink-0 rounded-full p-1 text-white transition ease-in-out delay-150 bg-sky-900 hover:scale-125 focus:bg-sky-900 focus:ring-2 focus:ring-offset-2 focus:ring-offset-sky-900 focus:ring-white">
                             <span class="sr-only">View notifications</span>
