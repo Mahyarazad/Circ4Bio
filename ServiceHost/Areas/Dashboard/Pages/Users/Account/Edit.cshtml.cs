@@ -1,6 +1,5 @@
 ﻿using _0_Framework.Application;
 using AM.Application.Contracts.User;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -13,13 +12,9 @@ namespace ServiceHost.Areas.Dashboard.Pages.Users.Account
         public SelectList CountrlyList;
         public SelectList RoleList;
         private readonly IUserApplication _userApplication;
-        private readonly IHttpContextAccessor _contextAccessor;
-        public EditModel(IUserApplication userApplication,
-            IHttpContextAccessor contextAccessor
-            )
+        public EditModel(IUserApplication userApplication)
         {
             _userApplication = userApplication;
-            _contextAccessor = contextAccessor;
         }
 
         public void OnGet(long Id)

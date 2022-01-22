@@ -25,8 +25,9 @@ namespace AM.Application
         private readonly IRoleRepository _roleRepository;
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly IAutenticateHelper _autenticateHelper;
-        private readonly IResetPasswordApplication _resetPasswordApplication;
         private readonly INotificationApplication _notificationApplication;
+        private readonly IResetPasswordApplication _resetPasswordApplication;
+
         public UserApplication(IUserRepository userRepository,
             IPasswordHasher passwordHasher,
             IAutenticateHelper authenticateHelper,
@@ -70,7 +71,7 @@ namespace AM.Application
             var request = _contextAccessor.HttpContext.Request;
 
             var emailServiceResult = _emailService.SendEmail(ApplicationMessage.AccountVerification
-                , $"https://{request.Host}/Authentication/ActivateUser/{activationGuid.ToString()}".ToLower()
+                , $"http://{request.Host}/Authentication/ActivateUser/{activationGuid.ToString()}".ToLower()
                 , command.Email);
 
             if (emailServiceResult.IsSucceeded)
@@ -149,7 +150,7 @@ namespace AM.Application
             var request = _contextAccessor.HttpContext.Request;
             var activationGuid = _userRepository.ResendActivationLink(command).ActivationGuid;
             var emailServiceResult = _emailService.SendEmail(ApplicationMessage.AccountVerification
-                , $"https://{request.Host}/Authentication/ActivateUser/{activationGuid.ToString()}".ToLower()
+                , $"http://{request.Host}/Authentication/ActivateUser/{activationGuid.ToString()}".ToLower()
                 , command);
 
             if (emailServiceResult.IsSucceeded)

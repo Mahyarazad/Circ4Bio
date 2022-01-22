@@ -1,4 +1,12 @@
 ﻿
+$('#mobile-menu-close').on('click', function () {
+    $('#mobile-menu').css('display', 'none');
+})
+
+$('#main-menu').on('click', function () {
+    $('#mobile-menu').css('display', 'block');
+})
+
 $('#menu-trigger').on('click', function () {
     var status = $('#user-menu').css("display");
     if (status === 'block') {
@@ -84,7 +92,7 @@ $("button[id='save']").on('click',
 
 $(document).ready(() => {
     var NotificationSettings = {
-        "url": "https://localhost:5001/api/Notification/Notification",
+        "url": "http://www.maahyarazad.ir/api/Notification/Notification",
         "method": "GET",
         "dataType": "json",
         "headers": {
@@ -92,7 +100,7 @@ $(document).ready(() => {
         },
     };
     var NotificationCountSettings = {
-        "url": "https://localhost:5001/api/Notification/CountUnreadNotification",
+        "url": "http://www.maahyarazad.ir/api/Notification/CountUnreadNotification",
         "method": "GET",
         "dataType": "json",
         "headers": {
@@ -147,7 +155,7 @@ $(document).ready(() => {
 
 function handleNotificationRead(id) {
     var NotificationCountSettings = {
-        "url": "https://localhost:5001/api/Notification/CountUnreadNotification",
+        "url": "http://www.maahyarazad.ir/api/Notification/CountUnreadNotification",
         "method": "GET",
         "dataType": "json",
         "headers": {
@@ -155,7 +163,7 @@ function handleNotificationRead(id) {
         },
     };
     var NotificationMarkReadSettings = {
-        "url": "https://localhost:5001/api/Notification/",
+        "url": "http://www.maahyarazad.ir/api/Notification/",
         "method": "POST",
         "dataType": "json",
         "timeout": 0,

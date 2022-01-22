@@ -41,8 +41,8 @@ namespace AM.Application
             var resetUrl = Guid.NewGuid();
 
             var request = _contextAccessor.HttpContext.Request;
-            var emailServiceResult = _emailService.SendEmail("Reset Password"
-                , ($"https://{request.Host}/Authentication/ResetPassword/{resetUrl.ToString()}").ToLower()
+            var emailServiceResult = _emailService
+                .SendEmail("Reset Password", $"http://{request.Host}/Authentication/ResetPassword/{resetUrl.ToString()}".ToLower()
                 , email);
 
             if (emailServiceResult.IsSucceeded)

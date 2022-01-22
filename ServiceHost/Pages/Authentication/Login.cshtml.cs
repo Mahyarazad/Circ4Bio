@@ -65,7 +65,7 @@ namespace ServiceHost.Pages.Authentication
             {
                 FailureMessage = result.Message;
             }
-            return RedirectToAction("/Login");
+            return RedirectToPage("Authentication/Login");
         }
 
     }
