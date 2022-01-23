@@ -32,10 +32,10 @@ namespace ServiceHost.Pages
             if (result.IsSucceeded)
             {
                 Message = result.Message;
-                return RedirectToAction("./ContactUs");
+                return RedirectToPage("ContactUs");
             }
             ErrorMessage = result.Message;
-            return RedirectToAction("./ContactUs");
+            return RedirectToPage("ContactUs");
         }
     }
 }

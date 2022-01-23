@@ -10,6 +10,7 @@ namespace AM.Application.Contracts.ContactUs
         public string? FullName { get; set; }
         [Required(ErrorMessage = ValidationMessages.IsRequired)]
         public string? Email { get; set; }
+        [Range(0, 999999999999)]
         public string? Phone { get; set; }
         [Required(ErrorMessage = ValidationMessages.IsRequired)]
         public string? Subject { get; set; }

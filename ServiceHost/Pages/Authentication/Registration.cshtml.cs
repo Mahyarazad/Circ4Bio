@@ -31,10 +31,10 @@ namespace ServiceHost.Pages.Authentication
             if (result.IsSucceeded)
             {
                 RegisterSuccess = ApplicationMessage.SuccessfulRegister;
-                return RedirectToAction("./Authentication/Registration");
+                return RedirectToPage("/Authentication/Registration");
             }
             RegisterMessage = result.Message;
-            return RedirectToAction("./Authentication/Registration");
+            return RedirectToPage("/Authentication/Registration");
         }
     }
 }
