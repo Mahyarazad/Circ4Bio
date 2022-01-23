@@ -54,6 +54,11 @@ namespace AM.Application
             return _userRepository.Search(searchModel);
         }
 
+        public List<RecipientViewModel> GetUserListForListing(long id)
+        {
+            return _userRepository.GetUserListForListing(id);
+        }
+
         public OperationResult Register(RegisterUser command)
         {
             var result = new OperationResult();
@@ -388,7 +393,7 @@ namespace AM.Application
                 .Select(x => x.Code)
                 .ToList();
 
-            var authModel = new AuthViewModel(user.Id, user.Email, user.FullName,
+            var authModel = new AuthViewModel(user.Id, user.Email, $"{user.FirstName} {user.LastName}",
                 user.RoleId.ToString(), command.RememberMe, user.PictureString, permissions, command.Password);
             _autenticateHelper.Login(authModel);
             return result.Succeeded();

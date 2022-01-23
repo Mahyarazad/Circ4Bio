@@ -93,10 +93,23 @@
                     <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50">Privacy Policy</a>
 
                     <a asp-page="/ContactUs" class="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50">Contact Us</a>
+
                     <a asp-page="/ContactUs" class="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50">About Us</a>
                 </div>
-                <div class="mt-6 px-5">
-                    <p class="text-center text-base font-medium text-gray-500">Existing customer? <a asp-page="./Authentication/Login" class="text-gray-900 hover:underline">Login</a></p>
+                <div class="mt-6 px-5 space-y-3 flex flex-col">
+                    @if (AutenticateHelper.IsAuthenticated())
+                    {
+                        <a asp-page="/Index" asp-area="Dashboard" class="text-center text-base font-medium text-sky-800">@AutenticateHelper.CurrentAccountRole().Email.ToString()</a>
+                        <a asp-page="/Authentication/Login" asp-page-handler="Logout" asp-area=""
+                           class="text-center text-base font-medium text-gray-700">
+                            Logout
+                        </a>
+                    }
+                    else
+                    {
+                        <p class="text-center text-base font-medium text-gray-500">Existing customer? <a asp-page="./Authentication/Login" class="text-gray-900 hover:underline">Login</a></p>
+                    }
+
                 </div>
             </div>
         </div>

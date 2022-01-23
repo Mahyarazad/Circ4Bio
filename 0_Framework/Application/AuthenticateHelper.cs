@@ -26,6 +26,7 @@ namespace _0_Framework.Application
                 new Claim(ClaimTypes.Email, model.Email),
                 new Claim(ClaimTypes.Role, model.RoleId.ToString()),
                 new Claim("Permissions", permissions),
+                new Claim("FullName", model.Fullname),
             };
 
 
@@ -62,6 +63,7 @@ namespace _0_Framework.Application
             var claims = _httpContextAccessor.HttpContext.User.Claims.ToList();
             var result = new AuthViewModel();
             result.Id = Convert.ToInt64(claims.FirstOrDefault(x => x.Type == "User Id").Value);
+            result.Fullname = claims.FirstOrDefault(x => x.Type == "FullName").Value;
             result.RoleId = claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
             result.Email = claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
             return result;

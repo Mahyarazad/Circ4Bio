@@ -36,6 +36,7 @@ namespace AM.Infrastructure.Core
 
             services.AddTransient<INotificationApplication, NotificationApplicaiton>();
             services.AddTransient<INotificationRepository, NotificationRepository>();
+            services.AddTransient<IRecipientRepository, RecipientRepository>();
 
             services.AddTransient<IListingApplication, ListingApplication>();
             services.AddTransient<IListingRepository, ListingRepository>();

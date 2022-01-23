@@ -12,6 +12,7 @@ namespace AM.Domain.UserAggregate
     public interface IUserRepository : IRepository<long, User>
     {
         List<UserViewModel> Search(UserSearchModel searchModel);
+        List<RecipientViewModel> GetUserListForListing(long id);
         EditUser GetDetail(long Id);
         EditUser GetDetailByUser(string username);
         ResendActivationEmail ResendActivationLink(string email);

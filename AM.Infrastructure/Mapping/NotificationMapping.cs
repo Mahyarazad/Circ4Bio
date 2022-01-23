@@ -12,16 +12,9 @@ namespace AM.Infrastructure.Mapping
             builder.ToTable("Notification", schema: "dbo");
             builder.HasKey(x => x.Id);
             builder.Property(x => x.NotificationBody).IsRequired().HasMaxLength(1000);
-            builder.Property(x => x.NotificationTitle).IsRequired().HasMaxLength(50);
+            builder.Property(x => x.NotificationTitle).IsRequired().HasMaxLength(200);
             builder.HasOne(x => x.User).WithMany(x => x.Notifications).HasForeignKey(x => x.UserId);
-
-            builder.OwnsMany(x => x.Recipient, ModelBuilder =>
-            {
-                ModelBuilder.ToTable("Recipient");
-                ModelBuilder.HasKey(x => x.Id);
-                ModelBuilder.Property(x => x.UserId);
-                ModelBuilder.Property(x => x.RoleId);
-            });
+            builder.HasMany(x => x.Recipient).WithOne(x => x.Notification).HasForeignKey(x => x.NotificationId);
         }
     }
 }

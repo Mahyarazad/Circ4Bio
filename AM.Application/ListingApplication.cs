@@ -1,43 +1,46 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using _0_Framework;
 using _0_Framework.Application;
 using AM.Application.Contracts.Listing;
-using AM.Domain;
 using AM.Domain.ListingAggregate;
-using AM.Domain.Supplied.PurchasedAggregate;
-using Microsoft.AspNetCore.Http;
-using System.Security.Claims;
+using AM.Application.Contracts.Notification;
 using AM.Application.Contracts.User;
+using AM.Domain.NotificationAggregate;
 
 namespace AM.Application
 {
     public class ListingApplication : IListingApplication
     {
-        private readonly IListingRepository _listingRepository;
-        private readonly IHttpContextAccessor _contextAccessor;
-        private readonly IUserApplication _userApplication;
         private readonly IFileUploader _fileUploader;
+        private readonly IUserApplication _userApplication;
+        private readonly IListingRepository _listingRepository;
+        private readonly IAutenticateHelper _autenticateHelper;
+        private readonly IRecipientRepository _recipientRepository;
+        private readonly INotificationApplication _notificationApplication;
 
         public ListingApplication(IListingRepository listingRepository,
-            IHttpContextAccessor contextAccessor,
+            INotificationApplication notificationApplication,
+            IRecipientRepository recipientRepository,
+            IAutenticateHelper autenticateHelper,
             IUserApplication userApplication,
             IFileUploader fileUploader)
         {
-            _listingRepository = listingRepository;
-            _userApplication = userApplication;
-            _contextAccessor = contextAccessor;
             _fileUploader = fileUploader;
+            _userApplication = userApplication;
+            _listingRepository = listingRepository;
+            _autenticateHelper = autenticateHelper;
+            _recipientRepository = recipientRepository;
+            _notificationApplication = notificationApplication;
         }
 
         public OperationResult Create(CreateListing command)
         {
             var result = new OperationResult();
-            var issuer = long.Parse(_contextAccessor.HttpContext.User.Claims
-                .FirstOrDefault(x => x.Type == "User Id").Value);
-            var roleId = long.Parse(_contextAccessor.HttpContext.User.Claims
-                .FirstOrDefault(x => x.Type == ClaimTypes.Role).Value);
+            var issuerId = _autenticateHelper.CurrentAccountRole().Id;
+            var roleId = Convert.ToInt32(_autenticateHelper.CurrentAccountRole().RoleId);
             var typeofListing = _userApplication.GetUsertypes()
                 .FirstOrDefault(x => x.TypeId == roleId).TypeName;
 
@@ -46,9 +49,57 @@ namespace AM.Application
             if (command.Image == null)
                 command.ImageString = "listing-default.png";
 
+            string notificationTitle = null;
+            switch (roleId)
+            {
+                case 2:
+                    notificationTitle = ApplicationMessage.ListingTechnologyProvider;
+                    break;
+                case 3:
+                    notificationTitle = ApplicationMessage.ListingPlantOwner;
+                    break;
+                case 4:
+                    notificationTitle = ApplicationMessage.ListingSupplierRawMaterial;
+                    break;
+                default:
+                    break;
+            }
+
+            var recipientList = _userApplication.GetUserListForListing(issuerId);
+
+
+            var notificationId = _notificationApplication
+                .PushNotification(new NotificationViewModel
+                {
+                    RecipientList = _userApplication.GetUserListForListing(issuerId),
+                    SenderId = issuerId,
+                    NotificationBody = $"{command.Name} is available now in Listing, Available amount is " +
+                                       $"{command.Amount.ToString()} {command.Unit.ToString()} at {command.UnitPrice.ToString()}",
+                    NotificationTitle = notificationTitle,
+                    UserId = issuerId
+                });
+
+            foreach (var receiver in recipientList)
+            {
+                _recipientRepository.Create(new Recipient(receiver.UserId, receiver.RoleId, notificationId));
+            }
+            _recipientRepository.SaveChanges();
+
+            var systemNotificationId = _notificationApplication
+                .PushNotification(new NotificationViewModel
+                {
+                    SenderId = 1,
+                    NotificationBody = ApplicationMessage.ListingNewItemListed,
+                    NotificationTitle = ApplicationMessage.SystemMessage,
+                    UserId = issuerId
+                });
+
+            _recipientRepository.Create(new Recipient(issuerId, roleId, systemNotificationId));
+            _recipientRepository.SaveChanges();
+
             var listing = new Listing(command.Name, typeofListing, command.Description, command.ImageString,
                 command.DeliveryMethod, command.Unit, command.UnitPrice, command.Amount, command.Status,
-                issuer);
+                issuerId);
             _listingRepository.Create(listing);
             _listingRepository.SaveChanges();
 
@@ -61,8 +112,7 @@ namespace AM.Application
             if (!_listingRepository.Exist(x => x.Id == command.Id))
                 return result.Failed(ApplicationMessage.RecordNotFound);
 
-            var roleId = long.Parse(_contextAccessor.HttpContext.User.Claims
-                .FirstOrDefault(x => x.Type == ClaimTypes.Role).Value);
+            var roleId = Convert.ToInt64(_autenticateHelper.CurrentAccountRole().RoleId);
             var typeofListing = _userApplication.GetUsertypes()
                 .FirstOrDefault(x => x.TypeId == roleId).TypeName;
 

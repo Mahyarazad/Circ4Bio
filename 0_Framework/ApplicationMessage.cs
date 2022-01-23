@@ -22,5 +22,11 @@
         public const string SubmitRequiredInfo = "Please provide the required information to post requests and messages to other clients.";
         public const string SystemMessage = "System Message";
 
+        //Listing Messages
+        public const string ListingNewItemListed = "You added a new item in the listings";
+        public const string ListingPlantOwner = "Plant owner has been listed a new Item in the listing";
+        public const string ListingTechnologyProvider = "Technology Provider has been listed a new Item in the listing";
+        public const string ListingSupplierRawMaterial = "Supplier of Biomass-Raw Material has been listed a new Item in the listing";
+
     }
 }

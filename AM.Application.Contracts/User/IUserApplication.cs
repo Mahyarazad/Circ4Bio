@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using _0_Framework.Application;
+using AM.Application.Contracts.Notification;
 using AM.Application.Contracts.ResetPassword;
 
 namespace AM.Application.Contracts.User
@@ -7,6 +8,7 @@ namespace AM.Application.Contracts.User
     public interface IUserApplication
     {
         List<UserViewModel> Search(UserSearchModel searchModel);
+        List<RecipientViewModel> GetUserListForListing(long id);
         OperationResult Register(RegisterUser command);
         OperationResult ChangePassword(ResetPasswordModel command);
         OperationResult ResetPassword(ResetPasswordModel command);

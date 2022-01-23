@@ -18,6 +18,7 @@ namespace AM.Infrastructure
         public DbSet<ResetPassword> UserResetPasswords { get; set; }
         public DbSet<ContactUs> ContactUsMessages { get; set; }
         public DbSet<Notification> Notifications { get; set; }
+        public DbSet<Recipient> Recipients { get; set; }
         public DbSet<Listing> Listing { get; set; }
         public DbSet<Deal> Deals { get; set; }
         public DbSet<SuppliedItem> SuppliedItems { get; set; }

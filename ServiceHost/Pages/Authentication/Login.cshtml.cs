@@ -51,6 +51,7 @@ namespace ServiceHost.Pages.Authentication
             FailureMessage = "";
             ActivationFailureMessage = "";
             var result = _userApplication.Login(command);
+
             if (result.IsSucceeded)
             {
                 SuccessMessage = ApplicationMessage.SuccessLogin;
@@ -65,7 +66,7 @@ namespace ServiceHost.Pages.Authentication
             {
                 FailureMessage = result.Message;
             }
-            return RedirectToPage("Authentication/Login");
+            return RedirectToPage("/Authentication/Login");
         }
 
     }

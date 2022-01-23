@@ -6,9 +6,7 @@ namespace AM.Application.Contracts.Notification
     public interface INotificationApplication
     {
         OperationResult MarkRead(long Id);
-        OperationResult MarkReadAll();
-        OperationResult PushNotification(NotificationViewModel Command);
-        List<NotificationViewModel> GetAll(long Id);
+        long PushNotification(NotificationViewModel Command);
         List<NotificationViewModel> GetAllUnread(long Id);
         int CountUnread(long Id);
 

@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using _0_Framework.Infrastructure;
 using AM.Application.Contracts.User;
 using AM.Domain.UserAggregate;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using _0_Framework.Application;
+using AM.Application.Contracts.Notification;
 
 namespace AM.Infrastructure.Repository
 {
@@ -43,6 +45,20 @@ namespace AM.Infrastructure.Repository
             // if (searchModel.Role != null)
             //     query = query.Where(x => x.Role == searchModel.Role);
             return query.OrderByDescending(x => x.Id).ToList();
+        }
+
+        public List<RecipientViewModel> GetUserListForListing(long id)
+        {
+            return _amContext.Users
+                .Include(x => x.Role)
+                .Where(x => x.Id != id && x.Id != 1)
+                .Select(x => new RecipientViewModel
+                {
+                    UserId = x.Id,
+                    RoleId = x.RoleId
+                })
+                .AsNoTracking()
+                .ToList();
         }
 
         public EditUser GetDetail(long Id)
@@ -107,6 +123,8 @@ namespace AM.Infrastructure.Repository
                 RoleId = x.RoleId,
                 Status = x.Status,
                 IsActive = x.IsActive,
+                FirstName = x.FirstName,
+                LastName = x.LastName
             }).AsNoTracking().FirstOrDefault(x => x.Email == email);
 
         }
