@@ -37,7 +37,7 @@
                                     ${item.notificationBody}
                                 </p>
                             </div>
-                            <div class="ml-4 flex-shrink-0 flex" >
+                            <div class="ml-4 flex-shrink-0 flex">
                                 <button type="button" id="notification-markread" data-notification-id="${item.recipientId}" onclick="handleNotificationRead(${item.recipientId})"
                                         class="bg-white rounded-md inline-flex text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                     <span class="sr-only">Close</span>

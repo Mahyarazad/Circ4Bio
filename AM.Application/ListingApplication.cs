@@ -100,6 +100,7 @@ namespace AM.Application
             var listing = new Listing(command.Name, typeofListing, command.Description, command.ImageString,
                 command.DeliveryMethod, command.Unit, command.UnitPrice, command.Amount, command.Status,
                 issuerId);
+
             _listingRepository.Create(listing);
             _listingRepository.SaveChanges();
 

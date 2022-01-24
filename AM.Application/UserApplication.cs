@@ -8,6 +8,7 @@ using _0_Framework.Application.Email;
 using AM.Application.Contracts.Notification;
 using AM.Application.Contracts.ResetPassword;
 using AM.Application.Contracts.User;
+using AM.Domain.NotificationAggregate;
 using AM.Domain.RoleAggregate;
 using AM.Domain.UserAggregate;
 using Microsoft.AspNetCore.Http;
@@ -25,6 +26,7 @@ namespace AM.Application
         private readonly IRoleRepository _roleRepository;
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly IAutenticateHelper _autenticateHelper;
+        private readonly IRecipientRepository _recipientRepository;
         private readonly INotificationApplication _notificationApplication;
         private readonly IResetPasswordApplication _resetPasswordApplication;
 
@@ -34,6 +36,7 @@ namespace AM.Application
             IFileUploader fileUploader,
             IRoleRepository roleRepository,
             IHttpContextAccessor contextAccessor,
+            IRecipientRepository recipientRepository,
             IResetPasswordApplication resetPasswordApplication,
             INotificationApplication notificationApplication,
             IEmailService emailService)
@@ -45,6 +48,7 @@ namespace AM.Application
             _roleRepository = roleRepository;
             _contextAccessor = contextAccessor;
             _autenticateHelper = authenticateHelper;
+            _recipientRepository = recipientRepository;
             _notificationApplication = notificationApplication;
             _resetPasswordApplication = resetPasswordApplication;
         }
@@ -86,23 +90,18 @@ namespace AM.Application
                 _userRepository.SaveChanges();
 
                 /// Notification
-                var res = _notificationApplication
+
+                var systemNotificationId = _notificationApplication
                     .PushNotification(new NotificationViewModel
                     {
-                        RecipientList = new List<RecipientViewModel>()
-                        {
-                            new RecipientViewModel
-                            {
-                                RoleId = command.RoleId,
-                                UserId = user.Id
-                            }
-                        },
                         SenderId = 1,
-                        NotificationBody = ApplicationMessage.SubmitRequiredInfo,
+                        NotificationBody = ApplicationMessage.ListingNewItemListed,
                         NotificationTitle = ApplicationMessage.SystemMessage,
                         UserId = user.Id
                     });
 
+                _recipientRepository.Create(new Recipient(user.Id, command.RoleId, systemNotificationId));
+                _recipientRepository.SaveChanges();
 
                 return result.Succeeded();
             }
