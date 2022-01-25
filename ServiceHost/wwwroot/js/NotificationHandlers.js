@@ -1,6 +1,9 @@
 ﻿$(document).ready(() => {
+    var host = "https://localhost:5001"
+    //    var host = "http://www.maahyarazad.ir"
+
     var NotificationSettings = {
-        "url": "https://localhost:5001/api/Notification/Notification",
+        "url": `${host}/api/Notification/Notification`,
         "method": "GET",
         "dataType": "json",
         "headers": {
@@ -8,7 +11,7 @@
         },
     };
     var NotificationCountSettings = {
-        "url": "https://localhost:5001/api/Notification/CountUnreadNotification",
+        "url": `${host}/api/Notification/CountUnreadNotification`,
         "method": "GET",
         "dataType": "json",
         "headers": {
@@ -64,7 +67,7 @@
 
 function handleNotificationRead(id) {
     var NotificationCountSettings = {
-        "url": "https://localhost:5001/api/Notification/CountUnreadNotification",
+        "url": `${host}/api/Notification/CountUnreadNotification`,
         "method": "GET",
         "dataType": "json",
         "headers": {
@@ -72,7 +75,7 @@ function handleNotificationRead(id) {
         },
     };
     var NotificationMarkReadSettings = {
-        "url": "https://localhost:5001/api/Notification/",
+        "url": `${host}/api/Notification/`,
         "method": "POST",
         "dataType": "json",
         "timeout": 0,
@@ -86,6 +89,6 @@ function handleNotificationRead(id) {
     $.ajax(NotificationMarkReadSettings).done(function (response) {
         $("#notification-counter").text(response)
         $("#notification-counter-mobile").text(response)
-        $(`div[data-notification-label='${id}']`).remove();
+        $(`div[data - notification - label= '${id}']`).remove();
     });
 }

@@ -62,6 +62,19 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
 
             Listing = _listingApplication.GetDeletedUserListing(user.Id);
         }
+        public void OnGetHideDeletedForAdmin()
+        {
+            user = _userApplication.GetDetail(
+                long.Parse(_contextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "User Id").Value));
+            Listing = _listingApplication.GetAllListing().Where(x => !x.IsDeleted).ToList();
+        }
+
+        public void OnGetShowDeletedForAdmin()
+        {
+            user = _userApplication.GetDetail(
+                long.Parse(_contextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "User Id").Value));
+            Listing = _listingApplication.GetAllListing();
+        }
 
         public JsonResult OnPostMarkDelete(long id)
         {
