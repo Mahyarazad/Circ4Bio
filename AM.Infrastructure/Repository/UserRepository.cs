@@ -5,6 +5,7 @@ using AM.Application.Contracts.User;
 using AM.Domain.UserAggregate;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Runtime.InteropServices;
 using _0_Framework.Application;
 using AM.Application.Contracts.Notification;
 
@@ -63,7 +64,7 @@ namespace AM.Infrastructure.Repository
 
         public EditUser GetDetail(long Id)
         {
-            return _amContext.Users.Select(x => new EditUser
+            var query = _amContext.Users.Select(x => new EditUser
             {
                 Id = x.Id,
                 FirstName = x.FirstName,
@@ -86,9 +87,12 @@ namespace AM.Infrastructure.Repository
                 VatNumber = x.VatNumber,
                 TwitterUrl = x.TwitterUrl,
                 Status = x.Status,
-                Avatar = x.Avatar
+                Avatar = x.Avatar,
 
             }).AsNoTracking().FirstOrDefault(x => x.Id == Id);
+            query.RoleString = _amContext.Roles.ToList().FirstOrDefault(x => x.Id == query.RoleId).Name;
+
+            return query;
         }
 
         public EditUser GetDetailByUser(string username)

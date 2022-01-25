@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AM.Application", "AM.Applic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceHost", "ServiceHost\ServiceHost.csproj", "{F485C67F-E722-44FD-8D4E-B54880502824}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AM.Management.API", "AM.Management.API\AM.Management.API.csproj", "{13F34D43-6D5C-450F-A742-C1B85D5ACDC1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AM.Management.API", "AM.Management.API\AM.Management.API.csproj", "{13F34D43-6D5C-450F-A742-C1B85D5ACDC1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

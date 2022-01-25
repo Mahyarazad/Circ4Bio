@@ -29,21 +29,18 @@ namespace ServiceHost
             services.AddHttpContextAccessor();
             var connectionString = Configuration.GetConnectionString("AMContext");
             AccountConfiguration.Configure(services, connectionString);
-
             services.AddTransient<IEmailService, EmailService>();
-
             services.AddTransient<IFileUploader, FileUploader>();
-            services.AddTransient<IAutenticateHelper, AuthenticateHelper>();
-            services.AddTransient<IEmailService, EmailService>();
             services.AddSingleton<IPasswordHasher, PasswordHasher>();
-
+            services.AddTransient<IAutenticateHelper, AuthenticateHelper>();
+            services.AddSignalR();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, c =>
                 {
-                    c.LoginPath = new PathString("/Authentication/Login");
                     c.LogoutPath = new PathString("/Index");
                     c.AccessDeniedPath = new PathString("/AccessDenied");
+                    c.LoginPath = new PathString("/Authentication/Login");
                 });
 
             services.AddAuthorization(options =>
@@ -85,9 +82,14 @@ namespace ServiceHost
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                // app.UseSignalR(routes =>
+                // {
+                //     routes.MapHub<Class>("/Index");
+                // });
             }
             else
             {
@@ -95,13 +97,10 @@ namespace ServiceHost
                 app.UseHsts();
             }
 
-            app.UseAuthentication();
-
-            app.UseHttpsRedirection();
-
-            app.UseCookiePolicy();
-
             app.UseStaticFiles();
+            app.UseCookiePolicy();
+            app.UseAuthentication();
+            app.UseHttpsRedirection();
 
             app.Use(async (context, next) =>
             {

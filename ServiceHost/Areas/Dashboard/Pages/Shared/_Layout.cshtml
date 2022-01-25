@@ -12,11 +12,10 @@
 <body>
 
 <partial name="_Header" />
-<partial name="_Notification" />
-    <div class="container">
-        <main role="main" class="w-screen">
 
-            <div>
+    <div class="container">
+        <main role="main">
+            <div class="w-screen">
                 <div class="relative bg-sky-700 pb-32">
                     <!-- Menu open: "bg-sky-900", Menu closed: "bg-transparent" -->
                     <!-- Menu open: "bottom-0", Menu closed: "inset-y-0" -->
@@ -46,7 +45,7 @@
                 <main class="relative -mt-32">
                     <div class="mx-auto pb-6 px-4 sm:px-6 lg:pb-16 lg:px-8">
                         <div class="bg-white rounded-lg shadow overflow-hidden">
-                            <div class="divide-y divide-gray-200 lg:grid lg:grid-cols-12 lg:divide-y-0 lg:divide-x">
+                            <div class="divide-y divide-gray-200 lg:grid lg:grid-cols-12 lg:divide-y-0 lg:divide-x" id="scroll-into-top">
                                 <partial name="Shared/_Aside" />
                                 @RenderBody()
                             </div>

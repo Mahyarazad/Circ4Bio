@@ -33,5 +33,6 @@ namespace AM.Application.Contracts.User
         public string? FaceBookUrl { get; set; }
         public bool IsActive { get; set; }
         public bool RememberMe { get; set; }
+        public string? RoleString { get; set; }
     }
 }

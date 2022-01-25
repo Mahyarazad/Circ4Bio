@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.Xml;
+using _0_Framework.Application;
 using _0_Framework.Infrastructure;
 using AM.Application.Contracts.Notification;
 using AM.Domain.NotificationAggregate;
@@ -33,6 +35,24 @@ namespace AM.Infrastructure.Repository
             return recipientList;
         }
 
+        public List<NotificationViewModel> GetLast5Unread(long Id)
+        {
+            return _amContext.Recipients
+                .AsNoTracking()
+                .Where(x => x.UserId == Id && !x.IsReed)
+                .Include(x => x.Notification)
+                .Select(x => new NotificationViewModel
+                {
+                    UserId = x.UserId,
+                    Id = x.NotificationId,
+                    RecipientId = x.Id,
+                    NotificationBody = x.Notification.NotificationBody,
+                    NotificationTitle = x.Notification.NotificationTitle,
+                }).OrderByDescending(x => x.Id)
+                .Reverse().Take(7).Reverse()
+                .ToList();
+        }
+
         public List<NotificationViewModel> GetAllUnread(long Id)
         {
             return _amContext.Recipients
@@ -46,7 +66,9 @@ namespace AM.Infrastructure.Repository
                     RecipientId = x.Id,
                     NotificationBody = x.Notification.NotificationBody,
                     NotificationTitle = x.Notification.NotificationTitle,
-                }).OrderByDescending(x => x.Id).ToList();
+                }).OrderByDescending(x => x.Id)
+                .Reverse().Take(7).Reverse()
+                .ToList();
         }
 
         public int CountUnRead(long Id)

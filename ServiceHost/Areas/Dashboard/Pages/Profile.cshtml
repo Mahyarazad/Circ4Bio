@@ -210,8 +210,8 @@
                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
     </div>
     <div class="col-span-12 sm:col-span-6">
-        <label class="block text-sm font-medium text-gray-700">User Type</label>
-        <input type="text" asp-for="@Model.Role" disabled=""
+        <label asp-for="@Model.user.RoleString" class="block text-sm font-medium text-gray-700">User Type</label>
+        <input type="text" asp-for="@Model.user.RoleString" disabled="disabled"
                class="mt-1 block w-full border border-gray-100 bg-gray-100 rounded-md shadow-sm py-2 px-3 sm:text-sm">
     </div>
 </div>

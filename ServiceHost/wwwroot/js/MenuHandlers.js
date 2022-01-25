@@ -30,7 +30,8 @@ $('#mobile-menu-trigger').on('click', function () {
 $('#notification-handler').on('click', function () {
     var status = $('#notification-panel').css("display");
     if (status === 'block') {
-        $('#notification-panel').css('display', 'none');
+        $("span[id='view-all']").
+            $('#notification-panel').css('display', 'none');
         $('#notification-panel').removeClass('translate-y-0');
         $('#notification-panel').removeClass('opacity-100');
         $('#notification-panel').addClass('translate-y-2');
@@ -110,6 +111,15 @@ $("button[id='save']").on('click',
         })
     });
 
+$("div[id='main-table_wrapper").scroll(function () {
+    $("span[id='view-all").addClass("text-sky-800");
+    $("span[id='view-all").removeClass("text-white");
+});
+
+//$("div[id='top-of-header").scroll(function () {
+//    $("span[id='view-all").addClass("text-white");
+//    $("span[id='view-all").removeClass("text-sky-800");
+//});
 
 
 

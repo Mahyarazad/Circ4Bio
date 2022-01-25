@@ -8,6 +8,7 @@ namespace AM.Domain.NotificationAggregate
     {
         List<RecipientViewModel> GetRecipientViewModel(long Id);
         List<NotificationViewModel> GetAllUnread(long Id);
+        List<NotificationViewModel> GetLast5Unread(long Id);
         int CountUnRead(long Id);
     }
 }

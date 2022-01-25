@@ -13,13 +13,9 @@ namespace ServiceHost.Areas.Dashboard.Pages
         public SelectList CountryList;
         public string Role;
         private readonly IUserApplication _userApplication;
-        private readonly INotificationApplication _notificationApplication;
-        public ProfileModel(IUserApplication userApplication,
-            INotificationApplication notificationApplication
-        )
+        public ProfileModel(IUserApplication userApplication)
         {
             _userApplication = userApplication;
-            _notificationApplication = notificationApplication;
         }
 
         public void OnGet(long Id)

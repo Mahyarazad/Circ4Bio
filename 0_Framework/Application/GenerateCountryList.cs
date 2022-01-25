@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 
 namespace _0_Framework.Application
 {
@@ -7,23 +9,24 @@ namespace _0_Framework.Application
     {
         public static List<string> GetList()
         {
-            List<string> list = new List<string>();
-            CultureInfo[] cultures = CultureInfo.GetCultures(CultureTypes.AllCultures & ~CultureTypes.SpecificCultures);
-            foreach (CultureInfo info in cultures)
+            List<string> cultureList = new List<string>();
+            CultureInfo[] cultures = CultureInfo.GetCultures(CultureTypes.AllCultures & ~CultureTypes.NeutralCultures);
+            foreach (CultureInfo culture in cultures)
             {
-                if (info.LCID != 127 && !info.IsNeutralCulture)
+                try
                 {
-                    RegionInfo info2 = new RegionInfo(info.LCID);
-
-                    if (!(list.Contains(info2.EnglishName)))
-                    {
-                        list.Add(info2.EnglishName);
-                    }
+                    RegionInfo region = new RegionInfo(culture.Name);
+                    if (!(cultureList.Contains(region.EnglishName)))
+                        cultureList.Add(region.EnglishName);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"{e.Message}" +
+                                      $"For{0} a specific culture name is required {culture.Name}");
                 }
             }
-            list.Sort();
-            return list;
-
+            cultureList.Sort();
+            return cultureList;
         }
     }
 }
