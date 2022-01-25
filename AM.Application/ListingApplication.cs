@@ -67,6 +67,10 @@ namespace AM.Application
 
             var recipientList = _userApplication.GetUserListForListing(issuerId);
 
+            if (command.IsService)
+            {
+                command.Amount = 0;
+            }
 
             var notificationId = _notificationApplication
                 .PushNotification(new NotificationViewModel
@@ -97,9 +101,11 @@ namespace AM.Application
             _recipientRepository.Create(new Recipient(issuerId, roleId, systemNotificationId));
             _recipientRepository.SaveChanges();
 
+
+
             var listing = new Listing(command.Name, typeofListing, command.Description, command.ImageString,
                 command.DeliveryMethod, command.Unit, command.UnitPrice, command.Amount, command.Status,
-                issuerId);
+                issuerId, command.IsService);
 
             _listingRepository.Create(listing);
             _listingRepository.SaveChanges();
@@ -121,7 +127,7 @@ namespace AM.Application
 
             var target = _listingRepository.Get(command.Id);
             target.Edit(command.Name, command.Description, imageFileName,
-                command.DeliveryMethod, command.Unit, command.UnitPrice, command.Amount);
+                command.DeliveryMethod, command.Unit, command.UnitPrice);
             _listingRepository.SaveChanges();
 
             return result.Succeeded();
@@ -156,6 +162,69 @@ namespace AM.Application
             _listingRepository.SaveChanges();
             return result.Succeeded();
 
+        }
+
+        public OperationResult IncrementAmount(InputAmount command)
+        {
+            var result = new OperationResult();
+            if (!_listingRepository.Exist(x => x.Id == command.ListingId))
+                return result.Failed(ApplicationMessage.RecordNotFound);
+
+            var target = _listingRepository.Get(command.ListingId);
+            if (command.DealId != 0)
+            {
+                target.Increment(command.Description, command.Count, command.DealId, command.UserId);
+            }
+            else
+            {
+                target.Increment(command.Description, command.Count, 0, command.UserId);
+            }
+            _listingRepository.SaveChanges();
+
+            return result.Succeeded();
+
+        }
+
+        public OperationResult DeccrementAmount(InputAmount command)
+        {
+            var result = new OperationResult();
+            if (!_listingRepository.Exist(x => x.Id == command.ListingId))
+                return result.Failed(ApplicationMessage.RecordNotFound);
+
+            var target = _listingRepository.Get(command.ListingId);
+            if (command.DealId != 0)
+            {
+                if (target.Amount - command.Count < 0)
+                    return result.Failed(ApplicationMessage.CannotDeduct);
+                target.Decrement(command.Description, command.Count, command.DealId, command.UserId);
+            }
+            else
+            {
+                if (target.Amount - command.Count < 0)
+                    return result.Failed(ApplicationMessage.CannotDeduct);
+                target.Decrement(command.Description, command.Count, 0, command.UserId);
+            }
+            _listingRepository.SaveChanges();
+
+            return result.Succeeded();
+        }
+
+        public List<ListingOperationLog> GetListingOperationLog(long id)
+        {
+            return _listingRepository.Get(id).ListingOperations
+                .Select(x => new ListingOperationLog
+                {
+                    UserId = x.UserId,
+                    Count = x.Count,
+                    CurrentAmount = x.CurrentAmount,
+                    DealId = x.DealId,
+                    Description = x.Description,
+                    ListingId = x.ListingId,
+                    OperationTime = x.OperationTime,
+                    OperationType = x.OperationType,
+                    Id = x.Id
+                }).OrderByDescending(x => x.Id)
+                .ToList();
         }
 
         public OperationResult MarkPrivate(long id)

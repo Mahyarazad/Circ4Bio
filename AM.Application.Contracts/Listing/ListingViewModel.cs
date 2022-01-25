@@ -21,6 +21,8 @@ namespace AM.Application.Contracts.Listing
         public double Amount { get; set; }
         public bool Status { get; set; }
         public bool IsDeleted { get; set; }
+        public bool IsService { get; set; }
+
         public List<DealViewModel>? DealList { get; set; }
         public List<PurchasedItemViewModel>? PurchaseList { get; set; }
         public List<SuppliedItemViewModel>? SupplyList { get; set; }

@@ -14,5 +14,8 @@ namespace AM.Application.Contracts.Listing
         OperationResult MarkPrivate(long id);
         OperationResult MarkPublic(long id);
         OperationResult Delete(long id);
+        OperationResult IncrementAmount(InputAmount command);
+        OperationResult DeccrementAmount(InputAmount command);
+        List<ListingOperationLog> GetListingOperationLog(long Id);
     }
 }

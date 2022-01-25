@@ -36,8 +36,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.ContactUs
 
         public JsonResult OnPostIsReed(long id)
         {
-            var result = _contactUsApplication.MarkAsRead(id);
-            return new JsonResult(result);
+            return new JsonResult(_contactUsApplication.MarkAsRead(id));
         }
         public void OnPostGetAll(ContactUsViewModel Command)
         {

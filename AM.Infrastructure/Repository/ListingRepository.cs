@@ -10,6 +10,7 @@ namespace AM.Infrastructure.Repository
     public class ListingRepository : RepositoryBase<long, Listing>, IListingRepository
     {
         private readonly AMContext _amContext;
+
         public ListingRepository(AMContext amContext) : base(amContext)
         {
             _amContext = amContext;
@@ -70,6 +71,7 @@ namespace AM.Infrastructure.Repository
                     UnitPrice = x.UnitPrice,
                     Status = x.Status,
                     IsDeleted = x.IsDeleted,
+                    IsService = x.IsService
                 }).AsNoTracking()
                 .OrderByDescending(x => x.Id).ToList();
 
@@ -122,8 +124,11 @@ namespace AM.Infrastructure.Repository
                     Type = x.Type,
                     ImageString = x.Image,
                     UnitPrice = x.UnitPrice,
-                    Id = x.Id
+                    Id = x.Id,
+                    IsService = x.IsService
+
                 }).AsNoTracking().First();
         }
+
     }
 }

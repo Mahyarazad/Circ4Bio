@@ -35,7 +35,7 @@ namespace AM.Management.API
         [HttpGet]
         public List<NotificationViewModel> Notification()
         {
-            return _notificationApplication.GetAllUnread(_autenticateHelper.CurrentAccountRole().Id);
+            return _notificationApplication.GetLastNUnread(_autenticateHelper.CurrentAccountRole().Id, 5);
         }
     }
 

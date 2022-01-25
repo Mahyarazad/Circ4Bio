@@ -58,17 +58,27 @@
 
     <partial name="_Footer" />
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <!--Overlay Effect-->
+    <div
+        class="fixed hidden inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full transition-all duration-300"
+        id="modal"
+        >
+        <div class="modal-content" id="ModalConetnt">
+
+        </div>
+    </div>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/js/bootstrap.js"></script>
     <script src="~/js/jquery.cookie.min.js_1.4.1/cdnjs/jquery.cookie.min.js"></script>
     <script src="~/js/MenuHandlers.js"></script>
-    <script src="~/js/site.js"></script>
     <script src="~/js/datatables/jquery.dataTables.js"></script>
     <script src="~/js/datatables/jquery.dataTables.min.js"></script>
     <script src="~/js//datatables/datatables.js"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/js/NotificationHandlers.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-    <script>
+    <script src="~/js/site.js"></script>
+<script>
         tailwind.config = {
             theme: {
                 extend: {

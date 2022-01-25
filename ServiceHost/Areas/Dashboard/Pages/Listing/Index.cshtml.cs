@@ -54,7 +54,6 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
             }
 
         }
-
         public void OnGetDeleted()
         {
             ShowDeleted = true;
@@ -66,24 +65,52 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
 
         public JsonResult OnPostMarkDelete(long id)
         {
-            var result = _listingApplication.Delete(id);
-            return new JsonResult(result);
+            return new JsonResult(_listingApplication.Delete(id));
         }
         public JsonResult OnPostMarkPublic(long id)
         {
-            var result = _listingApplication.MarkPublic(id);
-            return new JsonResult(result);
+            return new JsonResult(_listingApplication.MarkPublic(id));
         }
         public JsonResult OnPostMarkPrivate(long id)
         {
-            var result = _listingApplication.MarkPrivate(id);
-            return new JsonResult(result);
+            return new JsonResult(_listingApplication.MarkPrivate(id));
         }
         public IActionResult OnPostMarkRead(long Id)
         {
             var result = _notificationApplication.MarkRead(Id);
             var reqUrl = _contextAccessor.HttpContext.Request.Headers.FirstOrDefault(x => x.Key == "Referer").Value;
             return Redirect(reqUrl);
+        }
+
+        public IActionResult OnGetIncrement(long id)
+        {
+            var inputAmount = new InputAmount()
+            {
+                ListingId = id
+            };
+            return Partial("./Increment", inputAmount);
+        }
+        public IActionResult OnGetDecrement(long id)
+        {
+            var inputAmount = new InputAmount()
+            {
+                ListingId = id
+            };
+            return Partial("./Decrement", inputAmount);
+        }
+
+        public JsonResult OnPostIncrement(InputAmount command)
+        {
+            return new JsonResult(_listingApplication.IncrementAmount(command));
+        }
+        public JsonResult OnPostDecrement(InputAmount command)
+        {
+            return new JsonResult(_listingApplication.DeccrementAmount(command));
+        }
+        public IActionResult OnGetLog(long id)
+        {
+            var cds = _listingApplication.GetListingOperationLog(id);
+            return Partial("./Log", _listingApplication.GetListingOperationLog(id));
         }
     }
 }

@@ -26,9 +26,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Users.Account
 
         public JsonResult OnPost(EditUser user)
         {
-            var result = _userApplication.EditByAdmin(user);
-
-            return new JsonResult(result);
+            return new JsonResult(_userApplication.EditByAdmin(user));
         }
 
     }

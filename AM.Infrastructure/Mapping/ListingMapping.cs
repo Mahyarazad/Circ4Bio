@@ -1,4 +1,5 @@
-﻿using AM.Domain.ListingAggregate;
+﻿using System.Security.Cryptography.Xml;
+using AM.Domain.ListingAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -22,6 +23,16 @@ namespace AM.Infrastructure.Mapping
             builder.HasMany(x => x.PurchaseList).WithOne(x => x.Listing).HasForeignKey(x => x.ListingId);
             builder.HasMany(x => x.SupplyList).WithOne(x => x.Listing).HasForeignKey(x => x.ListingId);
             builder.HasMany(x => x.DealList).WithOne(x => x.Listing).HasForeignKey(x => x.ListingId);
+
+            builder.OwnsMany(x => x.ListingOperations, ModelBuilder =>
+            {
+                ModelBuilder.ToTable("ListingOperation", schema: "dbo");
+                ModelBuilder.HasKey(x => x.Id);
+                ModelBuilder.WithOwner(x => x.Listing).HasForeignKey(x => x.ListingId);
+                ModelBuilder.Property(x => x.UserId).IsRequired();
+                ModelBuilder.Property(x => x.Description).HasMaxLength(300);
+
+            });
         }
     }
 }

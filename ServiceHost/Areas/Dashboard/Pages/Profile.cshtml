@@ -170,13 +170,13 @@
 <div class="mt-6 grid grid-cols-12 gap-6">
     <div class="col-span-12 sm:col-span-6">
         <label asp-for="@Model.user.Country" class="block text-sm font-medium text-gray-700"></label>
-         <select asp-for="@Model.user.Country"
-                 asp-items="@Model.CountryList"
-                 class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
-             <option value="">
-                 Please select a country
-             </option>
-         </select>
+        <select asp-for="@Model.user.Country"
+                asp-items="@Model.CountryList"
+                class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+            <option value="">
+                Please select a country
+            </option>
+        </select>
         <span asp-validation-for="@Model.user.Country" class="text-red-500"></span>
     </div>
     <div class="col-span-12 sm:col-span-6">
@@ -228,75 +228,76 @@
 </div>
 
 </form>
-<form asp-page="./Index" asp-page-handler="DeactivateUser" class="divide-y divide-gray-200 lg:col-span-9"
-      data-callback="" data-ajax="true" method="post" data-action="Refresh">
-    <label class="block text-sm font-medium text-gray-700"> Deactivate Account</label>
-    <input type="hidden" name="Id" id="Id" value="@Model.user.Id"/>
-    <button type="submit"
-            class="inline-flex items-center p-1 border border-transparent rounded-full shadow-sm text-white bg-red-400 hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
-        <!-- Heroicon name: solid/plus-sm -->
-        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                  clip-rule="evenodd"/>
-        </svg>
-    </button>
-</form>
+    <form asp-page="./Index" asp-page-handler="DeactivateUser" class="divide-y divide-gray-200 lg:col-span-9 col-span-12 sm:col-span-6 flex justify-start"
+          data-callback="" data-ajax="true" method="post" data-action="Refresh">
+        <label class="block text-sm font-medium text-gray-700 mt-1 mr-3"> Deactivate Account</label>
+        <input type="hidden" name="Id" id="Id" value="@Model.user.Id" />
+        <button type="submit"
+                class="inline-flex items-center p-1 border border-transparent rounded-full shadow-sm text-white bg-red-400 hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+            <!-- Heroicon name: solid/plus-sm -->
+            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                      clip-rule="evenodd" />
+            </svg>
+        </button>
+    </form>
 
-@section CSS
+
+    @section CSS
 {
-    <link rel="stylesheet" href="~/css/mapbox-gl.css"/>
-}
+        <link rel="stylesheet" href="~/css/mapbox-gl.css" />
+    }
 
-@section Scripts
+    @section Scripts
 {
-    <script src="~/js/mapbox-gl.js"></script>
+        <script src="~/js/mapbox-gl.js"></script>
 
-    <script>
-        var x = document.getElementById("edit-user-form");
-        mapboxgl.accessToken = 'pk.eyJ1IjoibWFoeWFyYXphZCIsImEiOiJjazhzaG9pNjIwYzJ4M2VyczJlNnNndzF6In0.ZFGc5daAFPaXObvBKA20CA';
-        function getLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(showPosition, showError);
-            } else {
-                x.innerHTML = "Geolocation is not supported by this browser.";
+        <script>
+            var x = document.getElementById("edit-user-form");
+            mapboxgl.accessToken = 'pk.eyJ1IjoibWFoeWFyYXphZCIsImEiOiJjazhzaG9pNjIwYzJ4M2VyczJlNnNndzF6In0.ZFGc5daAFPaXObvBKA20CA';
+            function getLocation() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(showPosition, showError);
+                } else {
+                    x.innerHTML = "Geolocation is not supported by this browser.";
+                }
             }
-        }
 
-        function showPosition(position) {
-            $("#latitude").val(position.coords.latitude);
-            $("#longitude").val(position.coords.longitude);
-            $("#mapholder").css('display', 'block');
-            $("#hideMap").css('display', 'block');
-            const map = new mapboxgl.Map({
-                container: 'mapholder', // container ID
-                style: 'mapbox://styles/mapbox/streets-v11', // style URL
-                center: [position.coords.longitude, position.coords.latitude], // starting position [lng, lat]
-                zoom: 9 // starting zoom
-            });
-            // Create a default Marker and add it to the map.
-            const marker = new mapboxgl.Marker({ color: 'red', rotation: 0 })
-                .setLngLat([position.coords.longitude, position.coords.latitude])
-                .addTo(map);
-            //var img_url = "http://maps.googleapis.com/maps/api/staticmap?center="
-            //    + latlondata + "&zoom=14&size=400x300&sensor=false";
-            //document.getElementById("mapholder").innerHTML = "<img src='" + img_url + "' />";
-        }
-
-        function hideMap() {
-            $("#mapholder").css('display', 'none');
-            $("#hideMap").css('display', 'none');
-        }
-
-        function showError(error) {
-            if (error.code == 1) {
-                x.innerHTML = "User denied the request for Geolocation."
-            } else if (err.code == 2) {
-                x.innerHTML = "Location information is unavailable."
-            } else if (err.code == 3) {
-                x.innerHTML = "The request to get user location timed out."
-            } else {
-                x.innerHTML = "An unknown error occurred."
+            function showPosition(position) {
+                $("#latitude").val(position.coords.latitude);
+                $("#longitude").val(position.coords.longitude);
+                $("#mapholder").css('display', 'block');
+                $("#hideMap").css('display', 'block');
+                const map = new mapboxgl.Map({
+                    container: 'mapholder', // container ID
+                    style: 'mapbox://styles/mapbox/streets-v11', // style URL
+                    center: [position.coords.longitude, position.coords.latitude], // starting position [lng, lat]
+                    zoom: 9 // starting zoom
+                });
+                // Create a default Marker and add it to the map.
+                const marker = new mapboxgl.Marker({ color: 'red', rotation: 0 })
+                    .setLngLat([position.coords.longitude, position.coords.latitude])
+                    .addTo(map);
+                //var img_url = "http://maps.googleapis.com/maps/api/staticmap?center="
+                //    + latlondata + "&zoom=14&size=400x300&sensor=false";
+                //document.getElementById("mapholder").innerHTML = "<img src='" + img_url + "' />";
             }
-        }
-    </script>
-}
+
+            function hideMap() {
+                $("#mapholder").css('display', 'none');
+                $("#hideMap").css('display', 'none');
+            }
+
+            function showError(error) {
+                if (error.code == 1) {
+                    x.innerHTML = "User denied the request for Geolocation."
+                } else if (err.code == 2) {
+                    x.innerHTML = "Location information is unavailable."
+                } else if (err.code == 3) {
+                    x.innerHTML = "The request to get user location timed out."
+                } else {
+                    x.innerHTML = "An unknown error occurred."
+                }
+            }
+        </script>
+    }

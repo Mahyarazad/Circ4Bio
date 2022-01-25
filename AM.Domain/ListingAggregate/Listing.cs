@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.Design;
+using System.Linq;
 using _0_Framework.Domain;
 using AM.Domain.Supplied.PurchasedAggregate;
 using AM.Domain.UserAggregate;
@@ -14,23 +16,43 @@ namespace AM.Domain.ListingAggregate
         public Listing(string name, string type,
             string description, string image, string deliveryMethod,
             string unit, double unitPrice, double amount, bool status,
-            long userId)
+            long userId, bool isService)
         {
             Name = name;
             Type = type;
             Description = description;
             DeliveryMethod = deliveryMethod;
             Image = image;
+            IsService = isService;
+            if (!isService)
+            {
+
+                Amount = amount;
+                ListingOperations = new List<ListingOperation>
+                {
+                    new ListingOperation(true, this.Id, amount, amount, "Intilized Amount", 0 , userId)
+                };
+            }
+            else
+            {
+                Amount = 0;
+                ListingOperations = new List<ListingOperation>
+                {
+                    new ListingOperation(true, this.Id, 0, 0, "Intilized Service", 0 , userId)
+                };
+            }
             Unit = unit;
             UnitPrice = unitPrice;
-            Amount = amount;
             Status = status;
             IsDeleted = false;
+            HasAmount = true;
             UserId = userId;
+
         }
+
         public void Edit(string name,
             string description, string image, string deliveryMethod,
-            string unit, double unitPrice, double amount)
+            string unit, double unitPrice)
         {
             Name = name;
             Description = description;
@@ -39,17 +61,18 @@ namespace AM.Domain.ListingAggregate
             DeliveryMethod = deliveryMethod;
             Unit = unit;
             UnitPrice = unitPrice;
-            Amount = amount;
         }
 
         public void MarkDeleted()
         {
             IsDeleted = true;
         }
+
         public void MarkPublic()
         {
             Status = false;
         }
+
         public void MarkPrivate()
         {
             Status = true;
@@ -64,6 +87,8 @@ namespace AM.Domain.ListingAggregate
         public string? Unit { get; private set; }
         public double UnitPrice { get; private set; }
         public double Amount { get; private set; }
+        public bool HasAmount { get; private set; }
+        public bool IsService { get; private set; }
         // 0 for public and 1 for private
         public bool Status { get; private set; }
         public bool IsDeleted { get; private set; }
@@ -72,5 +97,32 @@ namespace AM.Domain.ListingAggregate
         public List<Deal>? DealList { get; private set; }
         public List<PurchasedItem>? PurchaseList { get; private set; }
         public List<SuppliedItem>? SupplyList { get; private set; }
+        public List<ListingOperation>? ListingOperations { get; private set; }
+
+        public double CalculateCurrentAmount()
+        {
+            var incoming = ListingOperations?.Where(x => x.OperationType).Sum(x => x.Count);
+            var outgoing = ListingOperations?.Where(x => !x.OperationType).Sum(x => x.Count);
+            return (double)(incoming - outgoing);
+        }
+
+        public void Increment(string description, double count, long dealId, long userId)
+        {
+            var currentAmount = CalculateCurrentAmount() + count;
+            var listingOperation = new ListingOperation(true, Id, currentAmount, count, description, dealId, userId);
+            ListingOperations?.Add(listingOperation);
+            Amount = currentAmount;
+            HasAmount = CalculateCurrentAmount() > 0;
+        }
+
+        public void Decrement(string description, double count, long dealId, long userId)
+        {
+            var currentAmount = CalculateCurrentAmount() - count;
+            var inventoryOperation = new ListingOperation(false, Id, currentAmount, count
+                , description, dealId, userId);
+            ListingOperations?.Add(inventoryOperation);
+            Amount = currentAmount;
+            HasAmount = CalculateCurrentAmount() > 0;
+        }
     }
 }

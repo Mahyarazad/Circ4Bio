@@ -24,17 +24,19 @@ function getModelFromPage(val) {
         });
 }
 
-//function showModal() {
-//    $("#MainModal").modal("show");
-//}
-//
-//function hideModal() {
-//    $("#MainModal").modal("hide");
-//    $("#MainModal").on("hidden.bs.modal",
-//        function () {
-//            window.location.hash = "##";
-//        });
-//}
+function showModal() {
+    $("#modal").css("display", "block");
+    window.location.hash = "##";
+}
+
+function hideModal() {
+    $("#modal").css("display", "none");
+    window.location.hash = "##";
+    //    $("#modal").on("hidden.bs.modal",
+    //        function () {
+    //            window.location.hash = "##";
+    //        });
+}
 
 //We listen to any hashChange to open the modal
 $(window).on('hashchange',
@@ -70,12 +72,14 @@ function handleAjaxPost(formData, url, action) {
         success: function (data) {
             // Notify the user about the proccess detail
             if (!data.isSucceeded) {
+                $("#modal").hide();
                 var resultDom = $('#operation-result-failed');
                 var resultDomMessage = $('#operation-result-failed-message');
 
                 resultDomMessage.text(data.message);
                 resultDom.css('display', 'block');
             } else {
+                $("#modal").hide();
                 var url = window.location.href;
                 var splited = url.split('/');
                 if (parseInt(splited[splited.length - 1]) > 0) {
@@ -170,6 +174,7 @@ function CallBackHandler(data, action, form) {
     // in our Helper 0_Framework class library
     switch (action) {
         case "Message":
+
             alert(data.Message);
             break;
             window.location.reload();
@@ -179,6 +184,7 @@ function CallBackHandler(data, action, form) {
             },
                 1500)
         case "Refresh":
+            $("#modal").hide();
             if (data.isSucceeded) {
                 window.location.reload();
                 setInterval(function () {

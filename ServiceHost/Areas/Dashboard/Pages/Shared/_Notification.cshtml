@@ -7,7 +7,7 @@
      class="fixed inset-0 flex items-end px-4 py-6 pointer-events-none sm:p-6 sm:items-start open:bg-white absolute 2xl:mr-44">
     <div class="w-full flex flex-col items-center space-y-2 sm:items-start md:items-start lg:items-end mt-10" id="notification-wrapper">
         <div class="max-w-sm w-full pointer-events-auto overflow-hidden">
-            <a asp-page="/Users/Role/Index" class="font-medium text-sm text-white hover:cursor-pointer hover:text-gray-300">
+            <a asp-page="/Notification" asp-route-id="@AutenticateHelper.CurrentAccountRole().Id" class="font-medium text-sm text-white hover:cursor-pointer hover:text-gray-300">
                 <span class="truncate" id="view-all">
                     View All
                 </span>

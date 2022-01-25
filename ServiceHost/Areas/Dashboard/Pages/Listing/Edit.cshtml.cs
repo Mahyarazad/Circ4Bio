@@ -34,8 +34,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
 
         public JsonResult OnPost(EditListing command)
         {
-            var result = _listingApplication.Edit(command);
-            return new JsonResult(result);
+            return new JsonResult(_listingApplication.Edit(command));
         }
 
     }

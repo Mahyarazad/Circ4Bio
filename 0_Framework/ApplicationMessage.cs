@@ -27,6 +27,7 @@
         public const string ListingPlantOwner = "Plant owner has been listed a new Item in the listing";
         public const string ListingTechnologyProvider = "Technology Provider has been listed a new Item in the listing";
         public const string ListingSupplierRawMaterial = "Supplier of Biomass-Raw Material has been listed a new Item in the listing";
+        public const string CannotDeduct = "Cannot deduct more than the available amount";
 
     }
 }

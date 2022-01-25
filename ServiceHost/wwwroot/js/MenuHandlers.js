@@ -30,8 +30,7 @@ $('#mobile-menu-trigger').on('click', function () {
 $('#notification-handler').on('click', function () {
     var status = $('#notification-panel').css("display");
     if (status === 'block') {
-        $("span[id='view-all']").
-            $('#notification-panel').css('display', 'none');
+        $('#notification-panel').css('display', 'none');
         $('#notification-panel').removeClass('translate-y-0');
         $('#notification-panel').removeClass('opacity-100');
         $('#notification-panel').addClass('translate-y-2');
@@ -116,11 +115,28 @@ $("div[id='main-table_wrapper").scroll(function () {
     $("span[id='view-all").removeClass("text-white");
 });
 
-//$("div[id='top-of-header").scroll(function () {
-//    $("span[id='view-all").addClass("text-white");
-//    $("span[id='view-all").removeClass("text-sky-800");
+function listingIsService() {
+    var checkVal = $("input[id='is-service']").prop('checked');
+    if (checkVal) {
+        $("div[id='listing-amount']").hide();
+    } else {
+        $("div[id='listing-amount']").show();
+    }
+}
+
+//$(document).on('click', function (e) {
+//    if ($(e.target).closest(elem).length === 0) {
+//        $("#modal").hide();
+//    }
 //});
 
+$(document).on('keydown', function (e) {
+    if (e.keyCode === 27) {
+        // ESC
+        window.location.hash = "##";
+        $("#modal").hide();
+    }
+});
 
 
 

@@ -38,23 +38,19 @@ namespace ServiceHost.Areas.Dashboard.Pages.Users.Account
 
         public JsonResult OnPostActivateUser(long id)
         {
-            var result = _userApplication.AdminActivateUser(id);
-            return new JsonResult(result);
+            return new JsonResult(_userApplication.AdminActivateUser(id));
         }
         public JsonResult OnPostDeactivateUser(long id)
         {
-            var result = _userApplication.AdminDectivateUser(id);
-            return new JsonResult(result);
+            return new JsonResult(_userApplication.AdminDectivateUser(id));
         }
         public JsonResult OnPostActivateUserStatus(long id)
         {
-            var result = _userApplication.AdminActivateUserStatus(id);
-            return new JsonResult(result);
+            return new JsonResult(_userApplication.AdminActivateUserStatus(id));
         }
         public JsonResult OnPostDeactivateUserStatus(long id)
         {
-            var result = _userApplication.AdminDectivateUserStatus(id);
-            return new JsonResult(result);
+            return new JsonResult(_userApplication.AdminDectivateUserStatus(id));
         }
     }
 }

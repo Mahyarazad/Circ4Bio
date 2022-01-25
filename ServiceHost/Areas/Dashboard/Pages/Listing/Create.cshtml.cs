@@ -27,8 +27,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
 
         public JsonResult OnPost(CreateListing command)
         {
-            var result = _listingApplication.Create(command);
-            return new JsonResult(result);
+            return new JsonResult(_listingApplication.Create(command));
         }
 
     }

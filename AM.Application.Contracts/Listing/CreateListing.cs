@@ -29,6 +29,7 @@ namespace AM.Application.Contracts.Listing
         public double Amount { get; set; }
         // 0 for public and 1 for private
         public bool Status { get; set; }
+        public bool IsService { get; set; }
     }
     public class EditListing : CreateListing
     {

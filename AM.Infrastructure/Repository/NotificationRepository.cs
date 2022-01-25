@@ -35,7 +35,7 @@ namespace AM.Infrastructure.Repository
             return recipientList;
         }
 
-        public List<NotificationViewModel> GetLast5Unread(long Id)
+        public List<NotificationViewModel> GetLastNUnread(long Id, int nNumber)
         {
             return _amContext.Recipients
                 .AsNoTracking()
@@ -49,7 +49,7 @@ namespace AM.Infrastructure.Repository
                     NotificationBody = x.Notification.NotificationBody,
                     NotificationTitle = x.Notification.NotificationTitle,
                 }).OrderByDescending(x => x.Id)
-                .Reverse().Take(7).Reverse()
+                .Reverse().Take(nNumber).Reverse()
                 .ToList();
         }
 
@@ -66,6 +66,7 @@ namespace AM.Infrastructure.Repository
                     RecipientId = x.Id,
                     NotificationBody = x.Notification.NotificationBody,
                     NotificationTitle = x.Notification.NotificationTitle,
+                    CreationTime = x.CreationTime,
                 }).OrderByDescending(x => x.Id)
                 .Reverse().Take(7).Reverse()
                 .ToList();
