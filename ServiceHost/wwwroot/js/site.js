@@ -25,12 +25,22 @@ function getModelFromPage(val) {
 }
 
 function showModal() {
-    $("#modal").css("display", "block");
+    $('#modal').css('visibility', 'visible');
+    $('#modal').css('opacity', '1');
+    $('#modal').css('z-index', '10');
+    $('#modal').removeClass('translate-y-full');
+    $('#modal').addClass('top-0');
+    $('#layout-container').addClass('opacity-70');
     window.location.hash = "##";
 }
 
 function hideModal() {
-    $("#modal").css("display", "none");
+    $("#modal").css("visibility", "hidden");
+    $('#modal').css('opacity', '0');
+    $('#modal').css('z-index', '-1');
+    $('#modal').addClass('translate-y-full');
+    $('#modal').removeClass('top-0');
+    $('#layout-container').removeClass('opacity-70');
     window.location.hash = "##";
     //    $("#modal").on("hidden.bs.modal",
     //        function () {

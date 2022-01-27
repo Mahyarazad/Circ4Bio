@@ -33,6 +33,7 @@ module.exports = {
             transitionProperty: {
                 'height': 'height',
                 'spacing': 'margin, padding',
+                'display':'none'
             }
         },
     },

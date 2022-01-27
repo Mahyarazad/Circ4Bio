@@ -6,52 +6,55 @@
     <title>@ViewData["Title"] - Circ4Bio </title>
     <link rel="stylesheet" href="~/dist/output.css" />
     <link rel="stylesheet" href="~/css/Inter.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
     <link href="~/js/datatables/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
     <script src="~/js/tailwind.min.js"></script>
 </head>
 <body>
 
-<partial name="_Header" />
+<partial name="_DashboardHeader" />
 
     <div class="container">
         <main role="main">
-            <div class="w-screen">
-                <div class="relative bg-sky-700 pb-32">
-                    <!-- Menu open: "bg-sky-900", Menu closed: "bg-transparent" -->
-                    <!-- Menu open: "bottom-0", Menu closed: "inset-y-0" -->
-                    <div aria-hidden="true" class="inset-y-0 absolute inset-x-0 left-1/2 transform -translate-x-1/2 w-full overflow-hidden lg:inset-y-0">
-                        <div class="absolute inset-0 flex">
-                            <div class="h-full w-1/2" style="background-color: #0a527b;"></div>
-                            <div class="h-full w-1/2" style="background-color: #065d8c;"></div>
-                        </div>
-                        <div class="relative flex justify-center">
-                            <svg class="flex-shrink-0" width="1750" height="308" viewBox="0 0 1750 308" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M284.161 308H1465.84L875.001 182.413 284.161 308z" fill="#0369a1" />
-                                <path d="M1465.84 308L16.816 0H1750v308h-284.16z" fill="#065d8c" />
-                                <path d="M1733.19 0L284.161 308H0V0h1733.19z" fill="#0a527b" />
-                                <path d="M875.001 182.413L1733.19 0H16.816l858.185 182.413z" fill="#0a4f76" />
-                            </svg>
-                        </div>
-                    </div>
-                    <header class="relative py-10">
-                        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                            <h1 class="text-3xl font-bold text-white">
-                                @ViewData["Title"]
-                            </h1>
-                        </div>
-                    </header>
-                </div>
-                <!--This class has been removed max-w-screen-xl from third div-->
-                <main class="relative -mt-32">
-                    <div class="mx-auto pb-6 px-4 sm:px-6 lg:pb-16 lg:px-8">
-                        <div class="bg-white rounded-lg shadow overflow-hidden">
-                            <div class="divide-y divide-gray-200 lg:grid lg:grid-cols-12 lg:divide-y-0 lg:divide-x" id="scroll-into-top">
-                                <partial name="Shared/_Aside" />
-                                @RenderBody()
+            <div class="max-w-max-customized">
+                <div class="w-screen" id="layout-container">
+                    <div class="relative bg-sky-700 pb-32">
+                        <!-- Menu open: "bg-sky-900", Menu closed: "bg-transparent" -->
+                        <!-- Menu open: "bottom-0", Menu closed: "inset-y-0" -->
+                        <div aria-hidden="true" class="inset-y-0 absolute inset-x-0 left-1/2 transform -translate-x-1/2 w-full overflow-hidden lg:inset-y-0">
+                            <div class="absolute inset-0 flex">
+                                <div class="h-full w-1/2" style="background-color: #0a527b;"></div>
+                                <div class="h-full w-1/2" style="background-color: #065d8c;"></div>
+                            </div>
+                            <div class="relative flex justify-center">
+                                <svg class="flex-shrink-0" width="1750" height="308" viewBox="0 0 1750 308" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M284.161 308H1465.84L875.001 182.413 284.161 308z" fill="#0369a1" />
+                                    <path d="M1465.84 308L16.816 0H1750v308h-284.16z" fill="#065d8c" />
+                                    <path d="M1733.19 0L284.161 308H0V0h1733.19z" fill="#0a527b" />
+                                    <path d="M875.001 182.413L1733.19 0H16.816l858.185 182.413z" fill="#0a4f76" />
+                                </svg>
                             </div>
                         </div>
+                        <header class="relative py-10">
+                            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                                <h1 class="text-3xl font-bold text-white">
+                                    @ViewData["Title"]
+                                </h1>
+                            </div>
+                        </header>
                     </div>
-                </main>
+                    <!--This class has been removed max-w-screen-xl from third div-->
+                    <main class="relative -mt-32">
+                        <div class="mx-auto pb-6 px-4 sm:px-6 lg:pb-16 lg:px-8">
+                            <div class="bg-white rounded-lg shadow overflow-hidden">
+                                <div class="divide-y divide-gray-200 lg:grid lg:grid-cols-12 lg:divide-y-0 lg:divide-x" id="scroll-into-top">
+                                    <partial name="Shared/_Aside" />
+                                    @RenderBody()
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+                </div>
             </div>
         </main>
     </div>
@@ -60,7 +63,7 @@
 
     <!--Overlay Effect-->
     <div
-        class="fixed hidden inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full transition-all duration-300"
+        class="fixed inset-0 overflow-y-auto h-full w-full translate-y-full invisible transform duration-300 opacity-0"
         id="modal"
         >
         <div class="modal-content" id="ModalConetnt">
@@ -68,7 +71,6 @@
         </div>
     </div>
     <script src="~/lib/jquery/dist/jquery.js"></script>
-    <script src="~/js/bootstrap.js"></script>
     <script src="~/js/jquery.cookie.min.js_1.4.1/cdnjs/jquery.cookie.min.js"></script>
     <script src="~/js/MenuHandlers.js"></script>
     <script src="~/js/datatables/jquery.dataTables.js"></script>
@@ -77,7 +79,12 @@
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/js/NotificationHandlers.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-    <script src="~/js/site.js"></script>
+<script src="~/js/site.js"></script>
+<script>
+
+    const e = d3.easeCubic(0.25);
+
+</script>
 <script>
         tailwind.config = {
             theme: {

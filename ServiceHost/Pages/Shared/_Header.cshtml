@@ -9,8 +9,10 @@
                         <span class="sr-only">Workflow</span>
                         <img class="h-8 w-auto sm:h-10" src="~/Images/Circ4Bio.png" alt="">
                     </a>
-                    <div class="-mr-2 flex items-center lg:hidden">
-                        <button type="button" id="main-menu" class="bg-gray-900 rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:bg-gray-800 focus:outline-none focus:ring-2 focus-ring-inset focus:ring-white" aria-expanded="false">
+                    <!-- Mobile Menu Trigger-->
+                    <div class="flex items-center lg:hidden">
+                        <button type="button" id="mobile-home-menu-open"
+                                class="bg-gray-900 rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:bg-gray-800 focus:outline-none" aria-expanded="false">
                             <span class="sr-only">Open main menu</span>
                             <!-- Heroicon name: outline/menu -->
                             <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -18,6 +20,7 @@
                             </svg>
                         </button>
                     </div>
+                    <!---->
                 </div>
                 <div class="hidden space-x-4 lg:flex">
                     <a href="#" class="text-base font-medium text-white rounded-md hover:text-gray-300 hover:bg-sky-800 px-1 py-2">Blog Listing</a>
@@ -67,14 +70,15 @@
         From: "opacity-100 scale-100"
         To: "opacity-0 scale-95"
     -->
-    <div class="absolute top-0 inset-x-0 transition transform origin-top md:hidden m-3" id="mobile-menu" style="display: none">
+    <div id="mobile-home-menu"
+        class="absolute top-0 inset-x-0 origin-top lg:hidden m-3 invisible opacity-0 transform duration-300 fixed" >
         <div class="rounded-lg shadow-md bg-white ring-1 ring-black ring-opacity-5 overflow-hidden">
             <div class="px-5 pt-4 flex items-center justify-between">
                 <div>
-                    <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/workflow-mark-teal-500-cyan-600.svg" alt="">
+                    <img class="h-8 w-auto" src="~/Images/Circ4Bio.png" alt="">
                 </div>
                 <div class="-mr-2">
-                    <button type="button" id="mobile-menu-close"
+                    <button type="button" id="mobile-home-menu-close"
                             class="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-cyan-600">
                         <span class="sr-only">Close menu</span>
                         <!-- Heroicon name: outline/x -->

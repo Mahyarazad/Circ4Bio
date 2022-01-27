@@ -23,7 +23,8 @@
         const wrapper = $('#notification-wrapper');
         response.forEach(item => {
             NotificationDom =
-                `<div data-notification-label="${item.recipientId}" class="mt-10 max-w-sm w-full bg-white shadow-lg rounded-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden">
+                `<div data-notification-label="${item.recipientId}"
+                    class="mt-10 max-w-sm w-full bg-white shadow-lg rounded-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden">
                     <div class="p-2">
                         <div class="flex items-start">
                             <div class="flex-shrink-0">

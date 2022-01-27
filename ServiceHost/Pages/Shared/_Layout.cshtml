@@ -7,16 +7,15 @@
         <script src="~/js/tailwind.min.js"></script>
         <link rel="stylesheet" href="~/css/Inter.css"/>
         <link rel="stylesheet" href="~/dist/output.css"/>
+        <link rel="stylesheet" href="~/css/site.css"/>
     </head>
     <body>
         <partial name="_Header"/>
-        <div class="container">
             <main role="main">
-                <div class="w-screen">
+                <div class="max-w-max-customized">
                     @RenderBody()
                 </div>
             </main>
-        </div>
         <partial name="_Footer"/>
 
         <script src="~/lib/jquery/dist/jquery.min.js"></script>
