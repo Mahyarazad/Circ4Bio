@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Runtime.InteropServices;
 using _0_Framework.Application;
+using AM.Application.Contracts.Listing;
 using AM.Application.Contracts.Notification;
 
 namespace AM.Infrastructure.Repository
@@ -47,7 +48,6 @@ namespace AM.Infrastructure.Repository
             //     query = query.Where(x => x.Role == searchModel.Role);
             return query.OrderByDescending(x => x.Id).ToList();
         }
-
         public List<RecipientViewModel> GetUserListForListing(long id)
         {
             return _amContext.Users
@@ -61,7 +61,6 @@ namespace AM.Infrastructure.Repository
                 .AsNoTracking()
                 .ToList();
         }
-
         public EditUser GetDetail(long Id)
         {
             var query = _amContext.Users.Select(x => new EditUser
@@ -94,7 +93,6 @@ namespace AM.Infrastructure.Repository
 
             return query;
         }
-
         public EditUser GetDetailByUser(string username)
         {
             return _amContext.Users.Select(x => new EditUser
@@ -106,7 +104,6 @@ namespace AM.Infrastructure.Repository
                 Password = x.Password,
             }).AsNoTracking().FirstOrDefault(x => x.UserId == username);
         }
-
         public ResendActivationEmail ResendActivationLink(string email)
         {
             return _amContext.Users.Select(x => new ResendActivationEmail
@@ -116,7 +113,6 @@ namespace AM.Infrastructure.Repository
             }).AsNoTracking()
                 .FirstOrDefault(x => x.Email == email);
         }
-
         public EditUser GetDetailByEmail(string email)
         {
             return _amContext.Users.Select(x => new EditUser
@@ -132,7 +128,6 @@ namespace AM.Infrastructure.Repository
             }).AsNoTracking().FirstOrDefault(x => x.Email == email);
 
         }
-
         public EditUser GetDetailByActivationUrl(string guid)
         {
             var query = _amContext.Users.Select(x => new EditUser

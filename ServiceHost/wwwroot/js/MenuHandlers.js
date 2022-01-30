@@ -197,7 +197,10 @@ $(document).on('keydown', function (e) {
         //        $("#modal").hide();
         hideModal();
         //        $("#user-menu").css('visibility', 'none');
-        //        $("#notification-panel").css('display', 'none');
+        $('#notification-panel').css('visibility', 'hidden');
+        $('#notification-panel').addClass('-translate-y-[20rem]');
+        $('#notification-panel').css('opacity', '0');
+        $('#notification-panel').css('z-index', '-1');
     }
 });
 

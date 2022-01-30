@@ -1,7 +1,7 @@
 ﻿@page "{id}"
 @inject _0_Framework.Application.IAutenticateHelper AutenticateHelper;
 @model ServiceHost.Areas.Dashboard.Pages.ContactUs.MessageBodyModel;
-@{ ViewData["Title"] = "Dashboard | Contact Us"; }
+@{ ViewData["Title"] = $"Dashboard | Contact Us | {Model.Message.Subject}"; }
 
 <div class="divide-y divide-gray-200 lg:col-span-9">
     <!-- operation-result -->

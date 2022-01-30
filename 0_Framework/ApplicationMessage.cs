@@ -5,7 +5,7 @@
         public const string RecordNotFound = "Cannot find the current item";
         public const string RecordExists = "Another record with the same value exists in database";
         public const string PasswordsAreNotMatched = "Passwords are not macth, Please try again";
-        public const string UserNotExists = "This user does not exit in database";
+        public const string UserNotExists = "This user does not exist in database";
         public const string WrongPassword = "The input password is not correct";
         public const string UserNotActive = "You've not activated your account, please check your emial for activation link";
         public const string SuccessfulRegister = "Activation link has been sent to your email, Please activate your account.";

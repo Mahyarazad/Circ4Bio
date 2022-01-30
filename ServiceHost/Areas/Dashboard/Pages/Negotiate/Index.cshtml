@@ -1,0 +1,52 @@
+﻿@page
+@model ServiceHost.Areas.Dashboard.Pages.Negotiate.IndexModel
+@{
+}
+
+
+<div class="divide-y divide-gray-200 lg:col-span-9">
+    <div class="flex flex-col">
+        <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                    <table class="min-w-full border-collapse block md:table" id="main-table">
+                        <thead class="block md:table-header-group">
+                            <tr class="border border-grey-500 md:border-none block md:table-row absolute -top-full md:top-auto -left-full md:left-auto  md:relative ">
+                                <th class="bg-gray-50 p-2 text-gray-600 font-bold md:border md:border-grey-500 text-left block md:table-cell">Role Info</th>
+                                <th class="bg-gray-50 p-2 text-gray-600 font-bold md:border md:border-grey-500 text-left block md:table-cell">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="block md:table-row-group">
+                            @foreach (var item in Model.NegotiateList)
+                            {
+                                <tr class="bg-white border border-grey-500 md:border-none block md:table-row">
+                                    <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell">
+                                        <span class="inline-block w-1/3 md:hidden font-bold">Account Info</span>
+                                        <div>
+                                            <div class="text-sm text-gray-900">
+                                                @item.ListingName
+                                            </div>
+                                            <div class="text-sm text-gray-500">
+                                                @item.Amount
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell">
+                                        <span class="inline-block w-1/3 md:hidden font-bold">Actions</span>
+                                        <div class="flex justify-start my-2">
+                                            <a asp-page="Messages" asp-route-id="@item.logId"
+                                               class="inline-flex items-center px-2 py-2 border border-gray-300 shadow-sm text-xs font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                                                <i class="fa fa-edit"></i> Open Messages
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,6 +1,7 @@
 ﻿using AM.Domain;
 using AM.Domain.ContactUsAggregate;
 using AM.Domain.ListingAggregate;
+using AM.Domain.NegotiateAggregate;
 using AM.Domain.NotificationAggregate;
 using AM.Domain.ResetPasswordAggregate;
 using AM.Domain.RoleAggregate;
@@ -23,6 +24,7 @@ namespace AM.Infrastructure
         public DbSet<Deal> Deals { get; set; }
         public DbSet<SuppliedItem> SuppliedItems { get; set; }
         public DbSet<PurchasedItem> PurchasedItems { get; set; }
+        public DbSet<Negotiate> Negotiates { get; set; }
         public AMContext(DbContextOptions<AMContext> options) : base(options)
         {
         }

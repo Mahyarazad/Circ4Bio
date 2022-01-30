@@ -2,6 +2,7 @@
 using System.ComponentModel.Design;
 using System.Linq;
 using _0_Framework.Domain;
+using AM.Domain.NegotiateAggregate;
 using AM.Domain.Supplied.PurchasedAggregate;
 using AM.Domain.UserAggregate;
 
@@ -16,7 +17,7 @@ namespace AM.Domain.ListingAggregate
         public Listing(string name, string type,
             string description, string image, string deliveryMethod,
             string unit, double unitPrice, double amount, bool status,
-            long userId, bool isService)
+            long userId, bool isService, string currency)
         {
             Name = name;
             Type = type;
@@ -47,12 +48,13 @@ namespace AM.Domain.ListingAggregate
             IsDeleted = false;
             HasAmount = true;
             UserId = userId;
+            Currency = currency;
 
         }
 
         public void Edit(string name,
             string description, string image, string deliveryMethod,
-            string unit, double unitPrice)
+            string unit, double unitPrice, string currency)
         {
             Name = name;
             Description = description;
@@ -61,6 +63,7 @@ namespace AM.Domain.ListingAggregate
             DeliveryMethod = deliveryMethod;
             Unit = unit;
             UnitPrice = unitPrice;
+            Currency = currency;
         }
 
         public void MarkDeleted()
@@ -86,6 +89,7 @@ namespace AM.Domain.ListingAggregate
         // It can be kg, lit, ton, peice and etc.
         public string? Unit { get; private set; }
         public double UnitPrice { get; private set; }
+        public string Currency { get; private set; }
         public double Amount { get; private set; }
         public bool HasAmount { get; private set; }
         public bool IsService { get; private set; }
@@ -95,6 +99,7 @@ namespace AM.Domain.ListingAggregate
         public long UserId { get; private set; }
         public User? User { get; private set; }
         public List<Deal>? DealList { get; private set; }
+        public List<Negotiate>? NegotiateList { get; private set; }
         public List<PurchasedItem>? PurchaseList { get; private set; }
         public List<SuppliedItem>? SupplyList { get; private set; }
         public List<ListingOperation>? ListingOperations { get; private set; }

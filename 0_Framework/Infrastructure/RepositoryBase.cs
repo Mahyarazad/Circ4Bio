@@ -35,7 +35,7 @@ namespace _0_Framework.Infrastructure
 
         public List<T> GetList()
         {
-            return _dbContext.Set<T>().ToList();
+            return _dbContext.Set<T>().AsNoTracking().ToList();
         }
 
         public T Get(TKey id)

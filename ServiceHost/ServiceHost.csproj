@@ -30,4 +30,16 @@
     <Folder Include="wwwroot\Images\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Areas\Dashboard\Pages\AvailableListing\Index - Copy %282%29.cshtml.cs">
+      <DependentUpon>Index.cshtml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Areas\Dashboard\Pages\AvailableListing\Index - Copy - Copy.cshtml.cs">
+      <DependentUpon>Index - Copy.cshtml.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Areas\Dashboard\Pages\AvailableListing\Index - Copy.cshtml.cs">
+      <DependentUpon>Index.cshtml.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
 </Project>

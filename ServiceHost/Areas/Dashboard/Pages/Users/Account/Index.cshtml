@@ -36,7 +36,7 @@
                         <tr class="border border-grey-500 md:border-none block md:table-row absolute -top-full md:top-auto -left-full md:left-auto  md:relative ">
                             <th class="bg-gray-50 p-2 text-gray-600 font-bold md:border md:border-grey-500 text-left block md:table-cell">Account Info</th>
                             <th class="bg-gray-50 p-2 text-gray-600 font-bold md:border md:border-grey-500 text-left block md:table-cell">Title</th>
-                            <th class="bg-gray-50 p-2 text-gray-600 font-bold md:border md:border-grey-500 text-left block md:table-cell">Status</th>
+                            <th class="bg-gray-50 p-2 text-gray-600 font-bold md:border md:border-grey-500 text-left block md:table-cell">PublicStatus</th>
                             <th class="bg-gray-50 p-2 text-gray-600 font-bold md:border md:border-grey-500 text-left block md:table-cell">Role</th>
                             <th class="bg-gray-50 p-2 text-gray-600 font-bold md:border md:border-grey-500 text-left block md:table-cell">Actions</th>
                         </tr>
@@ -62,7 +62,7 @@
                                     <div class="text-sm text-gray-900">@item.Role</div>
                                     <div class="text-sm text-gray-500">@item.CreationTime</div>
                                 </div></td>
-                            <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span class="inline-block w-1/3 md:hidden font-bold">Status</span>
+                            <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span class="inline-block w-1/3 md:hidden font-bold">PublicStatus</span>
                                 <div>
                                     @if (item.IsActive)
                                     {
@@ -131,7 +131,7 @@
                                 }
                                 @if (item.Status)
                                 {
-                                    <form asp-page="./Index" asp-page-handler="DeactivateUserStatus"
+                                    <form asp-page="./Index" asp-page-handler="DeactivateUserPublicStatus"
                                           data-callback="" data-ajax="true" method="post" data-action="Refresh" class="mx-2">
                                         <input type="hidden" name="Id" id="Id" value="@item.Id"/>
                                         <button type="submit"
@@ -147,7 +147,7 @@
                                 }
                                 else
                                 {
-                                    <form asp-page="./Index" asp-page-handler="ActivateUserStatus"
+                                    <form asp-page="./Index" asp-page-handler="ActivateUserPublicStatus"
                                           data-callback="" data-ajax="true" method="post" data-action="Refresh" class="mx-2">
                                         <input type="hidden" name="Id" id="Id" value="@item.Id"/>
                                         <button type="submit"

@@ -1,41 +1,43 @@
 ﻿@page "{id}"
 @using Microsoft.AspNetCore.Http
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration _Configuration;
 @model ServiceHost.Areas.Dashboard.Pages.Users.Account.EditModel;
 @{ ViewData["Title"] = "Dashboard | Account | Modify"; }
 
 <form class="divide-y divide-gray-200 lg:col-span-9" method="post" id="edit-user-form"
       data-ajax="true" data-action="Refresh" enctype="multipart/form-data">
     <!-- operation-result -->
-<div class="rounded-md bg-green-50 p-4 transition ease-in-out duration-75" id="operation-result" style="display: none">
-    <div class="flex">
-        <div class="flex-shrink-0">
-            <!-- Heroicon name: solid/check-circle -->
-            <svg class="h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-            </svg>
-        </div>
-        <div class="ml-3">
-            <p class="text-sm font-medium text-green-800" id="operation-result-message">
+    <div class="rounded-md bg-green-50 p-4 transition ease-in-out duration-75" id="operation-result" style="display: none">
+        <div class="flex">
+            <div class="flex-shrink-0">
+                <!-- Heroicon name: solid/check-circle -->
+                <svg class="h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                </svg>
+            </div>
+            <div class="ml-3">
+                <p class="text-sm font-medium text-green-800" id="operation-result-message">
 
-            </p>
+                </p>
+            </div>
         </div>
     </div>
-</div>
-<div class="rounded-md bg-red-50 p-4 transition ease-in-out duration-75" id="operation-result-failed" style="display: none">
-    <div class="flex">
-        <div class="flex-shrink-0">
-            <!-- Heroicon name: solid/check-circle -->
-            <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
-            </svg>
-        </div>
-        <div class="ml-3">
-            <p class="text-sm font-medium text-red-800" id="operation-result-failed-message">
+    <div class="rounded-md bg-red-50 p-4 transition ease-in-out duration-75" id="operation-result-failed" style="display: none">
+        <div class="flex">
+            <div class="flex-shrink-0">
+                <!-- Heroicon name: solid/check-circle -->
+                <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                </svg>
+            </div>
+            <div class="ml-3">
+                <p class="text-sm font-medium text-red-800" id="operation-result-failed-message">
 
-            </p>
+                </p>
+            </div>
         </div>
     </div>
-</div>
     <!-- end -->
     <!-- Profile section -->
     <div class="py-6 px-4 sm:p-6 lg:pb-8">
@@ -103,6 +105,7 @@
                                 </label>
                                 <input type="file" id="mobile-user-photo" accept="image/*"
                                        asp-for="@Model.user.ProfilePicture" class="absolute w-full h-full opacity-0 cursor-pointer border-gray-300 rounded-md">
+                                <span asp-validation-for="@Model.user.ProfilePicture" class="text-red-500"></span>
                             </div>
                         </div>
                     </div>
@@ -113,8 +116,9 @@
                     <label for="desktop-user-photo" class="absolute inset-0 w-full h-full bg-black bg-opacity-75 flex items-center justify-center text-sm font-medium text-white opacity-0 hover:opacity-100 focus-within:opacity-100">
                         <span>Change</span>
                         <span class="sr-only"> user photo</span>
-                        <input type="file" asp-for="@Model.user.ProfilePicture"  accept="image/*"
+                        <input type="file" asp-for="@Model.user.ProfilePicture" accept="image/*"
                                class="absolute inset-0 w-full h-full opacity-0 cursor-pointer border-gray-300 rounded-md">
+                        <span asp-validation-for="@Model.user.ProfilePicture" class="text-red-500"></span>
                     </label>
                 </div>
             </div>
@@ -252,9 +256,7 @@
     <script src="~/js/mapbox-gl.js"></script>
     <script>
         var x = document.getElementById("edit-user-form");
-
-        mapboxgl.accessToken = 'pk.eyJ1IjoibWFoeWFyYXphZCIsImEiOiJjazhzaG9pNjIwYzJ4M2VyczJlNnNndzF6In0.ZFGc5daAFPaXObvBKA20CA';
-
+        mapboxgl.accessToken = @Html.Raw(Json.Serialize(_Configuration.GetSection("MapBox")["SecretKey"]));
         function getLocation() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(showPosition, showError);
@@ -274,12 +276,10 @@
                 center: [position.coords.longitude, position.coords.latitude], // starting position [lng, lat]
                 zoom: 9 // starting zoom
             });
-
             // Create a default Marker and add it to the map.
             const marker = new mapboxgl.Marker({ color: 'red', rotation: 0 })
                 .setLngLat([position.coords.longitude, position.coords.latitude])
                 .addTo(map);
-
             //var img_url = "http://maps.googleapis.com/maps/api/staticmap?center="
             //    + latlondata + "&zoom=14&size=400x300&sensor=false";
             //document.getElementById("mapholder").innerHTML = "<img src='" + img_url + "' />";
@@ -291,7 +291,6 @@
         }
 
         function showError(error) {
-
             if (error.code == 1) {
                 x.innerHTML = "User denied the request for Geolocation."
             } else if (err.code == 2) {
@@ -302,5 +301,6 @@
                 x.innerHTML = "An unknown error occurred."
             }
         }
+
     </script>
 }

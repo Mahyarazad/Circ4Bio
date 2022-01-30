@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using _0_Framework.Domain;
 using AM.Domain.BlogAggregate;
 using AM.Domain.ListingAggregate;
+using AM.Domain.NegotiateAggregate;
 using AM.Domain.NotificationAggregate;
 using AM.Domain.RoleAggregate;
 using AM.Domain.Supplied.PurchasedAggregate;

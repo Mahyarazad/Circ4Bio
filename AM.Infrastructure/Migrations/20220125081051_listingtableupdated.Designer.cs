@@ -195,7 +195,7 @@ namespace AM.Infrastructure.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Status")
+                    b.Property<bool>("PublicStatus")
                         .HasColumnType("bit");
 
                     b.Property<string>("Type")
@@ -466,7 +466,7 @@ namespace AM.Infrastructure.Migrations
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("Status")
+                    b.Property<bool>("PublicStatus")
                         .HasColumnType("bit");
 
                     b.Property<long?>("SuppliedItemId")

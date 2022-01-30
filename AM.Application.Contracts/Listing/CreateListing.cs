@@ -27,6 +27,8 @@ namespace AM.Application.Contracts.Listing
         [Range(1, 9999999999)]
         [Required(ErrorMessage = ValidationMessages.IsRequired)]
         public double Amount { get; set; }
+        [Required(ErrorMessage = ValidationMessages.IsRequired)]
+        public string? Currency { get; set; }
         // 0 for public and 1 for private
         public bool Status { get; set; }
         public bool IsService { get; set; }

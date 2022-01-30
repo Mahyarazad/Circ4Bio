@@ -166,6 +166,11 @@ namespace AM.Infrastructure.Migrations
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
                     b.Property<string>("DeliveryMethod")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -216,6 +221,37 @@ namespace AM.Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Listing", "dbo");
+                });
+
+            modelBuilder.Entity("AM.Domain.NegotiateAggregate.Negotiate", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<long>("BuyyerId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("ListingId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("SellerId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ListingId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Negotiate", "dbo");
                 });
 
             modelBuilder.Entity("AM.Domain.NotificationAggregate.Notification", b =>
@@ -583,6 +619,65 @@ namespace AM.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("AM.Domain.NegotiateAggregate.Negotiate", b =>
+                {
+                    b.HasOne("AM.Domain.ListingAggregate.Listing", "Listing")
+                        .WithMany("NegotiateList")
+                        .HasForeignKey("ListingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AM.Domain.UserAggregate.User", "User")
+                        .WithMany("Negotiations")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.OwnsMany("AM.Domain.NegotiateAggregate.Message", "Messages", b1 =>
+                        {
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("int")
+                                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                            b1.Property<DateTime>("CreationTime")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<string>("MessageBody")
+                                .IsRequired()
+                                .HasMaxLength(500)
+                                .HasColumnType("nvarchar(500)");
+
+                            b1.Property<long>("NegotiateId")
+                                .HasColumnType("bigint");
+
+                            b1.Property<string>("UserEntity")
+                                .IsRequired()
+                                .HasMaxLength(1)
+                                .HasColumnType("nvarchar(1)");
+
+                            b1.Property<long>("UserId")
+                                .HasColumnType("bigint");
+
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("NegotiateId");
+
+                            b1.ToTable("NegitiateMessages");
+
+                            b1.WithOwner("Negotiate")
+                                .HasForeignKey("NegotiateId");
+
+                            b1.Navigation("Negotiate");
+                        });
+
+                    b.Navigation("Listing");
+
+                    b.Navigation("Messages");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("AM.Domain.NotificationAggregate.Notification", b =>
                 {
                     b.HasOne("AM.Domain.UserAggregate.User", "User")
@@ -695,6 +790,8 @@ namespace AM.Infrastructure.Migrations
                 {
                     b.Navigation("DealList");
 
+                    b.Navigation("NegotiateList");
+
                     b.Navigation("PurchaseList");
 
                     b.Navigation("SupplyList");
@@ -725,6 +822,8 @@ namespace AM.Infrastructure.Migrations
                     b.Navigation("Blogs");
 
                     b.Navigation("Listings");
+
+                    b.Navigation("Negotiations");
 
                     b.Navigation("Notifications");
                 });

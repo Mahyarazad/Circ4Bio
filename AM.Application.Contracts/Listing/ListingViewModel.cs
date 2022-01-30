@@ -19,7 +19,8 @@ namespace AM.Application.Contracts.Listing
         public string? Unit { get; set; }
         public double UnitPrice { get; set; }
         public double Amount { get; set; }
-        public bool Status { get; set; }
+        public string? Currency { get; set; }
+        public bool PublicStatus { get; set; }
         public bool IsDeleted { get; set; }
         public bool IsService { get; set; }
 

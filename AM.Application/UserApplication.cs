@@ -5,6 +5,7 @@ using System.Security.Claims;
 using _0_Framework;
 using _0_Framework.Application;
 using _0_Framework.Application.Email;
+using AM.Application.Contracts.Listing;
 using AM.Application.Contracts.Notification;
 using AM.Application.Contracts.ResetPassword;
 using AM.Application.Contracts.User;
@@ -57,12 +58,10 @@ namespace AM.Application
         {
             return _userRepository.Search(searchModel);
         }
-
         public List<RecipientViewModel> GetUserListForListing(long id)
         {
             return _userRepository.GetUserListForListing(id);
         }
-
         public OperationResult Register(RegisterUser command)
         {
             var result = new OperationResult();
@@ -110,7 +109,6 @@ namespace AM.Application
                 return emailServiceResult;
             }
         }
-
         public OperationResult ActivateUser(string command)
         {
             var result = new OperationResult();
@@ -128,7 +126,6 @@ namespace AM.Application
             return result.Failed(ApplicationMessage.SomethingWentWrong);
 
         }
-
         public OperationResult AdminActivateUser(long Id)
         {
             var result = new OperationResult();
@@ -144,7 +141,6 @@ namespace AM.Application
             return result.Failed(ApplicationMessage.RecordNotFound);
 
         }
-
         public OperationResult SendActivationEmail(string command)
         {
             var result = new OperationResult();
@@ -166,7 +162,6 @@ namespace AM.Application
                 return emailServiceResult;
             }
         }
-
         public OperationResult AdminDectivateUser(long Id)
         {
             var result = new OperationResult();
@@ -181,7 +176,6 @@ namespace AM.Application
 
             return result.Failed(ApplicationMessage.RecordNotFound);
         }
-
         public OperationResult AdminActivateUserStatus(long Id)
         {
             var result = new OperationResult();
@@ -196,7 +190,6 @@ namespace AM.Application
 
             return result.Failed(ApplicationMessage.RecordNotFound);
         }
-
         public OperationResult AdminDectivateUserStatus(long Id)
         {
             var result = new OperationResult();
@@ -211,7 +204,6 @@ namespace AM.Application
 
             return result.Failed(ApplicationMessage.RecordNotFound);
         }
-
         public OperationResult EditByAdmin(EditUser command)
         {
             var result = new OperationResult();
@@ -327,7 +319,6 @@ namespace AM.Application
 
             return result.Succeeded();
         }
-
         public OperationResult ChangePassword(ResetPasswordModel command)
         {
             var result = new OperationResult();
@@ -335,12 +326,10 @@ namespace AM.Application
 
             return result.Succeeded();
         }
-
         public EditUser GetDetail(long Id)
         {
             return _userRepository.GetDetail(Id);
         }
-
         public OperationResult ResetPassword(ResetPasswordModel command)
         {
             var result = new OperationResult();
@@ -351,7 +340,6 @@ namespace AM.Application
             return result.Succeeded(ApplicationMessage.ResetPasswordSuccess);
 
         }
-
         public OperationResult Login(EditUser command)
         {
             var result = new OperationResult();
@@ -397,12 +385,10 @@ namespace AM.Application
             _autenticateHelper.Login(authModel);
             return result.Succeeded();
         }
-
         public void Logout()
         {
             _autenticateHelper.Logout();
         }
-
         public List<Usertype> GetUsertypes()
         {
             var type = new Usertype(0, "Default");

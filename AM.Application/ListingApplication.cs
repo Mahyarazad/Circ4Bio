@@ -5,6 +5,7 @@ using System.Linq;
 using _0_Framework;
 using _0_Framework.Application;
 using AM.Application.Contracts.Listing;
+using AM.Application.Contracts.Negotiate;
 using AM.Domain.ListingAggregate;
 using AM.Application.Contracts.Notification;
 using AM.Application.Contracts.User;
@@ -35,7 +36,6 @@ namespace AM.Application
             _recipientRepository = recipientRepository;
             _notificationApplication = notificationApplication;
         }
-
         public OperationResult Create(CreateListing command)
         {
             var result = new OperationResult();
@@ -105,14 +105,13 @@ namespace AM.Application
 
             var listing = new Listing(command.Name, typeofListing, command.Description, command.ImageString,
                 command.DeliveryMethod, command.Unit, command.UnitPrice, command.Amount, command.Status,
-                issuerId, command.IsService);
+                issuerId, command.IsService, command.Currency);
 
             _listingRepository.Create(listing);
             _listingRepository.SaveChanges();
 
             return result.Succeeded();
         }
-
         public OperationResult Edit(EditListing command)
         {
             var result = new OperationResult();
@@ -123,16 +122,16 @@ namespace AM.Application
             var typeofListing = _userApplication.GetUsertypes()
                 .FirstOrDefault(x => x.TypeId == roleId).TypeName;
 
-            var imageFileName = _fileUploader.Uploader(command.Image, $"Listing_Images/${typeofListing}", command.Name);
+            var imageFileName = _fileUploader
+                .Uploader(command.Image, $"Listing_Images/${typeofListing}", command.Name);
 
             var target = _listingRepository.Get(command.Id);
             target.Edit(command.Name, command.Description, imageFileName,
-                command.DeliveryMethod, command.Unit, command.UnitPrice);
+                command.DeliveryMethod, command.Unit, command.UnitPrice, command.Currency);
             _listingRepository.SaveChanges();
 
             return result.Succeeded();
         }
-
         public List<ListingViewModel> GetUserListing(long id)
         {
             return _listingRepository.GetUserListing(id);
@@ -141,17 +140,27 @@ namespace AM.Application
         {
             return _listingRepository.GetAllListing();
         }
+        public List<ListingViewModel> GetAllPublicListing()
+        {
+            return _listingRepository.GetAllPublicListing();
+        }
 
+        public long GetOwnerUserID(long id)
+        {
+            return _listingRepository.GetOwnerUserID(id);
+        }
         public List<ListingViewModel> GetDeletedUserListing(long id)
         {
             return _listingRepository.GetUserListing(id);
         }
-
+        public ListingViewModel GetDetailListing(long id)
+        {
+            return _listingRepository.GetDetailListing(id);
+        }
         public EditListing GetEditListing(long listingId)
         {
             return _listingRepository.GetListingDetail(listingId);
         }
-
         public OperationResult Delete(long id)
         {
             var result = new OperationResult();
@@ -163,7 +172,6 @@ namespace AM.Application
             return result.Succeeded();
 
         }
-
         public OperationResult IncrementAmount(InputAmount command)
         {
             var result = new OperationResult();
@@ -184,7 +192,6 @@ namespace AM.Application
             return result.Succeeded();
 
         }
-
         public OperationResult DeccrementAmount(InputAmount command)
         {
             var result = new OperationResult();
@@ -208,7 +215,6 @@ namespace AM.Application
 
             return result.Succeeded();
         }
-
         public List<ListingOperationLog> GetListingOperationLog(long id)
         {
             return _listingRepository.Get(id).ListingOperations
@@ -226,7 +232,6 @@ namespace AM.Application
                 }).OrderByDescending(x => x.Id)
                 .ToList();
         }
-
         public OperationResult MarkPrivate(long id)
         {
             var result = new OperationResult();
@@ -237,7 +242,6 @@ namespace AM.Application
             _listingRepository.SaveChanges();
             return result.Succeeded();
         }
-
         public OperationResult MarkPublic(long id)
         {
             var result = new OperationResult();
@@ -248,7 +252,9 @@ namespace AM.Application
             _listingRepository.SaveChanges();
             return result.Succeeded();
         }
-
-
+        public List<ActiveListing> GetActiveListing(long userId)
+        {
+            return _listingRepository.GetActiveListing(userId);
+        }
     }
 }

@@ -3,6 +3,7 @@ using AM.Application.Contracts.User;
 using System.Collections.Generic;
 using _0_Framework.Application;
 using _0_Framework.Domain;
+using AM.Application.Contracts.Listing;
 using AM.Application.Contracts.Notification;
 using AM.Application.Contracts.ResetPassword;
 using AM.Domain.NotificationAggregate;
@@ -18,5 +19,6 @@ namespace AM.Domain.UserAggregate
         ResendActivationEmail ResendActivationLink(string email);
         EditUser GetDetailByEmail(string email);
         EditUser GetDetailByActivationUrl(string guid);
+
     }
 }

@@ -1,6 +1,8 @@
-﻿$(document).ready(() => {
-    var host = "https://localhost:5001"
-    //    var host = "http://www.maahyarazad.ir"
+﻿var host = "https://localhost:5001";
+//    var host = "http://www.maahyarazad.ir"
+
+$(document).ready(() => {
+
 
     var NotificationSettings = {
         "url": `${host}/api/Notification/Notification`,
@@ -90,6 +92,6 @@ function handleNotificationRead(id) {
     $.ajax(NotificationMarkReadSettings).done(function (response) {
         $("#notification-counter").text(response)
         $("#notification-counter-mobile").text(response)
-        $(`div[data - notification - label= '${id}']`).remove();
+        $(`div[data-notification-label='${id}']`).remove();
     });
 }
