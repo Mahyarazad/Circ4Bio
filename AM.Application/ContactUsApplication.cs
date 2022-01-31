@@ -70,17 +70,20 @@ namespace AM.Application
 
         public List<ContactUsViewModel> GetContactUsMessages()
         {
-            return _contactUsRepository.GetList().Select(x => new ContactUsViewModel
-            {
-                Id = x.Id,
-                CreationTime = x.CreationTime,
-                FullName = x.FullName,
-                Email = x.Email,
-                Body = x.Body,
-                Subject = x.Subject,
-                Phone = x.Phone,
-                IsReed = x.IsRead
-            }).Where(x => !x.IsReed).OrderByDescending(x => x.Id).ToList();
+            return _contactUsRepository
+                .GetList()
+                .Select(x => new ContactUsViewModel
+                {
+                    Id = x.Id,
+                    CreationTime = x.CreationTime,
+                    FullName = x.FullName,
+                    Email = x.Email,
+                    Body = x.Body,
+                    Subject = x.Subject,
+                    Phone = x.Phone,
+                    IsReed = x.IsRead
+                }).Where(x => !x.IsReed)
+                .OrderByDescending(x => x.Id).ToList();
         }
 
         public List<ContactUsViewModel> GetReadContactUsMessages()

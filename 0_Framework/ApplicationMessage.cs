@@ -31,6 +31,7 @@
         public const string SubmitNegotiationRequest = "You have requested a negotiation";
         public const string ReceivedNegotiation = "Negotiation opened for your listing";
 
-
+        //Negotiate Messaging
+        public const string NewMessage = "You have a new message";
     }
 }

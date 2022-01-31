@@ -57,8 +57,8 @@ namespace AM.Infrastructure.Repository
         {
             return _amContext.Recipients
                 .AsNoTracking()
-                .Where(x => x.UserId == Id && !x.IsReed)
                 .Include(x => x.Notification)
+                .Where(x => x.UserId == Id && !x.IsReed)
                 .Select(x => new NotificationViewModel
                 {
                     UserId = x.UserId,
@@ -66,9 +66,9 @@ namespace AM.Infrastructure.Repository
                     RecipientId = x.Id,
                     NotificationBody = x.Notification.NotificationBody,
                     NotificationTitle = x.Notification.NotificationTitle,
-                    CreationTime = x.CreationTime,
-                }).OrderByDescending(x => x.Id)
-                .Take(7)
+                    CreationTime = x.CreationTime
+                })
+                .OrderByDescending(z => z.Id)
                 .ToList();
         }
 

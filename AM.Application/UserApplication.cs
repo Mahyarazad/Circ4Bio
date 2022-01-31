@@ -381,7 +381,8 @@ namespace AM.Application
                 .ToList();
 
             var authModel = new AuthViewModel(user.Id, user.Email, $"{user.FirstName} {user.LastName}",
-                user.RoleId.ToString(), command.RememberMe, user.PictureString, permissions, command.Password);
+                user.RoleId.ToString(), command.RememberMe, user.PictureString, permissions
+                , command.Password, user.IsActive, user.Status);
             _autenticateHelper.Login(authModel);
             return result.Succeeded();
         }

@@ -16,7 +16,7 @@
                             <div class="flex-shrink-0">
                                 <!-- Heroicon name: solid/check-circle -->
                                 <svg class="h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                                 </svg>
                             </div>
                             <div class="ml-3">
@@ -32,141 +32,147 @@
                     @* </div> *@
 
                     <table class="min-w-full border-collapse block md:table" id="main-table">
-                    <thead class="block md:table-header-group">
-                        <tr class="border border-grey-500 md:border-none block md:table-row absolute -top-full md:top-auto -left-full md:left-auto  md:relative ">
-                            <th class="bg-gray-50 p-2 text-gray-600 font-bold md:border md:border-grey-500 text-left block md:table-cell">Account Info</th>
-                            <th class="bg-gray-50 p-2 text-gray-600 font-bold md:border md:border-grey-500 text-left block md:table-cell">Title</th>
-                            <th class="bg-gray-50 p-2 text-gray-600 font-bold md:border md:border-grey-500 text-left block md:table-cell">PublicStatus</th>
-                            <th class="bg-gray-50 p-2 text-gray-600 font-bold md:border md:border-grey-500 text-left block md:table-cell">Role</th>
-                            <th class="bg-gray-50 p-2 text-gray-600 font-bold md:border md:border-grey-500 text-left block md:table-cell">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody class="block md:table-row-group">
-                    @foreach (var item in Model.UserList)
-                    {
-                        <tr class="bg-white border border-grey-500 md:border-none block md:table-row">
-                            <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span class="inline-block w-1/3 md:hidden font-bold">Account Info</span>
-                                <div>
-                                    <div class="text-sm text-gray-900">
-                                        @item.FullName
-                                    </div>
-                                    <div class="text-sm text-gray-500">
-                                        @item.UserId
-                                    </div>
-                                    <div class="text-sm text-gray-500">
-                                        @item.Email
-                                    </div>
-                                </div></td>
-                            <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span class="inline-block w-1/3 md:hidden font-bold">Title</span>
-                                <div>
-                                    <div class="text-sm text-gray-900">@item.Role</div>
-                                    <div class="text-sm text-gray-500">@item.CreationTime</div>
-                                </div></td>
-                            <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span class="inline-block w-1/3 md:hidden font-bold">PublicStatus</span>
-                                <div>
-                                    @if (item.IsActive)
-                                    {
-                                        <span class="px-2 bg-green-200 inline-flex text-xs leading-5 font-semibold rounded-full text-gray-800">
-                                            Email Active
-                                        </span>
-                                    }
-                                    else
-                                    {
-                                        <span class="px-2 bg-red-200 inline-flex text-xs leading-5 font-semibold rounded-full text-gray-800">
-                                            Email Not Active
-                                        </span>}
-                                    <div>
-                                        @if (item.Status)
-                                        {
-                                            <span class="px-2 bg-green-200 inline-flex text-xs leading-5 font-semibold rounded-full text-gray-800">
-                                                Vat Registered
-                                            </span>
-                                        }
-                                        else
-                                        {
-                                            <span class="px-2 bg-red-200 inline-flex text-xs leading-5 font-semibold rounded-full text-gray-800">
-                                                Vat Not Registered
-                                            </span>
-                                        }
-                                    </div>
-                                </div> </td>
-                            <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span class="inline-block w-1/3 md:hidden font-bold">Role</span> @item.Role</td>
-                            <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell">
-                                <span class="inline-block w-1/3 md:hidden font-bold">Actions</span>
-                                <div class="flex justify-start my-2">
-                                    <a asp-page="Edit" asp-route-id="@item.Id" class="mx-2 inline-flex items-center px-2 py-2 border border-gray-300 shadow-sm text-xs font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
-                                        Edit
-                                    </a>
-                                @if (item.IsActive)
-                                {
-                                    <form asp-page="./Index" asp-page-handler="DeactivateUser"
-                                          data-callback="" data-ajax="true" method="post" data-action="Refresh" class="mx-2">
-                                        <input type="hidden" name="Id" id="Id" value="@item.Id" />
-                                        <button type="submit"
-                                                class="inline-flex items-center p-1 border border-transparent rounded-full shadow-sm text-white bg-red-400 hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 text-xs">
-                                            <!-- Heroicon name: solid/plus-sm -->
-                                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                                                      clip-rule="evenodd" />
-                                            </svg>
-                                            Deactivate Email
-                                        </button>
-                                    </form>
-                                }
-                                else
-                                {
-                                    <form asp-page="./Index" asp-page-handler="ActivateUser"
-                                          data-callback="" data-ajax="true" method="post" data-action="Refresh" class="mx-2">
-                                        <input type="hidden" name="Id" id="Id" value="@item.Id"/>
-                                        <button type="submit"
-                                                class="inline-flex items-center p-1 border border-transparent rounded-full shadow-sm text-white bg-green-400 hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 text-xs">
-                                            <!-- Heroicon name: solid/plus-sm -->
-                                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                                      clip-rule="evenodd"/>
-                                            </svg>
-                                            Activate Email
-                                        </button>
-                                    </form>
-                                }
-                                @if (item.Status)
-                                {
-                                    <form asp-page="./Index" asp-page-handler="DeactivateUserPublicStatus"
-                                          data-callback="" data-ajax="true" method="post" data-action="Refresh" class="mx-2">
-                                        <input type="hidden" name="Id" id="Id" value="@item.Id"/>
-                                        <button type="submit"
-                                                class="inline-flex items-center p-1 border border-transparent rounded-full shadow-sm text-white bg-red-400 hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 text-xs">
-                                            <!-- Heroicon name: solid/plus-sm -->
-                                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                                                      clip-rule="evenodd"/>
-                                            </svg>
-                                            Deactivate Vat Registeration
-                                        </button>
-                                    </form>
-                                }
-                                else
-                                {
-                                    <form asp-page="./Index" asp-page-handler="ActivateUserPublicStatus"
-                                          data-callback="" data-ajax="true" method="post" data-action="Refresh" class="mx-2">
-                                        <input type="hidden" name="Id" id="Id" value="@item.Id"/>
-                                        <button type="submit"
-                                                class="inline-flex items-center p-1 border border-transparent rounded-full shadow-sm text-white bg-green-400 hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 text-xs">
-                                            <!-- Heroicon name: solid/plus-sm -->
-                                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                                      clip-rule="evenodd" />
-                                            </svg>
-                                            Activate Vat Registeration
-                                        </button>
-                                    </form>
-                                }
-                                </div>
-                            </td>
-                        </tr>
-                    }
-                    </tbody>
-                </table>
+                        <thead class="block md:table-header-group">
+                            <tr class="border border-grey-500 md:border-none block md:table-row absolute -top-full md:top-auto -left-full md:left-auto  md:relative ">
+                                <th class="bg-gray-50 p-2 text-gray-600 font-bold md:border md:border-grey-500 text-left block md:table-cell">Account Info</th>
+                                <th class="bg-gray-50 p-2 text-gray-600 font-bold md:border md:border-grey-500 text-left block md:table-cell">Title</th>
+                                <th class="bg-gray-50 p-2 text-gray-600 font-bold md:border md:border-grey-500 text-left block md:table-cell">PublicStatus</th>
+                                <th class="bg-gray-50 p-2 text-gray-600 font-bold md:border md:border-grey-500 text-left block md:table-cell">Role</th>
+                                <th class="bg-gray-50 p-2 text-gray-600 font-bold md:border md:border-grey-500 text-left block md:table-cell">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="block md:table-row-group">
+                            @foreach (var item in Model.UserList)
+                            {
+                                <tr class="bg-white border border-grey-500 md:border-none block md:table-row">
+                                    <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell">
+                                        <span class="inline-block w-1/3 md:hidden font-bold">Account Info</span>
+                                        <div>
+                                            <div class="text-sm text-gray-900">
+                                                @item.FullName
+                                            </div>
+                                            <div class="text-sm text-gray-500">
+                                                @item.UserId
+                                            </div>
+                                            <div class="text-sm text-gray-500">
+                                                @item.Email
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell">
+                                        <span class="inline-block w-1/3 md:hidden font-bold">Title</span>
+                                        <div>
+                                            <div class="text-sm text-gray-900">@item.Role</div>
+                                            <div class="text-sm text-gray-500">@item.CreationTime</div>
+                                        </div>
+                                    </td>
+                                    <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell">
+                                        <span class="inline-block w-1/3 md:hidden font-bold">PublicStatus</span>
+                                        <div>
+                                            @if (item.IsActive)
+                                            {
+                                                <span class="px-2 bg-green-200 inline-flex text-xs leading-5 font-semibold rounded-full text-gray-800">
+                                                    Email Active
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="px-2 bg-red-200 inline-flex text-xs leading-5 font-semibold rounded-full text-gray-800">
+                                                    Email Not Active
+                                                </span>}
+                                            <div>
+                                                @if (item.Status)
+                                                {
+                                                    <span class="px-2 bg-green-200 inline-flex text-xs leading-5 font-semibold rounded-full text-gray-800">
+                                                        Vat Registered
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="px-2 bg-red-200 inline-flex text-xs leading-5 font-semibold rounded-full text-gray-800">
+                                                        Vat Not Registered
+                                                    </span>
+                                                }
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell"><span class="inline-block w-1/3 md:hidden font-bold">Role</span> @item.Role</td>
+                                    <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell">
+                                        <span class="inline-block w-1/3 md:hidden font-bold">Actions</span>
+                                        <div class="flex justify-start my-2">
+                                            <a asp-page="Edit" asp-route-id="@item.Id" class="mx-2 inline-flex items-center px-2 py-2 border border-gray-300 shadow-sm text-xs font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                                                Edit
+                                            </a>
+                                            @if (item.IsActive)
+                                            {
+                                                <form asp-page="./Index" asp-page-handler="DeactivateUser"
+                                                      data-callback="" data-ajax="true" method="post" data-action="Refresh" class="mx-2">
+                                                    <input type="hidden" name="Id" id="Id" value="@item.Id" />
+                                                    <button type="submit"
+                                                            class="inline-flex items-center p-1 border border-transparent rounded-full shadow-sm text-white bg-red-400 hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 text-xs">
+                                                        <!-- Heroicon name: solid/plus-sm -->
+                                                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                                                                  clip-rule="evenodd" />
+                                                        </svg>
+                                                        Deactivate Email
+                                                    </button>
+                                                </form>
+                                            }
+                                            else
+                                            {
+                                                <form asp-page="./Index" asp-page-handler="ActivateUser"
+                                                      data-callback="" data-ajax="true" method="post" data-action="Refresh" class="mx-2">
+                                                    <input type="hidden" name="Id" id="Id" value="@item.Id" />
+                                                    <button type="submit"
+                                                            class="inline-flex items-center p-1 border border-transparent rounded-full shadow-sm text-white bg-green-400 hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 text-xs">
+                                                        <!-- Heroicon name: solid/plus-sm -->
+                                                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                                                  clip-rule="evenodd" />
+                                                        </svg>
+                                                        Activate Email
+                                                    </button>
+                                                </form>
+                                            }
+                                            @if (item.Status)
+                                            {
+                                                <form asp-page="./Index" asp-page-handler="DeactivateUserStatus"
+                                                      data-callback="" data-ajax="true" method="post" data-action="Refresh" class="mx-2">
+                                                    <input type="hidden" name="Id" id="Id" value="@item.Id" />
+                                                    <button type="submit"
+                                                            class="inline-flex items-center p-1 border border-transparent rounded-full shadow-sm text-white bg-red-400 hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 text-xs">
+                                                        <!-- Heroicon name: solid/plus-sm -->
+                                                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                                                                  clip-rule="evenodd" />
+                                                        </svg>
+                                                        Deactivate Vat Registeration
+                                                    </button>
+                                                </form>
+                                            }
+                                            else
+                                            {
+                                                <form asp-page="./Index" asp-page-handler="ActivateUserStatus"
+                                                      data-callback="" data-ajax="true" method="post" data-action="Refresh" class="mx-2">
+                                                    <input type="hidden" name="Id" id="Id" value="@item.Id" />
+                                                    <button type="submit"
+                                                            class="inline-flex items-center p-1 border border-transparent rounded-full shadow-sm text-white bg-green-400 hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 text-xs">
+                                                        <!-- Heroicon name: solid/plus-sm -->
+                                                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                                                  clip-rule="evenodd" />
+                                                        </svg>
+                                                        Activate Vat Registeration
+                                                    </button>
+                                                </form>
+                                            }
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

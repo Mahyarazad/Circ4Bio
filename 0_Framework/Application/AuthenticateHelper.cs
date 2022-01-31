@@ -16,7 +16,6 @@ namespace _0_Framework.Application
         {
             _httpContextAccessor = httpContextAccessor;
         }
-
         private readonly IHttpContextAccessor _httpContextAccessor;
         public void Login(AuthViewModel model)
         {
@@ -27,6 +26,8 @@ namespace _0_Framework.Application
                 new Claim(ClaimTypes.Role, model.RoleId.ToString()),
                 new Claim("Permissions", permissions),
                 new Claim("FullName", model.Fullname),
+                new Claim("IsActive", model.IsActive.ToString()),
+                new Claim("Status", model.Status.ToString()),
             };
 
 
@@ -39,17 +40,14 @@ namespace _0_Framework.Application
             _httpContextAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                 new ClaimsPrincipal(claimsIdentity), authProperties);
         }
-
         public void Logout()
         {
             _httpContextAccessor.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         }
-
         public bool IsAuthenticated()
         {
             return _httpContextAccessor.HttpContext.User.Identity.IsAuthenticated;
         }
-
         public string Username()
         {
             var claims = _httpContextAccessor.HttpContext.User.Claims.ToList();
@@ -66,9 +64,10 @@ namespace _0_Framework.Application
             result.Fullname = claims.FirstOrDefault(x => x.Type == "FullName").Value;
             result.RoleId = claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
             result.Email = claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
+            result.IsActive = Convert.ToBoolean(claims.FirstOrDefault(x => x.Type == "IsActive")?.Value);
+            result.Status = Convert.ToBoolean(claims.FirstOrDefault(x => x.Type == "Status")?.Value);
             return result;
         }
-
         public List<int> GetPermission()
         {
             var permissions = _httpContextAccessor

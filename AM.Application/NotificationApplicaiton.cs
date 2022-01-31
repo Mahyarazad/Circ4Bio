@@ -48,7 +48,6 @@ namespace AM.Application
         public List<NotificationViewModel> GetAllUnread(long Id)
         {
             return _notificationRepository.GetAllUnread(Id);
-
         }
 
         public List<NotificationViewModel> GetLastNUnread(long Id, int nNumber)

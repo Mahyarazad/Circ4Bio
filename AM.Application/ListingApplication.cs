@@ -17,8 +17,8 @@ namespace AM.Application
     {
         private readonly IFileUploader _fileUploader;
         private readonly IUserApplication _userApplication;
-        private readonly IListingRepository _listingRepository;
         private readonly IAutenticateHelper _autenticateHelper;
+        private readonly IListingRepository _listingRepository;
         private readonly IRecipientRepository _recipientRepository;
         private readonly INotificationApplication _notificationApplication;
 
@@ -31,8 +31,8 @@ namespace AM.Application
         {
             _fileUploader = fileUploader;
             _userApplication = userApplication;
-            _listingRepository = listingRepository;
             _autenticateHelper = autenticateHelper;
+            _listingRepository = listingRepository;
             _recipientRepository = recipientRepository;
             _notificationApplication = notificationApplication;
         }
@@ -144,7 +144,6 @@ namespace AM.Application
         {
             return _listingRepository.GetAllPublicListing();
         }
-
         public long GetOwnerUserID(long id)
         {
             return _listingRepository.GetOwnerUserID(id);

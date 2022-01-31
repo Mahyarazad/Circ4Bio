@@ -1,5 +1,6 @@
 ﻿$(document).ready(function () {
     $('#main-table').DataTable({
+        "order": [[0, "desc"]],
         language: { searchPlaceholder: "Search Everthing ..." }
     });
     $('input[type="search"]').addClass('mt-1');

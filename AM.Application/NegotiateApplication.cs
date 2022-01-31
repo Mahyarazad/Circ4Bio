@@ -41,7 +41,6 @@ namespace AM.Application
             _negotiateRepository = negotiateRepository;
             _notificationApplication = notificationApplication;
         }
-
         public OperationResult Create(CreateNegotiate Command)
         {
             var result = new OperationResult();
@@ -107,24 +106,82 @@ namespace AM.Application
             return result.Succeeded();
 
         }
-
         public OperationResult SendMessage(NewMessage Command)
         {
             var result = new OperationResult();
             if (!_negotiateRepository.Exist(x => x.Id == Command.NegotiateId))
                 return result.Failed(ApplicationMessage.RecordNotFound);
+
+            var negotiate = _negotiateRepository.Get(Command.NegotiateId);
+            var whoIsTheSender = _autenticateHelper.CurrentAccountRole().Id;
+
+            var sellerRoleId = _userRepository.GetDetail(negotiate.SellerId).RoleId;
+            var sellerRoleString = _userApplication.GetUsertypes()
+                .FirstOrDefault(x => x.TypeId == sellerRoleId).TypeName;
+
+            var buyyerRoleId = _userRepository.GetDetail(negotiate.SellerId).RoleId;
+            var buyyerUserId = $"{_userRepository.GetDetail(negotiate.SellerId).UserId}";
+            var buyyerRoleString = _userApplication.GetUsertypes()
+                .FirstOrDefault(x => x.TypeId == buyyerRoleId).TypeName;
+
+            var listingInfo = _listingRepository.GetListingDetail(negotiate.ListingId);
+
+            var buyyerRecipientList = new List<RecipientViewModel>();
+            var sellerRecipientList = new List<RecipientViewModel>();
+
+            buyyerRecipientList.Add(new RecipientViewModel
+            {
+                UserId = negotiate.BuyyerId,
+                IsReed = false,
+                RoleId = buyyerRoleId
+            });
+
+            sellerRecipientList.Add(new RecipientViewModel
+            {
+                UserId = negotiate.SellerId,
+                IsReed = false,
+                RoleId = sellerRoleId
+            });
+
+            var buyyerNotificationId = _notificationApplication
+                .PushNotification(new NotificationViewModel
+                {
+                    RecipientList = buyyerRecipientList,
+                    SenderId = negotiate.BuyyerId,
+                    NotificationBody = $"{sellerRoleString} has replied to you regarding {listingInfo.Name} at {listingInfo.UnitPrice} {listingInfo.Currency}",
+                    NotificationTitle = ApplicationMessage.NewMessage,
+                    UserId = negotiate.BuyyerId
+                });
+
+            var sellerNotificationId = _notificationApplication
+                .PushNotification(new NotificationViewModel
+                {
+                    RecipientList = sellerRecipientList,
+                    SenderId = negotiate.SellerId,
+                    NotificationBody = $"{_autenticateHelper.CurrentAccountRole().Email} sends a new message regarding {listingInfo.Name} at {listingInfo.UnitPrice} {listingInfo.Currency}",
+                    NotificationTitle = ApplicationMessage.NewMessage,
+                    UserId = negotiate.SellerId
+                });
+
+            if (whoIsTheSender == negotiate.BuyyerId)
+            {
+                _recipientRepository.Create(new Recipient(negotiate.SellerId, sellerRoleId, sellerNotificationId));
+            }
+            else
+            {
+                _recipientRepository.Create(new Recipient(negotiate.BuyyerId, buyyerRoleId, buyyerNotificationId));
+            }
+            _recipientRepository.SaveChanges();
+
             var targetNegotiation = _negotiateRepository.Get(Command.NegotiateId);
             targetNegotiation.AddMessage(Command.MessageBody, Command.UserId, Command.UserEntity);
             _negotiateRepository.SaveChanges();
             return result.Succeeded();
-
         }
-
         public NegotiateViewModel GetNegotiationViewModel(CreateNegotiate Command)
         {
             return _negotiateRepository.GetNegotiationViewModel(Command);
         }
-
         public NegotiateViewModel GetNegotiationViewModel(long NegotiateId)
         {
             return _negotiateRepository.GetNegotiationViewModel(NegotiateId);
