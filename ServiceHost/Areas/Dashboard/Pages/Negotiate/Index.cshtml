@@ -1,7 +1,8 @@
 ﻿@page
+@using _0_Framework.Application
 @model ServiceHost.Areas.Dashboard.Pages.Negotiate.IndexModel
-@{
-}
+@inject IAutenticateHelper AutenticateHelper;
+@{ ViewData["Title"] = "Dashboard | Negotiations"; }
 
 
 <div class="divide-y divide-gray-200 lg:col-span-9">
@@ -12,7 +13,8 @@
                     <table class="min-w-full border-collapse block md:table" id="main-table">
                         <thead class="block md:table-header-group">
                             <tr class="border border-grey-500 md:border-none block md:table-row absolute -top-full md:top-auto -left-full md:left-auto  md:relative ">
-                                <th class="bg-gray-50 p-2 text-gray-600 font-bold md:border md:border-grey-500 text-left block md:table-cell">Role Info</th>
+                                <th class="bg-gray-50 p-2 text-gray-600 font-bold md:border md:border-grey-500 text-left block md:table-cell">Item Info</th>
+                                <th class="bg-gray-50 p-2 text-gray-600 font-bold md:border md:border-grey-500 text-left block md:table-cell">Seller/Buyyer Info</th>
                                 <th class="bg-gray-50 p-2 text-gray-600 font-bold md:border md:border-grey-500 text-left block md:table-cell">Actions</th>
                             </tr>
                         </thead>
@@ -21,20 +23,56 @@
                             {
                                 <tr class="bg-white border border-grey-500 md:border-none block md:table-row">
                                     <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell">
-                                        <span class="inline-block w-1/3 md:hidden font-bold">Account Info</span>
-                                        <div>
+                                        <span class="inline-block w-1/3 md:hidden font-bold">Item Info</span>
+                                        <div class="text-sm text-gray-900">
                                             <div class="text-sm text-gray-900">
-                                                @item.ListingName
+                                                <span class="text-xs text-gray-600"> Item Name:</span>
+                                                <b class="text-xs">@item.ListingName</b>
                                             </div>
-                                            <div class="text-sm text-gray-500">
-                                                @item.Amount
+                                            <span class="text-xs text-gray-600"> Unit Price:</span>
+                                            @item.UnitPrice <b class="text-xs">@item.Currency</b>
+                                            <div class="text-sm text-gray-900">
+                                                <span class="text-xs text-gray-600"> Available Amount:</span> @item.Amount
+                                                <b class="text-xs">@item.Unit</b>
                                             </div>
                                         </div>
                                     </td>
                                     <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell">
+                                        <span class="inline-block w-1/3 md:hidden font-bold">Seller/Buyyer Info</span>
+                                        @if (AutenticateHelper.CurrentAccountRole().Id == @item.BuyyerId)
+                                        {
+                                            <div class="flex flex-col">
+                                                <div class="text-sm text-gray-900">
+                                                    @item.SellerEmail
+                                                </div>
+                                                <div class="text-sm text-gray-900">
+                                                    @item.SellerName
+                                                </div>
+                                            </div>
+                                            <img class="h-10 w-10 rounded-full"
+                                                 src="~/Images/Profile_Images/@(item.SellerImageString == "default-avatar.png" ? "default-avatar.png" : $"{item.SellerImageString}")"
+                                                 alt="" />
+                                        }
+                                        else
+                                        {
+                                            <div class="flex flex-col">
+                                                <div class="text-sm text-gray-900">
+                                                    @item.BuyyerEmail
+                                                </div>
+                                                <div class="text-sm text-gray-900">
+                                                    @item.BuyyerName
+                                                </div>
+                                            </div>
+                                            <img class="h-10 w-10 rounded-full"
+                                                 src="~/Images/Profile_Images/@(item.BuyyerImageString == "default-avatar.png" ? "default-avatar.png" : $"{item.BuyyerImageString}")"
+                                                 alt="" />
+                                        }
+
+                                    </td>
+                                    <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell">
                                         <span class="inline-block w-1/3 md:hidden font-bold">Actions</span>
                                         <div class="flex justify-start my-2">
-                                            <a asp-page="Messages" asp-route-id="@item.logId"
+                                            <a asp-page="Messages" asp-route-id="@item.NegotiateId"
                                                class="inline-flex items-center px-2 py-2 border border-gray-300 shadow-sm text-xs font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
                                                 <i class="fa fa-edit"></i> Open Messages
                                             </a>
@@ -50,3 +88,7 @@
         </div>
     </div>
 </div>
+
+@section Scripts{
+    <script src="~/js/AlterDataTableDesign.js"></script>
+}

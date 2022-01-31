@@ -213,10 +213,12 @@ function CallBackHandler(data, action, form) {
         //            break;
         case "RefereshList":
             {
-                hideModal();
-                const refereshUrl = form.attr("data-refereshurl");
-                const refereshDiv = form.attr("data-refereshdiv");
-                get(refereshUrl, refereshDiv);
+                var currentLocation = window.location.href;
+                window.location.replace(currentLocation + `?id=${data}`)
+                //                hideModal();
+                //                const refereshUrl = form.attr("data-refereshurl");
+                //                const refereshDiv = form.attr("data-refereshdiv");
+                //                get(refereshUrl, refereshDiv);
             }
             break;
         case "setValue":

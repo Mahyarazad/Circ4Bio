@@ -60,4 +60,8 @@
     $('td[valign="top"]').addClass('text-gray-700');
     $('td[valign="top"]').addClass('pl-6');
     $('td[valign="top"]').addClass('pt-2');
+
+    $('ul[class="pagination"]').addClass('flex');
+    $('li[class="active"]').addClass('mx-1');
+    $('li[class="next"]').addClass('mx-1');
 });

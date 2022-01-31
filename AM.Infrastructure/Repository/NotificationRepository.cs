@@ -49,7 +49,7 @@ namespace AM.Infrastructure.Repository
                     NotificationBody = x.Notification.NotificationBody,
                     NotificationTitle = x.Notification.NotificationTitle,
                 }).OrderByDescending(x => x.Id)
-                .Reverse().Take(nNumber).Reverse()
+                .Take(nNumber)
                 .ToList();
         }
 
@@ -68,7 +68,7 @@ namespace AM.Infrastructure.Repository
                     NotificationTitle = x.Notification.NotificationTitle,
                     CreationTime = x.CreationTime,
                 }).OrderByDescending(x => x.Id)
-                .Reverse().Take(7).Reverse()
+                .Take(7)
                 .ToList();
         }
 

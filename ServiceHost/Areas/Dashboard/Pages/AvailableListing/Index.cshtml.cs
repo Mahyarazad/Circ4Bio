@@ -51,7 +51,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.AvailableListing
             };
 
             _negotiateApplication.Create(createNegotiation);
-            return RedirectToPage("/Negotiate");
+            return RedirectToPage("/Negotiate/Index", new { area = "Dashboard" });
         }
     }
 }

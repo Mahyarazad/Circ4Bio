@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AM.Infrastructure.Migrations
 {
     [DbContext(typeof(AMContext))]
-    [Migration("20220130085004_Negotiate-added")]
-    partial class Negotiateadded
+    [Migration("20220131090033_database-init")]
+    partial class databaseinit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -168,6 +168,11 @@ namespace AM.Infrastructure.Migrations
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
                     b.Property<string>("DeliveryMethod")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -195,7 +200,7 @@ namespace AM.Infrastructure.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("PublicStatus")
+                    b.Property<bool>("Status")
                         .HasColumnType("bit");
 
                     b.Property<string>("Type")
@@ -232,6 +237,9 @@ namespace AM.Infrastructure.Migrations
 
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsFinished")
+                        .HasColumnType("bit");
 
                     b.Property<long>("ListingId")
                         .HasColumnType("bigint");
@@ -492,7 +500,7 @@ namespace AM.Infrastructure.Migrations
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("PublicStatus")
+                    b.Property<bool>("Status")
                         .HasColumnType("bit");
 
                     b.Property<long?>("SuppliedItemId")
@@ -621,13 +629,16 @@ namespace AM.Infrastructure.Migrations
 
                     b.OwnsMany("AM.Domain.NegotiateAggregate.Message", "Messages", b1 =>
                         {
-                            b1.Property<int>("Id")
+                            b1.Property<long>("Id")
                                 .ValueGeneratedOnAdd()
-                                .HasColumnType("int")
+                                .HasColumnType("bigint")
                                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                             b1.Property<DateTime>("CreationTime")
                                 .HasColumnType("datetime2");
+
+                            b1.Property<bool>("IsRead")
+                                .HasColumnType("bit");
 
                             b1.Property<string>("MessageBody")
                                 .IsRequired()
@@ -636,6 +647,9 @@ namespace AM.Infrastructure.Migrations
 
                             b1.Property<long>("NegotiateId")
                                 .HasColumnType("bigint");
+
+                            b1.Property<bool>("UserEntity")
+                                .HasColumnType("bit");
 
                             b1.Property<long>("UserId")
                                 .HasColumnType("bigint");

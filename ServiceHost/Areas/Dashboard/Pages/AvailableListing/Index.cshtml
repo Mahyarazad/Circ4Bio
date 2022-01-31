@@ -18,7 +18,7 @@
                             <div class="flex-shrink-0">
                                 <!-- Heroicon name: solid/check-circle -->
                                 <svg class="h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                                 </svg>
                             </div>
                             <div class="ml-3">
@@ -33,7 +33,7 @@
                             <div class="flex-shrink-0">
                                 <!-- Heroicon name: solid/check-circle -->
                                 <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
                                 </svg>
                             </div>
                             <div class="ml-3">
@@ -49,84 +49,83 @@
 
                         @if (!Model.user.Status)
                         {
-                            <span class="text-red-500 pb-3 mx-5 mt-4"> @ApplicationMessage.SubmitRequiredInfo</span>}
+            <span class="text-red-500 pb-3 mx-5 mt-4"> @ApplicationMessage.SubmitRequiredInfo</span>}
                     </div>
 
                     <table class="min-w-full border-collapse block md:table" id="main-table">
                         <thead class="block md:table-header-group">
-                        <tr class="border border-grey-500 md:border-none block md:table-row absolute -top-full md:top-auto -left-full md:left-auto  md:relative ">
-                            <th class="bg-gray-50 p-2 text-gray-600 font-bold md:border md:border-grey-500 text-left block md:table-cell">Listing Info</th>
-                            <th class="bg-gray-50 p-2 text-gray-600 font-bold md:border md:border-grey-500 text-left block md:table-cell">Unit Price | Amount</th>
-                            <th class="bg-gray-50 p-2 text-gray-600 font-bold md:border md:border-grey-500 text-left block md:table-cell">Image</th>
-                            <th class="bg-gray-50 p-2 text-gray-600 font-bold md:border md:border-grey-500 text-left block md:table-cell">View Detail</th>
-                        </tr>
+                            <tr class="border border-grey-500 md:border-none block md:table-row absolute -top-full md:top-auto -left-full md:left-auto  md:relative ">
+                                <th class="bg-gray-50 p-2 text-gray-600 font-bold md:border md:border-grey-500 text-left block md:table-cell">Listing Info</th>
+                                <th class="bg-gray-50 p-2 text-gray-600 font-bold md:border md:border-grey-500 text-left block md:table-cell">Unit Price | Amount</th>
+                                <th class="bg-gray-50 p-2 text-gray-600 font-bold md:border md:border-grey-500 text-left block md:table-cell">Image</th>
+                                <th class="bg-gray-50 p-2 text-gray-600 font-bold md:border md:border-grey-500 text-left block md:table-cell">View Detail</th>
+                            </tr>
                         </thead>
                         <tbody class="block md:table-row-group">
-                        @foreach (var item in Model.Listing)
-                        {
-                            <tr class="bg-white border border-grey-500 md:border-none block md:table-row">
-                                <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell">
-                                    <span class="inline-block w-1/3 md:hidden font-bold">Listing Info</span>
-                                    <div>
-                                        <div class="text-sm font-medium text-gray-900">
-                                            @item.Type
-                                        </div>
-                                        <div class="text-sm font-medium text-gray-900">
-                                            @item.Name
-                                        </div>
-                                        <div class="text-sm text-gray-500">
-                                            @item.CreationTime
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell">
-                                    <span class="inline-block w-1/3 md:hidden font-bold">Unit Price | Amount | Private & Public</span>
-                                    <div class="text-sm text-gray-900">
-                                        <span class="text-xs text-gray-600"> Unit Price:</span>
-                                        @item.UnitPrice  <b class="text-xs">@item.Currency</b>
-                                        <div class="text-sm text-gray-900">
-                                            <span class="text-xs text-gray-600"> Available Amount:</span> @item.Amount
-                                            <b class="text-xs">@item.Unit</b>
-                                        </div>
-                                        @if (item.PublicStatus)
-                                        {
-                                    <div class="text-sm text-gray-500 font-bold">
-                                        Private Listing
-                                    </div>}
-                                        @if (item.IsService)
-                                        {
-                                    <div class="text-sm text-sky-800 font-bold">
-                                        Service Listing
-                                    </div>}
-                                    </div>
-                                </td>
-                                <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell">
-                                    <span class="inline-block w-1/3 md:hidden font-bold">Image</span>
-                                    <div class="flex-shrink-0 h-10 w-10">
-                                        <img class="h-10 w-10 rounded-full"
-                                             src="~/Images/Listing_Images/@(item.Image == "listing-default.png" ? "listing-default.png" : $"{item.Type}/{item.Image}")"
-                                             alt=""/>
-                                    </div>
-                                </td>
-                                <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell">
-                                    <span class="inline-block w-1/3 md:hidden font-bold">Actions</span>
-                                    <div class="flex justify-start my-2">
+                            @foreach (var item in Model.Listing)
+                            {
+                <tr class="bg-white border border-grey-500 md:border-none block md:table-row">
+                    <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell">
+                        <span class="inline-block w-1/3 md:hidden font-bold">Listing Info</span>
+                        <div>
+                            <div class="text-sm font-medium text-gray-900">
+                                @item.Type
+                            </div>
+                            <div class="text-sm font-medium text-gray-900">
+                                @item.Name
+                            </div>
+                            <div class="text-sm text-gray-500">
+                                @item.CreationTime
+                            </div>
+                        </div>
+                    </td>
+                    <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell">
+                        <span class="inline-block w-1/3 md:hidden font-bold">Unit Price | Amount | Private & Public</span>
+                        <div class="text-sm text-gray-900">
+                            <span class="text-xs text-gray-600"> Unit Price:</span>
+                            @item.UnitPrice  <b class="text-xs">@item.Currency</b>
+                            <div class="text-sm text-gray-900">
+                                <span class="text-xs text-gray-600"> Available Amount:</span> @item.Amount
+                                <b class="text-xs">@item.Unit</b>
+                            </div>
+                            @if (item.PublicStatus)
+                            {
+            <div class="text-sm text-gray-500 font-bold">
+                Private Listing
+            </div>}
+                            @if (item.IsService)
+                            {
+            <div class="text-sm text-sky-800 font-bold">
+                Service Listing
+            </div>}
+                        </div>
+                    </td>
+                    <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell">
+                        <span class="inline-block w-1/3 md:hidden font-bold">Image</span>
+                        <div class="flex-shrink-0 h-10 w-10">
+                            <img class="h-10 w-10 rounded-full"
+                                 src="~/Images/Listing_Images/@(item.Image == "listing-default.png" ? "listing-default.png" : $"{item.Type}/{item.Image}")"
+                                 alt="" />
+                        </div>
+                    </td>
+                    <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell">
+                        <span class="inline-block w-1/3 md:hidden font-bold">Actions</span>
+                        <div class="flex justify-start my-2">
 
-                                        <a asp-page="Detail" asp-route-id="@item.Id" class="mx-2 inline-flex items-center px-2 py-2 border border-gray-300 shadow-sm text-xs font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
-                                            More Details
-                                        </a>
-                                        <form method="POST" id="edit-user-form"
-                                              data-callback="" data-ajax="false" data-action="Refresh">
-                                        <input type="hidden" value="@item.Id" asp-for="@item.Id" />
-                                        <button type="submit" id="save" class="ml-5 bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
-                                            Start Negotiation
-                                        </button>
-                                        </form>
-                                    </div>
-                                </td>
+                            <a asp-page="Detail" asp-route-id="@item.Id" class="mx-2 inline-flex items-center px-2 py-2 border border-gray-300 shadow-sm text-xs font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                                More Details
+                            </a>
+                            <form method="post" id="edit-user-form">
+                                <input type="hidden" value="@item.Id" name="Id"
+                                       />
+                                <button type="submit" class="ml-5 bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+                                    Start Negotiation
+                                </button>
+                            </form>
+                        </div>
+                    </td>
 
-                            </tr>
-                        }
+                </tr>}
 
                         </tbody>
                     </table>

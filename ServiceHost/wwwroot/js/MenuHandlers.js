@@ -20,9 +20,10 @@ $("#desktop-user-menu-trigger").on('mouseover', function (e) {
     e.preventDefault;
     $("#desktop-user-menu").css('visibility', 'visible');
     $("#desktop-user-menu").css('opacity', '1');
-    $("#desktop-user-menu").css('z-index', '10');
+    $("#desktop-user-menu").css('z-index', '50');
     $("#desktop-user-menu").removeClass('top-0');
     $("#desktop-user-menu").addClass("top-10");
+    $('#notification-panel').css('z-index', '1');
 });
 
 $("#desktop-user-menu-trigger").on('mouseleave', function (e) {
@@ -58,7 +59,8 @@ $('#mobile-menu-trigger').on('click', function () {
         $('#mobile-menu').removeClass('top-0');
         $('#mobile-menu').addClass("top-16");
         $('#mobile-menu').css('opacity', '1');
-        $('#mobile-menu').css('z-index', '10');
+        $('#mobile-menu').css('z-index', '50');
+        $('#notification-panel').css('z-index', '1');
     } else {
         $('#mobile-menu').css('visibility', 'hidden');
         $('#mobile-menu').css('opacity', '0');
@@ -204,5 +206,13 @@ $(document).on('keydown', function (e) {
     }
 });
 
-
-
+$("#message-send-button").on('click',
+    function () {
+        $('#arrow-button').remove();
+        loadingDom = `<svg height="40" width="40" class="loader">
+                          <circle class="dot" cx="10" cy="20" r="3"  />
+                          <circle class="dot" cx="20" cy="20" r="3"  />
+                          <circle class="dot" cx="30" cy="20" r="3"  />
+                        </svg>`;
+        $("#message-send-button").append(loadingDom);
+    });

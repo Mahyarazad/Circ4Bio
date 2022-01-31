@@ -7,7 +7,10 @@ namespace AM.Application.Contracts.Negotiate
     {
         OperationResult Create(CreateNegotiate Command);
         OperationResult SendMessage(NewMessage Command);
-        NegotiateViewModel GetNegotiationList(CreateNegotiate Command);
-        List<CreateNegotiate> AllListingItems(long BuyyerId);
+        NegotiateViewModel GetNegotiationViewModel(CreateNegotiate Command);
+        NegotiateViewModel GetNegotiationViewModel(long NegotiateId);
+        List<CreateNegotiate> AllListingItemsBuyyer(long BuyyerId);
+        List<CreateNegotiate> AllListingItemsSeller(long SellerId);
+        List<MessageViewModel> GetMessages(long NegotiateId);
     }
 }

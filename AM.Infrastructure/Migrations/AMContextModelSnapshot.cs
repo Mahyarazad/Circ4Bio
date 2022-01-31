@@ -236,20 +236,18 @@ namespace AM.Infrastructure.Migrations
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsFinished")
+                        .HasColumnType("bit");
+
                     b.Property<long>("ListingId")
                         .HasColumnType("bigint");
 
                     b.Property<long>("SellerId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ListingId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Negotiate", "dbo");
                 });
@@ -627,21 +625,18 @@ namespace AM.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AM.Domain.UserAggregate.User", "User")
-                        .WithMany("Negotiations")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.OwnsMany("AM.Domain.NegotiateAggregate.Message", "Messages", b1 =>
                         {
-                            b1.Property<int>("Id")
+                            b1.Property<long>("Id")
                                 .ValueGeneratedOnAdd()
-                                .HasColumnType("int")
+                                .HasColumnType("bigint")
                                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                             b1.Property<DateTime>("CreationTime")
                                 .HasColumnType("datetime2");
+
+                            b1.Property<bool>("IsRead")
+                                .HasColumnType("bit");
 
                             b1.Property<string>("MessageBody")
                                 .IsRequired()
@@ -651,10 +646,8 @@ namespace AM.Infrastructure.Migrations
                             b1.Property<long>("NegotiateId")
                                 .HasColumnType("bigint");
 
-                            b1.Property<string>("UserEntity")
-                                .IsRequired()
-                                .HasMaxLength(1)
-                                .HasColumnType("nvarchar(1)");
+                            b1.Property<bool>("UserEntity")
+                                .HasColumnType("bit");
 
                             b1.Property<long>("UserId")
                                 .HasColumnType("bigint");
@@ -674,8 +667,6 @@ namespace AM.Infrastructure.Migrations
                     b.Navigation("Listing");
 
                     b.Navigation("Messages");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("AM.Domain.NotificationAggregate.Notification", b =>
@@ -822,8 +813,6 @@ namespace AM.Infrastructure.Migrations
                     b.Navigation("Blogs");
 
                     b.Navigation("Listings");
-
-                    b.Navigation("Negotiations");
 
                     b.Navigation("Notifications");
                 });

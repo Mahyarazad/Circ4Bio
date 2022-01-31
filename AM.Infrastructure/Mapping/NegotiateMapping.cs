@@ -12,12 +12,14 @@ namespace AM.Infrastructure.Mapping
             builder.ToTable("Negotiate", schema: "dbo");
             builder.HasKey(x => x.Id);
             builder.HasOne(x => x.Listing).WithMany(x => x.NegotiateList).HasForeignKey(x => x.ListingId);
+            builder.Property(x => x.IsFinished).IsRequired();
             builder.OwnsMany(x => x.Messages, ModelBuilder =>
             {
                 ModelBuilder.ToTable("NegitiateMessages");
                 ModelBuilder.HasKey(x => x.Id);
                 ModelBuilder.Property(x => x.MessageBody).IsRequired().HasMaxLength(500);
-                ModelBuilder.Property(x => x.UserEntity).IsRequired().HasMaxLength(1);
+                ModelBuilder.Property(x => x.UserEntity).IsRequired();
+                ModelBuilder.Property(x => x.IsRead).IsRequired();
                 ModelBuilder.WithOwner(x => x.Negotiate).HasForeignKey(x => x.NegotiateId);
                 ModelBuilder.Property(x => x.UserId).IsRequired();
             });

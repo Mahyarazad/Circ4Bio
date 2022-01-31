@@ -28,6 +28,9 @@
         public const string ListingTechnologyProvider = "Technology Provider has been listed a new Item in the listing";
         public const string ListingSupplierRawMaterial = "Supplier of Biomass-Raw Material has been listed a new Item in the listing";
         public const string CannotDeduct = "Cannot deduct more than the available amount";
+        public const string SubmitNegotiationRequest = "You have requested a negotiation";
+        public const string ReceivedNegotiation = "Negotiation opened for your listing";
+
 
     }
 }
