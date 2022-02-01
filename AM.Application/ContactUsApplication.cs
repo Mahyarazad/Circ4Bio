@@ -12,10 +12,11 @@ namespace AM.Application
     public class ContactUsApplication : IContactUsApplication
     {
         private readonly IContactUsRepository _contactUsRepository;
-        private readonly IEmailService _emailService;
+        private readonly IEmailService<EmailModel> _emailService;
         private readonly IHttpContextAccessor _contextAccessor;
 
-        public ContactUsApplication(IContactUsRepository contactUsRepository, IEmailService emailService, IHttpContextAccessor contextAccessor)
+        public ContactUsApplication(IContactUsRepository contactUsRepository,
+            IEmailService<EmailModel> emailService, IHttpContextAccessor contextAccessor)
         {
             _contactUsRepository = contactUsRepository;
             _emailService = emailService;
@@ -31,12 +32,18 @@ namespace AM.Application
             {
 
                 var request = _contextAccessor.HttpContext.Request;
-                var emailServiceResult = _emailService.SendEmail(command.Subject
-                    , $"<h3>Inquirer: {command.FullName} </h3>" +
-                      $"<h3>Inquirer Email: {command.Email} </h3>" +
-                      $"<h3>Inquirer Phone: {command.Phone} </h3>" +
-                      $"<p>{command.Body}</p>"
-                    , "admin@maahyarazad.ir");
+                var emailModel = new EmailModel
+                {
+                    EmailTemplate = 2,
+                    Subject = command.Subject,
+                    Fullname = command.FullName,
+                    Email = command.Email,
+                    Phone = command.Phone,
+                    Body = command.Body,
+                    Recipient = "admin@maahyarazad.ir",
+                    Title = command.Subject,
+                };
+                var emailServiceResult = _emailService.SendEmail(emailModel);
 
                 if (emailServiceResult.IsSucceeded)
                 {

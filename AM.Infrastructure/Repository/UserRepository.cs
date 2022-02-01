@@ -19,7 +19,6 @@ namespace AM.Infrastructure.Repository
         {
             _amContext = amContext;
         }
-
         public List<UserViewModel> Search(UserSearchModel searchModel)
         {
             var query = _amContext.Users
@@ -102,6 +101,7 @@ namespace AM.Infrastructure.Repository
                 PhoneNumber = x.PhoneNumber,
                 RoleId = x.RoleId,
                 Password = x.Password,
+                UserId = x.UserName
             }).AsNoTracking().FirstOrDefault(x => x.UserId == username);
         }
         public ResendActivationEmail ResendActivationLink(string email)

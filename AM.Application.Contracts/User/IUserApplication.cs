@@ -22,6 +22,7 @@ namespace AM.Application.Contracts.User
         OperationResult EditByAdmin(EditUser command);
         OperationResult EditByUser(EditUser command);
         EditUser GetDetail(long Id);
+        EditUser GetDetailByUsername(string username);
         OperationResult Login(EditUser command);
         void Logout();
         List<Usertype> GetUsertypes();

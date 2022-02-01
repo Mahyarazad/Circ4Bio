@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using _0_Framework;
 using AM.Application.Contracts.ResetPassword;
 using AM.Application.Contracts.User;
+using FluentEmail.Core;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -45,6 +46,7 @@ namespace ServiceHost.Pages.Authentication
             Message = "";
             SuccessMessage = "";
             var result = _userApplication.ResetPassword(command);
+
             if (result.IsSucceeded)
             {
                 SuccessMessage = result.Message;

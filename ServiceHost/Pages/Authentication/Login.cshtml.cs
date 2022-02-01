@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using _0_Framework;
 using AM.Application.Contracts.User;
 using Microsoft.AspNetCore.Http;
@@ -47,13 +48,20 @@ namespace ServiceHost.Pages.Authentication
 
         public IActionResult OnPostLogin(EditUser command)
         {
+
             SuccessMessage = "";
             FailureMessage = "";
             ActivationFailureMessage = "";
             var result = _userApplication.Login(command);
 
+            var uri = new Uri(_httpContextAccessor.HttpContext.Request.Headers
+                .FirstOrDefault(x => x.Key == "Referer").Value);
+            var queryDictionary = Microsoft.AspNetCore.WebUtilities.QueryHelpers.ParseQuery(uri.Query);
+
             if (result.IsSucceeded)
             {
+                if (queryDictionary.Count > 0)
+                    return Redirect(queryDictionary.First().Value);
                 SuccessMessage = ApplicationMessage.SuccessLogin;
                 return RedirectToPage("/Index", new { area = "Dashboard" });
             }

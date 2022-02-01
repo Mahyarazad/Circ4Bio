@@ -2,28 +2,30 @@
 using _0_Framework;
 using _0_Framework.Application;
 using _0_Framework.Application.Email;
+using _0_Framework.Application.FluentEmail;
 using AM.Application.Contracts.ResetPassword;
 using AM.Domain.ResetPasswordAggregate;
 using AM.Domain.UserAggregate;
 using Microsoft.AspNetCore.Http;
+using Nancy.ViewEngines.SuperSimpleViewEngine;
 
 namespace AM.Application
 {
     public class ResetPasswordApplication : IResetPasswordApplication
     {
-        private readonly IResetPasswordRepository _resetPasswordRepository;
+        private readonly IEmailService<EmailModel> _emailService;
         private readonly IUserRepository _userRepository;
-        private readonly IEmailService _emailService;
         private readonly IHttpContextAccessor _contextAccessor;
+        private readonly IResetPasswordRepository _resetPasswordRepository;
 
         public ResetPasswordApplication(IResetPasswordRepository resetPasswordRepository,
-            IUserRepository userRepository, IEmailService emailService,
+            IUserRepository userRepository, IEmailService<EmailModel> emailService,
             IHttpContextAccessor contextAccessor)
         {
-            _resetPasswordRepository = resetPasswordRepository;
             _emailService = emailService;
             _userRepository = userRepository;
             _contextAccessor = contextAccessor;
+            _resetPasswordRepository = resetPasswordRepository;
         }
 
         public OperationResult CreateResetPassword(string email)
@@ -41,9 +43,16 @@ namespace AM.Application
             var resetUrl = Guid.NewGuid();
 
             var request = _contextAccessor.HttpContext.Request;
-            var emailServiceResult = _emailService
-                .SendEmail("Reset Password", $"http://{request.Host}/Authentication/ResetPassword/{resetUrl.ToString()}".ToLower()
-                , email);
+            var emailModel = new EmailModel
+            {
+                EmailTemplate = 0,
+                Title = ApplicationMessage.ResetPassword,
+                Recipient = email,
+                ResetPasswordLink =
+                    $"https://{request.Host}/Authentication/ResetPassword/{resetUrl.ToString()}".ToLower()
+            };
+            var emailServiceResult = _emailService.SendEmail(emailModel);
+
 
             if (emailServiceResult.IsSucceeded)
             {

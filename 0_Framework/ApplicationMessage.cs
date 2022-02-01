@@ -33,5 +33,9 @@
 
         //Negotiate Messaging
         public const string NewMessage = "You have a new message";
+
+        //Email Title
+        public const string ResetPassword = "Reset Password";
+        public const string AccountActivated = "Your account is activated";
     }
 }

@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using System.Collections.Generic;
 using _0_Framework.Application;
 using _0_Framework.Application.Email;
+using _0_Framework.Application.FluentEmail;
 using AM.Infrastructure.Core;
 using AM.Management.API;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -29,10 +30,11 @@ namespace ServiceHost
             services.AddHttpContextAccessor();
             var connectionString = Configuration.GetConnectionString("AMContext");
             AccountConfiguration.Configure(services, connectionString);
-            services.AddTransient<IEmailService, EmailService>();
+            services.AddTransient<IEmailService<EmailModel>, EmailService>();
             services.AddTransient<IFileUploader, FileUploader>();
             services.AddSingleton<IPasswordHasher, PasswordHasher>();
             services.AddTransient<IAutenticateHelper, AuthenticateHelper>();
+            services.AddTransient<IEmailSender, EmailSender>();
             services.AddSignalR();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

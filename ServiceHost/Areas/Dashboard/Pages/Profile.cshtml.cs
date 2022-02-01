@@ -1,4 +1,6 @@
-﻿using _0_Framework.Application;
+﻿using System;
+using System.Globalization;
+using _0_Framework.Application;
 using AM.Application.Contracts.Notification;
 using AM.Application.Contracts.User;
 using Microsoft.AspNetCore.Mvc;
@@ -18,11 +20,20 @@ namespace ServiceHost.Areas.Dashboard.Pages
             _userApplication = userApplication;
         }
 
-        public void OnGet(long Id)
+        public void OnGet(string Id)
         {
-            user = _userApplication.GetDetail(Id);
-            CountryList = new SelectList(GenerateCountryList.GetList());
+            if (Int64.TryParse(Id, out long value))
+            {
+                user = _userApplication.GetDetail(Convert.ToInt64(value));
+                CountryList = new SelectList(GenerateCountryList.GetList());
+            }
+            else
+            {
+                user = _userApplication.GetDetailByUsername(Id);
+                CountryList = new SelectList(GenerateCountryList.GetList());
+            }
         }
+
 
         public JsonResult OnPost(EditUser user)
         {

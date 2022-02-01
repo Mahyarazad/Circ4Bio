@@ -29,7 +29,7 @@
                         <form method="post" asp-page-handler="GetAll">
                             <div class="flex items-center justify-between">
                                 <input id="remember-me" asp-for="Command.IsReed" type="hidden" value="true">
-                                <button type="submit" class="text-center mx-3 my-3 bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+                                <button type="submit" class="text-center mx-3 my-3 bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-xs font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
                                     View All Messages
                                 </button>
                             </div>
@@ -37,12 +37,12 @@
                         <form method="post" asp-page-handler="GetReadMessages">
                             <div class="flex items-center justify-between">
                                 <input id="remember-me" asp-for="Command.IsReed" type="hidden" value="true">
-                                <button type="submit" class="text-center mx-3 my-3 bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+                                <button type="submit" class="text-center mx-3 my-3 bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-xs font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
                                     Filter Unread Messages
                                 </button>
                             </div>
                         </form>
-                        <a asp-page="./Index" class="text-center mx-3 my-3 bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+                        <a asp-page="./Index" class="text-center mx-3 my-3 bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-xs font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
                             Filter Read Messages
                         </a>
                     </div>

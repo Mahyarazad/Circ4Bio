@@ -4,7 +4,6 @@ using System.Linq;
 using AM.Application.Contracts.Negotiate;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using _0_Framework.Application;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ServiceHost.Areas.Dashboard.Pages.Negotiate

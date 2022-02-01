@@ -21,7 +21,7 @@ namespace AM.Application
     public class UserApplication : IUserApplication
     {
         private readonly IFileUploader _fileUploader;
-        private readonly IEmailService _emailService;
+        private readonly IEmailService<EmailModel> _emailService;
         private readonly IUserRepository _userRepository;
         private readonly IPasswordHasher _passwordHasher;
         private readonly IRoleRepository _roleRepository;
@@ -40,7 +40,7 @@ namespace AM.Application
             IRecipientRepository recipientRepository,
             IResetPasswordApplication resetPasswordApplication,
             INotificationApplication notificationApplication,
-            IEmailService emailService)
+            IEmailService<EmailModel> emailService)
         {
             _fileUploader = fileUploader;
             _emailService = emailService;
@@ -78,9 +78,14 @@ namespace AM.Application
             var activationGuid = Guid.NewGuid();
             var request = _contextAccessor.HttpContext.Request;
 
-            var emailServiceResult = _emailService.SendEmail(ApplicationMessage.AccountVerification
-                , $"http://{request.Host}/Authentication/ActivateUser/{activationGuid.ToString()}".ToLower()
-                , command.Email);
+            var emailModel = new EmailModel
+            {
+                EmailTemplate = 1,
+                Title = ApplicationMessage.AccountVerification,
+                AccountVerificationLink = $"https://{request.Host}/Authentication/ActivateUser/{activationGuid.ToString()}".ToLower(),
+                Recipient = command.Email
+            };
+            var emailServiceResult = _emailService.SendEmail(emailModel);
 
             if (emailServiceResult.IsSucceeded)
             {
@@ -111,14 +116,41 @@ namespace AM.Application
         }
         public OperationResult ActivateUser(string command)
         {
+            var request = _contextAccessor.HttpContext.Request;
             var result = new OperationResult();
             if (!string.IsNullOrWhiteSpace(command))
             {
                 var user = _userRepository.Get(_userRepository.GetDetailByActivationUrl(command).Id);
                 if (user != null)
                 {
-                    user.ActivateUser();
-                    _userRepository.SaveChanges();
+                    if (user.RoleId != 5)
+                    {
+                        var emailModel = new EmailModel
+                        {
+                            EmailTemplate = 2,
+                            Title = ApplicationMessage.AccountActivated,
+                            Body = "Welcome to Circ4Bio",
+                            Body1 = "Your account has successfully registered.",
+                            Body2 = "Please provide your company name and the VAT number and, our team will verify " +
+                                    "the provided information within 24 hours." +
+                                    "It is just the formal background check of your company to protect other clients." +
+                                    "Please follow the link below to update your profile",
+                            Body3 = $"https://{request.Host}/Dashboard/Profile/{user.UserName}".ToLower(),
+                            Recipient = user.Email
+                        };
+                        var emailServiceResult = _emailService.SendEmail(emailModel);
+
+                        if (emailServiceResult.IsSucceeded)
+                        {
+                            user.ActivateUser();
+                            _userRepository.SaveChanges();
+                        }
+                        else
+                        {
+                            return emailServiceResult;
+                        }
+                    }
+
                     return result.Succeeded();
                 }
                 return result.Failed(ApplicationMessage.ActivationUrlError);
@@ -149,9 +181,15 @@ namespace AM.Application
 
             var request = _contextAccessor.HttpContext.Request;
             var activationGuid = _userRepository.ResendActivationLink(command).ActivationGuid;
-            var emailServiceResult = _emailService.SendEmail(ApplicationMessage.AccountVerification
-                , $"http://{request.Host}/Authentication/ActivateUser/{activationGuid.ToString()}".ToLower()
-                , command);
+
+            var emailModel = new EmailModel
+            {
+                EmailTemplate = 1,
+                Title = ApplicationMessage.AccountVerification,
+                AccountVerificationLink = $"https://{request.Host}/Authentication/ActivateUser/{activationGuid.ToString()}".ToLower(),
+                Recipient = command
+            };
+            var emailServiceResult = _emailService.SendEmail(emailModel);
 
             if (emailServiceResult.IsSucceeded)
             {
@@ -329,6 +367,10 @@ namespace AM.Application
         public EditUser GetDetail(long Id)
         {
             return _userRepository.GetDetail(Id);
+        }
+        public EditUser GetDetailByUsername(string username)
+        {
+            return _userRepository.GetDetailByUser(username);
         }
         public OperationResult ResetPassword(ResetPasswordModel command)
         {
