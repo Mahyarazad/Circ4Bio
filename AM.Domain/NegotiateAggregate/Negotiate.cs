@@ -12,10 +12,10 @@ namespace AM.Domain.NegotiateAggregate
         {
         }
 
-        public Negotiate(long listingId, long buyyerId, long sellerId)
+        public Negotiate(long listingId, long buyerId, long sellerId)
         {
             ListingId = listingId;
-            BuyyerId = buyyerId;
+            BuyerId = buyerId;
             SellerId = sellerId;
             IsFinished = false;
             Messages = new List<Message>();
@@ -23,7 +23,7 @@ namespace AM.Domain.NegotiateAggregate
 
         public long ListingId { get; private set; }
         public Listing? Listing { get; private set; }
-        public long BuyyerId { get; private set; }
+        public long BuyerId { get; private set; }
         public long SellerId { get; private set; }
         public bool IsFinished { get; private set; }
         public List<Message>? Messages { get; private set; }

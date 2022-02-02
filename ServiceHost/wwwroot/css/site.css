@@ -1,3 +1,27 @@
 ﻿.max-w-max-customized {
     max-width: 100%;
 }
+
+table.dataTable thead .sorting:after {
+    opacity: 0.3;
+    content: '\21C5' !important;
+}
+
+table.dataTable thead .sorting_desc:after {
+    opacity: 0.3;
+    content: '\21C5' !important;
+}
+
+.no-after:after {
+    opacity: 0 !important;
+}
+
+li.active, li.next, li {
+    margin-left: 0.25rem;
+    margin-right: 0.25rem;
+}
+
+.bg-transparent-customized {
+    background-color: rgba(0, 0, 0, 0.3) !important;
+    border-radius: 5px 5px 5px 5px;
+}

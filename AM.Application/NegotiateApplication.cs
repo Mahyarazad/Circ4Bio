@@ -47,15 +47,19 @@ namespace AM.Application
 
             if (!_listingRepository.Exist(x => x.Id == Command.ListingId))
                 return result.Failed(ApplicationMessage.RecordNotFound);
+            if (_negotiateRepository.Exist(x => x.SellerId == Command.SellerId &
+                                              x.BuyerId == Command.BuyerId &
+                                              x.ListingId == Command.ListingId))
+                return result.Failed(ApplicationMessage.DuplicateNegotiation);
 
             var sellerRoleId = _userRepository.GetDetail(Command.SellerId).RoleId;
             var sellerRoleString = _userApplication.GetUsertypes()
                 .FirstOrDefault(x => x.TypeId == sellerRoleId).TypeName;
 
-            var buyyerRoleId = _userRepository.GetDetail(Command.SellerId).RoleId;
-            var buyyerUserId = $"{_userRepository.GetDetail(Command.SellerId).UserId}";
-            var buyyerRoleString = _userApplication.GetUsertypes()
-                .FirstOrDefault(x => x.TypeId == buyyerRoleId).TypeName;
+            var buyerRoleId = _userRepository.GetDetail(Command.BuyerId).RoleId;
+            var buyerUserId = $"{_userRepository.GetDetail(Command.BuyerId).UserId}";
+            var buyerRoleString = _userApplication.GetUsertypes()
+                .FirstOrDefault(x => x.TypeId == buyerRoleId).TypeName;
 
             var listingInfo = _listingRepository.GetListingDetail(Command.ListingId);
 
@@ -64,9 +68,9 @@ namespace AM.Application
 
             buyyerRecipientList.Add(new RecipientViewModel
             {
-                UserId = Command.BuyyerId,
+                UserId = Command.BuyerId,
                 IsReed = false,
-                RoleId = buyyerRoleId
+                RoleId = buyerRoleId
             });
 
             sellerRecipientList.Add(new RecipientViewModel
@@ -76,14 +80,14 @@ namespace AM.Application
                 RoleId = sellerRoleId
             });
 
-            var buyyerNotificationId = _notificationApplication
+            var buyerNotificationId = _notificationApplication
                 .PushNotification(new NotificationViewModel
                 {
                     RecipientList = buyyerRecipientList,
-                    SenderId = Command.BuyyerId,
+                    SenderId = Command.BuyerId,
                     NotificationBody = $"Negotiation opened for {listingInfo.Name} at {listingInfo.UnitPrice} {listingInfo.Currency}",
                     NotificationTitle = ApplicationMessage.SubmitNegotiationRequest,
-                    UserId = Command.BuyyerId
+                    UserId = Command.BuyerId
                 });
 
             var sellerNotificationId = _notificationApplication
@@ -91,17 +95,17 @@ namespace AM.Application
                 {
                     RecipientList = sellerRecipientList,
                     SenderId = Command.SellerId,
-                    NotificationBody = $"{buyyerUserId} opened a negotiation for {listingInfo.Name} at {listingInfo.UnitPrice} {listingInfo.Currency}",
+                    NotificationBody = $"{buyerUserId} opened a negotiation for {listingInfo.Name} at {listingInfo.UnitPrice} {listingInfo.Currency}",
                     NotificationTitle = ApplicationMessage.ReceivedNegotiation,
                     UserId = Command.SellerId
                 });
 
-            _recipientRepository.Create(new Recipient(Command.BuyyerId, buyyerRoleId, buyyerNotificationId));
+            _recipientRepository.Create(new Recipient(Command.BuyerId, buyerRoleId, buyerNotificationId));
             _recipientRepository.Create(new Recipient(Command.SellerId, sellerRoleId, sellerNotificationId));
             _recipientRepository.SaveChanges();
 
 
-            _negotiateRepository.Create(new Negotiate(Command.ListingId, Command.BuyyerId, Command.SellerId));
+            _negotiateRepository.Create(new Negotiate(Command.ListingId, Command.BuyerId, Command.SellerId));
             _negotiateRepository.SaveChanges();
             return result.Succeeded();
 
@@ -131,7 +135,7 @@ namespace AM.Application
 
             buyyerRecipientList.Add(new RecipientViewModel
             {
-                UserId = negotiate.BuyyerId,
+                UserId = negotiate.BuyerId,
                 IsReed = false,
                 RoleId = buyyerRoleId
             });
@@ -147,10 +151,10 @@ namespace AM.Application
                 .PushNotification(new NotificationViewModel
                 {
                     RecipientList = buyyerRecipientList,
-                    SenderId = negotiate.BuyyerId,
+                    SenderId = negotiate.BuyerId,
                     NotificationBody = $"{sellerRoleString} has replied to you regarding {listingInfo.Name} at {listingInfo.UnitPrice} {listingInfo.Currency}",
                     NotificationTitle = ApplicationMessage.NewMessage,
-                    UserId = negotiate.BuyyerId
+                    UserId = negotiate.BuyerId
                 });
 
             var sellerNotificationId = _notificationApplication
@@ -163,13 +167,13 @@ namespace AM.Application
                     UserId = negotiate.SellerId
                 });
 
-            if (whoIsTheSender == negotiate.BuyyerId)
+            if (whoIsTheSender == negotiate.BuyerId)
             {
                 _recipientRepository.Create(new Recipient(negotiate.SellerId, sellerRoleId, sellerNotificationId));
             }
             else
             {
-                _recipientRepository.Create(new Recipient(negotiate.BuyyerId, buyyerRoleId, buyyerNotificationId));
+                _recipientRepository.Create(new Recipient(negotiate.BuyerId, buyyerRoleId, buyyerNotificationId));
             }
             _recipientRepository.SaveChanges();
 

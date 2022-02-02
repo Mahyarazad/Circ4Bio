@@ -216,3 +216,8 @@ $("#message-send-button").on('click',
                         </svg>`;
         $("#message-send-button").append(loadingDom);
     });
+
+function gotoTop() {
+    var element = document.getElementById('operation-result');
+    element.scrollIntoView({ behavior: "smooth" });
+}

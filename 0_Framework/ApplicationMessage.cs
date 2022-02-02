@@ -30,6 +30,7 @@
         public const string CannotDeduct = "Cannot deduct more than the available amount";
         public const string SubmitNegotiationRequest = "You have requested a negotiation";
         public const string ReceivedNegotiation = "Negotiation opened for your listing";
+        public const string DuplicateNegotiation = "You have an open negotiation on this item, you cannot open another negotiation.";
 
         //Negotiate Messaging
         public const string NewMessage = "You have a new message";

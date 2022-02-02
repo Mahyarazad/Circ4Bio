@@ -19,23 +19,25 @@ namespace AM.Infrastructure.Repository
             return _amContext.Listing
                 .Select(x => new NegotiateViewModel
                 {
+                    CreationTime = x.CreationTime,
                     NegotiateId = Command.NegotiateId,
                     ListingId = x.Id,
                     ListingName = x.Name,
                     Currency = x.Currency,
                     ImageString = x.Image,
+                    DeliveryMethod = x.DeliveryMethod,
                     Amount = x.Amount,
                     SellerEmail = _amContext.Users.AsNoTracking().FirstOrDefault(x => x.Id == Command.SellerId).Email,
-                    BuyyerEmail = _amContext.Users.AsNoTracking().FirstOrDefault(x => x.Id == Command.BuyyerId).Email,
+                    BuyerEmail = _amContext.Users.AsNoTracking().FirstOrDefault(x => x.Id == Command.BuyerId).Email,
                     Unit = x.Unit,
                     UnitPrice = x.UnitPrice,
-                    BuyyerId = Command.BuyyerId,
+                    BuyerId = Command.BuyerId,
                     SellerId = Command.SellerId,
                     ItemType = x.Type,
                     SellerName = $"{_amContext.Users.AsNoTracking().FirstOrDefault(x => x.Id == Command.SellerId).FirstName} {_amContext.Users.AsNoTracking().FirstOrDefault(x => x.Id == Command.SellerId).LastName}",
-                    BuyyerName = $"{_amContext.Users.AsNoTracking().FirstOrDefault(x => x.Id == Command.BuyyerId).FirstName} {_amContext.Users.AsNoTracking().FirstOrDefault(x => x.Id == Command.BuyyerId).LastName}",
-                    BuyyerImageString = _amContext.Users
-                        .AsNoTracking().FirstOrDefault(x => x.Id == Command.BuyyerId).Avatar,
+                    BuyerName = $"{_amContext.Users.AsNoTracking().FirstOrDefault(x => x.Id == Command.BuyerId).FirstName} {_amContext.Users.AsNoTracking().FirstOrDefault(x => x.Id == Command.BuyerId).LastName}",
+                    BuyerImageString = _amContext.Users
+                        .AsNoTracking().FirstOrDefault(x => x.Id == Command.BuyerId).Avatar,
                     SellerImageString = _amContext.Users
                         .AsNoTracking().FirstOrDefault(x => x.Id == Command.SellerId).Avatar,
                 }).AsNoTracking().FirstOrDefault(x => x.ListingId == Command.ListingId);
@@ -58,26 +60,26 @@ namespace AM.Infrastructure.Repository
                     Amount = x.Amount,
                     Unit = x.Unit,
                     UnitPrice = x.UnitPrice,
-                    BuyyerId = negotiate.BuyyerId,
+                    BuyerId = negotiate.BuyerId,
                     SellerId = negotiate.SellerId,
                     ItemType = x.Type,
-                    SellerName = $"{_amContext.Users.AsNoTracking().FirstOrDefault(x => x.Id == negotiate.BuyyerId).FirstName} {_amContext.Users.AsNoTracking().FirstOrDefault(x => x.Id == negotiate.BuyyerId).LastName}",
-                    BuyyerImageString = _amContext.Users
-                        .AsNoTracking().FirstOrDefault(x => x.Id == negotiate.BuyyerId).Avatar,
+                    SellerName = $"{_amContext.Users.AsNoTracking().FirstOrDefault(x => x.Id == negotiate.BuyerId).FirstName} {_amContext.Users.AsNoTracking().FirstOrDefault(x => x.Id == negotiate.BuyerId).LastName}",
+                    BuyerImageString = _amContext.Users
+                        .AsNoTracking().FirstOrDefault(x => x.Id == negotiate.BuyerId).Avatar,
                     SellerImageString = _amContext.Users
                         .AsNoTracking().FirstOrDefault(x => x.Id == negotiate.SellerId).Avatar,
                 }).AsNoTracking().FirstOrDefault(x => x.ListingId == negotiate.ListingId);
         }
 
-        public List<CreateNegotiate> AllListingItemsBuyyer(long BuyyerId)
+        public List<CreateNegotiate> AllListingItemsBuyyer(long BuyerId)
         {
             return _amContext.Negotiates
-                .Where(x => x.BuyyerId == BuyyerId)
+                .Where(x => x.BuyerId == BuyerId)
                 .Select(x => new CreateNegotiate
                 {
                     NegotiateId = x.Id,
                     ListingId = x.ListingId,
-                    BuyyerId = x.BuyyerId,
+                    BuyerId = x.BuyerId,
                     SellerId = x.SellerId
                 }).AsNoTracking().OrderByDescending(x => x.NegotiateId).ToList();
         }
@@ -90,7 +92,7 @@ namespace AM.Infrastructure.Repository
                 {
                     NegotiateId = x.Id,
                     ListingId = x.ListingId,
-                    BuyyerId = x.BuyyerId,
+                    BuyerId = x.BuyerId,
                     SellerId = x.SellerId
                 }).AsNoTracking().OrderByDescending(x => x.NegotiateId).ToList();
         }
@@ -109,11 +111,11 @@ namespace AM.Infrastructure.Repository
                 MessageBody = x.MessageBody,
                 CreationTime = x.CreationTime,
                 BuyyerImageString = _amContext.Users.AsNoTracking().FirstOrDefault(x => x.Id ==
-                    _amContext.Negotiates.AsNoTracking().FirstOrDefault(x => x.Id == NegotiateId).BuyyerId).Avatar,
+                    _amContext.Negotiates.AsNoTracking().FirstOrDefault(x => x.Id == NegotiateId).BuyerId).Avatar,
                 SellerImageString = _amContext.Users.AsNoTracking().FirstOrDefault(x => x.Id ==
                     _amContext.Negotiates.AsNoTracking().FirstOrDefault(x => x.Id == NegotiateId).SellerId).Avatar,
                 BuyyerLetter = _amContext.Users.AsNoTracking().FirstOrDefault(x => x.Id ==
-                    _amContext.Negotiates.AsNoTracking().FirstOrDefault(x => x.Id == NegotiateId).BuyyerId).Email.Substring(0, 1),
+                    _amContext.Negotiates.AsNoTracking().FirstOrDefault(x => x.Id == NegotiateId).BuyerId).Email.Substring(0, 1),
                 SellerLetter = _amContext.Users.AsNoTracking().FirstOrDefault(x => x.Id ==
                     _amContext.Negotiates.AsNoTracking().FirstOrDefault(x => x.Id == NegotiateId).SellerId).Email.Substring(0, 1)
 

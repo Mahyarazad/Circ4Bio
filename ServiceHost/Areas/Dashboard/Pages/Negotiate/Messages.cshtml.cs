@@ -36,7 +36,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Negotiate
             CurrentNegotiate = _negotiateApplication.GetNegotiationViewModel(Command.NegotiateId);
             Command.UserId = Convert.ToInt64(
                 _contextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "User Id").Value);
-            if (Command.UserId == CurrentNegotiate.BuyyerId)
+            if (Command.UserId == CurrentNegotiate.BuyerId)
                 Command.UserEntity = true;
             var res = _negotiateApplication.SendMessage(Command);
             return new JsonResult(res);

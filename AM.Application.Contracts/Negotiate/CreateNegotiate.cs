@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace AM.Application.Contracts.Negotiate
 {
     public class CreateNegotiate
     {
-        public long BuyyerId { get; set; }
+        public long BuyerId { get; set; }
         public long SellerId { get; set; }
         public long ListingId { get; set; }
         public long NegotiateId { get; set; }
@@ -14,11 +15,12 @@ namespace AM.Application.Contracts.Negotiate
     {
         public string? ListingName { get; set; }
         public string? ImageString { get; set; }
-        public string? BuyyerImageString { get; set; }
+        public string? BuyerImageString { get; set; }
         public string? SellerName { get; set; }
-        public string? BuyyerName { get; set; }
+        public DateTime CreationTime { get; set; }
+        public string? BuyerName { get; set; }
         public string? SellerEmail { get; set; }
-        public string? BuyyerEmail { get; set; }
+        public string? BuyerEmail { get; set; }
         public string? ItemType { get; set; }
         public string? SellerImageString { get; set; }
         public string? DeliveryMethod { get; set; }

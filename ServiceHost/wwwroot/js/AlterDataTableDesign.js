@@ -62,7 +62,9 @@
     $('td[valign="top"]').addClass('pl-6');
     $('td[valign="top"]').addClass('pt-2');
 
+    $("th:contains('Actions')").addClass('no-after');
+
     $('ul[class="pagination"]').addClass('flex');
-    $('li[class="active"]').addClass('mx-1');
-    $('li[class="next"]').addClass('mx-1');
+    //    $('li[class="active"]').addClass('mx-1');
+    //    $('li[class="next"]').addClass('mx-1');
 });

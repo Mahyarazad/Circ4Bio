@@ -37,18 +37,16 @@ namespace ServiceHost.Areas.Dashboard.Pages.AvailableListing
             Listing = _listingApplication.GetDetailListing(Id);
         }
 
-        public IActionResult OnPost(long Id)
+        public JsonResult OnPost(long Id)
         {
             var createNegotiation = new CreateNegotiate
             {
                 ListingId = Id,
-                BuyyerId = long.Parse(_contextAccessor.HttpContext.User.Claims
+                BuyerId = long.Parse(_contextAccessor.HttpContext.User.Claims
                     .FirstOrDefault(x => x.Type == "User Id").Value),
                 SellerId = _listingApplication.GetOwnerUserID(Id)
             };
-
-            _negotiateApplication.Create(createNegotiation);
-            return RedirectToPage("/Negotiate/Index", new { area = "Dashboard" });
+            return new JsonResult(_negotiateApplication.Create(createNegotiation));
         }
     }
 }

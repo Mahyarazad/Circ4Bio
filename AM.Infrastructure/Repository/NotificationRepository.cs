@@ -5,6 +5,7 @@ using System.Security.Cryptography.Xml;
 using _0_Framework.Application;
 using _0_Framework.Infrastructure;
 using AM.Application.Contracts.Notification;
+using AM.Domain.NegotiateAggregate;
 using AM.Domain.NotificationAggregate;
 using Microsoft.EntityFrameworkCore;
 
@@ -33,6 +34,16 @@ namespace AM.Infrastructure.Repository
             }
 
             return recipientList;
+        }
+
+        public OperationResult MarkAllRead(long Id)
+        {
+            foreach (var item in _amContext.Recipients.Where(x => x.UserId == Id).ToList())
+            {
+                item.MarkRead();
+            }
+            _amContext.SaveChanges();
+            return new OperationResult().Succeeded();
         }
 
         public List<NotificationViewModel> GetLastNUnread(long Id, int nNumber)

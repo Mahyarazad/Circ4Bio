@@ -14,7 +14,7 @@ namespace AM.Application.Contracts.Notification
         public DateTime CreationTime { get; set; }
         public List<RecipientViewModel>? RecipientList { get; set; }
     }
-    public class RecipientViewModel
+    public class RecipientViewModel 
     {
         public long Id { get; set; }
         public long UserId { get; set; }

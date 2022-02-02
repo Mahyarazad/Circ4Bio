@@ -43,7 +43,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Negotiate
                 {
                     NegotiateId = item.NegotiateId,
                     ListingId = item.ListingId,
-                    BuyyerId = userId,
+                    BuyerId = userId,
                     SellerId = item.SellerId
                 }));
             }
@@ -53,7 +53,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Negotiate
                 {
                     NegotiateId = item.NegotiateId,
                     ListingId = item.ListingId,
-                    BuyyerId = item.BuyyerId,
+                    BuyerId = item.BuyerId,
                     SellerId = userId
                 }));
             }

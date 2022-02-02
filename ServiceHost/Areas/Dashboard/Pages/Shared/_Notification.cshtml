@@ -6,13 +6,24 @@
 <div id="notification-panel" aria-live="assertive"
      class="inset-0 flex px-4 py-6 pointer-events-none sm:p-6 sm:items-start open:bg-white lg:mr-16 xl:mr-16 2xl:mr-44 invisible opacity-0 transform duration-300 fixed top-0 -translate-y-[20rem]">
     <div class="w-full flex flex-col items-center space-y-2 sm:items-start md:items-start lg:items-end mt-10 z-10" id="notification-wrapper">
-            <div class="max-w-sm w-full pointer-events-auto overflow-hidden">
-                <a asp-page="/Notification" asp-route-id="@AutenticateHelper.CurrentAccountRole().Id" class="font-medium text-sm text-white hover:cursor-pointer hover:text-gray-300">
-                    <span class="truncate" id="view-all">
+        <div class="max-w-sm w-full pointer-events-auto overflow-hidden flex justify-between">
+            <div class="mt-2 font-medium text-sm text-white ">
+                <a asp-page="/Notification" asp-route-id="@AutenticateHelper.CurrentAccountRole().Id"
+                   class="p-1 truncate bg-transparent-customized text-gray-100 hover:cursor-pointer hover:text-gray-300"
+                >
+                    <span id="view-all">
                         View All
                     </span>
                 </a>
             </div>
+            <form method="get" id="edit-user-form" asp-page-handler="MarkAllRead" asp-page="/Notification"
+                  data-callback="" data-ajax="true" data-action="Refresh" class="p-1 font-medium text-sm text-white">
+                <input type="hidden" value="@AutenticateHelper.CurrentAccountRole().Id" name="Id"/>
+                <button type='submit' class="p-1 font-medium truncate bg-transparent-customized text-gray-100 hover:cursor-pointer hover:text-gray-300" id="view-all">
+                    Mark All Read
+                </button>
+            </form>
+        </div>
             <!--
             Notification panel, dynamically insert this into the live region when it needs to be displayed
 

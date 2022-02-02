@@ -61,6 +61,7 @@ namespace AM.Infrastructure.Repository
                     DeliveryMethod = x.DeliveryMethod,
                     Description = x.Description,
                     Id = x.Id,
+                    UserId = x.UserId,
                     Name = x.Name,
                     FullName = x.User.FirstName + x.User.LastName,
                     Email = x.User.Email,

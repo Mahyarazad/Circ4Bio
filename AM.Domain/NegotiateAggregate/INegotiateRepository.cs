@@ -8,7 +8,7 @@ namespace AM.Domain.NegotiateAggregate
     {
         NegotiateViewModel GetNegotiationViewModel(CreateNegotiate Command);
         NegotiateViewModel GetNegotiationViewModel(long NegotiateId);
-        List<CreateNegotiate> AllListingItemsBuyyer(long BuyyerId);
+        List<CreateNegotiate> AllListingItemsBuyyer(long BuyerId);
         List<CreateNegotiate> AllListingItemsSeller(long SellerId);
         List<MessageViewModel> GetMessages(long NegotiateId);
     }

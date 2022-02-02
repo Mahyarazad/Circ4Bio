@@ -230,7 +230,7 @@ namespace AM.Infrastructure.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<long>("BuyyerId")
+                    b.Property<long>("BuyerId")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("CreationTime")

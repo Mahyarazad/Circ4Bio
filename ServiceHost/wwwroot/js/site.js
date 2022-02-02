@@ -203,18 +203,20 @@ function CallBackHandler(data, action, form) {
                 },
                     1500)
             } else {
-                window.location.reload();
+                var currentLocation = window.location.href;
+                window.location.href = currentLocation;
                 setInterval(function () {
                     var resultDom = $('#operation-result-failed');
                     resultDom.css('display', 'none');
                 },
                     2000)
             }
-        //            break;
-        case "RefereshList":
+        case "RefreshList":
             {
                 var currentLocation = window.location.href;
-                window.location.replace(currentLocation + `?id=${data}`)
+                window.location.href = currentLocation;
+                //                window.location.href += `?${data.Id}`
+                //                window.location.replace(currentLocation + `?id=${data}`)
                 //                hideModal();
                 //                const refereshUrl = form.attr("data-refereshurl");
                 //                const refereshDiv = form.attr("data-refereshdiv");

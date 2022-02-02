@@ -49,7 +49,7 @@ namespace _0_Framework.Application.Email
                     str = new StreamReader(FilePath);
                     MailText = str.ReadToEnd();
                     str.Close();
-                    MailText = MailText.Replace("[link]", model.AccountVerificationLink)
+                    MailText = MailText
                         .Replace("[body]", model.Body)
                         .Replace("[body1]", model.Body1)
                         .Replace("[body2]", model.Body2)

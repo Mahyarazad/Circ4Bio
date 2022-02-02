@@ -17,7 +17,7 @@
                             <div class="flex-shrink-0">
                                 <!-- Heroicon name: solid/check-circle -->
                                 <svg class="h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                                 </svg>
                             </div>
                             <div class="ml-3">
@@ -32,7 +32,7 @@
                             <div class="flex-shrink-0">
                                 <!-- Heroicon name: solid/check-circle -->
                                 <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
                                 </svg>
                             </div>
                             <div class="ml-3">
@@ -50,7 +50,7 @@
                         {
                             <span class="text-red-500 pb-3 mx-5 mt-4"> @ApplicationMessage.SubmitRequiredInfo</span>}
                     </div>
-                    <form class="divide-y divide-gray-200 lg:col-span-9" method="post">
+                    <form class="divide-y divide-gray-200 lg:col-span-9" method="post" data-callback="" data-ajax="true" data-action="RefreshList">
                         <div class="grid gap-4 sm:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3">
                             <div class="col-span-2 m-7">
                                 <h2 class="text-lg font-medium text-gray-900">@Model.Listing.Name</h2>
@@ -113,19 +113,18 @@
                             </a>
                             @if (!AuthenticateHelper.CurrentAccountRole().Status)
                             {
-                                <button type="submit" @(!AuthenticateHelper.CurrentAccountRole().Status ? "disabled" : "")
+                                <button type="submit" @(!AuthenticateHelper.CurrentAccountRole().Status ? "disabled" : "") onclick="gotoTop()"
                                         class="ml-5 @(!AuthenticateHelper.CurrentAccountRole().Status ? "bg-gray-100" : "bg-sky-700") border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white @(!AuthenticateHelper.CurrentAccountRole().Status ? "hover:bg-gray-200" : "hover:bg-sky-800") focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
                                     Start Negotiation
                                 </button>
                             }
                             else
                             {
-                                <button type="submit"
-                                        class="ml-5 bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
-                                    Start Negotiation
+                                <button type="submit" onclick="gotoTop()" @(Model.Listing.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "disabled" : "")
+                                        class="ml-5 @(Model.Listing.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "bg-gray-100": "bg-sky-700") border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white @(Model.Listing.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "hover:bg-gray-200": "hover:bg-sky-800") focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+                                    @(Model.Listing.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "Owend Item": "Start Negotiation")
                                 </button>
                             }
-
                         </div>
                     </form>
                 </div>
