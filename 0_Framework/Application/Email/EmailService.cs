@@ -3,12 +3,21 @@ using System.IO;
 using FluentEmail.Core.Defaults;
 using MailKit.Net.Smtp;
 using MailKit.Security;
+using Microsoft.Extensions.Configuration;
 using MimeKit;
+using Nancy;
 
 namespace _0_Framework.Application.Email
 {
     public class EmailService : IEmailService<EmailModel>
     {
+        private readonly IConfiguration _configuration;
+
+        public EmailService(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         public OperationResult SendEmail(EmailModel model)
         {
             var result = new OperationResult();
@@ -66,7 +75,7 @@ namespace _0_Framework.Application.Email
             try
             {
                 client.Connect(host: "mail.maahyarazad.ir", port: 587, SecureSocketOptions.None);
-                client.Authenticate("admin@maahyarazad.ir", "g5kv,foljqIpnmacsbhr");
+                client.Authenticate("admin@maahyarazad.ir", _configuration.GetSection("EmailPassword")["SecretKey"]);
                 client.Send(message);
                 client.Disconnect(true);
                 client.Dispose();
