@@ -635,6 +635,10 @@ namespace AM.Infrastructure.Migrations
                             b1.Property<DateTime>("CreationTime")
                                 .HasColumnType("datetime2");
 
+                            b1.Property<string>("FilePathString")
+                                .HasMaxLength(100)
+                                .HasColumnType("nvarchar(100)");
+
                             b1.Property<bool>("IsRead")
                                 .HasColumnType("bit");
 

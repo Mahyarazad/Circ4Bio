@@ -29,7 +29,7 @@ namespace ServiceHost
             string[] files;
             string outputFileName = null;
             if (file == null) return null;
-            var path = $"{_webHostEnvironment.WebRootPath}\\Images\\{folder}\\";
+            var path = $"{_webHostEnvironment.WebRootPath}\\Site Files\\{folder}\\";
             var fileExtension = Path.GetExtension(file.FileName);
 
             if (Directory.Exists(path))

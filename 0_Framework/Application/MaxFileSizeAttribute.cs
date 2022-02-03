@@ -8,20 +8,21 @@ namespace _0_Framework.Application
     {
         private readonly int _maxFileSize;
 
-        public MaxFileSizeAttribute(int MaxFileSize)
+        public MaxFileSizeAttribute(int maxFileSize)
         {
-            MaxFileSize = _maxFileSize;
+            _maxFileSize = maxFileSize;
         }
 
         public override bool IsValid(object value)
         {
             var file = value as IFormFile;
             if (file == null) return true;
-            return file.Length > _maxFileSize;
+            return file.Length < _maxFileSize;
         }
 
         public void AddValidation(ClientModelValidationContext context)
         {
+            context.Attributes.Add("data-val", "true");
             context.Attributes.Add("data-val-maxFileSize", ErrorMessage);
         }
     }

@@ -34,6 +34,7 @@
 
         //Negotiate Messaging
         public const string NewMessage = "You have a new message";
+        public const string EmptyMessage = "You cannot send an empty message";
 
         //Email Title
         public const string ResetPassword = "Reset Password";

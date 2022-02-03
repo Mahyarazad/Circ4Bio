@@ -28,9 +28,9 @@ namespace AM.Domain.NegotiateAggregate
         public bool IsFinished { get; private set; }
         public List<Message>? Messages { get; private set; }
 
-        public void AddMessage(string messageBody, long userId, bool userEntity)
+        public void AddMessage(string messageBody, long userId, bool userEntity, string? filePathString)
         {
-            Messages.Add(new Message(messageBody, userId, userEntity));
+            Messages.Add(new Message(messageBody, userId, userEntity, filePathString));
         }
 
         public void Finished()

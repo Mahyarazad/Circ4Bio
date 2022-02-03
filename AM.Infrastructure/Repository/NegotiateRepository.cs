@@ -109,6 +109,7 @@ namespace AM.Infrastructure.Repository
                 UserEntity = x.UserEntity,
                 NegotiateId = x.NegotiateId,
                 MessageBody = x.MessageBody,
+                FileString = x.FilePathString,
                 CreationTime = x.CreationTime,
                 BuyyerImageString = _amContext.Users.AsNoTracking().FirstOrDefault(x => x.Id ==
                     _amContext.Negotiates.AsNoTracking().FirstOrDefault(x => x.Id == NegotiateId).BuyerId).Avatar,

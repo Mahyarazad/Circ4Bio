@@ -49,7 +49,7 @@ namespace AM.Application
                 Title = ApplicationMessage.ResetPassword,
                 Recipient = email,
                 ResetPasswordLink =
-                    $"https://{request.Host}/Authentication/ResetPassword/{resetUrl.ToString()}".ToLower()
+                    $"http://{request.Host}/Authentication/ResetPassword/{resetUrl.ToString()}".ToLower()
             };
             var emailServiceResult = _emailService.SendEmail(emailModel);
 

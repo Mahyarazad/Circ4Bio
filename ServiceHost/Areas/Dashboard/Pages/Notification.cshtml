@@ -1,6 +1,7 @@
 ﻿@page
+@using _0_Framework.Application
 @model ServiceHost.Areas.Dashboard.Pages.NotificationModel
-
+@inject IAutenticateHelper AutenticateHelper;
 @{ ViewData["Title"] = "Dashboard | Notification"; }
 
 <div class="divide-y divide-gray-200 lg:col-span-9">
@@ -40,7 +41,13 @@
                         </div>
                     </div>
                     <!-- end -->
-
+                    <form method="get" id="edit-user-form" asp-page-handler="MarkAllRead" asp-page="/Notification"
+                          data-callback="" data-ajax="true" data-action="Refresh" class="mx-3 my-3 font-medium text-sm text-white">
+                        <input type="hidden" value="@AutenticateHelper.CurrentAccountRole().Id" name="Id"/>
+                        <button type='submit' class="bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+                            Mark All Read
+                        </button>
+                    </form>
                     <table class="min-w-full border-collapse block md:table" id="main-table">
                         <thead class="block md:table-header-group">
                         <tr class="border border-grey-500 md:border-none block md:table-row absolute -top-full md:top-auto -left-full md:left-auto  md:relative ">

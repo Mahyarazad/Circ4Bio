@@ -1,22 +1,24 @@
-﻿var host = "https://localhost:5001";
-//    var host = "http://www.maahyarazad.ir"
+﻿var host = "http://localhost:5001";
+//var host = "http://www.maahyarazad.ir"
 
 $(document).ready(() => {
-
-
     var NotificationSettings = {
         "url": `${host}/api/Notification/Notification`,
         "method": "GET",
         "dataType": "json",
+        "crossDomain": "true",
         "headers": {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*"
         },
     };
     var NotificationCountSettings = {
         "url": `${host}/api/Notification/CountUnreadNotification`,
         "method": "GET",
         "dataType": "json",
+        "crossDomain": "true",
         "headers": {
+            "Access-Control-Allow-Origin": "*",
             "Content-Type": "application/json"
         },
     };
@@ -73,17 +75,21 @@ function handleNotificationRead(id) {
         "url": `${host}/api/Notification/CountUnreadNotification`,
         "method": "GET",
         "dataType": "json",
+        "crossDomain": "true",
         "headers": {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*"
         },
     };
     var NotificationMarkReadSettings = {
         "url": `${host}/api/Notification/`,
         "method": "POST",
         "dataType": "json",
+        "crossDomain": "true",
         "timeout": 0,
         "headers": {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*"
         },
         "data": JSON.stringify({
             "Id": id

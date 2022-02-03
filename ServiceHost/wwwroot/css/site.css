@@ -25,3 +25,7 @@ li.active, li.next, li {
     background-color: rgba(0, 0, 0, 0.3) !important;
     border-radius: 5px 5px 5px 5px;
 }
+
+.file-input {
+    height: 45px !important;
+}

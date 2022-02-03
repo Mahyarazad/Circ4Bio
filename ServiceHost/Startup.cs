@@ -34,7 +34,6 @@ namespace ServiceHost
             services.AddTransient<IFileUploader, FileUploader>();
             services.AddSingleton<IPasswordHasher, PasswordHasher>();
             services.AddTransient<IAutenticateHelper, AuthenticateHelper>();
-            services.AddTransient<IEmailSender, EmailSender>();
             services.AddSignalR();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -60,6 +59,14 @@ namespace ServiceHost
             });
 
             // services.AddRazorPages().WithRazorPagesRoot("/Index");
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: "DefaultOrigins", builder =>
+                {
+                    builder.WithOrigins("http://www.maahyarazad.ir, http://localhost:5001");
+                });
+            });
+
             services.AddRazorPages().AddRazorPagesOptions(options =>
             {
                 options.Conventions.AuthorizeAreaFolder("Dashboard", "/", "DashboardArea");
@@ -102,7 +109,7 @@ namespace ServiceHost
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseAuthentication();
-            app.UseHttpsRedirection();
+            // app.UseHttpsRedirection();
 
             app.Use(async (context, next) =>
             {
@@ -115,7 +122,7 @@ namespace ServiceHost
             });
 
             app.UseRouting();
-
+            app.UseCors("DefaultOrigins");
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

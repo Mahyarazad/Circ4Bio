@@ -135,7 +135,7 @@ namespace AM.Application
                                     "the provided information within 24 hours." +
                                     "It is just the formal background check of your company to protect other clients." +
                                     "Please follow the link below to update your profile",
-                            Body3 = $"https://{request.Host}/Dashboard/Profile/{user.UserName}".ToLower(),
+                            Body3 = $"http://{request.Host}/Dashboard/Profile/{user.UserName}".ToLower(),
                             Recipient = user.Email
                         };
                         var emailServiceResult = _emailService.SendEmail(emailModel);
@@ -186,7 +186,7 @@ namespace AM.Application
             {
                 EmailTemplate = 1,
                 Title = ApplicationMessage.AccountVerification,
-                AccountVerificationLink = $"https://{request.Host}/Authentication/ActivateUser/{activationGuid.ToString()}".ToLower(),
+                AccountVerificationLink = $"http://{request.Host}/Authentication/ActivateUser/{activationGuid.ToString()}".ToLower(),
                 Recipient = command
             };
             var emailServiceResult = _emailService.SendEmail(emailModel);

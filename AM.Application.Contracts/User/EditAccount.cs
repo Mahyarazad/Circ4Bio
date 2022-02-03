@@ -13,8 +13,7 @@ namespace AM.Application.Contracts.User
         public string? LastName { get; set; }
         [Required(ErrorMessage = ValidationMessages.IsRequired)]
         public string? UserId { get; set; }
-        [MaxFileSize(2 * 1024 * 1024, ErrorMessage = ValidationMessages.SizeError2M)]
-        [FileExtensionLimit(new string[] { "jpeg", "jpg", "png" }, ErrorMessage = ValidationMessages.InvalidFileFormat)]
+        [MaxFileSize(1 * 1024 * 1024, ErrorMessage = ValidationMessages.SizeError1M)]
         public IFormFile? ProfilePicture { get; set; }
         public string? Address { get; set; }
         public string? City { get; set; }

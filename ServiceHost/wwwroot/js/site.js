@@ -116,12 +116,7 @@ function handleAjaxPost(formData, url, action) {
         },
         error: function (data) {
             // Notify the user about the proccess detail
-            Swal.fire({
-                icon: `error`,
-                title: `${data.statusText} ${data.status}`,
-                text: `${data.responseText}`,
-                footer: '<a href="">Why do I have this issue?</a>'
-            })
+            window.alert(data.statusText);
         }
     });
 }
@@ -341,13 +336,16 @@ function handleAjaxCall(method, url, data) {
 jQuery.validator.addMethod("maxFileSize",
     function (value, element, params) {
         var validFormat = [".jpeg", ".jpg", ".png"];
+        if (element.files.length > 0) {
+            var size = element.files[0].size;
 
-        var size = element.files[0].size;
-        var maxSize = 3 * 1024 * 1024;
-        if (size > maxSize)
-            return false;
-        else
-            return true;
+            var maxSize = 1 * 1024 * 1024;
+            if (size > maxSize)
+                return false;
+            else
+                return true;
+        }
+        return true;
     });
 jQuery.validator.unobtrusive.adapters.addBool("maxFileSize");
 

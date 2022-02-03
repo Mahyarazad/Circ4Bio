@@ -15,7 +15,7 @@
 
                             <div class="flex items-center justify-center h-10 w-10 rounded-full bg-pink-500 text-pink-100">
                                 <img class="h-10 w-10 rounded-full"
-                                     src="~/Images/Listing_Images/@(Model.CurrentNegotiate.ImageString == "listing-default.png" ? "listing-default.png" : $"{Model.CurrentNegotiate.ItemType}/{Model.CurrentNegotiate.ImageString}")"
+                                     src="~/Site Files/Listing_Images/@(Model.CurrentNegotiate.ImageString == "listing-default.png" ? "listing-default.png" : $"{Model.CurrentNegotiate.ItemType}/{Model.CurrentNegotiate.ImageString}")"
                                      alt="" />
                             </div>
                             <div class="flex flex-col ml-3">
@@ -56,12 +56,20 @@
                                                 <div class="flex items-center justify-start flex-row-reverse">
                                                     <div class="relative flex items-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
                                                         <img class="h-10 w-10 rounded-full"
-                                                             src="~/Images/Profile_Images/@(item.BuyyerImageString == "default-avatar.png" ? "default-avatar.png" : $"{item.BuyyerImageString}")"
+                                                             src="~/Site Files/Profile_Images/@(item.BuyyerImageString == "default-avatar.png" ? "default-avatar.png" : $"{item.BuyyerImageString}")"
                                                              alt="" />
                                                         <div class="absolute text-gray-600 inset-y-7 inset-x-8 text-xs">@item.BuyyerLetter.ToUpper()</div>
                                                     </div>
                                                     <div class="relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl">
-                                                        <div>@item.MessageBody</div>
+                                                        @if (!string.IsNullOrWhiteSpace(item.FileString))
+                                                        {
+                                                            <a href="~/Site Files/Deal Documents/@item.NegotiateId/@item.FileString"
+                                                               class="underline">@item.MessageBody</a>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div>@item.MessageBody</div>
+                                                        }
                                                     </div>
                                                 </div>
                                             </div>
@@ -73,12 +81,20 @@
                                                 <div class="flex flex-row items-center">
                                                     <div class="relative flex items-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
                                                         <img class="h-10 w-10 rounded-full"
-                                                             src="~/Images/Profile_Images/@(item.SellerImageString == "default-avatar.png" ? "default-avatar.png" : $"{item.SellerImageString}")"
+                                                             src="~/Site Files/Profile_Images/@(item.SellerImageString == "default-avatar.png" ? "default-avatar.png" : $"{item.SellerImageString}")"
                                                              alt="" />
                                                         <div class="absolute text-gray-600 inset-y-7 text-xs">@item.SellerLetter.ToUpper()</div>
                                                     </div>
                                                     <div class="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl">
-                                                        <div>@item.MessageBody</div>
+                                                        @if (!string.IsNullOrWhiteSpace(item.FileString))
+                                                        {
+                                                            <a href="~/Site Files/Deal Documents/@item.NegotiateId/@item.FileString"
+                                                               class="underline">@item.MessageBody</a>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div>@item.MessageBody</div>
+                                                        }
                                                     </div>
                                                 </div>
                                             </div>
@@ -91,16 +107,33 @@
                         <!--End of Messaging Container-->
                         <!--Start of input section-->
                         <form method="post"
-                              data-ajax="true" data-action="Refresh" enctype="multipart/form-data">
+                              data-ajax="true" data-action="Refresh" enctype="multipart/form-data" id="messaging-form">
+                            <input type="hidden" asp-for="@Model.Command.NegotiateId" value="@Model.CurrentNegotiate.NegotiateId" />
                             <div class="flex flex-row items-center">
                                 <div class="flex flex-row items-center w-full border rounded-3xl h-12">
                                     <div class="w-full">
-                                        <input type="text" asp-for="@Model.Command.MessageBody" autocomplete="off"
+                                        <input type="text" asp-for="@Model.Command.MessageBody" autocomplete="off" id="message-input"
                                                class="border border-transparent w-full focus:outline-none text-sm h-11 rounded-3xl" placeholder="Type your message....">
                                     </div>
+                                    <span asp-validation-for="@Model.Command.MessageBody" class="text-xs text-red-500 absolute mb-24 ml-2"></span>
+                                    <span asp-validation-for="@Model.Command.File" class="text-xs text-red-500 absolute mb-32 ml-2"></span>
                                 </div>
-                                <input type="hidden" asp-for="@Model.Command.NegotiateId" value="@Model.CurrentNegotiate.NegotiateId" />
-                                <div class="ml-6">
+
+                                <span id="filename-input" class="flex text-xs text-gray-900 bg-gray-100 rounded-2xl p-3 ml-3 hidden absolute">
+                                </span>
+                                <div class="ml-3">
+                                    <input type="file" asp-for="@Model.Command.File" id="file-input" accept="application/pdf"
+                                           class="absolute block opacity-0 hover:cursor-pointer w-10 file-input" />
+
+                                    <div class="flex items-center justify-center h-10 w-10 rounded-full bg-gray-200 hover:bg-gray-300 text-indigo-800 text-white overflow-hidden">
+                                        <svg class="w-5 h-5 -mr-px"
+                                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                        </svg>
+                                    </div>
+                                </div>
+
+                                <div class="ml-3">
                                     <button type="submit" id="message-send-button"
                                             class="flex items-center justify-center h-10 w-10 rounded-full bg-gray-200 hover:bg-gray-300 text-indigo-800 text-white">
                                         <svg class="w-5 h-5 transform rotate-90 -mr-px" id="arrow-button"
@@ -119,6 +152,7 @@
                                 </div>
                             </div>
                         </form>
+
                         <!--end of input section-->
                     </div>
                 </div>
@@ -133,12 +167,5 @@
 
 @section Scripts
 {
-    <script>
-        $(document).ready(() => {
-            var element = document.getElementById('end-of-messages');
-//            element.scrollIntoView({ behavior: "smooth" });
-            element.scrollIntoView({ block: "end" });
-        });
-
-    </script>
+    <script src="~/js/messaging.js"></script>
 }

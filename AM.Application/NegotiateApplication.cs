@@ -17,6 +17,7 @@ namespace AM.Application
 {
     public class NegotiateApplication : INegotiateApplication
     {
+        private readonly IFileUploader _fileUploader;
         private readonly IUserRepository _userRepository;
         private readonly IUserApplication _userApplication;
         private readonly IListingRepository _listingRepository;
@@ -31,8 +32,10 @@ namespace AM.Application
             INotificationApplication notificationApplication,
             IUserApplication userApplication,
             IListingRepository listingRepository,
+            IFileUploader fileUploader,
             IUserRepository userRepository)
         {
+            _fileUploader = fileUploader;
             _userRepository = userRepository;
             _userApplication = userApplication;
             _autenticateHelper = autenticateHelper;
@@ -178,7 +181,13 @@ namespace AM.Application
             _recipientRepository.SaveChanges();
 
             var targetNegotiation = _negotiateRepository.Get(Command.NegotiateId);
-            targetNegotiation.AddMessage(Command.MessageBody, Command.UserId, Command.UserEntity);
+            var filePathString = "";
+            if (Command.File != null)
+                filePathString = _fileUploader
+                    .Uploader(Command.File, $"Deal Documents/{Command.NegotiateId}",
+                    Guid.NewGuid().ToString());
+
+            targetNegotiation.AddMessage(Command.MessageBody, Command.UserId, Command.UserEntity, filePathString);
             _negotiateRepository.SaveChanges();
             return result.Succeeded();
         }

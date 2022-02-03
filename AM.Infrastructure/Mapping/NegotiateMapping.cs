@@ -18,6 +18,7 @@ namespace AM.Infrastructure.Mapping
                 ModelBuilder.ToTable("NegitiateMessages");
                 ModelBuilder.HasKey(x => x.Id);
                 ModelBuilder.Property(x => x.MessageBody).IsRequired().HasMaxLength(500);
+                ModelBuilder.Property(x => x.FilePathString).HasMaxLength(100);
                 ModelBuilder.Property(x => x.UserEntity).IsRequired();
                 ModelBuilder.Property(x => x.IsRead).IsRequired();
                 ModelBuilder.WithOwner(x => x.Negotiate).HasForeignKey(x => x.NegotiateId);

@@ -19,7 +19,7 @@
             <form method="get" id="edit-user-form" asp-page-handler="MarkAllRead" asp-page="/Notification"
                   data-callback="" data-ajax="true" data-action="Refresh" class="p-1 font-medium text-sm text-white">
                 <input type="hidden" value="@AutenticateHelper.CurrentAccountRole().Id" name="Id"/>
-                <button type='submit' class="p-1 font-medium truncate bg-transparent-customized text-gray-100 hover:cursor-pointer hover:text-gray-300" id="view-all">
+                <button type='submit' class="p-1 font-medium truncate bg-transparent-customized text-gray-100 hover:cursor-pointer hover:text-gray-300">
                     Mark All Read
                 </button>
             </form>

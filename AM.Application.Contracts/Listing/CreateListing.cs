@@ -12,8 +12,7 @@ namespace AM.Application.Contracts.Listing
         public string? Name { get; set; }
         public string? Type { get; set; }
         public string? Description { get; set; }
-        [MaxFileSize(2 * 1024 * 1024, ErrorMessage = ValidationMessages.SizeError2M)]
-        [FileExtensionLimit(new string[] { "jpeg", "jpg", "png" }, ErrorMessage = ValidationMessages.InvalidFileFormat)]
+        [MaxFileSize(1 * 1024 * 1024, ErrorMessage = ValidationMessages.SizeError1M)]
         public IFormFile? Image { get; set; }
         public string? ImageString { get; set; }
         [Required(ErrorMessage = ValidationMessages.IsRequired)]
