@@ -20,6 +20,8 @@ namespace AM.Application.Contracts.Negotiate
     public class MessageViewModel : NewMessage
     {
         public long MessageId { get; set; }
+        public long BuyerId { get; set; }
+        public long SellerId { get; set; }
         public string? FileString { get; set; }
         public string? BuyyerLetter { get; set; }
         public string? SellerLetter { get; set; }

@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{id}"
 @using _0_Framework.Application;
 @model ServiceHost.Areas.Dashboard.Pages.Negotiate.MessagesModel
 @inject IAutenticateHelper AutenticateHelper;
@@ -9,11 +9,43 @@
         <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
                 <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                    <!-- operation-result -->
+                    <div class="rounded-md bg-green-50 p-4 transition ease-in-out duration-75" id="operation-result" style="display: none">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <!-- Heroicon name: solid/check-circle -->
+                                <svg class="h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm font-medium text-green-800" id="operation-result-message">
+
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="rounded-md bg-red-50 p-4 transition ease-in-out duration-75" id="operation-result-failed" style="display: none">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <!-- Heroicon name: solid/check-circle -->
+                                <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm font-medium text-red-800" id="operation-result-failed-message">
+
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end -->
                     <div class="flex flex-col h-full w-full bg-white px-4 py-6">
                         <!--Header container-->
                         <div class="flex flex-row items-center py-4 px-6 rounded-2xl shadow">
 
-                            <div class="flex items-center justify-center h-10 w-10 rounded-full bg-pink-500 text-pink-100">
+                            <div class="flex items-center justify-center h-10 w-10 rounded-full text-pink-100">
                                 <img class="h-10 w-10 rounded-full"
                                      src="~/Site Files/Listing_Images/@(Model.CurrentNegotiate.ImageString == "listing-default.png" ? "listing-default.png" : $"{Model.CurrentNegotiate.ItemType}/{Model.CurrentNegotiate.ImageString}")"
                                      alt="" />
@@ -29,14 +61,40 @@
                                 <!--Back Button-->
                                 <ul class="flex flex-row items-center space-x-2">
                                     <li>
-                                        <a asp-page="/Negotiate/Index"
-                                           class="flex items-center justify-center bg-gray-100 hover:bg-gray-200 text-gray-400 h-10 w-10 rounded-full">
-                                            <span>
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                                                </svg>
-                                            </span>
-                                        </a>
+                                        <div class="flex justify-start">
+                                            <a asp-page="/Negotiate/Index" title="Back"
+                                               class="mx-2 flex items-center justify-center bg-gray-100 hover:bg-gray-200 text-gray-400 h-10 w-10 rounded-full">
+                                                <span>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                                                    </svg>
+                                                </span>
+                                            </a>
+                                            @if (AutenticateHelper.CurrentAccountRole().Id != Model.CurrentNegotiate.BuyerId)
+                                            {
+                                                <a asp-page="/Negotiate/Index" title="Finilize this deal"
+                                                   class="mx-2 flex items-center justify-center bg-green-100 hover:bg-green-200 text-gray-400 h-10 w-10 rounded-full">
+                                                    <span>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                                                        </svg>
+                                                    </span>
+                                                </a>
+                                            }
+                                            <form method="post" data-ajax="true" data-action="CancelNegotiation"
+                                                  asp-page="./Index" asp-page-handler="CancelNegotiation">
+                                                <input type="hidden" value="@Model.CurrentNegotiate.NegotiateId" name="NegotiateId" />
+                                                <input type="hidden" value="@Model.CurrentNegotiate.BuyerId" name="BuyerId" />
+                                                <input type="hidden" value="@Model.CurrentNegotiate.SellerId" name="SellerId" />
+                                                <input type="hidden" value="@Model.CurrentNegotiate.ListingId" name="ListingId" />
+                                                <button title="Cancel this negotiotion"
+                                                        type="submit" class="mx-2 flex items-center justify-center bg-red-100 hover:bg-red-200 text-gray-400 h-10 w-10 rounded-full">
+                                                    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                                    </svg>
+                                                </button>
+                                            </form>
+                                        </div>
                                     </li>
                                 </ul>
                                 <!--end Back Button-->
@@ -49,56 +107,27 @@
                                 <div class="grid grid-cols-12 gap-y-2" id="messaging-container">
                                     @foreach (var item in Model.MessageList)
                                     {
-                                        if (item.UserId == AutenticateHelper.CurrentAccountRole().Id)
-                                        {
-                                            <!--Sender Container-->
-                                            <div class="col-start-1 col-end-13 px-2 rounded-lg">
-                                                <div class="flex items-center justify-start flex-row-reverse">
-                                                    <div class="relative flex items-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
-                                                        <img class="h-10 w-10 rounded-full"
-                                                             src="~/Site Files/Profile_Images/@(item.BuyyerImageString == "default-avatar.png" ? "default-avatar.png" : $"{item.BuyyerImageString}")"
-                                                             alt="" />
-                                                        <div class="absolute text-gray-600 inset-y-7 inset-x-8 text-xs">@item.BuyyerLetter.ToUpper()</div>
+                                        <!--Sender Container-->
+                                        <div class="col-start-1 col-end-13 px-2 rounded-lg">
+                                            <div class="flex items-center justify-start
+                                                 @(item.UserId == AutenticateHelper.CurrentAccountRole().Id ? "flex-row-reverse" : "")">
+                                                <div class="relative flex items-center h-10 w-10 rounded-full flex-shrink-0">
+                                                    <img class="h-10 w-10 rounded-full"
+                                                         src="~/Site Files/Profile_Images/@(item.UserId == item.BuyerId ?
+                                                            item.BuyyerImageString == "default-avatar.png" ? "default-avatar.png" : $"{item.BuyyerImageString}" : item.SellerImageString == "default-avatar.png" ? "default-avatar.png" : $"{item.SellerImageString}")"
+                                                         alt=""/>
+                                                    <div class="absolute text-gray-600 inset-y-7 inset-x-8 text-xs">
+                                                        @(item.UserId == item.BuyerId ? item.BuyyerLetter.ToUpper() : item.SellerLetter.ToUpper())
                                                     </div>
-                                                    <div class="relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl">
-                                                        @if (!string.IsNullOrWhiteSpace(item.FileString))
-                                                        {
-                                                            <a href="~/Site Files/Deal Documents/@item.NegotiateId/@item.FileString"
-                                                               class="underline">@item.MessageBody</a>
-                                                        }
-                                                        else
-                                                        {
-                                                            <div>@item.MessageBody</div>
-                                                        }
+                                                </div>
+                                                <div class="relative mr-3 text-sm
+                                                     @(item.UserId == AutenticateHelper.CurrentAccountRole().Id ? "bg-sky-100" : "") py-2 px-4 shadow rounded-xl">
+                                                    <div>
+                                                        @item.MessageBody
                                                     </div>
                                                 </div>
                                             </div>
-                                        }
-                                        else
-                                        {
-                                            <!--Receiver Container-->
-                                            <div class="col-start-1 col-end-13 px-2 rounded-lg">
-                                                <div class="flex flex-row items-center">
-                                                    <div class="relative flex items-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
-                                                        <img class="h-10 w-10 rounded-full"
-                                                             src="~/Site Files/Profile_Images/@(item.SellerImageString == "default-avatar.png" ? "default-avatar.png" : $"{item.SellerImageString}")"
-                                                             alt="" />
-                                                        <div class="absolute text-gray-600 inset-y-7 text-xs">@item.SellerLetter.ToUpper()</div>
-                                                    </div>
-                                                    <div class="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl">
-                                                        @if (!string.IsNullOrWhiteSpace(item.FileString))
-                                                        {
-                                                            <a href="~/Site Files/Deal Documents/@item.NegotiateId/@item.FileString"
-                                                               class="underline">@item.MessageBody</a>
-                                                        }
-                                                        else
-                                                        {
-                                                            <div>@item.MessageBody</div>
-                                                        }
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        }
+                                        </div>
                                     }
                                     <div id="end-of-messages"></div>
                                 </div>
@@ -125,7 +154,7 @@
                                     <input type="file" asp-for="@Model.Command.File" id="file-input" accept="application/pdf"
                                            class="absolute block opacity-0 hover:cursor-pointer w-10 file-input" />
 
-                                    <div class="flex items-center justify-center h-10 w-10 rounded-full bg-gray-200 hover:bg-gray-300 text-indigo-800 text-white overflow-hidden">
+                                    <div class="flex items-center justify-center h-10 w-10 rounded-full bg-gray-200 hover:bg-gray-300 text-sky-700 text-white overflow-hidden">
                                         <svg class="w-5 h-5 -mr-px"
                                              xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -134,8 +163,8 @@
                                 </div>
 
                                 <div class="ml-3">
-                                    <button type="submit" id="message-send-button"
-                                            class="flex items-center justify-center h-10 w-10 rounded-full bg-gray-200 hover:bg-gray-300 text-indigo-800 text-white">
+                                    <button type="submit" id="message-send-button" title="Send"
+                                            class="flex items-center justify-center h-10 w-10 rounded-full bg-gray-200 hover:bg-gray-300 text-sky-700 text-white">
                                         <svg class="w-5 h-5 transform rotate-90 -mr-px" id="arrow-button"
                                              fill="none"
                                              stroke="currentColor"

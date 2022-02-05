@@ -23,6 +23,8 @@ namespace AM.Domain
         public int ClosingStatus { get; private set; }
         public bool PaymentStatus { get; private set; }
         public bool IsDeleted { get; private set; }
+        public bool IsActive { get; private set; }
+        public bool IsFInished { get; private set; }
         public DateTime StartTime { get; private set; }
         public DateTime DueTime { get; private set; }
     }

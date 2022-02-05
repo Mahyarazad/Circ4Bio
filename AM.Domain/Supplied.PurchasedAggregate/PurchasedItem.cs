@@ -14,5 +14,5 @@ namespace AM.Domain.Supplied.PurchasedAggregate
         public long ListingId { get; private set; }
         public Listing? Listing { get; private set; }
         public List<User>? Users { get; private set; }
-    }
+        }
 }

@@ -1,5 +1,6 @@
 ﻿using _0_Framework.Application;
 using AM.Application.Contracts.User;
+using AM.Infrastructure.Core;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -16,7 +17,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Users.Account
         {
             _userApplication = userApplication;
         }
-
+        [RequirePermission(UserPermission.EditUser)]
         public void OnGet(long Id)
         {
             user = _userApplication.GetDetail(Id);
@@ -24,6 +25,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Users.Account
             RoleList = new SelectList(_userApplication.GetUsertypes(), "TypeId", "TypeName");
         }
 
+        [RequirePermission(UserPermission.EditUser)]
         public JsonResult OnPost(EditUser user)
         {
             return new JsonResult(_userApplication.EditByAdmin(user));

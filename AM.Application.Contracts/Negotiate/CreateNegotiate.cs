@@ -9,6 +9,8 @@ namespace AM.Application.Contracts.Negotiate
         public long SellerId { get; set; }
         public long ListingId { get; set; }
         public long NegotiateId { get; set; }
+        public bool IsCanceled { get; set; }
+        public bool IsFinished { get; set; }
     }
 
     public class NegotiateViewModel : CreateNegotiate

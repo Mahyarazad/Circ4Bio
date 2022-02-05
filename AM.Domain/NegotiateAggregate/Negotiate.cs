@@ -18,6 +18,7 @@ namespace AM.Domain.NegotiateAggregate
             BuyerId = buyerId;
             SellerId = sellerId;
             IsFinished = false;
+            IsCanceled = false;
             Messages = new List<Message>();
         }
 
@@ -26,6 +27,7 @@ namespace AM.Domain.NegotiateAggregate
         public long BuyerId { get; private set; }
         public long SellerId { get; private set; }
         public bool IsFinished { get; private set; }
+        public bool IsCanceled { get; private set; }
         public List<Message>? Messages { get; private set; }
 
         public void AddMessage(string messageBody, long userId, bool userEntity, string? filePathString)
@@ -37,6 +39,9 @@ namespace AM.Domain.NegotiateAggregate
         {
             IsFinished = true;
         }
-
+        public void Canceled()
+        {
+            IsCanceled = true;
+        }
     }
 }

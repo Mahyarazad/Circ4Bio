@@ -6,7 +6,6 @@ using Microsoft.Extensions.Hosting;
 using System.Collections.Generic;
 using _0_Framework.Application;
 using _0_Framework.Application.Email;
-using _0_Framework.Application.FluentEmail;
 using AM.Infrastructure.Core;
 using AM.Management.API;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -44,6 +43,7 @@ namespace ServiceHost
                     c.LoginPath = new PathString("/Authentication/Login");
                 });
 
+
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("DashboardArea", builder =>
@@ -54,7 +54,7 @@ namespace ServiceHost
                             AuthorizationRoles.Plant, AuthorizationRoles.SupplierofRawMaterial,
                             AuthorizationRoles.TechnologyProvider
                         }));
-                options.AddPolicy("Inventory", builder =>
+                options.AddPolicy("AdminArea", builder =>
                     builder.RequireRole(AuthorizationRoles.Admin));
             });
 
@@ -70,7 +70,8 @@ namespace ServiceHost
             services.AddRazorPages().AddRazorPagesOptions(options =>
             {
                 options.Conventions.AuthorizeAreaFolder("Dashboard", "/", "DashboardArea");
-                options.Conventions.AuthorizeAreaFolder("Administrator", "/Inventory", "Inventory");
+                options.Conventions.AuthorizeAreaFolder("Dashboard", "/Users", "AdminArea");
+                options.Conventions.AuthorizeAreaFolder("Dashboard", "/ContactUs", "AdminArea");
             })
             .AddApplicationPart(typeof(NotificationController).Assembly);
 
@@ -106,10 +107,10 @@ namespace ServiceHost
                 app.UseHsts();
             }
 
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseAuthentication();
-            // app.UseHttpsRedirection();
 
             app.Use(async (context, next) =>
             {

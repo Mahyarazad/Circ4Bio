@@ -124,6 +124,7 @@ namespace AM.Infrastructure.Repository
                     DeliveryMethod = x.DeliveryMethod,
                     Description = x.Description,
                     Id = x.Id,
+                    UserId = x.UserId,
                     Name = x.Name,
                     FullName = x.User.FirstName + x.User.LastName,
                     Email = x.User.Email,
@@ -186,6 +187,7 @@ namespace AM.Infrastructure.Repository
                     ImageString = x.Image,
                     UnitPrice = x.UnitPrice,
                     Id = x.Id,
+                    OwnerUserId = x.UserId,
                     IsService = x.IsService,
                     Currency = x.Currency
 

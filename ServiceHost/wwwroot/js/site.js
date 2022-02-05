@@ -30,7 +30,6 @@ function showModal() {
     $('#modal').css('z-index', '10');
     $('#modal').removeClass('translate-y-full');
     $('#modal').addClass('top-0');
-    $('#layout-container').addClass('opacity-70');
     window.location.hash = "##";
 }
 
@@ -40,7 +39,6 @@ function hideModal() {
     $('#modal').css('z-index', '-1');
     $('#modal').addClass('translate-y-full');
     $('#modal').removeClass('top-0');
-    $('#layout-container').removeClass('opacity-70');
     window.location.hash = "##";
     //    $("#modal").on("hidden.bs.modal",
     //        function () {
@@ -63,6 +61,7 @@ $(window).on('hashchange',
     });
 
 function handleAjaxGet(formData, url, action, data) {
+
     $.get(url,
         data,
         function (data) {
@@ -89,26 +88,41 @@ function handleAjaxPost(formData, url, action) {
                 resultDomMessage.text(data.message);
                 resultDom.css('display', 'block');
             } else {
+
                 $("#modal").hide();
                 var url = window.location.href;
                 var splited = url.split('/');
-                if (parseInt(splited[splited.length - 1]) > 0) {
+
+                if (action === "CancelNegotiation") {
                     var updatedUrl = splited.slice(0, splited.length - 2);
                     url = updatedUrl.join('/', updatedUrl);
-                } else if (splited[splited.length - 1] === "create") {
-                    var updatedUrl = splited.slice(0, splited.length - 1);
-                    url = updatedUrl.join('/', updatedUrl);
+                    var resultDom = $('#operation-result');
+                    var resultDomMessage = $('#operation-result-message');
+                    resultDomMessage.text(data.message);
+                    resultDom.css('display', 'block');
+                    setTimeout(() => { window.location.replace(url) }, 1000)
                 }
-                var resultDom = $('#operation-result');
-                var resultDomMessage = $('#operation-result-message');
 
-                resultDomMessage.text(data.message);
-                resultDom.css('display', 'block');
+                if (splited[splited.length - 2] !== "messages") {
+                    if (parseInt(splited[splited.length - 1]) > 0) {
+                        var updatedUrl = splited.slice(0, splited.length - 2);
+                        url = updatedUrl.join('/', updatedUrl);
+                    } else if (splited[splited.length - 1] === "create") {
+                        var updatedUrl = splited.slice(0, splited.length - 1);
+                        url = updatedUrl.join('/', updatedUrl);
+                    }
+                    var resultDom = $('#operation-result');
+                    var resultDomMessage = $('#operation-result-message');
 
-                setTimeout(() => {
-                    window.location.replace(url);
-                },
-                    1000)
+                    resultDomMessage.text(data.message);
+                    resultDom.css('display', 'block');
+
+                    setTimeout(() => {
+                        window.location.replace(url);
+                    },
+                        1000)
+                }
+
             }
             setInterval(function () {
                 CallBackHandler(data, action, formData);;
@@ -222,6 +236,12 @@ function CallBackHandler(data, action, form) {
             {
                 const element = form.data("element");
                 $(`#${element}`).html(data);
+            }
+            break;
+        case "CancelNegotiation":
+            {
+                var currentLocation = window.location.href;
+                window.location.href = currentLocation;
             }
             break;
         default:

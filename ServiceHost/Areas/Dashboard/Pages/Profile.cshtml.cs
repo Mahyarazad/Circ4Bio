@@ -15,22 +15,41 @@ namespace ServiceHost.Areas.Dashboard.Pages
         public SelectList CountryList;
         public string Role;
         private readonly IUserApplication _userApplication;
-        public ProfileModel(IUserApplication userApplication)
+        private readonly IAutenticateHelper _autenticateHelper;
+        public ProfileModel(IUserApplication userApplication,
+            IAutenticateHelper autenticateHelper)
         {
             _userApplication = userApplication;
+            _autenticateHelper = autenticateHelper;
         }
 
-        public void OnGet(string Id)
+        public IActionResult OnGet(string Id)
         {
+            CountryList = new SelectList(GenerateCountryList.GetList());
             if (Int64.TryParse(Id, out long value))
             {
                 user = _userApplication.GetDetail(Convert.ToInt64(value));
-                CountryList = new SelectList(GenerateCountryList.GetList());
+                if (user.Id == _autenticateHelper.CurrentAccountRole().Id)
+                {
+                    return null;
+                }
+                else
+                {
+                    return RedirectToPage("AccessDenied", new { area = "" });
+                }
             }
             else
             {
                 user = _userApplication.GetDetailByUsername(Id);
-                CountryList = new SelectList(GenerateCountryList.GetList());
+                if (user.Id == _autenticateHelper.CurrentAccountRole().Id)
+                {
+                    return null;
+                }
+                else
+                {
+                    return RedirectToPage("AccessDenied", new { area = "" });
+                }
+
             }
         }
 

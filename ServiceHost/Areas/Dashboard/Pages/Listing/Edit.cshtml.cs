@@ -17,22 +17,31 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
         public EditListing Command;
         public SelectList CurrencyList;
         private readonly IUserApplication _userApplication;
-        private readonly IHttpContextAccessor _contextAccessor;
+        private readonly IAutenticateHelper _autenticateHelper;
         private readonly IListingApplication _listingApplication;
         public EditModel(IUserApplication userApplication,
-            IHttpContextAccessor contextAccessor,
+            IAutenticateHelper autenticateHelper,
             IListingApplication listingApplication
         )
         {
             _userApplication = userApplication;
-            _contextAccessor = contextAccessor;
+            _autenticateHelper = autenticateHelper;
             _listingApplication = listingApplication;
         }
 
-        public void OnGet(long Id)
+        public IActionResult OnGet(long Id)
         {
+            var loggedInUserId = _autenticateHelper.CurrentAccountRole().Id;
             Command = _listingApplication.GetEditListing(Id);
-            CurrencyList = new SelectList(GenerateCurrencyList.GetList());
+            if (Command.OwnerUserId == loggedInUserId)
+            {
+                CurrencyList = new SelectList(GenerateCurrencyList.GetList());
+                return null;
+            }
+            else
+            {
+                return RedirectToPage("/AccessDenied", new { area = "" });
+            }
         }
 
         public JsonResult OnPost(EditListing command)

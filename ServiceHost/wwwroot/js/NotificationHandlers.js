@@ -1,4 +1,4 @@
-﻿var host = "http://localhost:5001";
+﻿var host = "https://localhost:5001";
 //var host = "http://www.maahyarazad.ir"
 
 $(document).ready(() => {

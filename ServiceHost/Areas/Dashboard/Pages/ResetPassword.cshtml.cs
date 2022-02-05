@@ -1,4 +1,5 @@
-﻿using AM.Application.Contracts.ResetPassword;
+﻿using _0_Framework.Application;
+using AM.Application.Contracts.ResetPassword;
 using AM.Application.Contracts.User;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -8,19 +9,27 @@ namespace ServiceHost.Areas.Dashboard.Pages
     public class ResetPasswordIndex : PageModel
     {
         private readonly IUserApplication _userApplication;
-        private readonly IResetPasswordApplication _resetPasswordApplication;
+        private readonly IAutenticateHelper _autenticateHelper;
         public ResetPasswordModel Command { get; set; }
-        public ResetPasswordIndex(IResetPasswordApplication resetPasswordApplication,
+        public ResetPasswordIndex(IAutenticateHelper autenticateHelper,
             IUserApplication userApplication)
         {
             _userApplication = userApplication;
-            _resetPasswordApplication = resetPasswordApplication;
+            _autenticateHelper = autenticateHelper;
         }
 
-        public void OnGet(long Id)
+        public IActionResult OnGet(long Id)
         {
-            Command = new ResetPasswordModel();
-            Command.UserId = Id;
+            if (Id == _autenticateHelper.CurrentAccountRole().Id)
+            {
+                Command = new ResetPasswordModel();
+                Command.UserId = Id;
+                return null;
+            }
+            else
+            {
+                return RedirectToPage("AccessDenied", new { area = "" });
+            }
         }
 
 

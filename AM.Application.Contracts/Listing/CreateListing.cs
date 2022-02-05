@@ -35,5 +35,6 @@ namespace AM.Application.Contracts.Listing
     public class EditListing : CreateListing
     {
         public long Id { get; set; }
+        public long OwnerUserId { get; set; }
     }
 }

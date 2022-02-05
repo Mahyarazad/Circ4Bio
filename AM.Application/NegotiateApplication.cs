@@ -52,7 +52,8 @@ namespace AM.Application
                 return result.Failed(ApplicationMessage.RecordNotFound);
             if (_negotiateRepository.Exist(x => x.SellerId == Command.SellerId &
                                               x.BuyerId == Command.BuyerId &
-                                              x.ListingId == Command.ListingId))
+                                              x.ListingId == Command.ListingId &
+                                              !x.IsCanceled))
                 return result.Failed(ApplicationMessage.DuplicateNegotiation);
 
             var sellerRoleId = _userRepository.GetDetail(Command.SellerId).RoleId;
@@ -190,6 +191,73 @@ namespace AM.Application
             targetNegotiation.AddMessage(Command.MessageBody, Command.UserId, Command.UserEntity, filePathString);
             _negotiateRepository.SaveChanges();
             return result.Succeeded();
+        }
+        public OperationResult CancelNegotiation(CreateNegotiate Command)
+        {
+            var result = new OperationResult();
+            if (!_negotiateRepository.Exist(x => x.Id == Command.NegotiateId))
+                return result.Failed(ApplicationMessage.RecordNotFound);
+
+            var sellerRoleId = _userRepository.GetDetail(Command.SellerId).RoleId;
+            var sellerUserId = $"{_userRepository.GetDetail(Command.SellerId).UserId}";
+            var sellerRoleString = _userApplication.GetUsertypes()
+                .FirstOrDefault(x => x.TypeId == sellerRoleId).TypeName;
+
+            var buyerRoleId = _userRepository.GetDetail(Command.BuyerId).RoleId;
+            var buyerUserId = $"{_userRepository.GetDetail(Command.BuyerId).UserId}";
+            var buyerRoleString = _userApplication.GetUsertypes()
+                .FirstOrDefault(x => x.TypeId == buyerRoleId).TypeName;
+
+            var listingInfo = _listingRepository.GetListingDetail(Command.ListingId);
+
+            var buyyerRecipientList = new List<RecipientViewModel>();
+            var sellerRecipientList = new List<RecipientViewModel>();
+
+            buyyerRecipientList.Add(new RecipientViewModel
+            {
+                UserId = Command.BuyerId,
+                IsReed = false,
+                RoleId = buyerRoleId
+            });
+
+            sellerRecipientList.Add(new RecipientViewModel
+            {
+                UserId = Command.SellerId,
+                IsReed = false,
+                RoleId = sellerRoleId
+            });
+
+
+            var buyerNotificationId = _notificationApplication
+                .PushNotification(new NotificationViewModel
+                {
+                    RecipientList = buyyerRecipientList,
+                    SenderId = Command.BuyerId,
+                    NotificationBody =
+                        $"Negotiation CANCELED for {listingInfo.Name} at {listingInfo.UnitPrice} {listingInfo.Currency} by {(_autenticateHelper.CurrentAccountRole().Id == Command.SellerId ? sellerUserId : buyerUserId)}",
+                    NotificationTitle = ApplicationMessage.CanceledNegotiationRequest,
+                    UserId = Command.BuyerId
+                });
+
+            var sellerNotificationId = _notificationApplication
+                .PushNotification(new NotificationViewModel
+                {
+                    RecipientList = sellerRecipientList,
+                    SenderId = Command.SellerId,
+                    NotificationBody = $"Negotiation CANCELED for {listingInfo.Name} at {listingInfo.UnitPrice} {listingInfo.Currency} by {(_autenticateHelper.CurrentAccountRole().Id == Command.SellerId ? sellerUserId : buyerUserId)}",
+                    NotificationTitle = ApplicationMessage.CanceledNegotiationRequest,
+                    UserId = Command.SellerId
+                });
+
+            _recipientRepository.Create(new Recipient(Command.BuyerId, buyerRoleId, buyerNotificationId));
+            _recipientRepository.Create(new Recipient(Command.SellerId, sellerRoleId, sellerNotificationId));
+            _recipientRepository.SaveChanges();
+
+            var target = _negotiateRepository.Get(Command.NegotiateId);
+            target.Canceled();
+            _negotiateRepository.SaveChanges();
+            return result.Succeeded();
+
         }
         public NegotiateViewModel GetNegotiationViewModel(CreateNegotiate Command)
         {

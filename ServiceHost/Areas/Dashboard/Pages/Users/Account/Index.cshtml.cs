@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Timers;
+using _0_Framework.Application;
 using AM.Application.Contracts.User;
+using AM.Infrastructure.Core;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -29,6 +31,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Users.Account
             _contextAccessor = contextAccessor;
         }
 
+        [RequirePermission(UserPermission.GetUserList)]
         public void OnGet(UserSearchModel Command)
         {
             UserList = _userApplication.Search(Command);
@@ -36,18 +39,25 @@ namespace ServiceHost.Areas.Dashboard.Pages.Users.Account
             user = _userApplication.GetDetail(long.Parse(userId));
         }
 
+        [RequirePermission(UserPermission.ActivateUser)]
         public JsonResult OnPostActivateUser(long id)
         {
             return new JsonResult(_userApplication.AdminActivateUser(id));
         }
+
+        [RequirePermission(UserPermission.DeactivateUser)]
         public JsonResult OnPostDeactivateUser(long id)
         {
             return new JsonResult(_userApplication.AdminDectivateUser(id));
         }
+
+        [RequirePermission(UserPermission.ActivateUser)]
         public JsonResult OnPostActivateUserStatus(long id)
         {
             return new JsonResult(_userApplication.AdminActivateUserStatus(id));
         }
+
+        [RequirePermission(UserPermission.DeactivateUser)]
         public JsonResult OnPostDeactivateUserStatus(long id)
         {
             return new JsonResult(_userApplication.AdminDectivateUserStatus(id));

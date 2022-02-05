@@ -102,6 +102,12 @@
                                  class="origin-top-right right-0 mt-3 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none invisible opacity-0 transform duration-300 absolute top-0"
                                  role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="0">
                                 <!-- Active: "bg-gray-100", Not Active: "" -->
+                                <p class="block py-2 px-4 text-sm font-medium text-gray-900" role="menuitem" tabindex="0">
+                                    @AutenticateHelper.CurrentAccountRole().Fullname
+                                </p>
+                                <p class="block py-2 px-4 text-sm font-medium text-gray-900" role="menuitem" tabindex="0">
+                                    @AutenticateHelper.CurrentAccountRole().Email
+                                </p>
                                 <a asp-page="/Profile"
                                    asp-route-id="@AutenticateHelper.CurrentAccountRole().Id"
                                    class="block py-2 px-4 text-sm font-medium text-gray-700 hover:scale-105 transition duration-300 hover:text-sky-900" role="menuitem" tabindex="0" id="user-menu-item-0">Your Profile</a>
