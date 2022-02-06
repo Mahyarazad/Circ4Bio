@@ -279,5 +279,9 @@ namespace AM.Application
         {
             return _negotiateRepository.GetMessages(NegotiateId);
         }
+        public OperationResult ActiveNegotiation(long NegotiateId)
+        {
+            return _negotiateRepository.ActiveNegotiation(NegotiateId);
+        }
     }
 }

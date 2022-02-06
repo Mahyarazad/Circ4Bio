@@ -97,11 +97,27 @@ namespace AM.Infrastructure.Repository
             return _amContext.Users.Select(x => new EditUser
             {
                 Id = x.Id,
+                FirstName = x.FirstName,
+                LastName = x.LastName,
                 Email = x.Email,
+                UserId = x.UserName,
+                Latitude = x.Latitude,
+                Longitude = x.Longitude,
                 PhoneNumber = x.PhoneNumber,
                 RoleId = x.RoleId,
-                Password = x.Password,
-                UserId = x.UserName
+                Address = x.Address,
+                City = x.City,
+                Country = x.Country,
+                CompanyName = x.CompanyName,
+                Description = x.Description,
+                FaceBookUrl = x.FaceBookUrl,
+                InstagramUrl = x.InstagramUrl,
+                PostalCode = x.PostalCode,
+                LinkdinUrl = x.LinkdinUrl,
+                VatNumber = x.VatNumber,
+                TwitterUrl = x.TwitterUrl,
+                Status = x.Status,
+                Avatar = x.Avatar,
             }).AsNoTracking().FirstOrDefault(x => x.UserId == username);
         }
         public ResendActivationEmail ResendActivationLink(string email)

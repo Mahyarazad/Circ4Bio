@@ -12,14 +12,21 @@ namespace AM.Infrastructure.Mapping
             builder.HasKey(x => x.Id);
             builder.Property(x => x.ContractFile).IsRequired(false);
             builder.Property(x => x.TrackingCode).IsRequired().HasMaxLength(64);
-            builder.Property(x => x.Cost).IsRequired();
+            builder.Property(x => x.DeliveryCost).IsRequired();
+            builder.Property(x => x.TotalCost).IsRequired();
+            builder.Property(x => x.DeliveryMethod).IsRequired().HasMaxLength(100);
+            builder.Property(x => x.Currency).IsRequired().HasMaxLength(4);
             builder.Property(x => x.Amount).IsRequired();
-            builder.Property(x => x.ClosingStatus).IsRequired();
+            builder.Property(x => x.SellerId).IsRequired();
+            builder.Property(x => x.BuyerId).IsRequired();
             builder.Property(x => x.PaymentStatus).IsRequired();
+            builder.Property(x => x.IsDeleted).IsRequired();
+            builder.Property(x => x.IsActive).IsRequired();
+            builder.Property(x => x.IsFinished).IsRequired();
 
 
             builder.HasOne(x => x.Listing).WithMany(x => x.DealList).HasForeignKey(x => x.ListingId);
-            builder.HasMany(x => x.Users).WithOne(x => x.Deal).HasForeignKey(x => x.DealId);
+            builder.HasMany(x => x.Negotiates).WithOne(x => x.Deal).HasForeignKey(x => x.DealId);
         }
     }
 }

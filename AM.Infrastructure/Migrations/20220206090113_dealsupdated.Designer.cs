@@ -4,14 +4,16 @@ using AM.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AM.Infrastructure.Migrations
 {
     [DbContext(typeof(AMContext))]
-    partial class AMContextModelSnapshot : ModelSnapshot
+    [Migration("20220206090113_dealsupdated")]
+    partial class dealsupdated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -110,9 +112,6 @@ namespace AM.Infrastructure.Migrations
                     b.Property<double>("Amount")
                         .HasColumnType("float");
 
-                    b.Property<long>("BuyerId")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("ContractFile")
                         .HasColumnType("nvarchar(max)");
 
@@ -161,9 +160,6 @@ namespace AM.Infrastructure.Migrations
 
                     b.Property<bool>("PaymentStatus")
                         .HasColumnType("bit");
-
-                    b.Property<long>("SellerId")
-                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("datetime2");
@@ -272,9 +268,6 @@ namespace AM.Infrastructure.Migrations
 
                     b.Property<long?>("DealId")
                         .HasColumnType("bigint");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
 
                     b.Property<bool>("IsCanceled")
                         .HasColumnType("bit");
@@ -484,6 +477,9 @@ namespace AM.Infrastructure.Migrations
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<long?>("DealId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("Description")
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
@@ -568,6 +564,8 @@ namespace AM.Infrastructure.Migrations
                         .HasColumnType("nvarchar(200)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DealId");
 
                     b.HasIndex("PurchasedItemId");
 
@@ -795,6 +793,10 @@ namespace AM.Infrastructure.Migrations
 
             modelBuilder.Entity("AM.Domain.UserAggregate.User", b =>
                 {
+                    b.HasOne("AM.Domain.Deal", "Deal")
+                        .WithMany("Users")
+                        .HasForeignKey("DealId");
+
                     b.HasOne("AM.Domain.Supplied.PurchasedAggregate.PurchasedItem", "PurchasedItem")
                         .WithMany("Users")
                         .HasForeignKey("PurchasedItemId");
@@ -809,6 +811,8 @@ namespace AM.Infrastructure.Migrations
                         .WithMany("Users")
                         .HasForeignKey("SuppliedItemId");
 
+                    b.Navigation("Deal");
+
                     b.Navigation("PurchasedItem");
 
                     b.Navigation("Role");
@@ -819,6 +823,8 @@ namespace AM.Infrastructure.Migrations
             modelBuilder.Entity("AM.Domain.Deal", b =>
                 {
                     b.Navigation("Negotiates");
+
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("AM.Domain.ListingAggregate.Listing", b =>

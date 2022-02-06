@@ -123,7 +123,7 @@ namespace AM.Application
                 .FirstOrDefault(x => x.TypeId == roleId).TypeName;
 
             var imageFileName = _fileUploader
-                .Uploader(command.Image, $"Listing_Images/${typeofListing}", command.Name);
+                .Uploader(command.Image, $"Listing_Images/{typeofListing}", Guid.NewGuid().ToString());
 
             var target = _listingRepository.Get(command.Id);
             target.Edit(command.Name, command.Description, imageFileName,

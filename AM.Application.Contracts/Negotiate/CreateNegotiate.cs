@@ -11,6 +11,7 @@ namespace AM.Application.Contracts.Negotiate
         public long NegotiateId { get; set; }
         public bool IsCanceled { get; set; }
         public bool IsFinished { get; set; }
+        public bool IsActive { get; set; }
     }
 
     public class NegotiateViewModel : CreateNegotiate

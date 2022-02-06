@@ -1,9 +1,10 @@
-﻿@page
-@using _0_Framework.Application
-@model ServiceHost.Areas.Dashboard.Pages.Negotiate.IndexModel
-@inject IAutenticateHelper AutenticateHelper;
-@{ ViewData["Title"] = "Dashboard | Negotiations"; }
-
+﻿@page "{id}"
+@using _0_Framework
+@using AM.Application.Contracts.User
+@model ServiceHost.Areas.Dashboard.Pages.Deals.IndexModel;
+@inject _0_Framework.Application.IAutenticateHelper AutenticateHelper;
+@inject IUserApplication _UserApplication;
+@{ ViewData["Title"] = "Dashboard | Deals"; }
 
 <div class="divide-y divide-gray-200 lg:col-span-9">
     <div class="flex flex-col">
@@ -45,15 +46,15 @@
                     <table class="min-w-full border-collapse block md:table" id="main-table">
                         <thead class="block md:table-header-group">
                             <tr class="border border-grey-500 md:border-none block md:table-row absolute -top-full md:top-auto -left-full md:left-auto  md:relative ">
-                                <th class="bg-gray-50 p-2 text-gray-600 font-bold md:border md:border-grey-500 text-left block md:table-cell">Item Info</th>
+                                <th class="bg-gray-50 p-2 text-gray-600 font-bold md:border md:border-grey-500 text-left block md:table-cell">Quatation Info</th>
                                 <th class="bg-gray-50 p-2 text-gray-600 font-bold md:border md:border-grey-500 text-left block md:table-cell">Trader Info</th>
                                 <th class="bg-gray-50 p-2 text-gray-600 font-bold md:border md:border-grey-500 text-left block md:table-cell">Actions</th>
                             </tr>
                         </thead>
                         <tbody class="block md:table-row-group">
-                            @foreach (var item in Model.NegotiateList)
+                            @foreach (var item in Model.Deals)
                             {
-                                if (!item.IsCanceled)
+                                if (!item.IsDeleted)
                                 {
                                     <tr class="bg-white border border-grey-500 md:border-none block md:table-row">
                                         <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell">
@@ -61,16 +62,20 @@
                                             <div class="text-sm text-gray-900">
                                                 <div class="text-sm text-gray-900">
                                                     <span class="text-xs text-gray-600"> Item Name:</span>
-                                                    <b class="text-xs">@item.ListingName</b>
+                                                    <b class="text-xs">@item.Listing.Name</b>
                                                 </div>
-                                                <span class="text-xs text-gray-600"> Unit Price:</span>
-                                                @item.UnitPrice <b class="text-xs">@item.Currency</b>
+                                                <span class="text-xs text-gray-600"> Total Amount:</span>
+                                                @item.Amount <b class="text-xs"> @item.Unit</b>
                                                 <div class="text-sm text-gray-900">
-                                                    <span class="text-xs text-gray-600"> Available Amount:</span> @item.Amount
-                                                    <b class="text-xs">@item.Unit</b>
+                                                    <span class="text-xs text-gray-600"> Total Receipt:</span> @item.TotalCost
+                                                    <b class="text-xs">@item.Currency</b>
                                                 </div>
                                                 <div class="text-sm text-gray-900">
-                                                    <span class="text-xs text-gray-600"> Delivery Method:</span> @item.Amount
+                                                    <span class="text-xs text-gray-600"> Delivery Fee:</span>
+                                                    <b class="text-xs">@item.DeliveryCost @item.Currency</b>
+                                                </div>
+                                                <div class="text-sm text-gray-900">
+                                                    <span class="text-xs text-gray-600"> Delivery Method:</span>
                                                     <b class="text-xs">@item.DeliveryMethod</b>
                                                 </div>
                                                 <div class="text-sm text-gray-900">
@@ -81,36 +86,36 @@
                                         </td>
                                         <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell">
                                             <span class="inline-block w-1/3 md:hidden font-bold">Trader Info</span>
-                                            @if (AutenticateHelper.CurrentAccountRole().Id == @item.BuyerId)
+                                            @if (AutenticateHelper.CurrentAccountRole().Id == item.Seller.Id)
                                             {
                                                 <div class="flex flex-col">
                                                     <div class="text-sm text-gray-900">
-                                                        <span class="text-xs text-red-600"> Seller Email: </span>
-                                                        @item.SellerEmail
+                                                        <span class="text-xs text-red-600"> Buyer Email: </span>
+                                                        @item.Buyer.Email
                                                     </div>
                                                     <div class="text-sm text-gray-900">
-                                                        <span class="text-xs text-red-600"> Seller Name: </span>
-                                                        @item.SellerName
+                                                        <span class="text-xs text-red-600"> Buyer Name: </span>
+                                                        @item.Buyer.FullName
                                                     </div>
                                                 </div>
                                                 <img class="h-10 w-10 rounded-full"
-                                                     src="~/Site Files/Profile_Images/@(item.SellerImageString == "default-avatar.png" ? "default-avatar.png" : $"{item.SellerImageString}")"
+                                                     src="~/Site Files/Profile_Images/@(item.Buyer.Avatar == "default-avatar.png" ? "default-avatar.png" : $"{item.Buyer.Avatar}")"
                                                      alt="" />
                                             }
                                             else
                                             {
                                                 <div class="flex flex-col">
                                                     <div class="text-sm text-gray-900">
-                                                        <span class="text-xs text-green-600"> Buyer Email: </span>
-                                                        @item.BuyerEmail
+                                                        <span class="text-xs text-green-600"> Seller Email: </span>
+                                                        @item.Seller.Email
                                                     </div>
                                                     <div class="text-sm text-gray-900">
-                                                        <span class="text-xs text-green-600"> Buyer Name: </span>
-                                                        @item.BuyerName
+                                                        <span class="text-xs text-green-600"> Seller Name: </span>
+                                                        @item.Seller.FullName
                                                     </div>
                                                 </div>
                                                 <img class="h-10 w-10 rounded-full"
-                                                     src="~/Site Files/Profile_Images/@(item.BuyerImageString == "default-avatar.png" ? "default-avatar.png" : $"{item.BuyerImageString}")"
+                                                     src="~/Site Files/Profile_Images/@(item.Seller.Avatar == "default-avatar.png" ? "default-avatar.png" : $"{item.Seller.Avatar}")"
                                                      alt="" />
                                             }
 
@@ -118,46 +123,13 @@
                                         <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell">
                                             <span class="inline-block w-1/3 md:hidden font-bold">Actions</span>
                                             <div class="flex justify-start my-2">
-                                                <a asp-page="Messages" asp-route-id="@item.NegotiateId"
-                                                   class="mx-1 inline-flex items-center px-2 py-2 border border-gray-300 shadow-sm text-xs font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
-                                                    <i class="fa fa-edit"></i> Open Messages
-                                                </a>
-                                                @if (AutenticateHelper.CurrentAccountRole().Id != @item.BuyerId)
+                                                @if (AutenticateHelper.CurrentAccountRole().Id != item.Seller.Id)
                                                 {
-                                                    if (!item.IsActive)
-                                                    {
-                                                        <a asp-page="../Deals/Create" asp-route-id="@item.NegotiateId"
-                                                           class="mx-1 inline-flex items-center px-2 py-2 border border-gray-300 shadow-sm text-xs font-medium rounded-md text-gray-700 bg-green-100 hover:bg-green-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-200">
-                                                            <i class="fa fa-edit"></i> Finilize the Deal
-                                                        </a>
-                                                    }
-                                                    else
-                                                    {
-                                                        <p
-                                                           class="mx-1 inline-flex items-center px-2 py-2 border border-gray-100 shadow-sm text-xs font-medium rounded-md text-gray-700 bg-gray-100">
-                                                            <i class="fa fa-edit"></i> Quotation Sent
-                                                        </p>
-                                                    }
-
+                                                    <a asp-page="Quatation" asp-route-id="@item.DealId"
+                                                       class="mx-1 inline-flex items-center px-2 py-2 border border-gray-300 shadow-sm text-xs font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                                                        <i class="fa fa-edit"></i> Confirm Quatation
+                                                    </a>
                                                 }
-                                                @if (item.IsActive)
-                                                {
-                                                <a a asp-page="../Deals/Quatation" asp-route-id="@item.NegotiateId"
-                                                    class="mx-1 inline-flex items-center px-2 py-2 border border-gray-300 shadow-sm text-xs font-medium rounded-md text-gray-700 bg-green-100 hover:bg-green-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-200">
-                                                    <i class="fa fa-edit"></i> Open Quatation
-                                                </a>
-                                                }
-                                                <form method="post" data-ajax="true" data-action="Refresh"
-                                                      asp-page="./Index" asp-page-handler="CancelNegotiation">
-                                                    <input type="hidden" value="@item.NegotiateId" name="NegotiateId" />
-                                                    <input type="hidden" value="@item.BuyerId" name="BuyerId" />
-                                                    <input type="hidden" value="@item.SellerId" name="SellerId" />
-                                                    <input type="hidden" value="@item.ListingId" name="ListingId" />
-                                                    <button type="submit"
-                                                            class="mx-1 inline-flex items-center px-2 py-2 border border-gray-300 shadow-sm text-xs font-medium rounded-md text-gray-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-                                                        Cancel this deal
-                                                    </button>
-                                                </form>
                                             </div>
                                         </td>
                                     </tr>
@@ -174,3 +146,5 @@
 @section Scripts{
     <script src="~/js/AlterDataTableDesign.js"></script>
 }
+
+

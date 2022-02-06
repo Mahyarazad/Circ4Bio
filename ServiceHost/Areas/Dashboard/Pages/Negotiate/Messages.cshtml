@@ -47,7 +47,8 @@
 
                             <div class="flex items-center justify-center h-10 w-10 rounded-full text-pink-100">
                                 <img class="h-10 w-10 rounded-full"
-                                     src="~/Site Files/Listing_Images/@(Model.CurrentNegotiate.ImageString == "listing-default.png" ? "listing-default.png" : $"{Model.CurrentNegotiate.ItemType}/{Model.CurrentNegotiate.ImageString}")"
+                                     src="~/Site Files/Listing_Images/@(Model.CurrentNegotiate.ImageString == "listing-default.png"
+                                                                          ? "listing-default.png" : $"{Model.CurrentNegotiate.ItemType}/{Model.CurrentNegotiate.ImageString}")"
                                      alt="" />
                             </div>
                             <div class="flex flex-col ml-3">
@@ -72,7 +73,7 @@
                                             </a>
                                             @if (AutenticateHelper.CurrentAccountRole().Id != Model.CurrentNegotiate.BuyerId)
                                             {
-                                                <a asp-page="/Negotiate/Index" title="Finilize this deal"
+                                                <a asp-page="../Deals/Index" asp-route-id="@Model.CurrentNegotiate.ListingId" title="Finilize this deal"
                                                    class="mx-2 flex items-center justify-center bg-green-100 hover:bg-green-200 text-gray-400 h-10 w-10 rounded-full">
                                                     <span>
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -114,7 +115,9 @@
                                                 <div class="relative flex items-center h-10 w-10 rounded-full flex-shrink-0">
                                                     <img class="h-10 w-10 rounded-full"
                                                          src="~/Site Files/Profile_Images/@(item.UserId == item.BuyerId ?
-                                                            item.BuyyerImageString == "default-avatar.png" ? "default-avatar.png" : $"{item.BuyyerImageString}" : item.SellerImageString == "default-avatar.png" ? "default-avatar.png" : $"{item.SellerImageString}")"
+                                                            item.BuyyerImageString == "default-avatar.png"
+                                                                ? "default-avatar.png" : $"{item.BuyyerImageString}"
+                                                                    : item.SellerImageString == "default-avatar.png" ? "default-avatar.png" : $"{item.SellerImageString}")"
                                                          alt=""/>
                                                     <div class="absolute text-gray-600 inset-y-7 inset-x-8 text-xs">
                                                         @(item.UserId == item.BuyerId ? item.BuyyerLetter.ToUpper() : item.SellerLetter.ToUpper())

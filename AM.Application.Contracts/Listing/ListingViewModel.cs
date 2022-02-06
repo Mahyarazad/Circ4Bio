@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using AM.Application.Contracts.Deal;
 
 namespace AM.Application.Contracts.Listing
 {
@@ -29,9 +30,6 @@ namespace AM.Application.Contracts.Listing
         public List<SuppliedItemViewModel>? SupplyList { get; set; }
     }
 
-    public class DealViewModel
-    {
-    }
 
     public class PurchasedItemViewModel
     {

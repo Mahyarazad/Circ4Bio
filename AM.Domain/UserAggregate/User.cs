@@ -114,8 +114,6 @@ namespace AM.Domain.UserAggregate
         public int RoleId { get; private set; }
         public Role? Role { get; private set; }
         public List<Listing>? Listings { get; private set; }
-        public long? DealId { get; private set; }
-        public Deal? Deal { get; private set; }
         public long? SuppliedItemId { get; private set; }
         public SuppliedItem? SuppliedItem { get; private set; }
         public long? PurchasedItemId { get; private set; }

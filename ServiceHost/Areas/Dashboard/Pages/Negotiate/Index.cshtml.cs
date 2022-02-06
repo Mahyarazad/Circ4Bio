@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography.Xml;
+using _0_Framework.Application;
 using AM.Application.Contracts.Listing;
 using AM.Application.Contracts.Negotiate;
 using AM.Application.Contracts.User;
@@ -17,17 +18,17 @@ namespace ServiceHost.Areas.Dashboard.Pages.Negotiate
         public List<ActiveListing> ActiveListing;
         public CreateNegotiate NegotiateDTO;
         private readonly IUserApplication _userApplication;
-        private readonly IHttpContextAccessor _contextAccessor;
+        private readonly IAutenticateHelper _autenticateHelper;
         private readonly IListingApplication _listingApplication;
         private readonly INegotiateApplication _negotiateApplication;
 
         public IndexModel(IListingApplication listingApplication,
             INegotiateApplication negotiateApplication,
             IUserApplication userApplication,
-            IHttpContextAccessor contextAccessor)
+            IAutenticateHelper autenticateHelper)
         {
             _userApplication = userApplication;
-            _contextAccessor = contextAccessor;
+            _autenticateHelper = autenticateHelper;
             _listingApplication = listingApplication;
             _negotiateApplication = negotiateApplication;
         }
@@ -35,8 +36,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Negotiate
         public void OnGet()
         {
             NegotiateList = new List<NegotiateViewModel>();
-            var userId = long.Parse(_contextAccessor.HttpContext.User.Claims
-                .FirstOrDefault(x => x.Type == "User Id").Value);
+            var userId = _autenticateHelper.CurrentAccountRole().Id;
             var buyyingNegotiation = _negotiateApplication.AllListingItemsBuyyer(userId);
             var sellingNegotiation = _negotiateApplication.AllListingItemsSeller(userId);
             foreach (var item in buyyingNegotiation)
@@ -48,7 +48,8 @@ namespace ServiceHost.Areas.Dashboard.Pages.Negotiate
                     BuyerId = userId,
                     SellerId = item.SellerId,
                     IsCanceled = item.IsCanceled,
-                    IsFinished = item.IsFinished
+                    IsFinished = item.IsFinished,
+                    IsActive = item.IsActive
                 }));
             }
             foreach (var item in sellingNegotiation)
@@ -60,7 +61,8 @@ namespace ServiceHost.Areas.Dashboard.Pages.Negotiate
                     BuyerId = item.BuyerId,
                     SellerId = userId,
                     IsCanceled = item.IsCanceled,
-                    IsFinished = item.IsFinished
+                    IsFinished = item.IsFinished,
+                    IsActive = item.IsActive
                 }));
             }
         }

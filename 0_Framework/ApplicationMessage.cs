@@ -40,5 +40,8 @@
         //Email Title
         public const string ResetPassword = "Reset Password";
         public const string AccountActivated = "Your account is activated";
+
+        //Deal Title
+        public const string DealsCreated = "New deal has issued";
     }
 }

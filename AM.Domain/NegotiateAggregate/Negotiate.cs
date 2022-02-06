@@ -19,14 +19,18 @@ namespace AM.Domain.NegotiateAggregate
             SellerId = sellerId;
             IsFinished = false;
             IsCanceled = false;
+            IsActive = false;
             Messages = new List<Message>();
         }
 
         public long ListingId { get; private set; }
         public Listing? Listing { get; private set; }
+        public long? DealId { get; private set; }
+        public Deal? Deal { get; private set; }
         public long BuyerId { get; private set; }
         public long SellerId { get; private set; }
         public bool IsFinished { get; private set; }
+        public bool IsActive { get; private set; }
         public bool IsCanceled { get; private set; }
         public List<Message>? Messages { get; private set; }
 
@@ -42,6 +46,10 @@ namespace AM.Domain.NegotiateAggregate
         public void Canceled()
         {
             IsCanceled = true;
+        }
+        public void Activate()
+        {
+            IsActive = true;
         }
     }
 }

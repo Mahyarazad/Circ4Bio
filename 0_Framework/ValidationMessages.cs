@@ -13,5 +13,9 @@
         public const string SelectUserType = "Please select the user type";
         public const string PasswordNotMatch = "Password and confirm password do not match";
 
+        //Deals
+        public const string DeliveryMethod = "Delivery method cannot be empt!";
+        public const string Currency = "You have to select at least one currency";
+
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using _0_Framework.Application;
 using _0_Framework.Infrastructure;
 using AM.Application.Contracts.Negotiate;
 using AM.Domain.NegotiateAggregate;
@@ -35,6 +36,7 @@ namespace AM.Infrastructure.Repository
                     SellerId = Command.SellerId,
                     IsCanceled = Command.IsCanceled,
                     IsFinished = Command.IsFinished,
+                    IsActive = Command.IsActive,
                     ItemType = x.Type,
                     SellerName = $"{_amContext.Users.AsNoTracking().FirstOrDefault(x => x.Id == Command.SellerId).FirstName} {_amContext.Users.AsNoTracking().FirstOrDefault(x => x.Id == Command.SellerId).LastName}",
                     BuyerName = $"{_amContext.Users.AsNoTracking().FirstOrDefault(x => x.Id == Command.BuyerId).FirstName} {_amContext.Users.AsNoTracking().FirstOrDefault(x => x.Id == Command.BuyerId).LastName}",
@@ -84,7 +86,8 @@ namespace AM.Infrastructure.Repository
                     BuyerId = x.BuyerId,
                     SellerId = x.SellerId,
                     IsCanceled = x.IsCanceled,
-                    IsFinished = x.IsFinished
+                    IsFinished = x.IsFinished,
+                    IsActive = x.IsActive,
                 }).AsNoTracking().OrderByDescending(x => x.NegotiateId).ToList();
         }
         public List<CreateNegotiate> AllListingItemsSeller(long SellerId)
@@ -98,7 +101,8 @@ namespace AM.Infrastructure.Repository
                     BuyerId = x.BuyerId,
                     SellerId = x.SellerId,
                     IsCanceled = x.IsCanceled,
-                    IsFinished = x.IsFinished
+                    IsFinished = x.IsFinished,
+                    IsActive = x.IsActive
                 }).AsNoTracking().OrderByDescending(x => x.NegotiateId).ToList();
         }
         public List<MessageViewModel> GetMessages(long NegotiateId)
@@ -127,6 +131,15 @@ namespace AM.Infrastructure.Repository
                     _amContext.Negotiates.AsNoTracking().FirstOrDefault(x => x.Id == NegotiateId).SellerId).Email.Substring(0, 1)
 
             }).OrderBy(x => x.MessageId).ToList();
+        }
+        public OperationResult ActiveNegotiation(long NegotiateId)
+        {
+            var result = new OperationResult();
+            var target = _amContext.Negotiates.FirstOrDefault(x => x.Id == NegotiateId);
+            target.Activate();
+            _amContext.SaveChanges();
+
+            return result.Succeeded();
         }
     }
 }

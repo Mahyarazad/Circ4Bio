@@ -10,8 +10,12 @@ namespace AM.Infrastructure.Mapping
         public void Configure(EntityTypeBuilder<Negotiate> builder)
         {
             builder.ToTable("Negotiate", schema: "dbo");
+            builder.Property(x => x.IsCanceled).IsRequired();
+            builder.Property(x => x.IsFinished).IsRequired();
+            builder.Property(x => x.IsActive).IsRequired();
             builder.HasKey(x => x.Id);
             builder.HasOne(x => x.Listing).WithMany(x => x.NegotiateList).HasForeignKey(x => x.ListingId);
+            builder.HasOne(x => x.Deal).WithMany(x => x.Negotiates).HasForeignKey(x => x.DealId);
             builder.Property(x => x.IsFinished).IsRequired();
             builder.OwnsMany(x => x.Messages, ModelBuilder =>
             {

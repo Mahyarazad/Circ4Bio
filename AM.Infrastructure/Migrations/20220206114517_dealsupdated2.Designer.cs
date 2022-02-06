@@ -4,14 +4,16 @@ using AM.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AM.Infrastructure.Migrations
 {
     [DbContext(typeof(AMContext))]
-    partial class AMContextModelSnapshot : ModelSnapshot
+    [Migration("20220206114517_dealsupdated2")]
+    partial class dealsupdated2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -110,9 +112,6 @@ namespace AM.Infrastructure.Migrations
                     b.Property<double>("Amount")
                         .HasColumnType("float");
 
-                    b.Property<long>("BuyerId")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("ContractFile")
                         .HasColumnType("nvarchar(max)");
 
@@ -161,9 +160,6 @@ namespace AM.Infrastructure.Migrations
 
                     b.Property<bool>("PaymentStatus")
                         .HasColumnType("bit");
-
-                    b.Property<long>("SellerId")
-                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("datetime2");
@@ -272,9 +268,6 @@ namespace AM.Infrastructure.Migrations
 
                     b.Property<long?>("DealId")
                         .HasColumnType("bigint");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
 
                     b.Property<bool>("IsCanceled")
                         .HasColumnType("bit");

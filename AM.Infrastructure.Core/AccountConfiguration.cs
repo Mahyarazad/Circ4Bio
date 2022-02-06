@@ -1,12 +1,14 @@
 ﻿using _0_Framework.Infrastructure;
 using AM.Application;
 using AM.Application.Contracts.ContactUs;
+using AM.Application.Contracts.Deal;
 using AM.Application.Contracts.Listing;
 using AM.Application.Contracts.Negotiate;
 using AM.Application.Contracts.Notification;
 using AM.Application.Contracts.ResetPassword;
 using AM.Application.Contracts.Role;
 using AM.Application.Contracts.User;
+using AM.Domain;
 using AM.Domain.ContactUsAggregate;
 using AM.Domain.ListingAggregate;
 using AM.Domain.NegotiateAggregate;
@@ -45,6 +47,10 @@ namespace AM.Infrastructure.Core
 
             services.AddTransient<INegotiateRepository, NegotiateRepository>();
             services.AddTransient<INegotiateApplication, NegotiateApplication>();
+
+
+            services.AddTransient<IDealApplication, DealApplication>();
+            services.AddTransient<IDealRepository, DealRepository>();
 
             services.AddTransient<IPermissionExposer, UserPermissionExposer>();
 
