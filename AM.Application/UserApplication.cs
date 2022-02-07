@@ -82,7 +82,7 @@ namespace AM.Application
             {
                 EmailTemplate = 1,
                 Title = ApplicationMessage.AccountVerification,
-                AccountVerificationLink = $"https://{request.Host}/Authentication/ActivateUser/{activationGuid.ToString()}".ToLower(),
+                AccountVerificationLink = $"http://{request.Host}/Authentication/ActivateUser/{activationGuid.ToString()}".ToLower(),
                 Recipient = command.Email
             };
             var emailServiceResult = _emailService.SendEmail(emailModel);

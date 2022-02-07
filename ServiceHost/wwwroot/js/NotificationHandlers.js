@@ -1,34 +1,47 @@
 ﻿var host = "https://localhost:5001";
 //var host = "http://www.maahyarazad.ir"
 
-$(document).ready(() => {
-    var NotificationSettings = {
-        "url": `${host}/api/Notification/Notification`,
-        "method": "GET",
-        "dataType": "json",
-        "crossDomain": "true",
-        "headers": {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*"
-        },
-    };
-    var NotificationCountSettings = {
-        "url": `${host}/api/Notification/CountUnreadNotification`,
-        "method": "GET",
-        "dataType": "json",
-        "crossDomain": "true",
-        "headers": {
-            "Access-Control-Allow-Origin": "*",
-            "Content-Type": "application/json"
-        },
-    };
+var NotificationSettings = {
+    "url": `${host}/api/Notification/Notification`,
+    "method": "GET",
+    "dataType": "json",
+    "crossDomain": "true",
+    "headers": {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*"
+    },
+};
+var NotificationCountSettings = {
+    "url": `${host}/api/Notification/CountUnreadNotification`,
+    "method": "GET",
+    "dataType": "json",
+    "crossDomain": "true",
+    "headers": {
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json"
+    },
+};
 
+var NotificationCountSettings = {
+    "url": `${host}/api/Notification/CountUnreadNotification`,
+    "method": "GET",
+    "dataType": "json",
+    "crossDomain": "true",
+    "headers": {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*"
+    },
+};
+
+var NotificationAjax = () => {
     $.ajax(NotificationSettings).done(function (response) {
         const wrapper = $('#notification-wrapper');
-        response.forEach(item => {
-            NotificationDom =
-                `<div data-notification-label="${item.recipientId}"
-                    class="mt-10 max-w-sm w-full bg-white shadow-lg rounded-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden">
+        wrapper.empty();
+        if (response.length !== 0) {
+            response.forEach(item => {
+                NotificationDom =
+                    `<div data-notification-label="${item.recipientId}"
+                    class="max-w-sm w-full bg-white shadow-lg rounded-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden">
                     <div class="p-2">
                         <div class="flex items-start">
                             <div class="flex-shrink-0">
@@ -58,29 +71,56 @@ $(document).ready(() => {
                         </div>
                     </div>
                 </div>`;
-            wrapper.append(NotificationDom);
-        });
-
+                wrapper.append(NotificationDom);
+            });
+        } else {
+            wrapper.append(
+                `<div class="max-w-sm w-full bg-white shadow-lg rounded-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden">
+                    <div class="p-4">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0">
+                                <!-- Heroicon name: outline/inbox -->
+                                <svg class="h-6 w-6 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
+                                </svg>
+                            </div>
+                            <div class="ml-3 w-0 flex-1 pt-0.5">
+                                <p class="text-sm font-medium text-gray-900">
+                                    System Message
+                                </p>
+                                <p class="mt-1 text-sm text-gray-500">
+                                    There is no new notification
+                                </p>
+                            </div>
+                            <div class="ml-4 flex-shrink-0 flex">
+                            </div>
+                        </div>
+                    </div>
+                </div>`);
+        }
     });
+}
+
+
+$(document).ready(() => {
+    NotificationAjax();
     $.ajax(NotificationCountSettings).done(function (response) {
         $("#notification-counter").text(response)
         $("#notification-counter-mobile").text(response)
     });
-
-
 });
 
+setInterval(() => {
+    NotificationAjax();
+    $.ajax(NotificationCountSettings).done(function (response) {
+        $("#notification-counter").text(response)
+        $("#notification-counter-mobile").text(response)
+    });
+},
+    10000);
+
+
 function handleNotificationRead(id) {
-    var NotificationCountSettings = {
-        "url": `${host}/api/Notification/CountUnreadNotification`,
-        "method": "GET",
-        "dataType": "json",
-        "crossDomain": "true",
-        "headers": {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*"
-        },
-    };
     var NotificationMarkReadSettings = {
         "url": `${host}/api/Notification/`,
         "method": "POST",
@@ -100,4 +140,5 @@ function handleNotificationRead(id) {
         $("#notification-counter-mobile").text(response)
         $(`div[data-notification-label='${id}']`).remove();
     });
+    NotificationAjax();
 }

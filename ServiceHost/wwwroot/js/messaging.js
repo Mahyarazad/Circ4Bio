@@ -1,9 +1,5 @@
-﻿$(document).ready(() => {
-    var element = document.getElementById('end-of-messages');
-    //            element.scrollIntoView({ behavior: "smooth" });
-    element.scrollIntoView({ block: "end" });
-
-});
+﻿var host = "https://localhost:5001";
+//var host = "http://www.maahyarazad.ir"
 
 function resetInput() {
     $("#messaging-form").trigger("reset");
@@ -42,3 +38,71 @@ $("#message-send-button").on('click',
             $("#message-send-button").append(loadingDom);
         }
     });
+
+var MessagingAjax = () => {
+    const messagingId = $("#messaging-container").attr("data-messaging-id");
+    const loggedUser = parseInt($("#messaging-container").attr("data-logged-user-id"));
+    var RefreshMessages = {
+        "url": `${host}/api/Messaging/GetMessages`,
+        "method": "POST",
+        "dataType": "json",
+        "crossDomain": "true",
+        "headers": {
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json"
+        },
+        "data": JSON.stringify({
+            "NegotiateId": messagingId
+        }),
+    };
+
+    $.ajax(RefreshMessages).done(function (response) {
+        if (response) {
+            const wrapper = $("#messaging-container");
+            wrapper.empty();
+            response.forEach(item => {
+                MessageDom = `<div class="col-start-1 col-end-13 px-2 rounded-lg">
+                                    <div class="flex items-center justify-start ${item.userId === loggedUser ? "flex-row-reverse" : ""}">
+                                        <div class="relative flex items-center h-10 w-10 rounded-full flex-shrink-0">
+                                            <img class="h-10 w-10 rounded-full"
+                                                 src="${host}/Site Files/Profile_Images/${item.userId === item.buyerId ?
+                        item.buyyerImageString === "default-avatar.png" ? "default-avatar.png" : item.buyyerImageString : item.sellerImageString === "default-avatar.png" ? "default-avatar.png" : item.sellerImageString}"
+                                                 alt=""/>
+                                            <div class="absolute text-gray-600 inset-y-7 inset-x-8 text-xs">
+                                                ${item.userId === item.buyerId ? item.buyyerLetter.toUpperCase() : item.sellerLetter.toUpperCase()}
+                                            </div>
+                                        </div>
+                                        <div class="relative mr-3 ml-3 text-sm ${item.userId === loggedUser ? "bg-sky-100" : ""} py-2 px-4 shadow rounded-xl">
+                                            <div>
+                                                ${item.messageBody}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>`;
+
+                wrapper.append(MessageDom);
+            })
+            wrapper.append(`<div id="end-of-messages"></div>`);
+        }
+    });
+    var timer = () => {
+        setTimeout(() => {
+            var element = document.getElementById('end-of-messages');
+            element.scrollIntoView({ block: "end" });
+        }, 200);
+    }
+    timer();
+    window.addEventListener('scroll', (event) => {
+        window.clearTimeout(timer)
+    });
+};
+
+$(document).ready(() => {
+    MessagingAjax();
+});
+
+setInterval(() => {
+    MessagingAjax();
+}, 5000);
+
+

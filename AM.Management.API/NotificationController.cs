@@ -10,13 +10,14 @@ namespace AM.Management.API
     [ApiController]
     public class NotificationController : ControllerBase
     {
-        private readonly INotificationApplication _notificationApplication;
         private readonly IAutenticateHelper _autenticateHelper;
+        private readonly INotificationApplication _notificationApplication;
+
         public NotificationController(INotificationApplication notificationApplication,
             IAutenticateHelper autenticateHelper)
         {
-            _notificationApplication = notificationApplication;
             _autenticateHelper = autenticateHelper;
+            _notificationApplication = notificationApplication;
         }
 
         [HttpPost]
