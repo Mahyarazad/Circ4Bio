@@ -73,7 +73,7 @@
                                             </a>
                                             @if (AutenticateHelper.CurrentAccountRole().Id != Model.CurrentNegotiate.BuyerId)
                                             {
-                                                <a asp-page="../Deals/Index" asp-route-id="@Model.CurrentNegotiate.ListingId" title="Finilize this deal"
+                                                <a asp-page="../Deals/Create" asp-route-id="@Model.CurrentNegotiate.NegotiateId" title="Create a Quatation"
                                                    class="mx-2 flex items-center justify-center bg-green-100 hover:bg-green-200 text-gray-400 h-10 w-10 rounded-full">
                                                     <span>
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
