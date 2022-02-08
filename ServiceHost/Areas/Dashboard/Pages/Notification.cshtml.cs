@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
+using _0_Framework.Application;
 using AM.Application.Contracts.Notification;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,17 +14,27 @@ namespace ServiceHost.Areas.Dashboard.Pages
     {
         public List<NotificationViewModel> Command;
         private readonly INotificationApplication _notificationApplication;
-        private readonly IHttpContextAccessor _contextAccessor;
+        private readonly IAutenticateHelper _autenticateHelper;
         public NotificationModel(INotificationApplication notificationApplication,
-            IHttpContextAccessor contextAccessor)
+            IAutenticateHelper autenticateHelper)
         {
             _notificationApplication = notificationApplication;
-            _contextAccessor = contextAccessor;
+            _autenticateHelper = autenticateHelper;
         }
 
-        public void OnGet(long Id)
+        public IActionResult OnGet(long Id)
         {
-            Command = _notificationApplication.GetAllUnread(Id);
+            var loggedInUserId = _autenticateHelper.CurrentAccountRole().Id;
+
+            if (Id == loggedInUserId)
+            {
+                Command = _notificationApplication.GetAllUnread(Id);
+                return null;
+            }
+            else
+            {
+                return RedirectToPage("/AccessDenied", new { area = "" });
+            }
         }
         public void OnGetMarkAllRead(long Id)
         {

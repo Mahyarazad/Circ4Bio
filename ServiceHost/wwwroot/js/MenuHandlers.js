@@ -214,3 +214,9 @@ function gotoTop() {
 }
 
 
+function MarketSelect() {
+    $('#market').addClass("bg-black");
+}
+function DashboardSelect() {
+    $('#dashboard').addClass("bg-black");
+}

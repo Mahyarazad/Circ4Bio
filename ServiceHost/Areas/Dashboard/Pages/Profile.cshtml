@@ -8,241 +8,243 @@
 @model ServiceHost.Areas.Dashboard.Pages.ProfileModel;
 @{ ViewData["Title"] = "Dashboard | Profile"; }
 
-
-<form class="divide-y divide-gray-200 lg:col-span-9" method="POST" id="edit-user-form" data-ajax="true" data-action="Refresh" enctype="multipart/form-data">
-<!-- operation-result -->
-<div class="rounded-md bg-green-50 p-4 transition ease-in-out duration-75" id="operation-result" style="display: none">
-    <div class="flex">
-        <div class="flex-shrink-0">
-            <!-- Heroicon name: solid/check-circle -->
-            <svg class="h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-            </svg>
-        </div>
-        <div class="ml-3">
-            <p class="text-sm font-medium text-green-800" id="operation-result-message">
-
-            </p>
-        </div>
-    </div>
-</div>
-<div class="rounded-md bg-red-50 p-4 transition ease-in-out duration-75" id="operation-result-failed" style="display: none">
-    <div class="flex">
-        <div class="flex-shrink-0">
-            <!-- Heroicon name: solid/check-circle -->
-            <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
-            </svg>
-        </div>
-        <div class="ml-3">
-            <p class="text-sm font-medium text-red-800" id="operation-result-failed-message">
-
-            </p>
-        </div>
-    </div>
-</div>
-<!-- end -->
-<!-- Profile section -->
-<div class="py-6 px-4 sm:p-6 lg:pb-8">
-<div>
-    <h2 class="text-lg leading-6 font-medium text-gray-900">Profile</h2>
-    @if (!Model.user.Status)
-    {
-        <span class="text-red-500 pb-3"> @ApplicationMessage.SubmitRequiredInfo</span>}
-    <p class="mt-1 text-sm text-gray-500">
-        This information will be displayed publicly so be careful what you share.
-    </p>
-</div>
-
-<div class="mt-6 flex flex-col lg:flex-row">
-    <div class="flex-grow space-y-6">
-        <div>
-            <label asp-for="@Model.user.UserId" class="block text-sm font-medium text-gray-700">
-                Username
-            </label>
-            <div class="mt-1 rounded-md shadow-sm flex">
-                <span class="bg-gray-50 border border-r-0 border-gray-300 rounded-l-md px-3 inline-flex items-center text-gray-500 sm:text-sm">
-                    Circ4Bio.com/
-                </span>
-                <input type="text" asp-for="@Model.user.UserId" class="focus:ring-sky-500 focus:border-sky-500 flex-grow block w-full min-w-0 rounded-none rounded-r-md sm:text-sm border-gray-300">
-            </div>
-            <span asp-validation-for="@Model.user.UserId" class="text-red-500"></span>
-        </div>
-
-        <div>
-            <label asp-for="@Model.user.Description" class="block text-sm font-medium text-gray-700">
-                About
-            </label>
-            <div class="mt-1">
-                <textarea asp-for="@Model.user.Description" rows="3" class="shadow-sm focus:ring-sky-500 focus:border-sky-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"></textarea>
-            </div>
-            <p class="mt-2 text-sm text-gray-500">
-                Brief description for your profile. URLs are hyperlinked.
-            </p>
-        </div>
-    </div>
-
-    <div class="mt-6 flex-grow lg:mt-0 lg:ml-6 lg:flex-grow-0 lg:flex-shrink-0">
-        <p class="text-sm font-medium text-gray-700" aria-hidden="true">
-            Photo
-        </p>
-        <div class="mt-1 lg:hidden">
-            <div class="flex items-center">
-                <div class="flex-shrink-0 inline-block rounded-full overflow-hidden h-12 w-12" aria-hidden="true">
-                    <img class="rounded-full h-full w-full" src="~/Site Files/Profile_Images/@Model.user.Avatar" alt="">
+<div class="divide-y divide-gray-200 lg:col-span-9">
+    <form class="divide-y divide-gray-200 lg:col-span-9" method="POST" id="edit-user-form" data-ajax="true" data-action="Refresh" enctype="multipart/form-data">
+        <!-- operation-result -->
+        <div class="rounded-md bg-green-50 p-4 transition ease-in-out duration-75" id="operation-result" style="display: none">
+            <div class="flex">
+                <div class="flex-shrink-0">
+                    <!-- Heroicon name: solid/check-circle -->
+                    <svg class="h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                    </svg>
                 </div>
-                <div class="ml-5 rounded-md shadow-sm">
-                    <div class="group relative border border-gray-300 rounded-md py-2 px-3 flex items-center justify-center hover:bg-gray-50 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-sky-500">
-                        <label for="mobile-user-photo" class="relative text-sm leading-4 font-medium text-gray-700 pointer-events-none">
-                            <span>Change</span>
-                            <span class="sr-only"> user photo</span>
+                <div class="ml-3">
+                    <p class="text-sm font-medium text-green-800" id="operation-result-message">
+
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="rounded-md bg-red-50 p-4 transition ease-in-out duration-75" id="operation-result-failed" style="display: none">
+            <div class="flex">
+                <div class="flex-shrink-0">
+                    <!-- Heroicon name: solid/check-circle -->
+                    <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm font-medium text-red-800" id="operation-result-failed-message">
+
+                    </p>
+                </div>
+            </div>
+        </div>
+        <!-- end -->
+        <!-- Profile section -->
+        <div class="py-6 px-4 sm:p-6 lg:pb-8">
+            <div>
+                <h2 class="text-lg leading-6 font-medium text-gray-900">Profile</h2>
+                @if (!Model.user.Status)
+                {
+                    <span class="text-red-500 pb-3"> @ApplicationMessage.SubmitRequiredInfo</span>}
+                <p class="mt-1 text-sm text-gray-500">
+                    This information will be displayed publicly so be careful what you share.
+                </p>
+            </div>
+
+            <div class="mt-6 flex flex-col lg:flex-row">
+                <div class="flex-grow space-y-6">
+                    <div>
+                        <label asp-for="@Model.user.UserId" class="block text-sm font-medium text-gray-700">
+                            Username
                         </label>
-                        <input id="mobile-user-photo" asp-for="@Model.user.ProfilePicture" accept="image/*"
-                               type="file" class="absolute w-full h-full opacity-0 cursor-pointer border-gray-300 rounded-md">
+                        <div class="mt-1 rounded-md shadow-sm flex">
+                            <span class="bg-gray-50 border border-r-0 border-gray-300 rounded-l-md px-3 inline-flex items-center text-gray-500 sm:text-sm">
+                                Circ4Bio.com/
+                            </span>
+                            <input type="text" asp-for="@Model.user.UserId" class="focus:ring-sky-500 focus:border-sky-500 flex-grow block w-full min-w-0 rounded-none rounded-r-md sm:text-sm border-gray-300">
+                        </div>
+                        <span asp-validation-for="@Model.user.UserId" class="text-red-500"></span>
+                    </div>
+
+                    <div>
+                        <label asp-for="@Model.user.Description" class="block text-sm font-medium text-gray-700">
+                            About
+                        </label>
+                        <div class="mt-1">
+                            <textarea asp-for="@Model.user.Description" rows="3" class="shadow-sm focus:ring-sky-500 focus:border-sky-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"></textarea>
+                        </div>
+                        <p class="mt-2 text-sm text-gray-500">
+                            Brief description for your profile. URLs are hyperlinked.
+                        </p>
                     </div>
                 </div>
+
+                <div class="mt-6 flex-grow lg:mt-0 lg:ml-6 lg:flex-grow-0 lg:flex-shrink-0">
+                    <p class="text-sm font-medium text-gray-700" aria-hidden="true">
+                        Photo
+                    </p>
+                    <div class="mt-1 lg:hidden">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0 inline-block rounded-full overflow-hidden h-12 w-12" aria-hidden="true">
+                                <img class="rounded-full h-full w-full" src="~/Site Files/Profile_Images/@Model.user.Avatar" alt="">
+                            </div>
+                            <div class="ml-5 rounded-md shadow-sm">
+                                <div class="group relative border border-gray-300 rounded-md py-2 px-3 flex items-center justify-center hover:bg-gray-50 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-sky-500">
+                                    <label for="mobile-user-photo" class="relative text-sm leading-4 font-medium text-gray-700 pointer-events-none">
+                                        <span>Change</span>
+                                        <span class="sr-only"> user photo</span>
+                                    </label>
+                                    <input id="mobile-user-photo" asp-for="@Model.user.ProfilePicture" accept="image/*"
+                                           type="file" class="absolute w-full h-full opacity-0 cursor-pointer border-gray-300 rounded-md">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="hidden relative rounded-full overflow-hidden lg:block">
+                        <img class="relative rounded-full w-40 h-40" src="~/Site Files/Profile_Images/@Model.user.Avatar" alt="">
+                        <label for="desktop-user-photo" class="absolute inset-0 w-full h-full bg-black bg-opacity-75 flex items-center justify-center text-sm font-medium text-white opacity-0 hover:opacity-100 focus-within:opacity-100">
+                            <span>Change</span>
+                            <span class="sr-only"> user photo</span>
+                            <input type="file" id="desktop-user-photo" accept="image/*"
+                                   asp-for="@Model.user.ProfilePicture" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer border-gray-300 rounded-md">
+                        </label>
+
+                    </div>
+                    <span asp-validation-for="@Model.user.ProfilePicture" class="text-red-500 text-xs"></span>
+                </div>
+            </div>
+
+            <div class="mt-6 grid grid-cols-12 gap-6">
+                <div class="col-span-12 sm:col-span-6">
+                    <label asp-for="@Model.user.FirstName" class="block text-sm font-medium text-gray-700"></label>
+                    <input type="text" asp-for="@Model.user.FirstName"
+                           class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
+                </div>
+
+                <div class="col-span-12 sm:col-span-6">
+                    <label asp-for="@Model.user.LastName" class="block text-sm font-medium text-gray-700"></label>
+                    <input type="text" asp-for="@Model.user.LastName"
+                           class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
+                </div>
+                <div class="col-span-12 sm:col-span-6">
+                    <label asp-for="@Model.user.CompanyName" class="block text-sm font-medium text-gray-700"></label>
+                    <input type="text" asp-for="@Model.user.CompanyName"
+                           class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
+                </div>
+                <div class="col-span-12 sm:col-span-6">
+                    <label asp-for="@Model.user.VatNumber" class="block text-sm font-medium text-gray-700"></label>
+                    <input type="text" asp-for="@Model.user.VatNumber"
+                           class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
+                </div>
+            </div>
+
+            <div class="mt-6 grid grid-cols-12 gap-6">
+                <div class="col-span-12 sm:col-span-6">
+                    <label asp-for="@Model.user.Latitude" class="block text-sm font-medium text-gray-700"></label>
+                    <input type="text" asp-for="@Model.user.Latitude" id="latitude"
+                           class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
+                </div>
+
+                <div class="col-span-12 sm:col-span-6">
+                    <label asp-for="@Model.user.Longitude" class="block text-sm font-medium text-gray-700"></label>
+                    <input type="text" asp-for="@Model.user.Longitude" id="longitude"
+                           class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
+                </div>
+            </div>
+
+            <div class="py-4 flex justify-start">
+                <div onclick="getLocation()"
+                     class="bg-sky-700 border cursor-pointer border-transparent rounded-md shadow-sm py-2 mr-4 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+                    Get Location
+                </div>
+                <div onclick="hideMap()" id="hideMap" style="display: none"
+                     class="bg-gray-50 border cursor-pointer border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-gray-800 text-center hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-100">
+                    Hide Map
+                </div>
+            </div>
+
+            <div class="flex-grow space-y-6 rounded-l-md" id="mapholder" style="height: 300px; display: none"></div>
+
+            <div class="mt-6 grid grid-cols-12 gap-6">
+                <div class="col-span-12 sm:col-span-6">
+                    <label asp-for="@Model.user.Country" class="block text-sm font-medium text-gray-700"></label>
+                    <select asp-for="@Model.user.Country"
+                            asp-items="@Model.CountryList"
+                            class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                        <option value="">
+                            Please select a country
+                        </option>
+                    </select>
+                    <span asp-validation-for="@Model.user.Country" class="text-red-500"></span>
+                </div>
+                <div class="col-span-12 sm:col-span-6">
+                    <label asp-for="@Model.user.City" class="block text-sm font-medium text-gray-700"></label>
+                    <input type="text" asp-for="@Model.user.City"
+                           class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
+                </div>
+                <div class="col-span-12 sm:col-span-6">
+                    <label asp-for="@Model.user.PostalCode" class="block text-sm font-medium text-gray-700"></label>
+                    <input type="text" asp-for="@Model.user.PostalCode"
+                           class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
+                </div>
+                <div class="col-span-12 sm:col-span-6">
+                    <label asp-for="@Model.user.TwitterUrl" class="block text-sm font-medium text-gray-700"></label>
+                    <input type="text" asp-for="@Model.user.TwitterUrl"
+                           class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
+                </div>
+                <div class="col-span-12 sm:col-span-6">
+                    <label asp-for="@Model.user.FaceBookUrl" class="block text-sm font-medium text-gray-700"></label>
+                    <input type="text" asp-for="@Model.user.FaceBookUrl"
+                           class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
+                </div>
+                <div class="col-span-12 sm:col-span-6">
+                    <label asp-for="@Model.user.InstagramUrl" class="block text-sm font-medium text-gray-700"></label>
+                    <input type="text" asp-for="@Model.user.InstagramUrl"
+                           class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
+                </div>
+                <div class="col-span-12 sm:col-span-6">
+                    <label asp-for="@Model.user.LinkdinUrl" class="block text-sm font-medium text-gray-700"></label>
+                    <input type="text" asp-for="@Model.user.LinkdinUrl"
+                           class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
+                </div>
+                <div class="col-span-12 sm:col-span-6">
+                    <label asp-for="@Model.user.RoleString" class="block text-sm font-medium text-gray-700">User Type</label>
+                    <input type="text" asp-for="@Model.user.RoleString" disabled="disabled"
+                           class="mt-1 block w-full border border-gray-100 bg-gray-100 rounded-md shadow-sm py-2 px-3 sm:text-sm">
+                </div>
+            </div>
+            <input type="hidden" asp-for="@Model.user.Id" value="@Model.user.Id" />
+            <div class="mt-4 py-4 px-4 flex justify-end sm:px-6">
+
+                <a asp-page="/Index" asp-area="Dashboard" class="bg-white border border-gray-300 rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+                    Back
+                </a>
+                <button type="submit" id="save" class="ml-5 bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+                    Save
+                </button>
+
             </div>
         </div>
-
-        <div class="hidden relative rounded-full overflow-hidden lg:block">
-            <img class="relative rounded-full w-40 h-40" src="~/Site Files/Profile_Images/@Model.user.Avatar" alt="">
-            <label for="desktop-user-photo" class="absolute inset-0 w-full h-full bg-black bg-opacity-75 flex items-center justify-center text-sm font-medium text-white opacity-0 hover:opacity-100 focus-within:opacity-100">
-                <span>Change</span>
-                <span class="sr-only"> user photo</span>
-                <input type="file" id="desktop-user-photo" accept="image/*"
-                       asp-for="@Model.user.ProfilePicture" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer border-gray-300 rounded-md">
-            </label>
-
-        </div>
-        <span asp-validation-for="@Model.user.ProfilePicture" class="text-red-500 text-xs"></span>
-    </div>
+        </form>
+    <form asp-page="./Index" asp-page-handler="DeactivateUser" class="divide-y divide-gray-200 lg:col-span-9 col-span-12 sm:col-span-6 flex justify-start"
+          data-callback="" data-ajax="true" method="post" data-action="Refresh">
+        <label class="block text-sm font-medium text-gray-700 mt-1 mr-3"> Deactivate Account</label>
+        <input type="hidden" name="Id" id="Id" value="@Model.user.Id" />
+        <button type="submit"
+                class="inline-flex items-center p-1 border border-transparent rounded-full shadow-sm text-white bg-red-400 hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+            <!-- Heroicon name: solid/plus-sm -->
+            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                      clip-rule="evenodd" />
+            </svg>
+        </button>
+    </form>
 </div>
 
-<div class="mt-6 grid grid-cols-12 gap-6">
-    <div class="col-span-12 sm:col-span-6">
-        <label asp-for="@Model.user.FirstName" class="block text-sm font-medium text-gray-700"></label>
-        <input type="text" asp-for="@Model.user.FirstName"
-               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
-    </div>
-
-    <div class="col-span-12 sm:col-span-6">
-        <label asp-for="@Model.user.LastName" class="block text-sm font-medium text-gray-700"></label>
-        <input type="text" asp-for="@Model.user.LastName"
-               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
-    </div>
-    <div class="col-span-12 sm:col-span-6">
-        <label asp-for="@Model.user.CompanyName" class="block text-sm font-medium text-gray-700"></label>
-        <input type="text" asp-for="@Model.user.CompanyName"
-               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
-    </div>
-    <div class="col-span-12 sm:col-span-6">
-        <label asp-for="@Model.user.VatNumber" class="block text-sm font-medium text-gray-700"></label>
-        <input type="text" asp-for="@Model.user.VatNumber"
-               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
-    </div>
-</div>
-
-<div class="mt-6 grid grid-cols-12 gap-6">
-    <div class="col-span-12 sm:col-span-6">
-        <label asp-for="@Model.user.Latitude" class="block text-sm font-medium text-gray-700"></label>
-        <input type="text" asp-for="@Model.user.Latitude" id="latitude"
-               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
-    </div>
-
-    <div class="col-span-12 sm:col-span-6">
-        <label asp-for="@Model.user.Longitude" class="block text-sm font-medium text-gray-700"></label>
-        <input type="text" asp-for="@Model.user.Longitude" id="longitude"
-               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
-    </div>
-</div>
-
-<div class="py-4 flex justify-start">
-    <div onclick="getLocation()"
-         class="bg-sky-700 border cursor-pointer border-transparent rounded-md shadow-sm py-2 mr-4 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
-        Get Location
-    </div>
-    <div onclick="hideMap()" id="hideMap" style="display: none"
-         class="bg-gray-50 border cursor-pointer border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-gray-800 text-center hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-100">
-        Hide Map
-    </div>
-</div>
-
-<div class="flex-grow space-y-6 rounded-l-md" id="mapholder" style="height: 300px; display: none"></div>
-
-<div class="mt-6 grid grid-cols-12 gap-6">
-    <div class="col-span-12 sm:col-span-6">
-        <label asp-for="@Model.user.Country" class="block text-sm font-medium text-gray-700"></label>
-        <select asp-for="@Model.user.Country"
-                asp-items="@Model.CountryList"
-                class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
-            <option value="">
-                Please select a country
-            </option>
-        </select>
-        <span asp-validation-for="@Model.user.Country" class="text-red-500"></span>
-    </div>
-    <div class="col-span-12 sm:col-span-6">
-        <label asp-for="@Model.user.City" class="block text-sm font-medium text-gray-700"></label>
-        <input type="text" asp-for="@Model.user.City"
-               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
-    </div>
-    <div class="col-span-12 sm:col-span-6">
-        <label asp-for="@Model.user.PostalCode" class="block text-sm font-medium text-gray-700"></label>
-        <input type="text" asp-for="@Model.user.PostalCode"
-               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
-    </div>
-    <div class="col-span-12 sm:col-span-6">
-        <label asp-for="@Model.user.TwitterUrl" class="block text-sm font-medium text-gray-700"></label>
-        <input type="text" asp-for="@Model.user.TwitterUrl"
-               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
-    </div>
-    <div class="col-span-12 sm:col-span-6">
-        <label asp-for="@Model.user.FaceBookUrl" class="block text-sm font-medium text-gray-700"></label>
-        <input type="text" asp-for="@Model.user.FaceBookUrl"
-               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
-    </div>
-    <div class="col-span-12 sm:col-span-6">
-        <label asp-for="@Model.user.InstagramUrl" class="block text-sm font-medium text-gray-700"></label>
-        <input type="text" asp-for="@Model.user.InstagramUrl"
-               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
-    </div>
-    <div class="col-span-12 sm:col-span-6">
-        <label asp-for="@Model.user.LinkdinUrl" class="block text-sm font-medium text-gray-700"></label>
-        <input type="text" asp-for="@Model.user.LinkdinUrl"
-               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
-    </div>
-    <div class="col-span-12 sm:col-span-6">
-        <label asp-for="@Model.user.RoleString" class="block text-sm font-medium text-gray-700">User Type</label>
-        <input type="text" asp-for="@Model.user.RoleString" disabled="disabled"
-               class="mt-1 block w-full border border-gray-100 bg-gray-100 rounded-md shadow-sm py-2 px-3 sm:text-sm">
-    </div>
-</div>
-<input type="hidden" asp-for="@Model.user.Id" value="@Model.user.Id"/>
-<div class="mt-4 py-4 px-4 flex justify-end sm:px-6">
-
-    <a asp-page="/Index" asp-area="Dashboard" class="bg-white border border-gray-300 rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
-        Back
-    </a>
-    <button type="submit" id="save" class="ml-5 bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
-        Save
-    </button>
-
-</div>
-
-</form>
-<form asp-page="./Index" asp-page-handler="DeactivateUser" class="divide-y divide-gray-200 lg:col-span-9 col-span-12 sm:col-span-6 flex justify-start"
-      data-callback="" data-ajax="true" method="post" data-action="Refresh">
-    <label class="block text-sm font-medium text-gray-700 mt-1 mr-3"> Deactivate Account</label>
-    <input type="hidden" name="Id" id="Id" value="@Model.user.Id"/>
-    <button type="submit"
-            class="inline-flex items-center p-1 border border-transparent rounded-full shadow-sm text-white bg-red-400 hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
-        <!-- Heroicon name: solid/plus-sm -->
-        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                  clip-rule="evenodd"/>
-        </svg>
-    </button>
-</form>
 
 
 @section CSS

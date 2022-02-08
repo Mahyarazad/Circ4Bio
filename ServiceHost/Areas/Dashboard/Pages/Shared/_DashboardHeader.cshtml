@@ -1,9 +1,11 @@
 ﻿@using AM.Application
 @using AM.Application.Contracts.Notification
 @using AM.Application.Contracts.User
+@using Microsoft.AspNetCore.Http
 @inject _0_Framework.Application.IAutenticateHelper AutenticateHelper;
 @inject IUserApplication UserApplication
 @inject INotificationApplication NotificationApplication
+@inject IHttpContextAccessor Context;
 <div class="relative bg-sky-700 sticky top-0 z-50" id="top-of-header">
     <nav class="bg-transparent relative z-10 border-b border-teal-500 border-opacity-25 lg:bg-transparent lg:border-none">
         <div class="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
@@ -15,13 +17,16 @@
                     <div class="hidden lg:block lg:ml-6 lg:space-x-4">
                         <div class="flex">
                             <!-- Current: "bg-black bg-opacity-25", Default: "hover:bg-sky-800" -->
-                            <a asp-area="Dashboard" asp-page="/Index" class="bg-black bg-opacity-25 rounded-md py-2 px-3 text-sm font-medium text-white">Dashboard</a>
+                            <a asp-area="Dashboard" asp-page="/Index" id="dashboard"
+                               class="bg-opacity-25
+                                @((string)Context.HttpContext.Request.RouteValues.Values.First() != "/AvailableListing/Index" ?"bg-black" :"" )
+                               rounded-md py-2 px-3 mx-3 text-sm font-medium text-white">Dashboard</a>
 
-                            <a href="#" class="hover:bg-sky-800 rounded-md py-2 px-3 text-sm font-medium text-white">Jobs</a>
+                            <a asp-page="/AvailableListing/Index" id="market"
+                               class="bg-opacity-25
+                                @((string)Context.HttpContext.Request.RouteValues.Values.First() == "/AvailableListing/Index" ?"bg-black" :"" )
+                               rounded-md py-2 px-3 mx-3 text-sm font-medium text-white">Market</a>
 
-                            <a href="#" class="hover:bg-sky-800 rounded-md py-2 px-3 text-sm font-medium text-white">Applicants</a>
-
-                            <a href="#" class="hover:bg-sky-800 rounded-md py-2 px-3 text-sm font-medium text-white">Company</a>
                         </div>
                     </div>
                 </div>
@@ -130,13 +135,13 @@
         <div class="bg-sky-900 lg:hidden invisible opacity-0 transform duration-300 fixed top-0" id="mobile-menu">
             <div class="pt-2 pb-3 px-2 space-y-1 w-screen">
                 <!-- Current: "bg-black bg-opacity-25", Default: "hover:bg-sky-800" -->
-                <a asp-page="/Index" asp-area="Dashboard" class="bg-black bg-opacity-25 block rounded-md py-2 px-3 text-base font-medium text-white">Dashboard</a>
+                <a asp-page="/Index" asp-area="Dashboard" class="
+                    @((string)Context.HttpContext.Request.RouteValues.Values.First() != "/AvailableListing/Index" ?"bg-black" :"" )
+                   bg-opacity-25 block rounded-md py-2 px-3 text-base font-medium text-white">Dashboard</a>
 
-                <a href="#" class="hover:bg-sky-800 block rounded-md py-2 px-3 text-base font-medium text-white">Jobs</a>
-
-                <a href="#" class="hover:bg-sky-800 block rounded-md py-2 px-3 text-base font-medium text-white">Applicants</a>
-
-                <a href="#" class="hover:bg-sky-800 block rounded-md py-2 px-3 text-base font-medium text-white">Company</a>
+                <a asp-page="/AvailableListing/Index" class="
+                    @((string)Context.HttpContext.Request.RouteValues.Values.First() == "/AvailableListing/Index" ?"bg-black" :"" )
+                   bg-opacity-25 block rounded-md py-2 px-3 text-base font-medium text-white">Market</a>
             </div>
             <div class="pt-4 pb-3 border-t border-sky-800">
                 <div class="flex items-center px-4">
