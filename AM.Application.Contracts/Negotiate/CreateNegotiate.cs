@@ -33,4 +33,12 @@ namespace AM.Application.Contracts.Negotiate
         public string? Currency { get; set; }
 
     }
+
+    public class UserInfoMessaging
+    {
+        public string? ImageString { get; set; }
+        public string? Name { get; set; }
+        public string? Email { get; set; }
+        public string? Letter { get; set; }
+    }
 }

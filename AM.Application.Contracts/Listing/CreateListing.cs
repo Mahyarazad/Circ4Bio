@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using _0_Framework;
 using _0_Framework.Application;
 using Microsoft.AspNetCore.Http;
@@ -9,8 +10,10 @@ namespace AM.Application.Contracts.Listing
     public class CreateListing
     {
         [Required(ErrorMessage = ValidationMessages.IsRequired)]
+        [MaxLength(50, ErrorMessage = ValidationMessages.MaxCharName)]
         public string? Name { get; set; }
         public string? Type { get; set; }
+        [MaxLength(2000, ErrorMessage = ValidationMessages.MaxChar2000)]
         public string? Description { get; set; }
         [MaxFileSize(1 * 1024 * 1024, ErrorMessage = ValidationMessages.SizeError1M)]
         public IFormFile? Image { get; set; }
@@ -27,6 +30,7 @@ namespace AM.Application.Contracts.Listing
         [Required(ErrorMessage = ValidationMessages.IsRequired)]
         public double Amount { get; set; }
         [Required(ErrorMessage = ValidationMessages.IsRequired)]
+        [MaxLength(3, ErrorMessage = ValidationMessages.Currency)]
         public string? Currency { get; set; }
         // 0 for public and 1 for private
         public bool Status { get; set; }

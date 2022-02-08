@@ -113,6 +113,7 @@ namespace AM.Domain.UserAggregate
         public Guid ActivationGuid { get; private set; }
         public int RoleId { get; private set; }
         public Role? Role { get; private set; }
+        public List<UserNegotiate> UserNegotiate { get; private set; }
         public List<Listing>? Listings { get; private set; }
         public long? SuppliedItemId { get; private set; }
         public SuppliedItem? SuppliedItem { get; private set; }

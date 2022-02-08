@@ -19,7 +19,7 @@ namespace AM.Infrastructure.Mapping
             builder.Property(x => x.IsFinished).IsRequired();
             builder.OwnsMany(x => x.Messages, ModelBuilder =>
             {
-                ModelBuilder.ToTable("NegitiateMessages");
+                ModelBuilder.ToTable("NegotoiateMessages");
                 ModelBuilder.HasKey(x => x.Id);
                 ModelBuilder.Property(x => x.MessageBody).IsRequired().HasMaxLength(500);
                 ModelBuilder.Property(x => x.FilePathString).HasMaxLength(100);

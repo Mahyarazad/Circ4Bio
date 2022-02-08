@@ -32,6 +32,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\Email Templates\AccountVerificationTemplate.html" />
+    <None Include="wwwroot\Email Templates\ProvideInformation.html" />
+    <None Include="wwwroot\Email Templates\ResetPasswordTemplate.html" />
+    <None Include="wwwroot\Email Templates\Table.html" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="Areas\Dashboard\Pages\AvailableListing\Index - Copy %282%29.cshtml.cs">
       <DependentUpon>Index.cshtml.cs</DependentUpon>
     </Compile>

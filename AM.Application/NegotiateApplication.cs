@@ -24,6 +24,7 @@ namespace AM.Application
         private readonly IAutenticateHelper _autenticateHelper;
         private readonly IRecipientRepository _recipientRepository;
         private readonly INegotiateRepository _negotiateRepository;
+        private readonly IUserNegotiateRepository _userNegotiateRepository;
         private readonly INotificationApplication _notificationApplication;
 
         public NegotiateApplication(INegotiateRepository negotiateRepository,
@@ -32,6 +33,7 @@ namespace AM.Application
             INotificationApplication notificationApplication,
             IUserApplication userApplication,
             IListingRepository listingRepository,
+            IUserNegotiateRepository userNegotiateRepository,
             IFileUploader fileUploader,
             IUserRepository userRepository)
         {
@@ -42,6 +44,7 @@ namespace AM.Application
             _listingRepository = listingRepository;
             _recipientRepository = recipientRepository;
             _negotiateRepository = negotiateRepository;
+            _userNegotiateRepository = userNegotiateRepository;
             _notificationApplication = notificationApplication;
         }
         public OperationResult Create(CreateNegotiate Command)
@@ -108,9 +111,14 @@ namespace AM.Application
             _recipientRepository.Create(new Recipient(Command.SellerId, sellerRoleId, sellerNotificationId));
             _recipientRepository.SaveChanges();
 
-
-            _negotiateRepository.Create(new Negotiate(Command.ListingId, Command.BuyerId, Command.SellerId));
+            var negotiate = new Negotiate(Command.ListingId, Command.BuyerId, Command.SellerId);
+            _negotiateRepository.Create(negotiate);
             _negotiateRepository.SaveChanges();
+
+            _userNegotiateRepository.Create(new UserNegotiate(Command.BuyerId, negotiate.Id, true));
+            _userNegotiateRepository.Create(new UserNegotiate(Command.SellerId, negotiate.Id, false));
+            _userNegotiateRepository.Save();
+
             return result.Succeeded();
 
         }

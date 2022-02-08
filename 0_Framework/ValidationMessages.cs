@@ -12,6 +12,9 @@
         public const string ConfirmPassword = "Please enter confirm password";
         public const string SelectUserType = "Please select the user type";
         public const string PasswordNotMatch = "Password and confirm password do not match";
+        public const string MaxChar2000 = "Description should be less between 250 words and 500 words";
+        public const string MaxCharName = "Name should be less between 7 words and 13 words";
+        public const string MaxCharCurrency = "Currency should be less than three charectors";
 
         //Deals
         public const string DeliveryMethod = "Delivery method cannot be empt!";

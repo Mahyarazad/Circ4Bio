@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AM.Infrastructure.Migrations
 {
     [DbContext(typeof(AMContext))]
-    [Migration("20220206124555_dealsupdated3")]
-    partial class dealsupdated3
+    [Migration("20220208081924_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -275,6 +275,9 @@ namespace AM.Infrastructure.Migrations
                     b.Property<long?>("DealId")
                         .HasColumnType("bigint");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsCanceled")
                         .HasColumnType("bit");
 
@@ -294,6 +297,21 @@ namespace AM.Infrastructure.Migrations
                     b.HasIndex("ListingId");
 
                     b.ToTable("Negotiate", "dbo");
+                });
+
+            modelBuilder.Entity("AM.Domain.NegotiateAggregate.UserNegotiate", b =>
+                {
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("NegotiateId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("UserId", "NegotiateId");
+
+                    b.HasIndex("NegotiateId");
+
+                    b.ToTable("UserNegotiate", "dbo");
                 });
 
             modelBuilder.Entity("AM.Domain.NotificationAggregate.Notification", b =>
@@ -703,7 +721,7 @@ namespace AM.Infrastructure.Migrations
 
                             b1.HasIndex("NegotiateId");
 
-                            b1.ToTable("NegitiateMessages");
+                            b1.ToTable("NegotoiateMessages");
 
                             b1.WithOwner("Negotiate")
                                 .HasForeignKey("NegotiateId");
@@ -716,6 +734,25 @@ namespace AM.Infrastructure.Migrations
                     b.Navigation("Listing");
 
                     b.Navigation("Messages");
+                });
+
+            modelBuilder.Entity("AM.Domain.NegotiateAggregate.UserNegotiate", b =>
+                {
+                    b.HasOne("AM.Domain.NegotiateAggregate.Negotiate", "Negotiate")
+                        .WithMany("UserNegotiate")
+                        .HasForeignKey("NegotiateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AM.Domain.UserAggregate.User", "User")
+                        .WithMany("UserNegotiate")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Negotiate");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("AM.Domain.NotificationAggregate.Notification", b =>
@@ -831,6 +868,11 @@ namespace AM.Infrastructure.Migrations
                     b.Navigation("SupplyList");
                 });
 
+            modelBuilder.Entity("AM.Domain.NegotiateAggregate.Negotiate", b =>
+                {
+                    b.Navigation("UserNegotiate");
+                });
+
             modelBuilder.Entity("AM.Domain.NotificationAggregate.Notification", b =>
                 {
                     b.Navigation("Recipient");
@@ -858,6 +900,8 @@ namespace AM.Infrastructure.Migrations
                     b.Navigation("Listings");
 
                     b.Navigation("Notifications");
+
+                    b.Navigation("UserNegotiate");
                 });
 #pragma warning restore 612, 618
         }

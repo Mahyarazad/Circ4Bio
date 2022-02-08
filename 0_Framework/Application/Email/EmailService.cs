@@ -33,7 +33,7 @@ namespace _0_Framework.Application.Email
             {
                 case 0:
                     {
-                        FilePath = Directory.GetCurrentDirectory() + "\\Templates\\ResetPasswordTemplate.html";
+                        FilePath = AppDomain.CurrentDomain.BaseDirectory + "\\wwwroot\\Email Templates\\ResetPasswordTemplate.html";
                         StreamReader StreamReader = new StreamReader(FilePath);
                         MailText = StreamReader.ReadToEnd();
                         StreamReader.Close();
@@ -43,7 +43,7 @@ namespace _0_Framework.Application.Email
 
                 case 1:
                     {
-                        FilePath = Directory.GetCurrentDirectory() + "\\Templates\\AccountVerificationTemplate.html";
+                        FilePath = AppDomain.CurrentDomain.BaseDirectory + "\\wwwroot\\Email Templates\\AccountVerificationTemplate.html";
                         StreamReader StreamReader = new StreamReader(FilePath);
                         MailText = StreamReader.ReadToEnd();
                         StreamReader.Close();
@@ -53,7 +53,7 @@ namespace _0_Framework.Application.Email
 
                 case 2:
                     {
-                        FilePath = Directory.GetCurrentDirectory() + "\\Templates\\ProvideInformation.html";
+                        FilePath = AppDomain.CurrentDomain.BaseDirectory + "\\wwwroot\\Email Templates\\ProvideInformation.html";
                         StreamReader StreamReader = new StreamReader(FilePath);
                         MailText = StreamReader.ReadToEnd();
                         StreamReader.Close();

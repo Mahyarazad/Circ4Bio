@@ -25,6 +25,7 @@ namespace AM.Infrastructure
         public DbSet<SuppliedItem> SuppliedItems { get; set; }
         public DbSet<PurchasedItem> PurchasedItems { get; set; }
         public DbSet<Negotiate> Negotiates { get; set; }
+        public DbSet<UserNegotiate> UserNegotiates { get; set; }
         public AMContext(DbContextOptions<AMContext> options) : base(options)
         {
         }

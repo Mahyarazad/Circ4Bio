@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AM.Infrastructure.Migrations
 {
     [DbContext(typeof(AMContext))]
-    [Migration("20220206072314_update-deals2")]
-    partial class updatedeals2
+    [Migration("20220208094110_buyerbool")]
+    partial class buyerbool
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -112,14 +112,27 @@ namespace AM.Infrastructure.Migrations
                     b.Property<double>("Amount")
                         .HasColumnType("float");
 
+                    b.Property<long>("BuyerId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("ContractFile")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasMaxLength(4)
+                        .HasColumnType("nvarchar(4)");
+
                     b.Property<double>("DeliveryCost")
                         .HasColumnType("float");
+
+                    b.Property<string>("DeliveryMethod")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime>("DueTime")
                         .HasColumnType("datetime2");
@@ -133,17 +146,26 @@ namespace AM.Infrastructure.Migrations
                     b.Property<bool>("IsFinished")
                         .HasColumnType("bit");
 
+                    b.Property<double>("Latitude")
+                        .HasColumnType("float");
+
                     b.Property<long>("ListingId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Location")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<double>("Longitude")
+                        .HasColumnType("float");
+
                     b.Property<long>("NegotiateId")
                         .HasColumnType("bigint");
 
                     b.Property<bool>("PaymentStatus")
                         .HasColumnType("bit");
+
+                    b.Property<long>("SellerId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("datetime2");
@@ -155,6 +177,9 @@ namespace AM.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
+
+                    b.Property<string>("Unit")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -171,7 +196,6 @@ namespace AM.Infrastructure.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<double>("Amount")
-                        .HasMaxLength(50)
                         .HasColumnType("float");
 
                     b.Property<DateTime>("CreationTime")
@@ -189,8 +213,8 @@ namespace AM.Infrastructure.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
 
                     b.Property<bool>("HasAmount")
                         .HasColumnType("bit");
@@ -207,7 +231,9 @@ namespace AM.Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
@@ -250,6 +276,9 @@ namespace AM.Infrastructure.Migrations
                     b.Property<long?>("DealId")
                         .HasColumnType("bigint");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsCanceled")
                         .HasColumnType("bit");
 
@@ -269,6 +298,24 @@ namespace AM.Infrastructure.Migrations
                     b.HasIndex("ListingId");
 
                     b.ToTable("Negotiate", "dbo");
+                });
+
+            modelBuilder.Entity("AM.Domain.NegotiateAggregate.UserNegotiate", b =>
+                {
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("NegotiateId")
+                        .HasColumnType("bigint");
+
+                    b.Property<bool>("BuyerBool")
+                        .HasColumnType("bit");
+
+                    b.HasKey("UserId", "NegotiateId");
+
+                    b.HasIndex("NegotiateId");
+
+                    b.ToTable("UserNegotiate", "dbo");
                 });
 
             modelBuilder.Entity("AM.Domain.NotificationAggregate.Notification", b =>
@@ -458,9 +505,6 @@ namespace AM.Infrastructure.Migrations
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<long?>("DealId")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("Description")
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
@@ -545,8 +589,6 @@ namespace AM.Infrastructure.Migrations
                         .HasColumnType("nvarchar(200)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DealId");
 
                     b.HasIndex("PurchasedItemId");
 
@@ -683,7 +725,7 @@ namespace AM.Infrastructure.Migrations
 
                             b1.HasIndex("NegotiateId");
 
-                            b1.ToTable("NegitiateMessages");
+                            b1.ToTable("NegotoiateMessages");
 
                             b1.WithOwner("Negotiate")
                                 .HasForeignKey("NegotiateId");
@@ -696,6 +738,25 @@ namespace AM.Infrastructure.Migrations
                     b.Navigation("Listing");
 
                     b.Navigation("Messages");
+                });
+
+            modelBuilder.Entity("AM.Domain.NegotiateAggregate.UserNegotiate", b =>
+                {
+                    b.HasOne("AM.Domain.NegotiateAggregate.Negotiate", "Negotiate")
+                        .WithMany("UserNegotiate")
+                        .HasForeignKey("NegotiateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AM.Domain.UserAggregate.User", "User")
+                        .WithMany("UserNegotiate")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Negotiate");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("AM.Domain.NotificationAggregate.Notification", b =>
@@ -774,10 +835,6 @@ namespace AM.Infrastructure.Migrations
 
             modelBuilder.Entity("AM.Domain.UserAggregate.User", b =>
                 {
-                    b.HasOne("AM.Domain.Deal", "Deal")
-                        .WithMany("Users")
-                        .HasForeignKey("DealId");
-
                     b.HasOne("AM.Domain.Supplied.PurchasedAggregate.PurchasedItem", "PurchasedItem")
                         .WithMany("Users")
                         .HasForeignKey("PurchasedItemId");
@@ -792,8 +849,6 @@ namespace AM.Infrastructure.Migrations
                         .WithMany("Users")
                         .HasForeignKey("SuppliedItemId");
 
-                    b.Navigation("Deal");
-
                     b.Navigation("PurchasedItem");
 
                     b.Navigation("Role");
@@ -804,8 +859,6 @@ namespace AM.Infrastructure.Migrations
             modelBuilder.Entity("AM.Domain.Deal", b =>
                 {
                     b.Navigation("Negotiates");
-
-                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("AM.Domain.ListingAggregate.Listing", b =>
@@ -817,6 +870,11 @@ namespace AM.Infrastructure.Migrations
                     b.Navigation("PurchaseList");
 
                     b.Navigation("SupplyList");
+                });
+
+            modelBuilder.Entity("AM.Domain.NegotiateAggregate.Negotiate", b =>
+                {
+                    b.Navigation("UserNegotiate");
                 });
 
             modelBuilder.Entity("AM.Domain.NotificationAggregate.Notification", b =>
@@ -846,6 +904,8 @@ namespace AM.Infrastructure.Migrations
                     b.Navigation("Listings");
 
                     b.Navigation("Notifications");
+
+                    b.Navigation("UserNegotiate");
                 });
 #pragma warning restore 612, 618
         }

@@ -31,6 +31,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Negotiate
             if (CurrentNegotiate.SellerId == loggedInUserId ||
                 CurrentNegotiate.BuyerId == loggedInUserId)
             {
+                Command = new NewMessage();
                 MessageList = new List<MessageViewModel>();
                 MessageList = _negotiateApplication.GetMessages(Id);
                 return null;

@@ -1,4 +1,5 @@
-﻿using _0_Framework.Infrastructure;
+﻿using System.Security.Cryptography.Xml;
+using _0_Framework.Infrastructure;
 using AM.Application;
 using AM.Application.Contracts.ContactUs;
 using AM.Application.Contracts.Deal;
@@ -46,6 +47,7 @@ namespace AM.Infrastructure.Core
             services.AddTransient<IListingRepository, ListingRepository>();
 
             services.AddTransient<INegotiateRepository, NegotiateRepository>();
+            services.AddTransient<IUserNegotiateRepository, UserNegotiateRepository>();
             services.AddTransient<INegotiateApplication, NegotiateApplication>();
 
 
@@ -54,7 +56,10 @@ namespace AM.Infrastructure.Core
 
             services.AddTransient<IPermissionExposer, UserPermissionExposer>();
 
-            services.AddDbContext<AMContext>(x => x.UseSqlServer(connectionString));
+            services.AddDbContext<AMContext>(x =>
+            {
+                x.UseSqlServer(connectionString);
+            });
         }
     }
 }

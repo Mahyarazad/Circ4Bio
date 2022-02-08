@@ -12,10 +12,11 @@ namespace AM.Infrastructure.Mapping
             builder.ToTable("Listing", schema: "dbo");
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Type).IsRequired().HasMaxLength(50);
-            builder.Property(x => x.Amount).IsRequired().HasMaxLength(50);
-            builder.Property(x => x.Unit).IsRequired();
             builder.Property(x => x.Amount).IsRequired();
-            builder.Property(x => x.Description).IsRequired().HasMaxLength(500);
+            builder.Property(x => x.Unit).IsRequired();
+            builder.Property(x => x.Name).IsRequired().HasMaxLength(50); ;
+            builder.Property(x => x.Amount).IsRequired();
+            builder.Property(x => x.Description).IsRequired().HasMaxLength(2000);
             builder.Property(x => x.Image).IsRequired().HasMaxLength(64);
             builder.Property(x => x.DeliveryMethod).IsRequired().HasMaxLength(50);
             builder.Property(x => x.Currency).IsRequired().HasMaxLength(10);

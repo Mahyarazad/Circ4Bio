@@ -194,7 +194,6 @@ namespace AM.Infrastructure.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<double>("Amount")
-                        .HasMaxLength(50)
                         .HasColumnType("float");
 
                     b.Property<DateTime>("CreationTime")
@@ -212,8 +211,8 @@ namespace AM.Infrastructure.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
 
                     b.Property<bool>("HasAmount")
                         .HasColumnType("bit");
@@ -230,7 +229,9 @@ namespace AM.Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
@@ -295,6 +296,24 @@ namespace AM.Infrastructure.Migrations
                     b.HasIndex("ListingId");
 
                     b.ToTable("Negotiate", "dbo");
+                });
+
+            modelBuilder.Entity("AM.Domain.NegotiateAggregate.UserNegotiate", b =>
+                {
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("NegotiateId")
+                        .HasColumnType("bigint");
+
+                    b.Property<bool>("BuyerBool")
+                        .HasColumnType("bit");
+
+                    b.HasKey("UserId", "NegotiateId");
+
+                    b.HasIndex("NegotiateId");
+
+                    b.ToTable("UserNegotiate", "dbo");
                 });
 
             modelBuilder.Entity("AM.Domain.NotificationAggregate.Notification", b =>
@@ -704,7 +723,7 @@ namespace AM.Infrastructure.Migrations
 
                             b1.HasIndex("NegotiateId");
 
-                            b1.ToTable("NegitiateMessages");
+                            b1.ToTable("NegotoiateMessages");
 
                             b1.WithOwner("Negotiate")
                                 .HasForeignKey("NegotiateId");
@@ -717,6 +736,25 @@ namespace AM.Infrastructure.Migrations
                     b.Navigation("Listing");
 
                     b.Navigation("Messages");
+                });
+
+            modelBuilder.Entity("AM.Domain.NegotiateAggregate.UserNegotiate", b =>
+                {
+                    b.HasOne("AM.Domain.NegotiateAggregate.Negotiate", "Negotiate")
+                        .WithMany("UserNegotiate")
+                        .HasForeignKey("NegotiateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AM.Domain.UserAggregate.User", "User")
+                        .WithMany("UserNegotiate")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Negotiate");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("AM.Domain.NotificationAggregate.Notification", b =>
@@ -832,6 +870,11 @@ namespace AM.Infrastructure.Migrations
                     b.Navigation("SupplyList");
                 });
 
+            modelBuilder.Entity("AM.Domain.NegotiateAggregate.Negotiate", b =>
+                {
+                    b.Navigation("UserNegotiate");
+                });
+
             modelBuilder.Entity("AM.Domain.NotificationAggregate.Notification", b =>
                 {
                     b.Navigation("Recipient");
@@ -859,6 +902,8 @@ namespace AM.Infrastructure.Migrations
                     b.Navigation("Listings");
 
                     b.Navigation("Notifications");
+
+                    b.Navigation("UserNegotiate");
                 });
 #pragma warning restore 612, 618
         }

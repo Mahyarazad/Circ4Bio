@@ -26,6 +26,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
 
         public void OnGet()
         {
+            Command = new CreateListing();
             CurrencyList = new SelectList(GenerateCurrencyList.GetList());
         }
 

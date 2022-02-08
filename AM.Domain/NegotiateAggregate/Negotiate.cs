@@ -2,7 +2,6 @@
 using System.Linq;
 using _0_Framework.Domain;
 using AM.Domain.ListingAggregate;
-using AM.Domain.UserAggregate;
 
 namespace AM.Domain.NegotiateAggregate
 {
@@ -25,6 +24,7 @@ namespace AM.Domain.NegotiateAggregate
 
         public long ListingId { get; private set; }
         public Listing? Listing { get; private set; }
+        public List<UserNegotiate> UserNegotiate { get; private set; }
         public long? DealId { get; private set; }
         public Deal? Deal { get; private set; }
         public long BuyerId { get; private set; }
