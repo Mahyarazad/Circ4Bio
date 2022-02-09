@@ -26,5 +26,8 @@ namespace AM.Application.Contracts.User
         OperationResult Login(EditUser command);
         void Logout();
         List<Usertype> GetUsertypes();
+        void AddDeliveryLocation(CreateDeliveryLocation Command);
+        bool RemoveDeliveryLocation(CreateDeliveryLocation Command);
+        List<CreateDeliveryLocation> GetDeliveryLocationList(long userId);
     }
 }

@@ -40,6 +40,13 @@ namespace AM.Infrastructure.Mapping
             builder.HasMany(x => x.Notifications).WithOne(x => x.User).HasForeignKey(x => x.UserId);
             builder.HasMany(x => x.Listings).WithOne(x => x.User).HasForeignKey(x => x.UserId);
             builder.HasMany(x => x.Blogs).WithOne(x => x.User).HasForeignKey(x => x.UserId);
+
+            builder.OwnsMany(x => x.DeliveryLocations, ModelBuilder =>
+            {
+                ModelBuilder.HasKey(x => x.Id);
+                ModelBuilder.Property(x => x.Location).IsRequired().HasMaxLength(500);
+                ModelBuilder.WithOwner(x => x.User).HasForeignKey(x => x.UserId);
+            });
         }
     }
 }

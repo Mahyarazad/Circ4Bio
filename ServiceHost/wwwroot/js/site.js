@@ -100,29 +100,37 @@ function handleAjaxPost(formData, url, action) {
                     var resultDomMessage = $('#operation-result-message');
                     resultDomMessage.text(data.message);
                     resultDom.css('display', 'block');
-                    setTimeout(() => { window.location.replace(url) }, 1000)
+                    setTimeout(() => { window.location.replace(url) }, 3000)
                 }
 
                 if (splited[splited.length - 2] !== "messages") {
-                    if (parseInt(splited[splited.length - 1]) > 0) {
-                        var updatedUrl = splited.slice(0, splited.length - 2);
-                        url = updatedUrl.join('/', updatedUrl);
-                    } else if (splited[splited.length - 1] === "create") {
-                        var updatedUrl = splited.slice(0, splited.length - 1);
-                        url = updatedUrl.join('/', updatedUrl);
+
+                    if (splited[splited.length - 2] === "profile") {
+                        var resultDom = $('#operation-result');
+                        var resultDomMessage = $('#operation-result-message');
+                        resultDomMessage.text(data.message);
+                        resultDom.css('display', 'block');
+                        setTimeout(() => { window.location.replace(url) }, 3000)
+                    } else {
+                        if (parseInt(splited[splited.length - 1]) > 0) {
+                            var updatedUrl = splited.slice(0, splited.length - 2);
+                            url = updatedUrl.join('/', updatedUrl);
+                        } else if (splited[splited.length - 1] === "create") {
+                            var updatedUrl = splited.slice(0, splited.length - 1);
+                            url = updatedUrl.join('/', updatedUrl);
+                        }
+                        var resultDom = $('#operation-result');
+                        var resultDomMessage = $('#operation-result-message');
+
+                        resultDomMessage.text(data.message);
+                        resultDom.css('display', 'block');
+
+                        setTimeout(() => {
+                            window.location.replace(url);
+                        },
+                            1000)
                     }
-                    var resultDom = $('#operation-result');
-                    var resultDomMessage = $('#operation-result-message');
-
-                    resultDomMessage.text(data.message);
-                    resultDom.css('display', 'block');
-
-                    setTimeout(() => {
-                        window.location.replace(url);
-                    },
-                        1000)
                 }
-
             }
             setInterval(function () {
                 CallBackHandler(data, action, formData);;
@@ -376,4 +384,5 @@ jQuery.validator.addMethod("fileExtensionLimit",
         return validFormat.indexOf(fileExtension) > -1;
     });
 jQuery.validator.unobtrusive.adapters.addBool("fileExtensionLimit");
+
 

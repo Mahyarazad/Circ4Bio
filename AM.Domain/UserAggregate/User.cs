@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using _0_Framework.Domain;
 using AM.Domain.BlogAggregate;
 using AM.Domain.ListingAggregate;
@@ -16,11 +17,11 @@ namespace AM.Domain.UserAggregate
         {
 
         }
-        public User(string email, string password, Guid activationGuid, int roleId, bool status)
+        public User(string? email, string password, Guid activationGuid, int roleId, bool status)
         {
 
             Email = email;
-            UserName = email.Substring(0, email.IndexOf('@'));
+            UserName = email?.Substring(0, email.IndexOf('@'));
             Password = password;
             IsActive = false;
             Status = status;
@@ -28,9 +29,10 @@ namespace AM.Domain.UserAggregate
             RoleId = roleId;
             Avatar = "default-avatar.png";
             Notifications = new List<Notification>();
+            DeliveryLocations = new List<DeliveryLocation>();
         }
 
-        public void Edit(string firstName, string lastName, string userId
+        public void Edit(string? firstName, string? lastName, string userId
             , string address, string city, string country, long postalCode
             , double latitude, double longitude, string description, string companyName, long vatNumber
             , bool status, string avatar, string webUrl, string linkdinUrl
@@ -59,6 +61,18 @@ namespace AM.Domain.UserAggregate
             RoleId = roleID;
         }
 
+        public void AddDeliveryLocation(long userId, string? location)
+        {
+            DeliveryLocations.Add(new DeliveryLocation(userId, location));
+        }
+
+        public bool RemoveDeliveryLocation(int Id)
+        {
+            var itemToRemove = DeliveryLocations.FirstOrDefault(x => x.Id == Id);
+            if (itemToRemove != null)
+                return DeliveryLocations.Remove(itemToRemove);
+            return false;
+        }
         public void ChangePassword(string password)
         {
             Password = password;
@@ -92,6 +106,7 @@ namespace AM.Domain.UserAggregate
         public string? Password { get; private set; }
         public string? UserName { get; private set; }
         public string? Address { get; private set; }
+        public List<DeliveryLocation> DeliveryLocations { get; private set; }
         public string? City { get; private set; }
         public string? Country { get; private set; }
         public long PostalCode { get; private set; }
@@ -113,7 +128,7 @@ namespace AM.Domain.UserAggregate
         public Guid ActivationGuid { get; private set; }
         public int RoleId { get; private set; }
         public Role? Role { get; private set; }
-        public List<UserNegotiate> UserNegotiate { get; private set; }
+        public List<UserNegotiate>? UserNegotiate { get; private set; }
         public List<Listing>? Listings { get; private set; }
         public long? SuppliedItemId { get; private set; }
         public SuppliedItem? SuppliedItem { get; private set; }

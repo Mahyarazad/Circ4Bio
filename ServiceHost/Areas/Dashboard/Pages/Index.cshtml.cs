@@ -4,6 +4,8 @@ namespace ServiceHost.Areas.Dashboard.Pages
 {
     public class IndexModel : PageModel
     {
+        
+       
         public IndexModel()
         {
         }
@@ -12,5 +14,6 @@ namespace ServiceHost.Areas.Dashboard.Pages
         {
         }
 
+        
     }
 }

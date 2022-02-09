@@ -53,11 +53,27 @@ namespace ServiceHost.Areas.Dashboard.Pages
             }
         }
 
-
         public JsonResult OnPost(EditUser user)
         {
             var result = _userApplication.EditByUser(user);
             return new JsonResult(result);
+        }
+        public IActionResult OnGetAddDeliveryLocation(long id)
+        {
+            var user = new CreateDeliveryLocation
+            {
+                UserId = id
+            };
+            return Partial("./AddDeliveryLocation", user);
+        }
+        public IActionResult OnGetListDeliveryLocation(long id)
+        {
+            return Partial("./ListDeliveryLocation", _userApplication.GetDeliveryLocationList(id));
+        }
+        public JsonResult OnPostAddDeliveryLocation(CreateDeliveryLocation Command)
+        {
+            _userApplication.AddDeliveryLocation(Command);
+            return new JsonResult(new OperationResult().Succeeded());
         }
     }
 }

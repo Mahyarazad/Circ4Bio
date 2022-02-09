@@ -24,7 +24,7 @@ namespace AM.Domain.NegotiateAggregate
 
         public long ListingId { get; private set; }
         public Listing? Listing { get; private set; }
-        public List<UserNegotiate> UserNegotiate { get; private set; }
+        public List<UserNegotiate>? UserNegotiate { get; private set; }
         public long? DealId { get; private set; }
         public Deal? Deal { get; private set; }
         public long BuyerId { get; private set; }
@@ -32,9 +32,9 @@ namespace AM.Domain.NegotiateAggregate
         public bool IsFinished { get; private set; }
         public bool IsActive { get; private set; }
         public bool IsCanceled { get; private set; }
-        public List<Message>? Messages { get; private set; }
+        public List<Message> Messages { get; private set; }
 
-        public void AddMessage(string messageBody, long userId, bool userEntity, string? filePathString)
+        public void AddMessage(string? messageBody, long userId, bool userEntity, string? filePathString)
         {
             Messages.Add(new Message(messageBody, userId, userEntity, filePathString));
         }

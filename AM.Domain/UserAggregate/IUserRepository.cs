@@ -19,6 +19,8 @@ namespace AM.Domain.UserAggregate
         ResendActivationEmail ResendActivationLink(string email);
         EditUser GetDetailByEmail(string email);
         EditUser GetDetailByActivationUrl(string guid);
-
+        void AddDeliveryLocation(CreateDeliveryLocation Command);
+        bool RemoveDeliveryLocation(CreateDeliveryLocation Command);
+        List<CreateDeliveryLocation> GetDeliveryLocationList(long userId);
     }
 }

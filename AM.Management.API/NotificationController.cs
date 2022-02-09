@@ -23,20 +23,45 @@ namespace AM.Management.API
         [HttpPost]
         public int MarkRead(NotificationViewModel command)
         {
-            _notificationApplication.MarkRead(command.Id);
-            return _notificationApplication.CountUnread(_autenticateHelper.CurrentAccountRole().Id);
+            if (_autenticateHelper.IsAuthenticated())
+            {
+                _notificationApplication.MarkRead(command.Id);
+                return _notificationApplication.CountUnread(_autenticateHelper.CurrentAccountRole().Id);
+            }
+            else
+            {
+                return 0;
+            }
+
         }
+
         [Route("[action]")]
         [HttpGet]
         public int CountUnreadNotification()
         {
-            return _notificationApplication.CountUnread(_autenticateHelper.CurrentAccountRole().Id);
+            if (_autenticateHelper.IsAuthenticated())
+            {
+                return _notificationApplication.CountUnread(_autenticateHelper.CurrentAccountRole().Id);
+            }
+
+            else
+            {
+                return 0;
+            }
         }
+
         [Route("[action]")]
         [HttpGet]
         public List<NotificationViewModel> Notification()
         {
-            return _notificationApplication.GetLastNUnread(_autenticateHelper.CurrentAccountRole().Id, 5);
+            if (_autenticateHelper.IsAuthenticated())
+            {
+                return _notificationApplication.GetLastNUnread(_autenticateHelper.CurrentAccountRole().Id, 5);
+            }
+            else
+            {
+                return new List<NotificationViewModel>();
+            }
         }
     }
 

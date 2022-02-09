@@ -348,7 +348,7 @@ namespace AM.Application
 
             var avatarFileName = _fileUploader.Uploader(command.ProfilePicture, "Profile_Images", user.Id.ToString());
 
-            user.Edit(command.FirstName, command.LastName, command.UserId, command.Email, command.City, command.Country,
+            user.Edit(command.FirstName, command.LastName, command.UserId, command.Address, command.City, command.Country,
                 command.PostalCode, command.Latitude, command.Longitude, command.Description,
                 command.CompanyName, command.VatNumber, command.Status, avatarFileName, command.WebUrl, command.LinkdinUrl,
                 command.TwitterUrl, command.InstagramUrl, command.FaceBookUrl, user.RoleId);
@@ -436,6 +436,41 @@ namespace AM.Application
         {
             var type = new Usertype(0, "Default");
             return type.GetUserTypeList();
+        }
+        public void AddDeliveryLocation(CreateDeliveryLocation Command)
+        {
+            if (_userRepository.Exist(x => x.Id == Command.UserId))
+            {
+                _userRepository.AddDeliveryLocation(Command);
+            }
+            else
+            {
+                return;
+            }
+
+        }
+        public bool RemoveDeliveryLocation(CreateDeliveryLocation Command)
+        {
+            if (_userRepository.Exist(x => x.Id == Command.UserId))
+            {
+                return _userRepository.RemoveDeliveryLocation(Command);
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public List<CreateDeliveryLocation> GetDeliveryLocationList(long userId)
+        {
+            if (_userRepository.Exist(x => x.Id == userId))
+            {
+                return _userRepository.GetDeliveryLocationList(userId);
+            }
+            else
+            {
+                return new List<CreateDeliveryLocation>();
+            }
+
         }
     }
 }

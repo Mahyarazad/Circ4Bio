@@ -160,5 +160,43 @@ namespace AM.Infrastructure.Repository
                 return new EditUser();
             }
         }
+        public void AddDeliveryLocation(CreateDeliveryLocation Commad)
+        {
+            var deliveryLocationList = _amContext
+                .Users
+                .FirstOrDefault(x => x.Id == Commad.UserId);
+            if (deliveryLocationList != null)
+            {
+                deliveryLocationList.AddDeliveryLocation(Commad.UserId, Commad.Location);
+                _amContext.SaveChanges();
+            }
+            return;
+        }
+        public bool RemoveDeliveryLocation(CreateDeliveryLocation Commad)
+        {
+            var deliveryLocationList = _amContext
+                .Users
+                .FirstOrDefault(x => x.Id == Commad.UserId);
+            if (deliveryLocationList != null)
+            {
+                var result = deliveryLocationList.RemoveDeliveryLocation(Commad.LocationId);
+                _amContext.SaveChanges();
+                return result;
+            }
+            return false;
+        }
+        public List<CreateDeliveryLocation> GetDeliveryLocationList(long userId)
+        {
+            var query = _amContext.Users
+                .Where(x => x.Id == userId)
+                .AsNoTracking().AsSplitQuery().First().DeliveryLocations;
+            return query.Select(x => new CreateDeliveryLocation
+            {
+                Location = x.Location,
+                LocationId = x.Id,
+                UserId = x.UserId
+            }).ToList();
+
+        }
     }
 }
