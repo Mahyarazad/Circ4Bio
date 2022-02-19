@@ -1,10 +1,11 @@
-﻿using _0_Framework.Domain;
+﻿using System.Threading.Tasks;
+using _0_Framework.Domain;
 using AM.Application.Contracts.ResetPassword;
 
 namespace AM.Domain.ResetPasswordAggregate
 {
     public interface IResetPasswordRepository : IRepository<long, ResetPassword>
     {
-        ResetPasswordModel GrabLink(string command);
+        Task<ResetPasswordModel> GrabLink(string command);
     }
 }

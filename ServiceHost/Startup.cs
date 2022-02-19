@@ -22,7 +22,7 @@ namespace ServiceHost
         }
 
         public IConfiguration Configuration { get; }
-
+        private readonly string _corsPolicy = "CorsPolicy";
         public void ConfigureServices(IServiceCollection services)
         {
 
@@ -61,9 +61,11 @@ namespace ServiceHost
             // services.AddRazorPages().WithRazorPagesRoot("/Index");
             services.AddCors(options =>
             {
-                options.AddPolicy(name: "DefaultOrigins", builder =>
+                options.AddPolicy(name: _corsPolicy, builder =>
                 {
-                    builder.WithOrigins("http://www.maahyarazad.ir, http://localhost:5001");
+                    builder.AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
                 });
             });
 
@@ -104,10 +106,10 @@ namespace ServiceHost
             else
             {
                 app.UseExceptionHandler("/Error");
-                app.UseHsts();
+                // app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            // app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseAuthentication();
@@ -123,7 +125,7 @@ namespace ServiceHost
             });
 
             app.UseRouting();
-            app.UseCors("DefaultOrigins");
+            app.UseCors(_corsPolicy);
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

@@ -26,11 +26,11 @@ namespace ServiceHost.Pages.Authentication
         [TempData] public string Message { get; set; }
         [TempData] public string SuccessMessage { get; set; }
 
-        public void OnGet(string guid)
+        public async void OnGet(string guid)
         {
             Message = "";
             SuccessMessage = "";
-            Command = _resetPasswordApplication.GetResetPasswordGuid(guid);
+            Command = await _resetPasswordApplication.GetResetPasswordGuid(guid);
             if (Command.Guid == new Guid())
             {
                 Message = ApplicationMessage.ResetPasswordLinkIsInvalid;
@@ -41,11 +41,11 @@ namespace ServiceHost.Pages.Authentication
         }
 
 
-        public void OnPostUpdate(ResetPasswordModel command)
+        public async void OnPostUpdate(ResetPasswordModel command)
         {
             Message = "";
             SuccessMessage = "";
-            var result = _userApplication.ResetPassword(command);
+            var result = await _userApplication.ResetPassword(command);
 
             if (result.IsSucceeded)
             {

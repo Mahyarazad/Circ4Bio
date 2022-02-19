@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using _0_Framework.Application;
 using AM.Application.Contracts.Listing;
 using AM.Application.Contracts.Notification;
@@ -29,10 +30,10 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
             _listingApplication = listingApplication;
         }
 
-        public IActionResult OnGet(long Id)
+        public async Task<IActionResult> OnGet(long Id)
         {
             var loggedInUserId = _autenticateHelper.CurrentAccountRole().Id;
-            Command = _listingApplication.GetEditListing(Id);
+            Command = await _listingApplication.GetEditListing(Id);
             if (Command.OwnerUserId == loggedInUserId)
             {
                 CurrencyList = new SelectList(GenerateCurrencyList.GetList());

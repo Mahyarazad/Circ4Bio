@@ -1,6 +1,7 @@
 ﻿using System;
 using AM.Application.Contracts.User;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using _0_Framework.Application;
 using _0_Framework.Domain;
 using AM.Application.Contracts.Listing;
@@ -12,15 +13,16 @@ namespace AM.Domain.UserAggregate
 {
     public interface IUserRepository : IRepository<long, User>
     {
-        List<UserViewModel> Search(UserSearchModel searchModel);
-        List<RecipientViewModel> GetUserListForListing(long id);
-        EditUser GetDetail(long Id);
-        EditUser GetDetailByUser(string username);
-        ResendActivationEmail ResendActivationLink(string email);
-        EditUser GetDetailByEmail(string email);
-        EditUser GetDetailByActivationUrl(string guid);
+        public Task<List<UserViewModel>> Search(UserSearchModel searchModel);
+        public Task<List<RecipientViewModel>> GetUserListForListing(long id);
+        public Task<EditUser> GetDetail(long Id);
+        public Task<EditUser> GetDetailByUser(string username);
+        public Task<ResendActivationEmail> ResendActivationLink(string email);
+        public Task<EditUser> GetDetailByEmail(string email);
+        public Task<EditUser> GetDetailByActivationUrl(string guid);
         void AddDeliveryLocation(CreateDeliveryLocation Command);
         bool RemoveDeliveryLocation(CreateDeliveryLocation Command);
-        List<CreateDeliveryLocation> GetDeliveryLocationList(long userId);
+        public Task<List<CreateDeliveryLocation>> GetDeliveryLocationList(long userId);
+        public Task<List<string>> GetDeliveryLocationDropDown(long userId);
     }
 }

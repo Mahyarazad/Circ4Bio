@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace AM.Domain.NegotiateAggregate
 {
@@ -6,6 +7,6 @@ namespace AM.Domain.NegotiateAggregate
     {
         void Create(UserNegotiate Command);
         void Save();
-        List<UserNegotiate> GetAll();
+        Task<List<UserNegotiate>> GetAll();
     }
 }

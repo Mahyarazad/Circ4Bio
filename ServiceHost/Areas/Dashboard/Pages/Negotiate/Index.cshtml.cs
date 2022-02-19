@@ -1,12 +1,9 @@
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Security.Cryptography.Xml;
+using System.Threading.Tasks;
 using _0_Framework.Application;
 using AM.Application.Contracts.Listing;
 using AM.Application.Contracts.Negotiate;
 using AM.Application.Contracts.User;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -33,15 +30,15 @@ namespace ServiceHost.Areas.Dashboard.Pages.Negotiate
             _negotiateApplication = negotiateApplication;
         }
 
-        public void OnGet()
+        public async Task OnGet()
         {
             NegotiateList = new List<NegotiateViewModel>();
             var userId = _autenticateHelper.CurrentAccountRole().Id;
-            var buyyingNegotiation = _negotiateApplication.AllListingItemsBuyyer(userId);
-            var sellingNegotiation = _negotiateApplication.AllListingItemsSeller(userId);
+            var buyyingNegotiation = await _negotiateApplication.AllListingItemsBuyyer(userId);
+            var sellingNegotiation = await _negotiateApplication.AllListingItemsSeller(userId);
             foreach (var item in buyyingNegotiation)
             {
-                NegotiateList.Add(_negotiateApplication.GetNegotiationViewModel(new CreateNegotiate
+                NegotiateList.Add(await _negotiateApplication.GetNegotiationViewModel(new CreateNegotiate
                 {
                     NegotiateId = item.NegotiateId,
                     ListingId = item.ListingId,
@@ -54,7 +51,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Negotiate
             }
             foreach (var item in sellingNegotiation)
             {
-                NegotiateList.Add(_negotiateApplication.GetNegotiationViewModel(new CreateNegotiate
+                NegotiateList.Add(await _negotiateApplication.GetNegotiationViewModel(new CreateNegotiate
                 {
                     NegotiateId = item.NegotiateId,
                     ListingId = item.ListingId,

@@ -1,11 +1,12 @@
-﻿using _0_Framework.Application;
+﻿using System.Threading.Tasks;
+using _0_Framework.Application;
 
 namespace AM.Application.Contracts.ResetPassword
 {
     public interface IResetPasswordApplication
     {
-        OperationResult CreateResetPassword(string email);
-        ResetPasswordModel GetResetPasswordGuid(string guid);
+        Task<OperationResult> CreateResetPassword(string email);
+        Task<ResetPasswordModel> GetResetPasswordGuid(string guid);
 
     }
 }

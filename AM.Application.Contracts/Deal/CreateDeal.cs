@@ -16,13 +16,16 @@ namespace AM.Application.Contracts.Deal
         public long ListingId { get; set; }
         public ListingViewModel? Listing { get; set; }
         public long NegotiateId { get; set; }
+        [Range(0, 999999999999999)]
         public double DeliveryCost { get; set; }
         [Required(ErrorMessage = ValidationMessages.DeliveryMethod)]
         public string? DeliveryMethod { get; set; }
         public double TotalCost { get; set; }
+        [Range(1, 999999999999999)]
         public double Amount { get; set; }
         [Required(ErrorMessage = ValidationMessages.Currency)]
         public string? Currency { get; set; }
+        [Required(ErrorMessage = ValidationMessages.DeliveryLocation)]
         public string? Location { get; set; }
         public string? TrackingCode { get; set; }
         [MaxFileSize(1 * 1024 * 1024, ErrorMessage = ValidationMessages.SizeError1M)]

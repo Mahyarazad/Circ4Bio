@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using _0_Framework.Application;
 using _0_Framework.Infrastructure;
 using AM.Application.Contracts.Role;
@@ -18,25 +19,36 @@ namespace AM.Infrastructure.Repository
         }
 
 
-        public List<RoleViewModel> GetAll()
+        public async Task<List<RoleViewModel>> GetAll()
         {
-            return _amContext.Roles.Select(x => new RoleViewModel
+            return await _amContext.Roles.Select(x => new RoleViewModel
             {
                 CreationTime = TruncateDateTime.TruncateToDefault(x.CreationTime).ToString(),
                 Name = x.Name,
                 Id = x.Id
             }).AsNoTracking()
-                .OrderByDescending(x => x.Id).ToList();
+                .OrderByDescending(x => x.Id).ToListAsync();
         }
 
-        public EditRole GetDetail(int Id)
+        public async Task<RoleViewModel> GetDetailViewModel(int Id)
         {
-            return _amContext.Roles.Select(x => new EditRole
+            return await _amContext.Roles.Select(x => new RoleViewModel
+            {
+                CreationTime = TruncateDateTime.TruncateToDefault(x.CreationTime).ToString(),
+                Name = x.Name,
+                Id = x.Id
+            }).AsNoTracking()
+                .OrderByDescending(x => x.Id).FirstAsync();
+        }
+
+        public async Task<EditRole> GetDetail(int Id)
+        {
+            return await _amContext.Roles.Select(x => new EditRole
             {
                 Id = x.Id,
                 Name = x.Name,
                 MappedPermissions = MapPermissions(x.Permissions)
-            }).AsNoTracking().FirstOrDefault(x => x.Id == Id);
+            }).AsNoTracking().FirstOrDefaultAsync(x => x.Id == Id);
         }
 
         private static List<PermissionDTO> MapPermissions(List<Permission> permissions)

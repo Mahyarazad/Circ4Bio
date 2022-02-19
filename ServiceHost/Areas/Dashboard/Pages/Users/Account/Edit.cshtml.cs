@@ -18,11 +18,11 @@ namespace ServiceHost.Areas.Dashboard.Pages.Users.Account
             _userApplication = userApplication;
         }
         [RequirePermission(UserPermission.EditUser)]
-        public void OnGet(long Id)
+        public async void OnGet(long Id)
         {
-            user = _userApplication.GetDetail(Id);
+            user = await _userApplication.GetDetail(Id);
             CountrlyList = new SelectList(GenerateCountryList.GetList());
-            RoleList = new SelectList(_userApplication.GetUsertypes(), "TypeId", "TypeName");
+            RoleList = new SelectList(await _userApplication.GetUsertypes(), "TypeId", "TypeName");
         }
 
         [RequirePermission(UserPermission.EditUser)]

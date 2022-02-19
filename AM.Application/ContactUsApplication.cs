@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using _0_Framework;
 using _0_Framework.Application;
 using _0_Framework.Application.Email;
@@ -23,7 +24,7 @@ namespace AM.Application
             _contextAccessor = contextAccessor;
         }
 
-        public OperationResult CreateMessage(CreateMessage command)
+        public Task<OperationResult> CreateMessage(CreateMessage command)
         {
             var result = new OperationResult();
             if (!string.IsNullOrWhiteSpace(command.Email)
@@ -50,22 +51,22 @@ namespace AM.Application
                     var message = new ContactUs(command.FullName, command.Email, command.Body, command.Subject, command.Phone);
                     _contactUsRepository.Create(message);
                     _contactUsRepository.SaveChanges();
-                    return result.Succeeded(ApplicationMessage.ContactUsSuccess);
+                    return Task.FromResult(result.Succeeded(ApplicationMessage.ContactUsSuccess));
                 }
                 else
                 {
-                    return emailServiceResult;
+                    return Task.FromResult(emailServiceResult);
                 }
             }
-            return result.Failed(ApplicationMessage.SomethingWentWrong);
+            return Task.FromResult(result.Failed(ApplicationMessage.SomethingWentWrong));
         }
 
-        public OperationResult MarkAsRead(long Id)
+        public async Task<OperationResult> MarkAsRead(long Id)
         {
             var result = new OperationResult();
             if (_contactUsRepository.Exist(x => x.Id == Id))
             {
-                var target = _contactUsRepository.Get(Id);
+                var target = await _contactUsRepository.Get(Id);
                 target.MarkAsReed();
                 _contactUsRepository.SaveChanges();
                 return result.Succeeded();
@@ -75,27 +76,28 @@ namespace AM.Application
 
         }
 
-        public List<ContactUsViewModel> GetContactUsMessages()
+        public async Task<List<ContactUsViewModel>> GetContactUsMessages()
         {
-            return _contactUsRepository
-                .GetList()
-                .Select(x => new ContactUsViewModel
-                {
-                    Id = x.Id,
-                    CreationTime = x.CreationTime,
-                    FullName = x.FullName,
-                    Email = x.Email,
-                    Body = x.Body,
-                    Subject = x.Subject,
-                    Phone = x.Phone,
-                    IsReed = x.IsRead
-                }).Where(x => !x.IsReed)
+            var query = await _contactUsRepository.GetList();
+            var result = query.Select(x => new ContactUsViewModel
+            {
+                Id = x.Id,
+                CreationTime = x.CreationTime,
+                FullName = x.FullName,
+                Email = x.Email,
+                Body = x.Body,
+                Subject = x.Subject,
+                Phone = x.Phone,
+                IsReed = x.IsRead
+            }).Where(x => !x.IsReed)
                 .OrderByDescending(x => x.Id).ToList();
+            return result;
         }
 
-        public List<ContactUsViewModel> GetReadContactUsMessages()
+        public async Task<List<ContactUsViewModel>> GetReadContactUsMessages()
         {
-            return _contactUsRepository.GetList().Select(x => new ContactUsViewModel
+            var query = await _contactUsRepository.GetList();
+            var result = query.Select(x => new ContactUsViewModel
             {
                 Id = x.Id,
                 CreationTime = x.CreationTime,
@@ -106,11 +108,13 @@ namespace AM.Application
                 Phone = x.Phone,
                 IsReed = x.IsRead
             }).Where(x => x.IsReed).OrderByDescending(x => x.Id).ToList();
+            return result;
         }
 
-        public List<ContactUsViewModel> GetAllContactUsMessages()
+        public async Task<List<ContactUsViewModel>> GetAllContactUsMessages()
         {
-            return _contactUsRepository.GetList().Select(x => new ContactUsViewModel
+            var query = await _contactUsRepository.GetList();
+            var result = query.Select(x => new ContactUsViewModel
             {
                 Id = x.Id,
                 CreationTime = x.CreationTime,
@@ -121,11 +125,12 @@ namespace AM.Application
                 Phone = x.Phone,
                 IsReed = x.IsRead
             }).OrderByDescending(x => x.Id).ToList();
+            return result;
         }
 
-        public ContactUsViewModel GetSingleMessages(long Id)
+        public async Task<ContactUsViewModel> GetSingleMessages(long Id)
         {
-            var model = _contactUsRepository.Get(Id);
+            var model = await _contactUsRepository.Get(Id);
             return new ContactUsViewModel
             {
                 Id = model.Id,

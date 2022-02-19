@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using _0_Framework;
 using _0_Framework.Application;
 using _0_Framework.Application.Email;
@@ -54,21 +55,21 @@ namespace AM.Application
             _resetPasswordApplication = resetPasswordApplication;
         }
 
-        public List<UserViewModel> Search(UserSearchModel searchModel)
+        public Task<List<UserViewModel>> Search(UserSearchModel searchModel)
         {
             return _userRepository.Search(searchModel);
         }
-        public List<RecipientViewModel> GetUserListForListing(long id)
+        public Task<List<RecipientViewModel>> GetUserListForListing(long id)
         {
             return _userRepository.GetUserListForListing(id);
         }
-        public OperationResult Register(RegisterUser command)
+        public async Task<OperationResult> Register(RegisterUser command)
         {
             var result = new OperationResult();
             if (_userRepository.Exist(x => x.Email == command.Email))
                 return result.Failed(ApplicationMessage.RecordExists);
             // Check the role for status management
-            var roles = _roleRepository.GetAll();
+            var roles = await _roleRepository.GetAll();
             command.Status = false;
             var check = roles.FirstOrDefault(x => x.Name == "Customer of Raw Material").Id;
             if (command.RoleId == check)
@@ -104,7 +105,7 @@ namespace AM.Application
                         UserId = user.Id
                     });
 
-                _recipientRepository.Create(new Recipient(user.Id, command.RoleId, systemNotificationId));
+                _recipientRepository.Create(new Recipient(user.Id, command.RoleId, systemNotificationId.Result));
                 _recipientRepository.SaveChanges();
 
                 return result.Succeeded();
@@ -114,13 +115,13 @@ namespace AM.Application
                 return emailServiceResult;
             }
         }
-        public OperationResult ActivateUser(string command)
+        public async Task<OperationResult> ActivateUser(string command)
         {
             var request = _contextAccessor.HttpContext.Request;
             var result = new OperationResult();
             if (!string.IsNullOrWhiteSpace(command))
             {
-                var user = _userRepository.Get(_userRepository.GetDetailByActivationUrl(command).Id);
+                var user = await _userRepository.Get(_userRepository.GetDetailByActivationUrl(command).Id);
                 if (user != null)
                 {
                     if (user.RoleId != 5)
@@ -158,11 +159,11 @@ namespace AM.Application
             return result.Failed(ApplicationMessage.SomethingWentWrong);
 
         }
-        public OperationResult AdminActivateUser(long Id)
+        public async Task<OperationResult> AdminActivateUser(long Id)
         {
             var result = new OperationResult();
 
-            var user = _userRepository.Get(Id);
+            var user = await _userRepository.Get(Id);
             if (user != null)
             {
                 user.ActivateUser();
@@ -173,14 +174,14 @@ namespace AM.Application
             return result.Failed(ApplicationMessage.RecordNotFound);
 
         }
-        public OperationResult SendActivationEmail(string command)
+        public async Task<OperationResult> SendActivationEmail(string command)
         {
             var result = new OperationResult();
             if (!_userRepository.Exist(x => x.Email == command))
                 return result.Failed(ApplicationMessage.RecordNotFound);
 
             var request = _contextAccessor.HttpContext.Request;
-            var activationGuid = _userRepository.ResendActivationLink(command).ActivationGuid;
+            var activationGuid = _userRepository.ResendActivationLink(command).Result.ActivationGuid;
 
             var emailModel = new EmailModel
             {
@@ -200,11 +201,11 @@ namespace AM.Application
                 return emailServiceResult;
             }
         }
-        public OperationResult AdminDectivateUser(long Id)
+        public async Task<OperationResult> AdminDectivateUser(long Id)
         {
             var result = new OperationResult();
 
-            var user = _userRepository.Get(Id);
+            var user = await _userRepository.Get(Id);
             if (user != null)
             {
                 user.DeactivateUser();
@@ -214,11 +215,11 @@ namespace AM.Application
 
             return result.Failed(ApplicationMessage.RecordNotFound);
         }
-        public OperationResult AdminActivateUserStatus(long Id)
+        public async Task<OperationResult> AdminActivateUserStatus(long Id)
         {
             var result = new OperationResult();
 
-            var user = _userRepository.Get(Id);
+            var user = await _userRepository.Get(Id);
             if (user != null)
             {
                 user.ActivateUserStatus();
@@ -228,11 +229,11 @@ namespace AM.Application
 
             return result.Failed(ApplicationMessage.RecordNotFound);
         }
-        public OperationResult AdminDectivateUserStatus(long Id)
+        public async Task<OperationResult> AdminDectivateUserStatus(long Id)
         {
             var result = new OperationResult();
 
-            var user = _userRepository.Get(Id);
+            var user = await _userRepository.Get(Id);
             if (user != null)
             {
                 user.DeactivateUserStatus();
@@ -242,10 +243,10 @@ namespace AM.Application
 
             return result.Failed(ApplicationMessage.RecordNotFound);
         }
-        public OperationResult EditByAdmin(EditUser command)
+        public async Task<OperationResult> EditByAdmin(EditUser command)
         {
             var result = new OperationResult();
-            var user = _userRepository.Get(command.Id);
+            var user = await _userRepository.Get(command.Id);
 
             if (_userRepository.Exist(x => x.UserName == command.UserId && x.Id != command.Id))
                 return result.Failed(ApplicationMessage.RecordExists);
@@ -302,10 +303,10 @@ namespace AM.Application
 
             return result.Succeeded();
         }
-        public OperationResult EditByUser(EditUser command)
+        public async Task<OperationResult> EditByUser(EditUser command)
         {
             var result = new OperationResult();
-            var user = _userRepository.Get(command.Id);
+            var user = await _userRepository.Get(command.Id);
 
             if (_userRepository.Exist(x => x.UserName == command.UserId && x.Id != command.Id))
                 return result.Failed(ApplicationMessage.RecordExists);
@@ -357,35 +358,35 @@ namespace AM.Application
 
             return result.Succeeded();
         }
-        public OperationResult ChangePassword(ResetPasswordModel command)
+        public async Task<OperationResult> ChangePassword(ResetPasswordModel command)
         {
             var result = new OperationResult();
-            var user = _userRepository.Get(command.UserId);
+            var user = await _userRepository.Get(command.UserId);
 
             return result.Succeeded();
         }
-        public EditUser GetDetail(long Id)
+        public Task<EditUser> GetDetail(long Id)
         {
             return _userRepository.GetDetail(Id);
         }
-        public EditUser GetDetailByUsername(string username)
+        public Task<EditUser> GetDetailByUsername(string username)
         {
             return _userRepository.GetDetailByUser(username);
         }
-        public OperationResult ResetPassword(ResetPasswordModel command)
+        public async Task<OperationResult> ResetPassword(ResetPasswordModel command)
         {
             var result = new OperationResult();
-            var user = _userRepository.Get(command.UserId);
+            var user = await _userRepository.Get(command.UserId);
             var password = _passwordHasher.Hash(command.Password);
             user.ChangePassword(password);
             _userRepository.SaveChanges();
             return result.Succeeded(ApplicationMessage.ResetPasswordSuccess);
 
         }
-        public OperationResult Login(EditUser command)
+        public async Task<OperationResult> Login(EditUser command)
         {
             var result = new OperationResult();
-            var user = _userRepository.GetDetailByEmail(command.Email);
+            var user = await _userRepository.GetDetailByEmail(command.Email);
 
             if (command.RememberMe)
             {
@@ -417,7 +418,7 @@ namespace AM.Application
             if (!verified)
                 return result.Failed(ApplicationMessage.WrongPassword);
 
-            var permissions = _roleRepository.GetDetail(user.RoleId)
+            var permissions = _roleRepository.GetDetail(user.RoleId).Result
                 .MappedPermissions
                 .Select(x => x.Code)
                 .ToList();
@@ -432,10 +433,10 @@ namespace AM.Application
         {
             _autenticateHelper.Logout();
         }
-        public List<Usertype> GetUsertypes()
+        public Task<List<Usertype>> GetUsertypes()
         {
             var type = new Usertype(0, "Default");
-            return type.GetUserTypeList();
+            return Task.FromResult(type.GetUserTypeList());
         }
         public void AddDeliveryLocation(CreateDeliveryLocation Command)
         {
@@ -460,17 +461,28 @@ namespace AM.Application
                 return false;
             }
         }
-        public List<CreateDeliveryLocation> GetDeliveryLocationList(long userId)
+        public async Task<List<CreateDeliveryLocation>> GetDeliveryLocationList(long userId)
         {
             if (_userRepository.Exist(x => x.Id == userId))
             {
-                return _userRepository.GetDeliveryLocationList(userId);
+                return await _userRepository.GetDeliveryLocationList(userId);
             }
             else
             {
                 return new List<CreateDeliveryLocation>();
             }
 
+        }
+        public async Task<List<string>> GetDeliveryLocationDropDown(long userId)
+        {
+            if (_userRepository.Exist(x => x.Id == userId))
+            {
+                return await _userRepository.GetDeliveryLocationDropDown(userId);
+            }
+            else
+            {
+                return new List<string>();
+            }
         }
     }
 }

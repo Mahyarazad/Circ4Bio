@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using _0_Framework.Infrastructure;
 using AM.Application.Contracts.Listing;
 using AM.Application.Contracts.Negotiate;
@@ -16,9 +17,9 @@ namespace AM.Infrastructure.Repository
         {
             _amContext = amContext;
         }
-        public List<ListingViewModel> GetAllListing()
+        public async Task<List<ListingViewModel>> GetAllListing()
         {
-            var query = _amContext.Listing
+            var query = await _amContext.Listing
                 .Include(x => x.User)
                 .Include(x => x.DealList)
                 .Include(x => x.SupplyList)
@@ -42,13 +43,13 @@ namespace AM.Infrastructure.Repository
                     IsDeleted = x.IsDeleted,
                     Currency = x.Currency
                 }).AsNoTracking()
-                .OrderByDescending(x => x.Id).ToList();
+                .OrderByDescending(x => x.Id).ToListAsync();
 
             return query;
         }
-        public List<ListingViewModel> GetAllPublicListing()
+        public async Task<List<ListingViewModel>> GetAllPublicListing()
         {
-            var query = _amContext.Listing
+            var query = await _amContext.Listing
                 .Include(x => x.User)
                 .Include(x => x.DealList)
                 .Include(x => x.SupplyList)
@@ -74,12 +75,12 @@ namespace AM.Infrastructure.Repository
                     IsDeleted = x.IsDeleted,
                     Currency = x.Currency
                 }).AsNoTracking()
-                .OrderByDescending(x => x.Id).ToList();
+                .OrderByDescending(x => x.Id).ToListAsync();
             return query;
         }
-        public List<ListingViewModel> GetUserListing(long Id)
+        public async Task<List<ListingViewModel>> GetUserListing(long Id)
         {
-            var query = _amContext.Listing
+            var query = await _amContext.Listing
                 .Include(x => x.User)
                 .Include(x => x.DealList)
                 .Include(x => x.SupplyList)
@@ -105,11 +106,11 @@ namespace AM.Infrastructure.Repository
                     IsService = x.IsService,
                     Currency = x.Currency
                 }).AsNoTracking()
-                .OrderByDescending(x => x.Id).ToList();
+                .OrderByDescending(x => x.Id).ToListAsync();
 
             return query;
         }
-        public ListingViewModel GetDetailListing(long Id)
+        public Task<ListingViewModel> GetDetailListing(long Id)
         {
             var query = _amContext.Listing
                 .Include(x => x.User)
@@ -138,11 +139,11 @@ namespace AM.Infrastructure.Repository
                     Currency = x.Currency
                 }).AsNoTracking().ToList().Last();
 
-            return query;
+            return Task.FromResult(query);
         }
-        public List<ListingViewModel> GetDeletedUserListing(long Id)
+        public async Task<List<ListingViewModel>> GetDeletedUserListing(long Id)
         {
-            var query = _amContext.Listing
+            var query = await _amContext.Listing
                 .Include(x => x.User)
                 .Include(x => x.DealList)
                 .Include(x => x.SupplyList)
@@ -167,13 +168,13 @@ namespace AM.Infrastructure.Repository
                     IsDeleted = x.IsDeleted,
                     Currency = x.Currency
                 }).AsNoTracking()
-                .OrderByDescending(x => x.Id).ToList();
+                .OrderByDescending(x => x.Id).ToListAsync();
 
             return query;
         }
-        public EditListing GetListingDetail(long ListingId)
+        public async Task<EditListing> GetListingDetail(long ListingId)
         {
-            return _amContext.Listing
+            return await _amContext.Listing
                 .Where(x => x.Id == ListingId)
                 .Select(x => new EditListing
                 {
@@ -191,20 +192,20 @@ namespace AM.Infrastructure.Repository
                     IsService = x.IsService,
                     Currency = x.Currency
 
-                }).AsNoTracking().First();
+                }).AsNoTracking().FirstAsync();
         }
-        public long GetOwnerUserID(long Id)
+        public Task<long> GetOwnerUserID(long Id)
         {
-            return _amContext.Listing.FirstOrDefault(x => x.Id == Id).UserId;
+            return Task.FromResult(_amContext.Listing.FirstOrDefaultAsync(x => x.Id == Id).Result.UserId);
         }
-        public List<ActiveListing> GetActiveListing(long userId)
+        public async Task<List<ActiveListing>> GetActiveListing(long userId)
         {
-            return _amContext.Listing
+            return await _amContext.Listing
                 .Where(x => x.UserId == userId & !x.IsDeleted)
                 .Select(x => new ActiveListing
                 {
                     Id = x.Id
-                }).AsNoTracking().ToList();
+                }).AsNoTracking().ToListAsync();
         }
     }
 }

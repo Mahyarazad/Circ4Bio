@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
+using System.Threading.Tasks;
 using _0_Framework.Application;
 using AM.Application.Contracts.Notification;
 using Microsoft.AspNetCore.Http;
@@ -22,13 +23,13 @@ namespace ServiceHost.Areas.Dashboard.Pages
             _autenticateHelper = autenticateHelper;
         }
 
-        public IActionResult OnGet(long Id)
+        public async Task<IActionResult> OnGet(long Id)
         {
             var loggedInUserId = _autenticateHelper.CurrentAccountRole().Id;
 
             if (Id == loggedInUserId)
             {
-                Command = _notificationApplication.GetAllUnread(Id);
+                Command = await _notificationApplication.GetAllUnread(Id);
                 return null;
             }
             else
@@ -36,10 +37,10 @@ namespace ServiceHost.Areas.Dashboard.Pages
                 return RedirectToPage("/AccessDenied", new { area = "" });
             }
         }
-        public void OnGetMarkAllRead(long Id)
+        public async Task OnGetMarkAllRead(long Id)
         {
             _notificationApplication.MarkAllRead(Id);
-            Command = _notificationApplication.GetAllUnread(Id);
+            Command = await _notificationApplication.GetAllUnread(Id);
         }
         public JsonResult OnPostMarkRead(long Id)
         {

@@ -32,11 +32,11 @@ namespace ServiceHost.Areas.Dashboard.Pages.Users.Account
         }
 
         [RequirePermission(UserPermission.GetUserList)]
-        public void OnGet(UserSearchModel Command)
+        public async void OnGet(UserSearchModel Command)
         {
-            UserList = _userApplication.Search(Command);
+            UserList = await _userApplication.Search(Command);
             var userId = _contextAccessor.HttpContext.User.Claims.ToList().FirstOrDefault(x => x.Type == "User Id").Value;
-            user = _userApplication.GetDetail(long.Parse(userId));
+            user = await _userApplication.GetDetail(long.Parse(userId));
         }
 
         [RequirePermission(UserPermission.ActivateUser)]

@@ -2,6 +2,7 @@
 using _0_Framework.Application;
 using AM.Application.Contracts.Listing;
 using AM.Application.Contracts.Notification;
+using AM.Application.Contracts.User;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -14,13 +15,17 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
         public List<NotificationViewModel> Notifications;
         public CreateListing Command;
         public SelectList CurrencyList;
-        private readonly IHttpContextAccessor _contextAccessor;
+
+        private readonly IAutenticateHelper _autenticateHelper;
         private readonly IListingApplication _listingApplication;
+        private readonly IUserApplication _userApplication;
         public CreateModel(
-            IHttpContextAccessor contextAccessor,
+            IAutenticateHelper autenticateHelper,
+            IUserApplication userApplication,
             IListingApplication listingApplication)
         {
-            _contextAccessor = contextAccessor;
+            _autenticateHelper = autenticateHelper;
+            _userApplication = userApplication;
             _listingApplication = listingApplication;
         }
 
@@ -28,6 +33,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
         {
             Command = new CreateListing();
             CurrencyList = new SelectList(GenerateCurrencyList.GetList());
+
         }
 
         public JsonResult OnPost(CreateListing command)

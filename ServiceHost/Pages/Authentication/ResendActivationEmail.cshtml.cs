@@ -35,12 +35,12 @@ namespace ServiceHost.Pages.Authentication
 
         }
 
-        public void OnPost(ResendActivationEmail command)
+        public async void OnPost(ResendActivationEmail command)
         {
             Message = "";
             SuccessMessage = "";
 
-            var result = _userApplication.SendActivationEmail(command.Email);
+            var result = await _userApplication.SendActivationEmail(command.Email);
             if (result.IsSucceeded)
             {
 

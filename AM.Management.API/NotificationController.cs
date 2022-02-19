@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using _0_Framework.Application;
+using System.Linq;
+using System.Threading.Tasks;
 using AM.Application.Contracts.Notification;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,58 +11,51 @@ namespace AM.Management.API
     [ApiController]
     public class NotificationController : ControllerBase
     {
-        private readonly IAutenticateHelper _autenticateHelper;
         private readonly INotificationApplication _notificationApplication;
-
-        public NotificationController(INotificationApplication notificationApplication,
-            IAutenticateHelper autenticateHelper)
+        public long UserId { get; set; }
+        public NotificationController(INotificationApplication notificationApplication)
         {
-            _autenticateHelper = autenticateHelper;
             _notificationApplication = notificationApplication;
         }
 
         [HttpPost]
-        public int MarkRead(NotificationViewModel command)
+        public async Task<int> MarkRead(NotificationViewModel command)
         {
-            if (_autenticateHelper.IsAuthenticated())
+            if (HttpContext.User.Claims.FirstOrDefault() != null)
             {
-                _notificationApplication.MarkRead(command.Id);
-                return _notificationApplication.CountUnread(_autenticateHelper.CurrentAccountRole().Id);
+                UserId = Convert.ToInt64(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "User Id").Value);
+                await _notificationApplication.MarkRead(command.Id);
+                return _notificationApplication.CountUnread(UserId).Result;
             }
-            else
-            {
-                return 0;
-            }
+
+            return 0;
 
         }
-
         [Route("[action]")]
         [HttpGet]
-        public int CountUnreadNotification()
+        public async Task<int> CountUnreadNotification()
         {
-            if (_autenticateHelper.IsAuthenticated())
-            {
-                return _notificationApplication.CountUnread(_autenticateHelper.CurrentAccountRole().Id);
-            }
 
-            else
+            if (HttpContext.User.Claims.FirstOrDefault() != null)
             {
-                return 0;
+                UserId = Convert.ToInt64(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "User Id").Value);
+                return await _notificationApplication.CountUnread(UserId);
             }
+            return 0;
         }
-
         [Route("[action]")]
         [HttpGet]
-        public List<NotificationViewModel> Notification()
+        public async Task<List<NotificationViewModel>> Notification()
         {
-            if (_autenticateHelper.IsAuthenticated())
+            if (HttpContext.User.Claims.FirstOrDefault() != null)
             {
-                return _notificationApplication.GetLastNUnread(_autenticateHelper.CurrentAccountRole().Id, 5);
+                UserId = Convert.ToInt64(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "User Id").Value);
+                List<NotificationViewModel> result = await _notificationApplication.GetLastNUnread(UserId, 5);
+                return result;
+
             }
-            else
-            {
-                return new List<NotificationViewModel>();
-            }
+
+            return new List<NotificationViewModel>();
         }
     }
 

@@ -1,9 +1,7 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 using _0_Framework.Application;
 using AM.Application.Contracts.Negotiate;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,16 +22,16 @@ namespace ServiceHost.Areas.Dashboard.Pages.Negotiate
             _negotiateApplication = negotiateApplication;
         }
 
-        public IActionResult OnGet(long Id)
+        public async Task<IActionResult> OnGet(long Id)
         {
             var loggedInUserId = _autenticateHelper.CurrentAccountRole().Id;
-            CurrentNegotiate = _negotiateApplication.GetNegotiationViewModel(Id);
+            CurrentNegotiate = await _negotiateApplication.GetNegotiationViewModel(Id);
             if (CurrentNegotiate.SellerId == loggedInUserId ||
                 CurrentNegotiate.BuyerId == loggedInUserId)
             {
                 Command = new NewMessage();
                 MessageList = new List<MessageViewModel>();
-                MessageList = _negotiateApplication.GetMessages(Id);
+                MessageList = await _negotiateApplication.GetMessages(Id);
                 return null;
             }
             else
@@ -42,10 +40,10 @@ namespace ServiceHost.Areas.Dashboard.Pages.Negotiate
             }
         }
 
-        public JsonResult OnPost(NewMessage Command)
+        public async Task<JsonResult> OnPost(NewMessage Command)
         {
             Command.UserEntity = false;
-            CurrentNegotiate = _negotiateApplication.GetNegotiationViewModel(Command.NegotiateId);
+            CurrentNegotiate = await _negotiateApplication.GetNegotiationViewModel(Command.NegotiateId);
             Command.UserId = _autenticateHelper.CurrentAccountRole().Id;
             if (Command.UserId == CurrentNegotiate.BuyerId)
                 Command.UserEntity = true;

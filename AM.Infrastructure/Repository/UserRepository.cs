@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using _0_Framework.Infrastructure;
 using AM.Application.Contracts.User;
 using AM.Domain.UserAggregate;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
-using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using _0_Framework.Application;
-using AM.Application.Contracts.Listing;
 using AM.Application.Contracts.Notification;
+using AM.Domain.RoleAggregate;
 
 namespace AM.Infrastructure.Repository
 {
@@ -17,9 +16,10 @@ namespace AM.Infrastructure.Repository
         private readonly AMContext _amContext;
         public UserRepository(AMContext amContext) : base(amContext)
         {
+
             _amContext = amContext;
         }
-        public List<UserViewModel> Search(UserSearchModel searchModel)
+        public Task<List<UserViewModel>> Search(UserSearchModel searchModel)
         {
             var query = _amContext.Users
                 .Include(x => x.Role)
@@ -45,11 +45,11 @@ namespace AM.Infrastructure.Repository
                 query = query.Where(x => x.UserId.Contains(searchModel.UserId));
             // if (searchModel.Role != null)
             //     query = query.Where(x => x.Role == searchModel.Role);
-            return query.OrderByDescending(x => x.Id).ToList();
+            return query.OrderByDescending(x => x.Id).ToListAsync();
         }
-        public List<RecipientViewModel> GetUserListForListing(long id)
+        public async Task<List<RecipientViewModel>> GetUserListForListing(long id)
         {
-            return _amContext.Users
+            return await _amContext.Users
                 .Include(x => x.Role)
                 .Where(x => x.Id != id && x.Id != 1)
                 .Select(x => new RecipientViewModel
@@ -58,9 +58,9 @@ namespace AM.Infrastructure.Repository
                     RoleId = x.RoleId
                 })
                 .AsNoTracking()
-                .ToList();
+                .ToListAsync();
         }
-        public EditUser GetDetail(long Id)
+        public Task<EditUser> GetDetail(long Id)
         {
             var query = _amContext.Users.Select(x => new EditUser
             {
@@ -90,9 +90,10 @@ namespace AM.Infrastructure.Repository
             }).AsNoTracking().FirstOrDefault(x => x.Id == Id);
             query.RoleString = _amContext.Roles.ToList().FirstOrDefault(x => x.Id == query.RoleId).Name;
 
-            return query;
+            return Task.FromResult(query);
+
         }
-        public EditUser GetDetailByUser(string username)
+        public Task<EditUser> GetDetailByUser(string username)
         {
             return _amContext.Users.Select(x => new EditUser
             {
@@ -118,18 +119,18 @@ namespace AM.Infrastructure.Repository
                 TwitterUrl = x.TwitterUrl,
                 Status = x.Status,
                 Avatar = x.Avatar,
-            }).AsNoTracking().FirstOrDefault(x => x.UserId == username);
+            }).AsNoTracking().FirstOrDefaultAsync(x => x.UserId == username);
         }
-        public ResendActivationEmail ResendActivationLink(string email)
+        public Task<ResendActivationEmail> ResendActivationLink(string email)
         {
             return _amContext.Users.Select(x => new ResendActivationEmail
             {
                 ActivationGuid = x.ActivationGuid,
                 Email = x.Email
             }).AsNoTracking()
-                .FirstOrDefault(x => x.Email == email);
+                .FirstOrDefaultAsync(x => x.Email == email);
         }
-        public EditUser GetDetailByEmail(string email)
+        public Task<EditUser> GetDetailByEmail(string email)
         {
             return _amContext.Users.Select(x => new EditUser
             {
@@ -141,23 +142,24 @@ namespace AM.Infrastructure.Repository
                 IsActive = x.IsActive,
                 FirstName = x.FirstName,
                 LastName = x.LastName
-            }).AsNoTracking().FirstOrDefault(x => x.Email == email);
+            }).AsNoTracking().FirstOrDefaultAsync(x => x.Email == email);
 
         }
-        public EditUser GetDetailByActivationUrl(string guid)
+        public Task<EditUser> GetDetailByActivationUrl(string guid)
         {
             var query = _amContext.Users.Select(x => new EditUser
             {
                 Id = x.Id,
                 ActivationGuid = x.ActivationGuid.ToString()
             }).AsNoTracking();
-            if (query.FirstOrDefault(x => x.ActivationGuid == guid) != null)
+
+            if (query.FirstOrDefaultAsync(x => x.ActivationGuid == guid) != null)
             {
-                return query.FirstOrDefault(x => x.ActivationGuid == guid);
+                return query.FirstOrDefaultAsync(x => x.ActivationGuid == guid);
             }
             else
             {
-                return new EditUser();
+                return Task.FromResult(new EditUser());
             }
         }
         public void AddDeliveryLocation(CreateDeliveryLocation Commad)
@@ -185,18 +187,28 @@ namespace AM.Infrastructure.Repository
             }
             return false;
         }
-        public List<CreateDeliveryLocation> GetDeliveryLocationList(long userId)
+        public Task<List<CreateDeliveryLocation>> GetDeliveryLocationList(long userId)
         {
             var query = _amContext.Users
                 .Where(x => x.Id == userId)
                 .AsNoTracking().AsSplitQuery().First().DeliveryLocations;
-            return query.Select(x => new CreateDeliveryLocation
+            var result = query.Select(x => new CreateDeliveryLocation
             {
                 Location = x.Location,
                 LocationId = x.Id,
                 UserId = x.UserId
             }).ToList();
 
+            return Task.FromResult(result);
+
+        }
+        public Task<List<string>> GetDeliveryLocationDropDown(long userId)
+        {
+            var query = _amContext.Users
+                .Where(x => x.Id == userId)
+                .AsNoTracking().AsSplitQuery().First().DeliveryLocations;
+            var result = query.Select(x => new string(x.Location)).ToList();
+            return Task.FromResult(result);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using _0_Framework;
 using _0_Framework.Application;
 using _0_Framework.Domain;
@@ -18,7 +19,7 @@ namespace AM.Infrastructure.Repository
             _amContext = amContext;
         }
 
-        public List<RecipientViewModel> GetAllUnread(long Id)
+        public Task<List<RecipientViewModel>> GetAllUnread(long Id)
         {
             return _amContext.Recipients
                 .AsNoTracking()
@@ -30,18 +31,18 @@ namespace AM.Infrastructure.Repository
                     RoleId = x.RoleId,
                     UserId = x.UserId,
                     NotificationId = x.NotificationId
-                }).OrderByDescending(x => x.Id).ToList();
+                }).OrderByDescending(x => x.Id).ToListAsync();
         }
 
-        public OperationResult MarkRead(long Id)
+        public Task<OperationResult> MarkRead(long Id)
         {
             var result = new OperationResult();
             if (_amContext.Recipients.Any(x => x.Id == Id))
-                return result.Failed(ApplicationMessage.RecordNotFound);
-            var target = _amContext.Recipients.FirstOrDefault(x => x.Id == Id);
-            target.MarkRead();
+                return Task.FromResult(result.Failed(ApplicationMessage.RecordNotFound));
+            var target = _amContext.Recipients.FirstOrDefaultAsync(x => x.Id == Id);
+            target.Result.MarkRead();
             _amContext.SaveChanges();
-            return result.Succeeded();
+            return Task.FromResult(result.Succeeded());
         }
     }
 }

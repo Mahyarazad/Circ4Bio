@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using _0_Framework.Application;
-using AM.Application.Contracts.Negotiate;
-using AM.Application.Contracts.Notification;
+using System.Linq;
 using AM.Application.Contracts.User;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Internal;
-using Nancy.Json;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace AM.Management.API
@@ -17,26 +11,24 @@ namespace AM.Management.API
     public class UserDeliveryAddressController : ControllerBase
     {
         private readonly IUserApplication _userApplication;
-        private readonly IAutenticateHelper _autenticateHelper;
-
-        public UserDeliveryAddressController(IUserApplication userApplication,
-            IAutenticateHelper autenticateHelper)
+        public long UserId { get; set; }
+        public UserDeliveryAddressController(IUserApplication userApplication)
         {
             _userApplication = userApplication;
-            _autenticateHelper = autenticateHelper;
         }
 
         [Route("[action]")]
         [HttpPost]
         public bool RemoveDeliveryLocation(dynamic Command)
         {
-            if (_autenticateHelper.IsAuthenticated())
+            if (HttpContext.User.Claims.FirstOrDefault() != null)
             {
+                UserId = Convert.ToInt64(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "User Id").Value);
                 JObject jsonObject = JObject.Parse(Command.ToString());
                 var locationId = Convert.ToInt32(jsonObject.First.First);
                 var target = new CreateDeliveryLocation
                 {
-                    UserId = _autenticateHelper.CurrentAccountRole().Id,
+                    UserId = UserId,
                     LocationId = locationId
                 };
                 return _userApplication.RemoveDeliveryLocation(target);
@@ -44,6 +36,7 @@ namespace AM.Management.API
 
             return false;
         }
-    }
 
+    }
 }
+

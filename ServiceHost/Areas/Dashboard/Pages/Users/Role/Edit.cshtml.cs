@@ -21,9 +21,9 @@ namespace ServiceHost.Areas.Dashboard.Pages.Users.Role
             _exposers = permissionExposer;
         }
 
-        public void OnGet(int id)
+        public async void OnGet(int id)
         {
-            Role = _roleApplication.GetRole(id);
+            Role = await _roleApplication.GetRole(id);
             var permissions = new List<PermissionDTO>();
             foreach (var exposer in _exposers)
             {

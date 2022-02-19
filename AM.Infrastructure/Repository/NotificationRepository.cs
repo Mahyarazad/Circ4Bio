@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.Xml;
+using System.Threading.Tasks;
 using _0_Framework.Application;
 using _0_Framework.Infrastructure;
 using AM.Application.Contracts.Notification;
@@ -19,11 +20,11 @@ namespace AM.Infrastructure.Repository
             _amContext = amContext;
         }
 
-        public List<RecipientViewModel> GetRecipientViewModel(long Id)
+        public Task<List<RecipientViewModel>> GetRecipientViewModel(long Id)
         {
             var recipientList = new List<RecipientViewModel>();
             var query = _amContext.Notifications.AsNoTracking()
-                .FirstOrDefault(x => x.Id == Id).Recipient;
+                .FirstOrDefaultAsync(x => x.Id == Id).Result.Recipient;
             foreach (var item in query)
             {
                 recipientList.Add(new RecipientViewModel
@@ -33,23 +34,23 @@ namespace AM.Infrastructure.Repository
                 });
             }
 
-            return recipientList;
+            return Task.FromResult(recipientList);
         }
 
-        public OperationResult MarkAllRead(long Id)
+        public Task<OperationResult> MarkAllRead(long Id)
         {
             foreach (var item in _amContext.Recipients.Where(x => x.UserId == Id).ToList())
             {
                 item.MarkRead();
             }
             _amContext.SaveChanges();
-            return new OperationResult().Succeeded();
+            return Task.FromResult(new OperationResult().Succeeded());
         }
 
-        public List<NotificationViewModel> GetLastNUnread(long Id, int nNumber)
+        public async Task<List<NotificationViewModel>> GetLastNUnread(long Id, int nNumber)
         {
-            return _amContext.Recipients
-                .AsNoTracking()
+            List<NotificationViewModel> result =
+                 await _amContext.Recipients.AsNoTracking()
                 .Where(x => x.UserId == Id && !x.IsReed)
                 .Include(x => x.Notification)
                 .Select(x => new NotificationViewModel
@@ -61,12 +62,13 @@ namespace AM.Infrastructure.Repository
                     NotificationTitle = x.Notification.NotificationTitle,
                 }).OrderByDescending(x => x.Id)
                 .Take(nNumber)
-                .ToList();
+                .ToListAsync();
+            return result;
         }
 
-        public List<NotificationViewModel> GetAllUnread(long Id)
+        public async Task<List<NotificationViewModel>> GetAllUnread(long Id)
         {
-            return _amContext.Recipients
+            List<NotificationViewModel> result = await _amContext.Recipients
                 .AsNoTracking()
                 .Include(x => x.Notification)
                 .Where(x => x.UserId == Id && !x.IsReed)
@@ -80,14 +82,15 @@ namespace AM.Infrastructure.Repository
                     CreationTime = x.CreationTime
                 })
                 .OrderByDescending(z => z.Id)
-                .ToList();
+                .ToListAsync();
+            return result;
         }
 
-        public int CountUnRead(long Id)
+        public Task<int> CountUnRead(long Id)
         {
-            return _amContext.Recipients
+            return Task.FromResult(_amContext.Recipients
                 .AsNoTracking()
-                .Where(x => x.UserId == Id && !x.IsReed).ToList().Count;
+                .Where(x => x.UserId == Id && !x.IsReed).ToList().Count);
         }
     }
 }

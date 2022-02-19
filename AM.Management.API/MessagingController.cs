@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using _0_Framework.Application;
+using System.Linq;
+using System.Threading.Tasks;
 using AM.Application.Contracts.Negotiate;
-using AM.Application.Contracts.Notification;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AM.Management.API
@@ -11,30 +11,33 @@ namespace AM.Management.API
     [ApiController]
     public class MessagingController : ControllerBase
     {
-        private readonly IAutenticateHelper _autenticateHelper;
         private readonly INegotiateApplication _negotiateApplication;
-
-        public MessagingController(INegotiateApplication negotiateApplication,
-            IAutenticateHelper autenticateHelper)
+        public long UserId { get; set; }
+        public MessagingController(INegotiateApplication negotiateApplication)
         {
-            _autenticateHelper = autenticateHelper;
             _negotiateApplication = negotiateApplication;
         }
+
         //NegotiateId
         [Route("[action]")]
         [HttpPost]
-        public List<MessageViewModel> GetMessages(CreateNegotiate Command)
+        public async Task<List<MessageViewModel>> GetMessages(CreateNegotiate Command)
         {
-            var loggedUser = _autenticateHelper.CurrentAccountRole().Id;
-            var securityControl = _negotiateApplication.GetNegotiationViewModel(Command.NegotiateId);
-            if (securityControl.BuyerId == loggedUser || securityControl.SellerId == loggedUser)
+            if (HttpContext.User.Claims.FirstOrDefault() != null)
             {
-                return _negotiateApplication.GetMessages(Command.NegotiateId);
+                UserId = Convert.ToInt64(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "User Id").Value);
+                var securityControl = await _negotiateApplication.GetNegotiationViewModel(Command.NegotiateId);
+                if (securityControl.BuyerId == UserId || securityControl.SellerId == UserId)
+                {
+                    return _negotiateApplication.GetMessages(Command.NegotiateId).Result;
+                }
+                else
+                {
+                    new List<MessageViewModel>();
+                }
             }
-            else
-            {
-                return null;
-            }
+
+            return new List<MessageViewModel>();
         }
     }
 

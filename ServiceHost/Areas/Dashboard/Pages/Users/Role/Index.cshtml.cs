@@ -17,10 +17,10 @@ namespace ServiceHost.Areas.Dashboard.Pages.Users.Role
             _roleApplication = roleApplication;
         }
 
-        public void OnGet()
+        public async void OnGet()
         {
             @ViewData["title"] = "Manage Roles";
-            Roles = _roleApplication.GetAll();
+            Roles = await _roleApplication.GetAll();
         }
     }
 }

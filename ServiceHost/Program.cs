@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Server.Kestrel;
 
 namespace ServiceHost
 {
@@ -17,5 +18,6 @@ namespace ServiceHost
                 {
                     webBuilder.UseStartup<Startup>();
                 });
+
     }
 }

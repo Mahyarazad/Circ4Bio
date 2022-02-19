@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using _0_Framework;
 using _0_Framework.Application;
 using AM.Application.Contracts.Listing;
@@ -47,7 +48,7 @@ namespace AM.Application
             _userNegotiateRepository = userNegotiateRepository;
             _notificationApplication = notificationApplication;
         }
-        public OperationResult Create(CreateNegotiate Command)
+        public async Task<OperationResult> Create(CreateNegotiate Command)
         {
             var result = new OperationResult();
 
@@ -59,16 +60,16 @@ namespace AM.Application
                                               !x.IsCanceled))
                 return result.Failed(ApplicationMessage.DuplicateNegotiation);
 
-            var sellerRoleId = _userRepository.GetDetail(Command.SellerId).RoleId;
-            var sellerRoleString = _userApplication.GetUsertypes()
+            var sellerRoleId = _userRepository.GetDetail(Command.SellerId).Result.RoleId;
+            var sellerRoleString = _userApplication.GetUsertypes().Result
                 .FirstOrDefault(x => x.TypeId == sellerRoleId).TypeName;
 
-            var buyerRoleId = _userRepository.GetDetail(Command.BuyerId).RoleId;
-            var buyerUserId = $"{_userRepository.GetDetail(Command.BuyerId).UserId}";
-            var buyerRoleString = _userApplication.GetUsertypes()
+            var buyerRoleId = _userRepository.GetDetail(Command.BuyerId).Result.RoleId;
+            var buyerUserId = $"{_userRepository.GetDetail(Command.BuyerId).Result.UserId}";
+            var buyerRoleString = _userApplication.GetUsertypes().Result
                 .FirstOrDefault(x => x.TypeId == buyerRoleId).TypeName;
 
-            var listingInfo = _listingRepository.GetListingDetail(Command.ListingId);
+            var listingInfo = await _listingRepository.GetListingDetail(Command.ListingId);
 
             var buyyerRecipientList = new List<RecipientViewModel>();
             var sellerRecipientList = new List<RecipientViewModel>();
@@ -107,8 +108,8 @@ namespace AM.Application
                     UserId = Command.SellerId
                 });
 
-            _recipientRepository.Create(new Recipient(Command.BuyerId, buyerRoleId, buyerNotificationId));
-            _recipientRepository.Create(new Recipient(Command.SellerId, sellerRoleId, sellerNotificationId));
+            _recipientRepository.Create(new Recipient(Command.BuyerId, buyerRoleId, buyerNotificationId.Result));
+            _recipientRepository.Create(new Recipient(Command.SellerId, sellerRoleId, sellerNotificationId.Result));
             _recipientRepository.SaveChanges();
 
             var negotiate = new Negotiate(Command.ListingId, Command.BuyerId, Command.SellerId);
@@ -122,22 +123,22 @@ namespace AM.Application
             return result.Succeeded();
 
         }
-        public OperationResult SendMessage(NewMessage Command)
+        public async Task<OperationResult> SendMessage(NewMessage Command)
         {
             var result = new OperationResult();
             if (!_negotiateRepository.Exist(x => x.Id == Command.NegotiateId))
                 return result.Failed(ApplicationMessage.RecordNotFound);
 
-            var negotiate = _negotiateRepository.Get(Command.NegotiateId);
+            var negotiate = await _negotiateRepository.Get(Command.NegotiateId);
             var whoIsTheSender = _autenticateHelper.CurrentAccountRole().Id;
 
-            var sellerRoleId = _userRepository.GetDetail(negotiate.SellerId).RoleId;
-            var sellerRoleString = _userApplication.GetUsertypes()
+            var sellerRoleId = _userRepository.GetDetail(negotiate.SellerId).Result.RoleId;
+            var sellerRoleString = _userApplication.GetUsertypes().Result
                 .FirstOrDefault(x => x.TypeId == sellerRoleId).TypeName;
 
-            var buyyerRoleId = _userRepository.GetDetail(negotiate.SellerId).RoleId;
-            var buyyerUserId = $"{_userRepository.GetDetail(negotiate.SellerId).UserId}";
-            var buyyerRoleString = _userApplication.GetUsertypes()
+            var buyyerRoleId = _userRepository.GetDetail(negotiate.SellerId).Result.RoleId;
+            var buyyerUserId = $"{_userRepository.GetDetail(negotiate.SellerId).Result.UserId}";
+            var buyyerRoleString = _userApplication.GetUsertypes().Result
                 .FirstOrDefault(x => x.TypeId == buyyerRoleId).TypeName;
 
             var listingInfo = _listingRepository.GetListingDetail(negotiate.ListingId);
@@ -164,7 +165,7 @@ namespace AM.Application
                 {
                     RecipientList = buyyerRecipientList,
                     SenderId = negotiate.BuyerId,
-                    NotificationBody = $"{sellerRoleString} has replied to you regarding {listingInfo.Name} at {listingInfo.UnitPrice} {listingInfo.Currency}",
+                    NotificationBody = $"{sellerRoleString} has replied to you regarding {listingInfo.Result.Name} at {listingInfo.Result.UnitPrice} {listingInfo.Result.Currency}",
                     NotificationTitle = ApplicationMessage.NewMessage,
                     UserId = negotiate.BuyerId
                 });
@@ -174,22 +175,22 @@ namespace AM.Application
                 {
                     RecipientList = sellerRecipientList,
                     SenderId = negotiate.SellerId,
-                    NotificationBody = $"{_autenticateHelper.CurrentAccountRole().Email} sends a new message regarding {listingInfo.Name} at {listingInfo.UnitPrice} {listingInfo.Currency}",
+                    NotificationBody = $"{_autenticateHelper.CurrentAccountRole().Email} sends a new message regarding {listingInfo.Result.Name} at {listingInfo.Result.UnitPrice} {listingInfo.Result.Currency}",
                     NotificationTitle = ApplicationMessage.NewMessage,
                     UserId = negotiate.SellerId
                 });
 
             if (whoIsTheSender == negotiate.BuyerId)
             {
-                _recipientRepository.Create(new Recipient(negotiate.SellerId, sellerRoleId, sellerNotificationId));
+                _recipientRepository.Create(new Recipient(negotiate.SellerId, sellerRoleId, sellerNotificationId.Result));
             }
             else
             {
-                _recipientRepository.Create(new Recipient(negotiate.BuyerId, buyyerRoleId, buyyerNotificationId));
+                _recipientRepository.Create(new Recipient(negotiate.BuyerId, buyyerRoleId, buyyerNotificationId.Result));
             }
             _recipientRepository.SaveChanges();
 
-            var targetNegotiation = _negotiateRepository.Get(Command.NegotiateId);
+            var targetNegotiation = await _negotiateRepository.Get(Command.NegotiateId);
             var filePathString = "";
             if (Command.File != null)
                 filePathString = _fileUploader
@@ -198,22 +199,22 @@ namespace AM.Application
 
             targetNegotiation.AddMessage(Command.MessageBody, Command.UserId, Command.UserEntity, filePathString);
             _negotiateRepository.SaveChanges();
-            return result.Succeeded();
+            return await Task.FromResult(result.Succeeded());
         }
-        public OperationResult CancelNegotiation(CreateNegotiate Command)
+        public async Task<OperationResult> CancelNegotiation(CreateNegotiate Command)
         {
             var result = new OperationResult();
             if (!_negotiateRepository.Exist(x => x.Id == Command.NegotiateId))
                 return result.Failed(ApplicationMessage.RecordNotFound);
 
-            var sellerRoleId = _userRepository.GetDetail(Command.SellerId).RoleId;
-            var sellerUserId = $"{_userRepository.GetDetail(Command.SellerId).UserId}";
-            var sellerRoleString = _userApplication.GetUsertypes()
+            var sellerRoleId = _userRepository.GetDetail(Command.SellerId).Result.RoleId;
+            var sellerUserId = $"{_userRepository.GetDetail(Command.SellerId).Result.UserId}";
+            var sellerRoleString = _userApplication.GetUsertypes().Result
                 .FirstOrDefault(x => x.TypeId == sellerRoleId).TypeName;
 
-            var buyerRoleId = _userRepository.GetDetail(Command.BuyerId).RoleId;
-            var buyerUserId = $"{_userRepository.GetDetail(Command.BuyerId).UserId}";
-            var buyerRoleString = _userApplication.GetUsertypes()
+            var buyerRoleId = _userRepository.GetDetail(Command.BuyerId).Result.RoleId;
+            var buyerUserId = $"{_userRepository.GetDetail(Command.BuyerId).Result.UserId}";
+            var buyerRoleString = _userApplication.GetUsertypes().Result
                 .FirstOrDefault(x => x.TypeId == buyerRoleId).TypeName;
 
             var listingInfo = _listingRepository.GetListingDetail(Command.ListingId);
@@ -242,7 +243,7 @@ namespace AM.Application
                     RecipientList = buyyerRecipientList,
                     SenderId = Command.BuyerId,
                     NotificationBody =
-                        $"Negotiation CANCELED for {listingInfo.Name} at {listingInfo.UnitPrice} {listingInfo.Currency} by {(_autenticateHelper.CurrentAccountRole().Id == Command.SellerId ? sellerUserId : buyerUserId)}",
+                        $"Negotiation CANCELED for {listingInfo.Result.Name} at {listingInfo.Result.UnitPrice} {listingInfo.Result.Currency} by {(_autenticateHelper.CurrentAccountRole().Id == Command.SellerId ? sellerUserId : buyerUserId)}",
                     NotificationTitle = ApplicationMessage.CanceledNegotiationRequest,
                     UserId = Command.BuyerId
                 });
@@ -252,44 +253,44 @@ namespace AM.Application
                 {
                     RecipientList = sellerRecipientList,
                     SenderId = Command.SellerId,
-                    NotificationBody = $"Negotiation CANCELED for {listingInfo.Name} at {listingInfo.UnitPrice} {listingInfo.Currency} by {(_autenticateHelper.CurrentAccountRole().Id == Command.SellerId ? sellerUserId : buyerUserId)}",
+                    NotificationBody = $"Negotiation CANCELED for {listingInfo.Result.Name} at {listingInfo.Result.UnitPrice} {listingInfo.Result.Currency} by {(_autenticateHelper.CurrentAccountRole().Id == Command.SellerId ? sellerUserId : buyerUserId)}",
                     NotificationTitle = ApplicationMessage.CanceledNegotiationRequest,
                     UserId = Command.SellerId
                 });
 
-            _recipientRepository.Create(new Recipient(Command.BuyerId, buyerRoleId, buyerNotificationId));
-            _recipientRepository.Create(new Recipient(Command.SellerId, sellerRoleId, sellerNotificationId));
+            _recipientRepository.Create(new Recipient(Command.BuyerId, buyerRoleId, buyerNotificationId.Result));
+            _recipientRepository.Create(new Recipient(Command.SellerId, sellerRoleId, sellerNotificationId.Result));
             _recipientRepository.SaveChanges();
 
             var target = _negotiateRepository.Get(Command.NegotiateId);
-            target.Canceled();
+            target.Result.Canceled();
             _negotiateRepository.SaveChanges();
             return result.Succeeded();
 
         }
-        public NegotiateViewModel GetNegotiationViewModel(CreateNegotiate Command)
+        public async Task<NegotiateViewModel> GetNegotiationViewModel(CreateNegotiate Command)
         {
-            return _negotiateRepository.GetNegotiationViewModel(Command);
+            return await _negotiateRepository.GetNegotiationViewModel(Command);
         }
-        public NegotiateViewModel GetNegotiationViewModel(long NegotiateId)
+        public async Task<NegotiateViewModel> GetNegotiationViewModel(long NegotiateId)
         {
-            return _negotiateRepository.GetNegotiationViewModel(NegotiateId);
+            return await _negotiateRepository.GetNegotiationViewModel(NegotiateId);
         }
-        public List<CreateNegotiate> AllListingItemsBuyyer(long BuyyerId)
+        public async Task<List<CreateNegotiate>> AllListingItemsBuyyer(long BuyyerId)
         {
-            return _negotiateRepository.AllListingItemsBuyyer(BuyyerId);
+            return await _negotiateRepository.AllListingItemsBuyyer(BuyyerId);
         }
-        public List<CreateNegotiate> AllListingItemsSeller(long SellerId)
+        public async Task<List<CreateNegotiate>> AllListingItemsSeller(long SellerId)
         {
-            return _negotiateRepository.AllListingItemsSeller(SellerId);
+            return await _negotiateRepository.AllListingItemsSeller(SellerId);
         }
-        public List<MessageViewModel> GetMessages(long NegotiateId)
+        public async Task<List<MessageViewModel>> GetMessages(long NegotiateId)
         {
-            return _negotiateRepository.GetMessages(NegotiateId);
+            return await _negotiateRepository.GetMessages(NegotiateId);
         }
-        public OperationResult ActiveNegotiation(long NegotiateId)
+        public async Task<OperationResult> ActiveNegotiation(long NegotiateId)
         {
-            return _negotiateRepository.ActiveNegotiation(NegotiateId);
+            return await _negotiateRepository.ActiveNegotiation(NegotiateId);
         }
     }
 }

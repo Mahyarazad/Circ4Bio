@@ -33,14 +33,14 @@ namespace ServiceHost.Areas.Dashboard.Pages.Deals
             _negotiateApplication = negotiateApplication;
         }
 
-        public IActionResult OnGet(long Id)
+        public async Task<IActionResult> OnGet(long Id)
         {
             var LoggedUser = _autenticateHelper.CurrentAccountRole().Id;
-            var Negotiate = _negotiateApplication.GetNegotiationViewModel(Id);
+            var Negotiate = await _negotiateApplication.GetNegotiationViewModel(Id);
 
             if (Negotiate.SellerId == LoggedUser | Negotiate.BuyerId == LoggedUser)
             {
-                Command = _dealApplication.GetDealWithDealId(Id);
+                Command = await _dealApplication.GetDealWithDealId(Id);
                 return null;
             }
             else

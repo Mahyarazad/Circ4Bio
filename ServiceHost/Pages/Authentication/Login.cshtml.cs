@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using _0_Framework;
 using AM.Application.Contracts.User;
 using Microsoft.AspNetCore.Http;
@@ -46,13 +47,13 @@ namespace ServiceHost.Pages.Authentication
             return RedirectToPage("./Index");
         }
 
-        public IActionResult OnPostLogin(EditUser command)
+        public async Task<IActionResult> OnPostLogin(EditUser command)
         {
 
             SuccessMessage = "";
             FailureMessage = "";
             ActivationFailureMessage = "";
-            var result = _userApplication.Login(command);
+            var result = await _userApplication.Login(command);
 
             var uri = new Uri(_httpContextAccessor.HttpContext.Request.Headers
                 .FirstOrDefault(x => x.Key == "Referer").Value);

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using _0_Framework;
 using _0_Framework.Application;
 using _0_Framework.Application.Email;
@@ -49,21 +50,21 @@ namespace AM.Application
             _notificationApplication = notificationApplication;
         }
 
-        public OperationResult CreateDeal(CreateDeal Command)
+        public async Task<OperationResult> CreateDeal(CreateDeal Command)
         {
             var result = new OperationResult();
 
 
-            var negotiate = _negotiateRepository.Get(Command.NegotiateId);
+            var negotiate = await _negotiateRepository.Get(Command.NegotiateId);
 
-            var sellerRoleId = _userRepository.GetDetail(negotiate.SellerId).RoleId;
-            var sellerRoleString = _userApplication.GetUsertypes()
+            var sellerRoleId = _userRepository.GetDetail(negotiate.SellerId).Result.RoleId;
+            var sellerRoleString = _userApplication.GetUsertypes().Result
                 .FirstOrDefault(x => x.TypeId == sellerRoleId).TypeName;
 
-            var buyyerRoleId = _userRepository.GetDetail(negotiate.BuyerId).RoleId;
-            var buyyerUserId = $"{_userRepository.GetDetail(negotiate.BuyerId).UserId}";
-            var SellerUserId = $"{_userRepository.GetDetail(negotiate.SellerId).UserId}";
-            var buyyerRoleString = _userApplication.GetUsertypes()
+            var buyyerRoleId = _userRepository.GetDetail(negotiate.BuyerId).Result.RoleId;
+            var buyyerUserId = $"{_userRepository.GetDetail(negotiate.BuyerId).Result.UserId}";
+            var SellerUserId = $"{_userRepository.GetDetail(negotiate.SellerId).Result.UserId}";
+            var buyyerRoleString = _userApplication.GetUsertypes().Result
                 .FirstOrDefault(x => x.TypeId == buyyerRoleId).TypeName;
 
             var listingInfo = _listingRepository.GetListingDetail(Command.ListingId);
@@ -90,7 +91,7 @@ namespace AM.Application
                 {
                     RecipientList = buyyerRecipientList,
                     SenderId = negotiate.BuyerId,
-                    NotificationBody = $"{SellerUserId} send a quatation for {listingInfo.Name} to you. Total cost is {Command.TotalCost} {Command.Currency}",
+                    NotificationBody = $"{SellerUserId} send a quatation for {listingInfo.Result.Name} to you. Total cost is {Command.TotalCost} {Command.Currency}",
                     NotificationTitle = ApplicationMessage.DealsCreated,
                     UserId = negotiate.BuyerId
                 });
@@ -100,13 +101,13 @@ namespace AM.Application
                 {
                     RecipientList = sellerRecipientList,
                     SenderId = negotiate.SellerId,
-                    NotificationBody = $"You have issued a new quatation for {listingInfo.Name} with {buyyerUserId}",
+                    NotificationBody = $"You have issued a new quatation for {listingInfo.Result.Name} with {buyyerUserId}",
                     NotificationTitle = ApplicationMessage.DealsCreated,
                     UserId = negotiate.SellerId
                 });
 
-            _recipientRepository.Create(new Recipient(negotiate.SellerId, sellerRoleId, sellerNotificationId));
-            _recipientRepository.Create(new Recipient(negotiate.BuyerId, buyyerRoleId, buyyerNotificationId));
+            _recipientRepository.Create(new Recipient(negotiate.SellerId, sellerRoleId, sellerNotificationId.Result));
+            _recipientRepository.Create(new Recipient(negotiate.BuyerId, buyyerRoleId, buyyerNotificationId.Result));
             _recipientRepository.SaveChanges();
 
 
@@ -116,52 +117,53 @@ namespace AM.Application
                 .Uploader(Command.ContractFile, $"Deal Documents/{Command.NegotiateId}",
                     Guid.NewGuid().ToString());
 
-            var deal = new Deal(Command.DeliveryCost, Command.DeliveryMethod, Command.TotalCost, listingInfo.Unit
+            var deal = new Deal(Command.DeliveryCost, Command.DeliveryMethod, Command.TotalCost, listingInfo.Result.Unit
                 , Command.Currency, Command.Amount, Command.Location, trackingCode,
-                filePathString, Command.DueTime, Command.ListingId, Command.NegotiateId, negotiate.BuyerId, negotiate.SellerId);
-            _negotiateRepository.ActiveNegotiation(Command.NegotiateId);
+                filePathString, Command.DueTime, Command.ListingId, Command.NegotiateId, negotiate.BuyerId
+                , negotiate.SellerId);
+            await _negotiateRepository.ActiveNegotiation(Command.NegotiateId);
             _dealRepository.Create(deal);
             _dealRepository.SaveChanges();
 
             return result.Succeeded();
         }
 
-        public OperationResult EditDeal(EditDeal Command)
+        public Task<OperationResult> EditDeal(EditDeal Command)
         {
             var result = new OperationResult();
-            return result;
+            return Task.FromResult(result);
         }
 
-        public OperationResult RejectDeal(long Id)
+        public Task<OperationResult> RejectDeal(long Id)
         {
             var result = new OperationResult();
-            return result;
+            return Task.FromResult(result);
         }
 
-        public OperationResult FinishDeal(long Id)
+        public Task<OperationResult> FinishDeal(long Id)
         {
             var result = new OperationResult();
-            return result;
+            return Task.FromResult(result);
         }
 
-        public OperationResult AtivateDeal(long Id)
+        public Task<OperationResult> AtivateDeal(long Id)
         {
             var result = new OperationResult();
-            return result;
+            return Task.FromResult(result);
         }
 
-        public OperationResult PaymentReceived(long Id)
+        public Task<OperationResult> PaymentReceived(long Id)
         {
             var result = new OperationResult();
-            return result;
+            return Task.FromResult(result);
         }
 
-        public List<DealViewModel> GetAllDeals(long UserId)
+        public Task<List<DealViewModel>> GetAllDeals(long UserId)
         {
             return _dealRepository.GetAllDeals(UserId);
         }
 
-        public DealViewModel GetDealWithDealId(long DealId)
+        public Task<DealViewModel> GetDealWithDealId(long DealId)
         {
             return _dealRepository.GetDealWithDealId(DealId);
         }

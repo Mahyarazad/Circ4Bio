@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using _0_Framework.Application;
 using _0_Framework.Infrastructure;
 using AM.Application.Contracts.Negotiate;
@@ -27,9 +28,9 @@ namespace AM.Infrastructure.Repository
             _amContext.SaveChanges();
         }
 
-        public List<UserNegotiate> GetAll()
+        public Task<List<UserNegotiate>> GetAll()
         {
-            return _amContext.Set<UserNegotiate>().AsNoTracking().ToList();
+            return _amContext.Set<UserNegotiate>().AsNoTracking().ToListAsync();
         }
     }
 }

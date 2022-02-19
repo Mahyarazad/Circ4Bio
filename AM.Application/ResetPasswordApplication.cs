@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using _0_Framework;
 using _0_Framework.Application;
 using _0_Framework.Application.Email;
@@ -28,16 +29,16 @@ namespace AM.Application
             _resetPasswordRepository = resetPasswordRepository;
         }
 
-        public OperationResult CreateResetPassword(string email)
+        public Task<OperationResult> CreateResetPassword(string email)
         {
 
             var result = new OperationResult();
 
             if (!_userRepository.Exist(x => x.Email == email))
-                return result.Failed(ApplicationMessage.UserNotExists);
+                return Task.FromResult(result.Failed(ApplicationMessage.UserNotExists));
 
-            if (!_userRepository.GetDetailByEmail(email).IsActive)
-                return result.Failed(ApplicationMessage.UserNotActive);
+            if (!_userRepository.GetDetailByEmail(email).Result.IsActive)
+                return Task.FromResult(result.Failed(ApplicationMessage.UserNotActive));
 
             var userId = _userRepository.GetDetailByEmail(email).Id;
             var resetUrl = Guid.NewGuid();
@@ -61,25 +62,24 @@ namespace AM.Application
 
                 _resetPasswordRepository.Create(passwordReset);
                 _resetPasswordRepository.SaveChanges();
-                return result.Succeeded();
+                return Task.FromResult(result.Succeeded());
             }
             else
             {
-                return emailServiceResult;
+                return Task.FromResult(emailServiceResult);
             }
 
         }
-
-        public ResetPasswordModel GetResetPasswordGuid(string guid)
+        public Task<ResetPasswordModel> GetResetPasswordGuid(string guid)
         {
-            var model = _resetPasswordRepository.GrabLink(guid);
+            var model = _resetPasswordRepository.GrabLink(guid).Result;
             if (model != null)
             {
                 model.IsValid = DateTime.Now < model.ExpirationTime;
-                return model;
+                return Task.FromResult(model);
             }
 
-            return new ResetPasswordModel();
+            return Task.FromResult(new ResetPasswordModel());
         }
     }
 }

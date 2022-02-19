@@ -19,7 +19,7 @@
         public const string MaxCharCurrency = "Currency should be less than three charectors";
 
         //Deals
-        public const string DeliveryMethod = "Delivery method cannot be empt!";
+        public const string DeliveryMethod = "Delivery method cannot be empty!";
         public const string Currency = "You have to select at least one currency";
 
     }

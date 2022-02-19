@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using _0_Framework;
 using AM.Application.Contracts.ResetPassword;
 using AM.Application.Contracts.User;
@@ -35,12 +36,12 @@ namespace ServiceHost.Pages.Authentication
 
         }
 
-        public IActionResult OnPost(ResetPasswordModel command)
+        public async Task<IActionResult> OnPost(ResetPasswordModel command)
         {
             Message = "";
             SuccessMessage = "";
 
-            var result = _resetPasswordApplication.CreateResetPassword(command.Email);
+            var result = await _resetPasswordApplication.CreateResetPassword(command.Email);
             if (result.IsSucceeded)
             {
 

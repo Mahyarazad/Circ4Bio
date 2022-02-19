@@ -13,9 +13,9 @@ namespace ServiceHost.Areas.Dashboard.Pages.ContactUs
             _contactUsApplication = contactUsApplication;
         }
 
-        public void OnGet(long id)
+        public async void OnGet(long id)
         {
-            Message = _contactUsApplication.GetSingleMessages(id);
+            Message = await _contactUsApplication.GetSingleMessages(id);
         }
         public JsonResult OnPostIsReed(long id)
         {

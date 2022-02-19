@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using _0_Framework.Application;
 using AM.Application.Contracts.Deal;
 using AM.Application.Contracts.Listing;
@@ -27,11 +28,11 @@ namespace ServiceHost.Areas.Dashboard.Pages.Deals
             _listingApplication = listingApplication;
         }
 
-        public IActionResult OnGet(long Id)
+        public async Task<IActionResult> OnGet(long Id)
         {
             if (Id == _autenticateHelper.CurrentAccountRole().Id)
             {
-                Deals = _dealApplication.GetAllDeals(Id);
+                Deals = await _dealApplication.GetAllDeals(Id);
                 return null;
             }
             else

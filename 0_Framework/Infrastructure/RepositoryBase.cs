@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Security.Cryptography.Xml;
+using System.Threading.Tasks;
 using _0_Framework.Domain;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,7 +19,6 @@ namespace _0_Framework.Infrastructure
             _dbContext = dbContext;
         }
 
-
         public void Create(T entity)
         {
             _dbContext.Add<T>(entity);
@@ -28,24 +29,19 @@ namespace _0_Framework.Infrastructure
             _dbContext.SaveChanges();
         }
 
-        List<T> IRepository<TKey, T>.GetList()
+        public async Task<List<T>> GetList()
         {
-            return GetList();
-        }
-
-        public List<T> GetList()
-        {
-            return _dbContext.Set<T>().AsNoTracking().ToList();
-        }
-
-        public T Get(TKey id)
-        {
-            return _dbContext.Find<T>(id);
+            return await _dbContext.Set<T>().AsNoTracking().ToListAsync();
         }
 
         public bool Exist(Expression<Func<T, bool>> expression)
         {
             return _dbContext.Set<T>().Any(expression);
+        }
+
+        public Task<T> Get(TKey id)
+        {
+            return Task.FromResult(_dbContext.Set<T>().Find(id));
         }
     }
 }

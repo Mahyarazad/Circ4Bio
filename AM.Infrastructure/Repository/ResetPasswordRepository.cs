@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using _0_Framework.Domain;
 using _0_Framework.Infrastructure;
 using AM.Application.Contracts.ResetPassword;
@@ -17,7 +18,7 @@ namespace AM.Infrastructure.Repository
             _amContext = amContext;
         }
 
-        public ResetPasswordModel GrabLink(string command)
+        public Task<ResetPasswordModel> GrabLink(string command)
         {
             return _amContext.UserResetPasswords.Select(x => new ResetPasswordModel
             {
@@ -26,7 +27,7 @@ namespace AM.Infrastructure.Repository
                 CreationTime = x.CreationTime,
                 ExpirationTime = x.ExprateDateTime
             }).AsNoTracking()
-                .FirstOrDefault(x => x.Guid.ToString() == command);
+                .FirstOrDefaultAsync(x => x.Guid.ToString() == command);
         }
     }
 

@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Threading.Tasks;
 using AM.Application.Contracts.Listing;
 using AM.Application.Contracts.Negotiate;
 using AM.Application.Contracts.User;
@@ -28,23 +29,23 @@ namespace ServiceHost.Areas.Dashboard.Pages.AvailableListing
             _negotiateApplication = negotiateApplication;
         }
 
-        public void OnGet(long Id)
+        public async void OnGet(long Id)
         {
             var userId = long.Parse(_contextAccessor.HttpContext.User.Claims
                 .FirstOrDefault(x => x.Type == "User Id").Value);
 
-            user = _userApplication.GetDetail(userId);
-            Listing = _listingApplication.GetDetailListing(Id);
+            user = await _userApplication.GetDetail(userId);
+            Listing = await _listingApplication.GetDetailListing(Id);
         }
 
-        public JsonResult OnPost(long Id)
+        public async Task<JsonResult> OnPost(long Id)
         {
             var createNegotiation = new CreateNegotiate
             {
                 ListingId = Id,
                 BuyerId = long.Parse(_contextAccessor.HttpContext.User.Claims
                     .FirstOrDefault(x => x.Type == "User Id").Value),
-                SellerId = _listingApplication.GetOwnerUserID(Id)
+                SellerId = await _listingApplication.GetOwnerUserID(Id)
             };
             return new JsonResult(_negotiateApplication.Create(createNegotiation));
         }

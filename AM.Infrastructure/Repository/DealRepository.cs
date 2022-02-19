@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using _0_Framework.Infrastructure;
 using AM.Application.Contracts.Deal;
 using AM.Application.Contracts.Listing;
@@ -18,7 +19,7 @@ namespace AM.Infrastructure.Repository
             _amContext = amContext;
         }
 
-        public List<DealViewModel> GetAllDeals(long UserId)
+        public Task<List<DealViewModel>> GetAllDeals(long UserId)
         {
             return _amContext.Deals
                 .Where(x => x.BuyerId == UserId | x.SellerId == UserId)
@@ -64,10 +65,10 @@ namespace AM.Infrastructure.Repository
 
                 })
                 .OrderByDescending(x => x.DealId)
-                .ToList();
+                .ToListAsync();
         }
 
-        public DealViewModel GetDealWithDealId(long DealId)
+        public Task<DealViewModel> GetDealWithDealId(long DealId)
         {
             return _amContext.Deals
                 .Where(x => x.Id == DealId)
@@ -90,14 +91,24 @@ namespace AM.Infrastructure.Repository
                     Unit = x.Unit,
                     Listing = new ListingViewModel
                     {
-                        Name = _amContext.Listing.AsNoTracking().FirstOrDefault(z => z.Id == x.ListingId).Name,
-                        Image = _amContext.Listing.AsNoTracking().FirstOrDefault(z => z.Id == x.ListingId).Image,
-                        Description = _amContext.Listing.AsNoTracking().FirstOrDefault(z => z.Id == x.ListingId).Description,
-                        Type = _amContext.Listing.AsNoTracking().FirstOrDefault(z => z.Id == x.ListingId).Type,
-                        UnitPrice = _amContext.Listing.AsNoTracking().FirstOrDefault(z => z.Id == x.ListingId).UnitPrice,
+                        Name = _amContext.Listing.AsNoTracking()
+                            .FirstOrDefault(z => z.Id == x.ListingId)
+                            .Name,
+                        Image = _amContext.Listing.AsNoTracking()
+                            .FirstOrDefault(z => z.Id == x.ListingId)
+                            .Image,
+                        Description = _amContext.Listing.AsNoTracking()
+                            .FirstOrDefault(z => z.Id == x.ListingId)
+                            .Description,
+                        Type = _amContext.Listing.AsNoTracking()
+                            .FirstOrDefault(z => z.Id == x.ListingId)
+                            .Type,
+                        UnitPrice = _amContext.Listing.AsNoTracking()
+                            .FirstOrDefault(z => z.Id == x.ListingId)
+                            .UnitPrice,
 
                     },
-                }).First();
+                }).FirstAsync();
         }
     }
 }

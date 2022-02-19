@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Threading.Tasks;
 using _0_Framework.Application;
 using AM.Application.Contracts.Notification;
 using AM.Application.Contracts.User;
@@ -23,12 +24,12 @@ namespace ServiceHost.Areas.Dashboard.Pages
             _autenticateHelper = autenticateHelper;
         }
 
-        public IActionResult OnGet(string Id)
+        public async Task<IActionResult> OnGet(string Id)
         {
             CountryList = new SelectList(GenerateCountryList.GetList());
             if (Int64.TryParse(Id, out long value))
             {
-                user = _userApplication.GetDetail(Convert.ToInt64(value));
+                user = await _userApplication.GetDetail(Convert.ToInt64(value));
                 if (user.Id == _autenticateHelper.CurrentAccountRole().Id)
                 {
                     return null;
@@ -40,7 +41,7 @@ namespace ServiceHost.Areas.Dashboard.Pages
             }
             else
             {
-                user = _userApplication.GetDetailByUsername(Id);
+                user = await _userApplication.GetDetailByUsername(Id);
                 if (user.Id == _autenticateHelper.CurrentAccountRole().Id)
                 {
                     return null;

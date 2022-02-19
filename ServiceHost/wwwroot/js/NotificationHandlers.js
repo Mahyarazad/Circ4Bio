@@ -1,4 +1,5 @@
-﻿var host = "https://localhost:5001";
+﻿
+var host = "https://localhost:5001";
 //var host = "http://www.maahyarazad.ir"
 
 var NotificationSettings = {
@@ -139,8 +140,9 @@ function handleNotificationRead(id) {
         $("#notification-counter").text(response)
         $("#notification-counter-mobile").text(response)
         $(`div[data-notification-label='${id}']`).remove();
+        NotificationAjax();
     });
-    NotificationAjax();
+
 }
 
 function handleRemoveDeliveryAddress(id) {

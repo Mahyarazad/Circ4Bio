@@ -79,7 +79,7 @@
                     <div class="mt-1 sm:mt-0 sm:col-span-2">
                         <select id="user-type"
                                 asp-for="Command.RoleId"
-                                asp-items='new SelectList(UserApplication.GetUsertypes(), "TypeId", "TypeName")'
+                                asp-items='new SelectList(UserApplication.GetUsertypes().Result, "TypeId", "TypeName")'
                                 class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-sky-800 focus:border-sky-800 sm:text-sm rounded-md">
                             <option value="" class="text-gray-700 block px-4 py-2 text-sm">
                                 Please select a type

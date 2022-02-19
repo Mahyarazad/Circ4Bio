@@ -1,18 +1,19 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using _0_Framework.Application;
 
 namespace AM.Application.Contracts.Deal
 {
     public interface IDealApplication
     {
-        OperationResult CreateDeal(CreateDeal Command);
-        OperationResult EditDeal(EditDeal Command);
-        OperationResult RejectDeal(long Id);
-        OperationResult FinishDeal(long Id);
-        OperationResult AtivateDeal(long Id);
-        OperationResult PaymentReceived(long Id);
-        List<DealViewModel> GetAllDeals(long UserId);
-        DealViewModel GetDealWithDealId(long DealId);
+        Task<OperationResult> CreateDeal(CreateDeal Command);
+        Task<OperationResult> EditDeal(EditDeal Command);
+        Task<OperationResult> RejectDeal(long Id);
+        Task<OperationResult> FinishDeal(long Id);
+        Task<OperationResult> AtivateDeal(long Id);
+        Task<OperationResult> PaymentReceived(long Id);
+        Task<List<DealViewModel>> GetAllDeals(long UserId);
+        Task<DealViewModel> GetDealWithDealId(long DealId);
 
     }
 }

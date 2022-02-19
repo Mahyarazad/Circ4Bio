@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using _0_Framework;
 using _0_Framework.Application;
 using AM.Application.Contracts.Listing;
@@ -36,12 +37,12 @@ namespace AM.Application
             _recipientRepository = recipientRepository;
             _notificationApplication = notificationApplication;
         }
-        public OperationResult Create(CreateListing command)
+        public Task<OperationResult> Create(CreateListing command)
         {
             var result = new OperationResult();
             var issuerId = _autenticateHelper.CurrentAccountRole().Id;
             var roleId = Convert.ToInt32(_autenticateHelper.CurrentAccountRole().RoleId);
-            var typeofListing = _userApplication.GetUsertypes()
+            var typeofListing = _userApplication.GetUsertypes().Result
                 .FirstOrDefault(x => x.TypeId == roleId).TypeName;
 
             command.ImageString = _fileUploader
@@ -65,7 +66,7 @@ namespace AM.Application
                     break;
             }
 
-            var recipientList = _userApplication.GetUserListForListing(issuerId);
+            var recipientList = _userApplication.GetUserListForListing(issuerId).Result;
 
             if (command.IsService)
             {
@@ -75,7 +76,7 @@ namespace AM.Application
             var notificationId = _notificationApplication
                 .PushNotification(new NotificationViewModel
                 {
-                    RecipientList = _userApplication.GetUserListForListing(issuerId),
+                    RecipientList = _userApplication.GetUserListForListing(issuerId).Result,
                     SenderId = issuerId,
                     NotificationBody = $"{command.Name} is available now in Listing, Available amount is " +
                                        $"{command.Amount.ToString()} {command.Unit.ToString()} at {command.UnitPrice.ToString()}",
@@ -85,7 +86,7 @@ namespace AM.Application
 
             foreach (var receiver in recipientList)
             {
-                _recipientRepository.Create(new Recipient(receiver.UserId, receiver.RoleId, notificationId));
+                _recipientRepository.Create(new Recipient(receiver.UserId, receiver.RoleId, notificationId.Result));
             }
             _recipientRepository.SaveChanges();
 
@@ -98,7 +99,7 @@ namespace AM.Application
                     UserId = issuerId
                 });
 
-            _recipientRepository.Create(new Recipient(issuerId, roleId, systemNotificationId));
+            _recipientRepository.Create(new Recipient(issuerId, roleId, systemNotificationId.Result));
             _recipientRepository.SaveChanges();
 
 
@@ -110,113 +111,113 @@ namespace AM.Application
             _listingRepository.Create(listing);
             _listingRepository.SaveChanges();
 
-            return result.Succeeded();
+            return Task.FromResult(result.Succeeded());
         }
-        public OperationResult Edit(EditListing command)
+        public Task<OperationResult> Edit(EditListing command)
         {
             var result = new OperationResult();
             if (!_listingRepository.Exist(x => x.Id == command.Id))
-                return result.Failed(ApplicationMessage.RecordNotFound);
+                return Task.FromResult(result.Failed(ApplicationMessage.RecordNotFound));
 
             var roleId = Convert.ToInt64(_autenticateHelper.CurrentAccountRole().RoleId);
-            var typeofListing = _userApplication.GetUsertypes()
+            var typeofListing = _userApplication.GetUsertypes().Result
                 .FirstOrDefault(x => x.TypeId == roleId).TypeName;
 
             var imageFileName = _fileUploader
                 .Uploader(command.Image, $"Listing_Images/{typeofListing}", Guid.NewGuid().ToString());
 
             var target = _listingRepository.Get(command.Id);
-            target.Edit(command.Name, command.Description, imageFileName,
+            target.Result.Edit(command.Name, command.Description, imageFileName,
                 command.DeliveryMethod, command.Unit, command.UnitPrice, command.Currency);
             _listingRepository.SaveChanges();
 
-            return result.Succeeded();
+            return Task.FromResult(result.Succeeded());
         }
-        public List<ListingViewModel> GetUserListing(long id)
+        public Task<List<ListingViewModel>> GetUserListing(long id)
         {
             return _listingRepository.GetUserListing(id);
         }
-        public List<ListingViewModel> GetAllListing()
+        public Task<List<ListingViewModel>> GetAllListing()
         {
             return _listingRepository.GetAllListing();
         }
-        public List<ListingViewModel> GetAllPublicListing()
+        public Task<List<ListingViewModel>> GetAllPublicListing()
         {
             return _listingRepository.GetAllPublicListing();
         }
-        public long GetOwnerUserID(long id)
+        public Task<long> GetOwnerUserID(long id)
         {
             return _listingRepository.GetOwnerUserID(id);
         }
-        public List<ListingViewModel> GetDeletedUserListing(long id)
+        public Task<List<ListingViewModel>> GetDeletedUserListing(long id)
         {
             return _listingRepository.GetUserListing(id);
         }
-        public ListingViewModel GetDetailListing(long id)
+        public Task<ListingViewModel> GetDetailListing(long id)
         {
             return _listingRepository.GetDetailListing(id);
         }
-        public EditListing GetEditListing(long listingId)
+        public Task<EditListing> GetEditListing(long listingId)
         {
             return _listingRepository.GetListingDetail(listingId);
         }
-        public OperationResult Delete(long id)
+        public Task<OperationResult> Delete(long id)
         {
             var result = new OperationResult();
             if (!_listingRepository.Exist(x => x.Id == id))
-                return result.Failed(ApplicationMessage.RecordNotFound);
+                return Task.FromResult(result.Failed(ApplicationMessage.RecordNotFound));
             var target = _listingRepository.Get(id);
-            target.MarkDeleted();
+            target.Result.MarkDeleted();
             _listingRepository.SaveChanges();
-            return result.Succeeded();
+            return Task.FromResult(result.Succeeded());
 
         }
-        public OperationResult IncrementAmount(InputAmount command)
+        public Task<OperationResult> IncrementAmount(InputAmount command)
         {
             var result = new OperationResult();
             if (!_listingRepository.Exist(x => x.Id == command.ListingId))
-                return result.Failed(ApplicationMessage.RecordNotFound);
+                return Task.FromResult(result.Failed(ApplicationMessage.RecordNotFound));
 
             var target = _listingRepository.Get(command.ListingId);
             if (command.DealId != 0)
             {
-                target.Increment(command.Description, command.Count, command.DealId, command.UserId);
+                target.Result.Increment(command.Description, command.Count, command.DealId, command.UserId);
             }
             else
             {
-                target.Increment(command.Description, command.Count, 0, command.UserId);
+                target.Result.Increment(command.Description, command.Count, 0, command.UserId);
             }
             _listingRepository.SaveChanges();
 
-            return result.Succeeded();
+            return Task.FromResult(result.Succeeded());
 
         }
-        public OperationResult DeccrementAmount(InputAmount command)
+        public Task<OperationResult> DeccrementAmount(InputAmount command)
         {
             var result = new OperationResult();
             if (!_listingRepository.Exist(x => x.Id == command.ListingId))
-                return result.Failed(ApplicationMessage.RecordNotFound);
+                return Task.FromResult(result.Failed(ApplicationMessage.RecordNotFound));
 
             var target = _listingRepository.Get(command.ListingId);
             if (command.DealId != 0)
             {
-                if (target.Amount - command.Count < 0)
-                    return result.Failed(ApplicationMessage.CannotDeduct);
-                target.Decrement(command.Description, command.Count, command.DealId, command.UserId);
+                if (target.Result.Amount - command.Count < 0)
+                    return Task.FromResult(result.Failed(ApplicationMessage.CannotDeduct));
+                target.Result.Decrement(command.Description, command.Count, command.DealId, command.UserId);
             }
             else
             {
-                if (target.Amount - command.Count < 0)
-                    return result.Failed(ApplicationMessage.CannotDeduct);
-                target.Decrement(command.Description, command.Count, 0, command.UserId);
+                if (target.Result.Amount - command.Count < 0)
+                    return Task.FromResult(result.Failed(ApplicationMessage.CannotDeduct));
+                target.Result.Decrement(command.Description, command.Count, 0, command.UserId);
             }
             _listingRepository.SaveChanges();
 
-            return result.Succeeded();
+            return Task.FromResult(result.Succeeded());
         }
-        public List<ListingOperationLog> GetListingOperationLog(long id)
+        public Task<List<ListingOperationLog>> GetListingOperationLog(long id)
         {
-            return _listingRepository.Get(id).ListingOperations
+            var result = _listingRepository.Get(id).Result.ListingOperations
                 .Select(x => new ListingOperationLog
                 {
                     UserId = x.UserId,
@@ -228,30 +229,31 @@ namespace AM.Application
                     OperationTime = x.OperationTime,
                     OperationType = x.OperationType,
                     Id = x.Id
-                }).OrderByDescending(x => x.Id)
-                .ToList();
+                }).OrderByDescending(x => x.Id);
+            return Task.FromResult(result.ToList());
+
         }
-        public OperationResult MarkPrivate(long id)
+        public Task<OperationResult> MarkPrivate(long id)
         {
             var result = new OperationResult();
             if (!_listingRepository.Exist(x => x.Id == id))
-                return result.Failed(ApplicationMessage.RecordNotFound);
+                return Task.FromResult(result.Failed(ApplicationMessage.RecordNotFound));
             var target = _listingRepository.Get(id);
-            target.MarkPrivate();
+            target.Result.MarkPrivate();
             _listingRepository.SaveChanges();
-            return result.Succeeded();
+            return Task.FromResult(result.Succeeded());
         }
-        public OperationResult MarkPublic(long id)
+        public Task<OperationResult> MarkPublic(long id)
         {
             var result = new OperationResult();
             if (!_listingRepository.Exist(x => x.Id == id))
-                return result.Failed(ApplicationMessage.RecordNotFound);
+                return Task.FromResult(result.Failed(ApplicationMessage.RecordNotFound));
             var target = _listingRepository.Get(id);
-            target.MarkPublic();
+            target.Result.MarkPublic();
             _listingRepository.SaveChanges();
-            return result.Succeeded();
+            return Task.FromResult(result.Succeeded());
         }
-        public List<ActiveListing> GetActiveListing(long userId)
+        public Task<List<ActiveListing>> GetActiveListing(long userId)
         {
             return _listingRepository.GetActiveListing(userId);
         }

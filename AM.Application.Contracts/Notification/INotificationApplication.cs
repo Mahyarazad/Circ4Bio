@@ -1,16 +1,17 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using _0_Framework.Application;
 
 namespace AM.Application.Contracts.Notification
 {
     public interface INotificationApplication
     {
-        OperationResult MarkRead(long Id);
-        long PushNotification(NotificationViewModel Command);
-        List<NotificationViewModel> GetAllUnread(long Id);
-        OperationResult MarkAllRead(long Id);
-        List<NotificationViewModel> GetLastNUnread(long Id, int nNumber);
-        int CountUnread(long Id);
+        Task<OperationResult> MarkRead(long Id);
+        Task<long> PushNotification(NotificationViewModel Command);
+        Task<List<NotificationViewModel>> GetAllUnread(long Id);
+        Task<OperationResult> MarkAllRead(long Id);
+        Task<List<NotificationViewModel>> GetLastNUnread(long Id, int nNumber);
+        Task<int> CountUnread(long Id);
 
     }
 }

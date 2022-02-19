@@ -80,7 +80,7 @@ function handleAjaxPost(formData, url, action) {
         contentType: false,
         success: function (data) {
             // Notify the user about the proccess detail
-            if (!data.isSucceeded) {
+            if (!data.result.isSucceeded) {
                 $("#modal").hide();
                 var resultDom = $('#operation-result-failed');
                 var resultDomMessage = $('#operation-result-failed-message');
@@ -93,7 +93,17 @@ function handleAjaxPost(formData, url, action) {
                 var url = window.location.href;
                 var splited = url.split('/');
 
-                if (action === "CancelNegotiation") {
+                if (splited[splited.length - 2] === "notification") {
+                    var updatedUrl = splited.slice(0, splited.length);
+                    url = updatedUrl.join('/', updatedUrl);
+                    var resultDom = $('#operation-result');
+                    var resultDomMessage = $('#operation-result-message');
+                    resultDomMessage.text(data.message);
+                    resultDom.css('display', 'block');
+                    setTimeout(() => { window.location.replace(url) }, 3000)
+                }
+
+                else if (action === "CancelNegotiation") {
                     var updatedUrl = splited.slice(0, splited.length - 2);
                     url = updatedUrl.join('/', updatedUrl);
                     var resultDom = $('#operation-result');
@@ -103,9 +113,9 @@ function handleAjaxPost(formData, url, action) {
                     setTimeout(() => { window.location.replace(url) }, 3000)
                 }
 
-                if (splited[splited.length - 2] !== "messages") {
+                else if (splited[splited.length - 2] !== "messages") {
 
-                    if (splited[splited.length - 2] === "profile") {
+                    if (splited[splited.length - 2] === "profile" | splited[splited.length - 2] === "create") {
                         var resultDom = $('#operation-result');
                         var resultDomMessage = $('#operation-result-message');
                         resultDomMessage.text(data.message);

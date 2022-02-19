@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
+using System.Threading.Tasks;
 using _0_Framework;
 using _0_Framework.Application;
 using AM.Application.Contracts.Notification;
@@ -12,8 +13,8 @@ namespace AM.Application
 {
     public class NotificationApplicaiton : INotificationApplication
     {
-        private readonly IRecipientRepository _recipientRepository;
         private readonly IHttpContextAccessor _contextAccessor;
+        private readonly IRecipientRepository _recipientRepository;
         private readonly INotificationRepository _notificationRepository;
 
         public NotificationApplicaiton(INotificationRepository notificationRepository,
@@ -25,44 +26,46 @@ namespace AM.Application
             _notificationRepository = notificationRepository;
         }
 
-        public OperationResult MarkRead(long Id)
+        public async Task<OperationResult> MarkRead(long Id)
         {
             var result = new OperationResult();
             if (!_recipientRepository.Exist(x => x.Id == Id))
                 return result.Failed(ApplicationMessage.RecordNotFound);
-            var target = _recipientRepository.Get(Id);
+            var target = await _recipientRepository.Get(Id);
             target.MarkRead();
             _recipientRepository.SaveChanges();
             return result.Succeeded();
         }
 
-        public long PushNotification(NotificationViewModel Command)
+        public Task<long> PushNotification(NotificationViewModel Command)
         {
             var notification = new Notification(Command.NotificationBody, Command.NotificationTitle,
                 Command.SenderId, Command.UserId);
             _notificationRepository.Create(notification);
             _notificationRepository.SaveChanges();
-            return notification.Id;
+            return Task.FromResult(notification.Id);
         }
 
-        public List<NotificationViewModel> GetAllUnread(long Id)
+        public async Task<List<NotificationViewModel>> GetAllUnread(long Id)
         {
-            return _notificationRepository.GetAllUnread(Id);
+            List<NotificationViewModel> result = await _notificationRepository.GetAllUnread(Id);
+            return result;
         }
 
-        public OperationResult MarkAllRead(long Id)
+        public async Task<OperationResult> MarkAllRead(long Id)
         {
-            return _notificationRepository.MarkAllRead(Id);
+            return await _notificationRepository.MarkAllRead(Id);
         }
 
-        public List<NotificationViewModel> GetLastNUnread(long Id, int nNumber)
+        public async Task<List<NotificationViewModel>> GetLastNUnread(long Id, int nNumber)
         {
-            return _notificationRepository.GetLastNUnread(Id, nNumber);
+            List<NotificationViewModel> result = await _notificationRepository.GetLastNUnread(Id, nNumber);
+            return result;
         }
 
-        public int CountUnread(long Id)
+        public async Task<int> CountUnread(long Id)
         {
-            return _notificationRepository.CountUnRead(Id);
+            return await _notificationRepository.CountUnRead(Id);
         }
     }
 }

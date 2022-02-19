@@ -24,11 +24,11 @@ namespace ServiceHost.Pages
         {
 
         }
-        public IActionResult OnPost(CreateMessage command)
+        public async Task<IActionResult> OnPost(CreateMessage command)
         {
             Message = "";
             ErrorMessage = "";
-            var result = _contactUsApplication.CreateMessage(command);
+            var result = await _contactUsApplication.CreateMessage(command);
             if (result.IsSucceeded)
             {
                 Message = result.Message;

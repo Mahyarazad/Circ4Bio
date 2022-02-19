@@ -33,47 +33,48 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
             _notificationApplication = notificationApplication;
         }
 
-        public void OnGet()
+        public async void OnGet()
         {
             ShowDeleted = false;
 
             var userId = long.Parse(_contextAccessor.HttpContext.User.Claims
                 .FirstOrDefault(x => x.Type == "User Id").Value);
 
-            user = _userApplication.GetDetail(userId);
+            user = await _userApplication.GetDetail(userId);
 
             var AdminCheck = _contextAccessor.HttpContext.User.Claims
                 .FirstOrDefault(x => x.Type == ClaimTypes.Role).Value;
             if (AdminCheck == "1")
             {
-                Listing = _listingApplication.GetAllListing();
+                Listing = await _listingApplication.GetAllListing();
             }
             else
             {
-                Listing = _listingApplication.GetUserListing(user.Id);
+                Listing = await _listingApplication.GetUserListing(user.Id);
             }
 
         }
-        public void OnGetDeleted()
+        public async void OnGetDeleted()
         {
             ShowDeleted = true;
-            user = _userApplication.GetDetail(
+            user = await _userApplication.GetDetail(
                 long.Parse(_contextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "User Id").Value));
 
-            Listing = _listingApplication.GetDeletedUserListing(user.Id);
+            Listing = await _listingApplication.GetDeletedUserListing(user.Id);
         }
-        public void OnGetHideDeletedForAdmin()
+        public async void OnGetHideDeletedForAdmin()
         {
-            user = _userApplication.GetDetail(
+            user = await _userApplication.GetDetail(
                 long.Parse(_contextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "User Id").Value));
-            Listing = _listingApplication.GetAllListing().Where(x => !x.IsDeleted).ToList();
+            Listing = await _listingApplication.GetAllListing();
+            Listing = Listing.Where(x => !x.IsDeleted).ToList();
         }
 
-        public void OnGetShowDeletedForAdmin()
+        public async void OnGetShowDeletedForAdmin()
         {
-            user = _userApplication.GetDetail(
+            user = await _userApplication.GetDetail(
                 long.Parse(_contextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "User Id").Value));
-            Listing = _listingApplication.GetAllListing();
+            Listing = await _listingApplication.GetAllListing();
         }
 
         public JsonResult OnPostMarkDelete(long id)
