@@ -18,21 +18,21 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
         public EditListing Command;
         public SelectList CurrencyList;
         private readonly IUserApplication _userApplication;
-        private readonly IAutenticateHelper _autenticateHelper;
+        private readonly IAuthenticateHelper _authenticateHelper;
         private readonly IListingApplication _listingApplication;
         public EditModel(IUserApplication userApplication,
-            IAutenticateHelper autenticateHelper,
+            IAuthenticateHelper authenticateHelper,
             IListingApplication listingApplication
         )
         {
             _userApplication = userApplication;
-            _autenticateHelper = autenticateHelper;
+            _authenticateHelper = authenticateHelper;
             _listingApplication = listingApplication;
         }
 
         public async Task<IActionResult> OnGet(long Id)
         {
-            var loggedInUserId = _autenticateHelper.CurrentAccountRole().Id;
+            var loggedInUserId = _authenticateHelper.CurrentAccountRole().Id;
             Command = await _listingApplication.GetEditListing(Id);
             if (Command.OwnerUserId == loggedInUserId)
             {

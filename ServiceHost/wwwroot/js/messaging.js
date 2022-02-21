@@ -95,13 +95,13 @@ var MessagingAjax = () => {
         }
     });
 };
-
+//
 $(document).ready(() => {
     MessagingAjax();
 });
-
-setInterval(() => {
-    MessagingAjax();
-}, 5000);
+//
+//setInterval(() => {
+//    MessagingAjax();
+//}, 5000);
 
 

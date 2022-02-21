@@ -68,47 +68,42 @@ namespace AM.Infrastructure.Repository
                 .ToListAsync();
         }
 
-        public Task<DealViewModel> GetDealWithDealId(long DealId)
+        public async Task<DealViewModel> GetDealWithDealId(long DealId)
         {
-            return _amContext.Deals
-                .Where(x => x.Id == DealId)
+            var deal = _amContext.Deals
+                .Include(x => x.Listing)
                 .AsNoTracking()
-                .Select(x => new DealViewModel
-                {
-                    DealId = x.Id,
-                    Currency = x.Currency,
-                    NegotiateId = x.NegotiateId,
-                    Amount = x.Amount,
-                    IsDeleted = x.IsDeleted,
-                    IsActive = x.IsActive,
-                    IsFinished = x.IsFinished,
-                    Location = x.Location,
-                    TotalCost = x.TotalCost,
-                    DeliveryCost = x.DeliveryCost,
-                    DeliveryMethod = x.DeliveryMethod,
-                    ContractFileString = x.ContractFile,
-                    TrackingCode = x.TrackingCode,
-                    Unit = x.Unit,
-                    Listing = new ListingViewModel
-                    {
-                        Name = _amContext.Listing.AsNoTracking()
-                            .FirstOrDefault(z => z.Id == x.ListingId)
-                            .Name,
-                        Image = _amContext.Listing.AsNoTracking()
-                            .FirstOrDefault(z => z.Id == x.ListingId)
-                            .Image,
-                        Description = _amContext.Listing.AsNoTracking()
-                            .FirstOrDefault(z => z.Id == x.ListingId)
-                            .Description,
-                        Type = _amContext.Listing.AsNoTracking()
-                            .FirstOrDefault(z => z.Id == x.ListingId)
-                            .Type,
-                        UnitPrice = _amContext.Listing.AsNoTracking()
-                            .FirstOrDefault(z => z.Id == x.ListingId)
-                            .UnitPrice,
+                .AsSingleQuery()
+                .FirstOrDefaultAsync(x => x.NegotiateId == DealId);
 
-                    },
-                }).FirstAsync();
+            var query = new DealViewModel
+            {
+                DealId = deal.Result.Id,
+                Currency = deal.Result.Currency,
+                NegotiateId = deal.Result.NegotiateId,
+                Amount = deal.Result.Amount,
+                IsDeleted = deal.Result.IsDeleted,
+                IsActive = deal.Result.IsActive,
+                IsFinished = deal.Result.IsFinished,
+                Location = deal.Result.Location,
+                TotalCost = deal.Result.TotalCost,
+                DeliveryCost = deal.Result.DeliveryCost,
+                DeliveryMethod = deal.Result.DeliveryMethod,
+                ContractFileString = deal.Result.ContractFile,
+                TrackingCode = deal.Result.TrackingCode,
+                Unit = deal.Result.Unit,
+                Listing = new ListingViewModel
+                {
+                    Name = deal.Result.Listing.Name,
+                    Image = deal.Result.Listing.Image,
+                    Type = deal.Result.Listing.Type,
+                    UnitPrice = deal.Result.Listing.UnitPrice,
+                    Description = deal.Result.Listing.Description,
+
+                }
+            };
+
+            return query;
         }
     }
 }

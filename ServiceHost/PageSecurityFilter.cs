@@ -7,11 +7,11 @@ namespace ServiceHost
 {
     public class PageSecurityFilter : IPageFilter
     {
-        private readonly IAutenticateHelper _autenticateHelper;
+        private readonly IAuthenticateHelper _authenticateHelper;
 
-        public PageSecurityFilter(IAutenticateHelper autenticateHelper)
+        public PageSecurityFilter(IAuthenticateHelper authenticateHelper)
         {
-            _autenticateHelper = autenticateHelper;
+            _authenticateHelper = authenticateHelper;
         }
 
         public void OnPageHandlerExecuted(PageHandlerExecutedContext context)
@@ -23,7 +23,7 @@ namespace ServiceHost
         {
             var permissions =
                (RequirePermission)context.HandlerMethod.MethodInfo.GetCustomAttributes(typeof(RequirePermission));
-            var accountPermission = _autenticateHelper.GetPermission();
+            var accountPermission = _authenticateHelper.GetPermission();
             if (!accountPermission.Contains(permissions.Permission))
                 context.HttpContext.Response.Redirect("./Login");
         }

@@ -25,26 +25,26 @@ namespace ServiceHost.Areas.Dashboard.Pages.Deals
         public SelectList DeliveryCharges;
         private readonly IDealApplication _dealApplication;
         private readonly IUserApplication _userApplication;
-        private readonly IAutenticateHelper _autenticateHelper;
+        private readonly IAuthenticateHelper _authenticateHelper;
         private readonly IListingApplication _listingApplication;
         private readonly INegotiateApplication _negotiateApplication;
 
         public CreateModel(IListingApplication listingApplication
             , IUserApplication userApplication
-            , IAutenticateHelper autenticateHelper,
+            , IAuthenticateHelper authenticateHelper,
             INegotiateApplication negotiateApplication,
             IDealApplication dealApplication)
         {
             _userApplication = userApplication;
             _dealApplication = dealApplication;
-            _autenticateHelper = autenticateHelper;
+            _authenticateHelper = authenticateHelper;
             _listingApplication = listingApplication;
             _negotiateApplication = negotiateApplication;
         }
 
         public async Task<IActionResult> OnGet(long Id)
         {
-            LoggedUser = _autenticateHelper.CurrentAccountRole();
+            LoggedUser = _authenticateHelper.CurrentAccountRole();
             var Negotiate = await _negotiateApplication.GetNegotiationViewModel(Id);
 
             if (Negotiate.SellerId == LoggedUser.Id)
@@ -61,7 +61,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Deals
                     new string("Seller"),
                 });
                 DeliveryLocationSelectList =
-                    new SelectList(await _userApplication.GetDeliveryLocationDropDown(_autenticateHelper.CurrentAccountRole().Id));
+                    new SelectList(await _userApplication.GetDeliveryLocationDropDown(_authenticateHelper.CurrentAccountRole().Id));
                 return null;
             }
             else
@@ -78,7 +78,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Deals
             Command.TotalCost = (Command.Amount * Command.Listing.UnitPrice) + Command.DeliveryCost;
             var result = await _dealApplication.CreateDeal(Command);
 
-            return RedirectToPage("/Deals/Index", new { Id = _autenticateHelper.CurrentAccountRole().Id });
+            return RedirectToPage("/Deals/Index", new { Id = _authenticateHelper.CurrentAccountRole().Id });
         }
     }
 }

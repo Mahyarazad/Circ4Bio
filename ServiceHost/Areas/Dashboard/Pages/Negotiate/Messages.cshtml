@@ -1,7 +1,7 @@
 ﻿@page "{id}"
 @using _0_Framework.Application;
 @model ServiceHost.Areas.Dashboard.Pages.Negotiate.MessagesModel
-@inject IAutenticateHelper AutenticateHelper;
+@inject IAuthenticateHelper AuthenticateHelper;
 @{ ViewData["Title"] = $"Dashboard | Negotiations ";}
 
 <div class="divide-y divide-gray-200 lg:col-span-9">
@@ -71,7 +71,7 @@
                                                     </svg>
                                                 </span>
                                             </a>
-                                            @if (AutenticateHelper.CurrentAccountRole().Id != Model.CurrentNegotiate.BuyerId)
+                                            @if (AuthenticateHelper.CurrentAccountRole().Id != Model.CurrentNegotiate.BuyerId)
                                             {
                                                 <a asp-page="../Deals/Create" asp-route-id="@Model.CurrentNegotiate.NegotiateId" title="Create a Quatation"
                                                    class="mx-2 flex items-center justify-center bg-green-100 hover:bg-green-200 text-gray-400 h-10 w-10 rounded-full">
@@ -106,13 +106,13 @@
                         <div class="h-96 overflow-hidden py-4">
                             <div class="h-full overflow-y-auto">
                                 <div class="grid grid-cols-12 gap-y-2" id="messaging-container" data-messaging-id="@Model.CurrentNegotiate.NegotiateId"
-                                     data-logged-user-id="@AutenticateHelper.CurrentAccountRole().Id">
+                                     data-logged-user-id="@AuthenticateHelper.CurrentAccountRole().Id">
 @*                                        @foreach (var item in Model.MessageList) *@
 @*                                        { *@
 @*                                            <!--Sender Container--> *@
 @*                                            <div class="col-start-1 col-end-13 px-2 rounded-lg"> *@
 @*                                                <div class="flex items-center justify-start *@
-@*                                                     @(item.UserId == AutenticateHelper.CurrentAccountRole().Id ? "flex-row-reverse" : "")"> *@
+@*                                                     @(item.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "flex-row-reverse" : "")"> *@
 @*                                                    <div class="relative flex items-center h-10 w-10 rounded-full flex-shrink-0"> *@
 @*                                                        <img class="h-10 w-10 rounded-full" *@
 @*                                                             src="~/Site Files/Profile_Images/@(item.UserId == item.BuyerId ? *@
@@ -125,7 +125,7 @@
 @*                                                        </div> *@
 @*                                                    </div> *@
 @*                                                    <div class="relative mr-3 ml-3 text-sm *@
-@*                                                         @(item.UserId == AutenticateHelper.CurrentAccountRole().Id ? "bg-sky-100" : "") py-2 px-4 shadow rounded-xl"> *@
+@*                                                         @(item.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "bg-sky-100" : "") py-2 px-4 shadow rounded-xl"> *@
 @*                                                        <div> *@
 @*                                                            @item.MessageBody *@
 @*                                                        </div> *@
@@ -201,4 +201,6 @@
 @section Scripts
 {
     <script src="~/js/messaging.js"></script>
+    <script src="~/js/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/chat.js"></script>
 }

@@ -1,7 +1,7 @@
 ﻿@page "{id}"
 @using _0_Framework.Application
 @model ServiceHost.Areas.Dashboard.Pages.Deals.QuatationModel;
-@inject IAutenticateHelper AutenticateHelper;
+@inject IAuthenticateHelper AuthenticateHelper;
 @{ ViewData["Title"] = $"Dashboard | Deals | {@Model.Command.ItemName} Quatation"; }
 
 
@@ -114,7 +114,7 @@
         </div>
     </div>
     <div class="mt-4 py-4 px-4 flex justify-end sm:px-6">
-        <a asp-page="/Deals/Index" asp-area="Dashboard" asp-route-id="@AutenticateHelper.CurrentAccountRole().Id"
+        <a asp-page="/Deals/Index" asp-area="Dashboard" asp-route-id="@AuthenticateHelper.CurrentAccountRole().Id"
            class="bg-white border border-gray-300 rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
             Back
         </a>

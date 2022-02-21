@@ -12,19 +12,19 @@ namespace ServiceHost.Areas.Dashboard.Pages.Negotiate
         public NewMessage Command;
         public List<MessageViewModel> MessageList;
         public NegotiateViewModel CurrentNegotiate;
-        private readonly IAutenticateHelper _autenticateHelper;
+        private readonly IAuthenticateHelper _authenticateHelper;
         private readonly INegotiateApplication _negotiateApplication;
 
         public MessagesModel(INegotiateApplication negotiateApplication,
-            IAutenticateHelper autenticateHelper)
+            IAuthenticateHelper authenticateHelper)
         {
-            _autenticateHelper = autenticateHelper;
+            _authenticateHelper = authenticateHelper;
             _negotiateApplication = negotiateApplication;
         }
 
         public async Task<IActionResult> OnGet(long Id)
         {
-            var loggedInUserId = _autenticateHelper.CurrentAccountRole().Id;
+            var loggedInUserId = _authenticateHelper.CurrentAccountRole().Id;
             CurrentNegotiate = await _negotiateApplication.GetNegotiationViewModel(Id);
             if (CurrentNegotiate.SellerId == loggedInUserId ||
                 CurrentNegotiate.BuyerId == loggedInUserId)
@@ -44,7 +44,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Negotiate
         {
             Command.UserEntity = false;
             CurrentNegotiate = await _negotiateApplication.GetNegotiationViewModel(Command.NegotiateId);
-            Command.UserId = _autenticateHelper.CurrentAccountRole().Id;
+            Command.UserId = _authenticateHelper.CurrentAccountRole().Id;
             if (Command.UserId == CurrentNegotiate.BuyerId)
                 Command.UserEntity = true;
             var res = _negotiateApplication.SendMessage(Command);

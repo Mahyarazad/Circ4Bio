@@ -11,17 +11,17 @@ namespace ServiceHost
     public class PermissionTagHelper : TagHelper
     {
         public int Permission { get; set; }
-        private readonly IAutenticateHelper _autenticateHelper;
+        private readonly IAuthenticateHelper _authenticateHelper;
 
-        public PermissionTagHelper(IAutenticateHelper autenticateHelper)
+        public PermissionTagHelper(IAuthenticateHelper authenticateHelper)
         {
-            _autenticateHelper = autenticateHelper;
+            _authenticateHelper = authenticateHelper;
         }
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
-            var permissions = _autenticateHelper.GetPermission();
-            if (!_autenticateHelper.IsAuthenticated())
+            var permissions = _authenticateHelper.GetPermission();
+            if (!_authenticateHelper.IsAuthenticated())
             {
                 output.SuppressOutput();
                 return;

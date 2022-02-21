@@ -1,6 +1,6 @@
 ﻿@using AM.Application.Contracts.Notification
 @using AM.Application.Contracts.User
-@inject _0_Framework.Application.IAutenticateHelper AutenticateHelper;
+@inject _0_Framework.Application.IAuthenticateHelper AuthenticateHelper;
 @inject INotificationApplication NotificationApplication
 <!--Notification Section-->
 <div id="notification-panel" aria-live="assertive"
@@ -8,7 +8,7 @@
     <div class="w-full flex flex-col items-center space-y-2 sm:items-start md:items-start lg:items-end mt-10 z-10">
         <div class="max-w-sm w-full pointer-events-auto overflow-hidden flex justify-between">
             <div class="mt-2 font-medium text-sm text-white ">
-                <a asp-page="/Notification" asp-route-id="@AutenticateHelper.CurrentAccountRole().Id"
+                <a asp-page="/Notification" asp-route-id="@AuthenticateHelper.CurrentAccountRole().Id"
                    title="Open Notifications"
                    class="p-1 truncate bg-transparent-customized text-gray-100 hover:cursor-pointer hover:text-gray-300"
                 >
@@ -19,7 +19,7 @@
             </div>
             <form method="get" id="edit-user-form" asp-page-handler="MarkAllRead" asp-page="/Notification"
                   data-callback="" data-ajax="true" data-action="Refresh" class="p-1 font-medium text-sm text-white">
-                <input type="hidden" value="@AutenticateHelper.CurrentAccountRole().Id" name="Id"/>
+                <input type="hidden" value="@AuthenticateHelper.CurrentAccountRole().Id" name="Id"/>
                 <button type='submit' class="p-1 font-medium truncate bg-transparent-customized text-gray-100 hover:cursor-pointer hover:text-gray-300">
                     Mark All Read
                 </button>
@@ -38,7 +38,7 @@
             -->
 
             @* *@
-            @* @if (NotificationApplication.CountUnread(AutenticateHelper.CurrentAccountRole().Id) == 0) *@
+            @* @if (NotificationApplication.CountUnread(AuthenticateHelper.CurrentAccountRole().Id) == 0) *@
             @* { *@
             @*     <div class="max-w-sm w-full bg-white shadow-lg rounded-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden"> *@
             @*         <div class="p-4"> *@

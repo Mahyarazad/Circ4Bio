@@ -85,7 +85,7 @@ function handleAjaxPost(formData, url, action) {
                 var resultDom = $('#operation-result-failed');
                 var resultDomMessage = $('#operation-result-failed-message');
 
-                resultDomMessage.text(data.message);
+                resultDomMessage.text(data.result.message);
                 resultDom.css('display', 'block');
             } else {
 
@@ -98,7 +98,7 @@ function handleAjaxPost(formData, url, action) {
                     url = updatedUrl.join('/', updatedUrl);
                     var resultDom = $('#operation-result');
                     var resultDomMessage = $('#operation-result-message');
-                    resultDomMessage.text(data.message);
+                    resultDomMessage.text(data.result.message);
                     resultDom.css('display', 'block');
                     setTimeout(() => { window.location.replace(url) }, 3000)
                 }
@@ -108,7 +108,7 @@ function handleAjaxPost(formData, url, action) {
                     url = updatedUrl.join('/', updatedUrl);
                     var resultDom = $('#operation-result');
                     var resultDomMessage = $('#operation-result-message');
-                    resultDomMessage.text(data.message);
+                    resultDomMessage.text(data.result.message);
                     resultDom.css('display', 'block');
                     setTimeout(() => { window.location.replace(url) }, 3000)
                 }
@@ -118,7 +118,7 @@ function handleAjaxPost(formData, url, action) {
                     if (splited[splited.length - 2] === "profile" | splited[splited.length - 2] === "create") {
                         var resultDom = $('#operation-result');
                         var resultDomMessage = $('#operation-result-message');
-                        resultDomMessage.text(data.message);
+                        resultDomMessage.text(data.result.message);
                         resultDom.css('display', 'block');
                         setTimeout(() => { window.location.replace(url) }, 3000)
                     } else {
@@ -132,7 +132,7 @@ function handleAjaxPost(formData, url, action) {
                         var resultDom = $('#operation-result');
                         var resultDomMessage = $('#operation-result-message');
 
-                        resultDomMessage.text(data.message);
+                        resultDomMessage.text(data.result.message);
                         resultDom.css('display', 'block');
 
                         setTimeout(() => {
@@ -212,7 +212,7 @@ function CallBackHandler(data, action, form) {
     switch (action) {
         case "Message":
 
-            alert(data.Message);
+            alert(data.result.Message);
             break;
             window.location.reload();
             setInterval(function () {
@@ -222,7 +222,7 @@ function CallBackHandler(data, action, form) {
                 1500)
         case "Refresh":
             $("#modal").hide();
-            if (data.isSucceeded) {
+            if (data.result.isSucceeded) {
                 window.location.reload();
                 setInterval(function () {
                     var resultDom = $('#operation-result');

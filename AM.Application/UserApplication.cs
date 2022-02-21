@@ -27,14 +27,14 @@ namespace AM.Application
         private readonly IPasswordHasher _passwordHasher;
         private readonly IRoleRepository _roleRepository;
         private readonly IHttpContextAccessor _contextAccessor;
-        private readonly IAutenticateHelper _autenticateHelper;
+        private readonly IAuthenticateHelper _authenticateHelper;
         private readonly IRecipientRepository _recipientRepository;
         private readonly INotificationApplication _notificationApplication;
         private readonly IResetPasswordApplication _resetPasswordApplication;
 
         public UserApplication(IUserRepository userRepository,
             IPasswordHasher passwordHasher,
-            IAutenticateHelper authenticateHelper,
+            IAuthenticateHelper authenticateHelper,
             IFileUploader fileUploader,
             IRoleRepository roleRepository,
             IHttpContextAccessor contextAccessor,
@@ -49,7 +49,7 @@ namespace AM.Application
             _passwordHasher = passwordHasher;
             _roleRepository = roleRepository;
             _contextAccessor = contextAccessor;
-            _autenticateHelper = authenticateHelper;
+            _authenticateHelper = authenticateHelper;
             _recipientRepository = recipientRepository;
             _notificationApplication = notificationApplication;
             _resetPasswordApplication = resetPasswordApplication;
@@ -143,13 +143,18 @@ namespace AM.Application
 
                         if (emailServiceResult.IsSucceeded)
                         {
-                            user.ActivateUser();
+                            user.ActivateUserStatus();
                             _userRepository.SaveChanges();
                         }
                         else
                         {
                             return emailServiceResult;
                         }
+                    }
+                    else
+                    {
+                        user.ActivateUserStatus();
+                        user.ActivateUser();
                     }
 
                     return result.Succeeded();
@@ -426,23 +431,23 @@ namespace AM.Application
             var authModel = new AuthViewModel(user.Id, user.Email, $"{user.FirstName} {user.LastName}",
                 user.RoleId.ToString(), command.RememberMe, user.PictureString, permissions
                 , command.Password, user.IsActive, user.Status);
-            _autenticateHelper.Login(authModel);
+            _authenticateHelper.Login(authModel);
             return result.Succeeded();
         }
         public void Logout()
         {
-            _autenticateHelper.Logout();
+            _authenticateHelper.Logout();
         }
         public Task<List<Usertype>> GetUsertypes()
         {
             var type = new Usertype(0, "Default");
             return Task.FromResult(type.GetUserTypeList());
         }
-        public void AddDeliveryLocation(CreateDeliveryLocation Command)
+        public async Task AddDeliveryLocation(CreateDeliveryLocation Command)
         {
             if (_userRepository.Exist(x => x.Id == Command.UserId))
             {
-                _userRepository.AddDeliveryLocation(Command);
+                await _userRepository.AddDeliveryLocation(Command);
             }
             else
             {
@@ -450,11 +455,11 @@ namespace AM.Application
             }
 
         }
-        public bool RemoveDeliveryLocation(CreateDeliveryLocation Command)
+        public async Task<bool> RemoveDeliveryLocation(CreateDeliveryLocation Command)
         {
             if (_userRepository.Exist(x => x.Id == Command.UserId))
             {
-                return _userRepository.RemoveDeliveryLocation(Command);
+                return await _userRepository.RemoveDeliveryLocation(Command);
             }
             else
             {

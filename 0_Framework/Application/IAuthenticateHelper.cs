@@ -2,7 +2,7 @@
 
 namespace _0_Framework.Application
 {
-    public interface IAutenticateHelper
+    public interface IAuthenticateHelper
     {
         void Login(AuthViewModel model);
         void Logout();

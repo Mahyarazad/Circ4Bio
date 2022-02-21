@@ -78,14 +78,14 @@ namespace AM.Infrastructure.Repository
         }
         public async Task<NegotiateViewModel> GetNegotiationViewModel(long NegotiateId)
         {
-            var negotiate = await _amContext.Negotiates
+            var negotiate = _amContext.Negotiates
                 .Include(x => x.UserNegotiate)
                 .AsNoTracking()
                 .AsSingleQuery()
                 .FirstOrDefaultAsync(x => x.Id == NegotiateId);
 
-            var sellerId = negotiate.UserNegotiate.Where(x => !x.BuyerBool).First().UserId;
-            var buyerId = negotiate.UserNegotiate.Where(x => x.BuyerBool).First().UserId;
+            var sellerId = negotiate.Result.UserNegotiate.Where(x => !x.BuyerBool).First().UserId;
+            var buyerId = negotiate.Result.UserNegotiate.Where(x => x.BuyerBool).First().UserId;
             var sellerInfo = await _amContext.Users
                 .AsNoTracking()
                 .AsSingleQuery()
@@ -93,7 +93,9 @@ namespace AM.Infrastructure.Repository
                 .Select(x => new UserInfoMessaging
                 {
                     ImageString = x.Avatar,
-                    Name = $"{x.FirstName} {x.LastName}"
+                    Name = $"{x.FirstName} {x.LastName}",
+                    Email = x.Email
+
                 }).FirstAsync();
 
             var buyerInfo = await _amContext.Users
@@ -103,7 +105,8 @@ namespace AM.Infrastructure.Repository
                 .Select(x => new UserInfoMessaging
                 {
                     ImageString = x.Avatar,
-                    Name = $"{x.FirstName} {x.LastName}"
+                    Name = $"{x.FirstName} {x.LastName}",
+                    Email = x.Email
                 }).FirstAsync();
 
             return await _amContext.Listing
@@ -117,15 +120,18 @@ namespace AM.Infrastructure.Repository
                     Amount = x.Amount,
                     Unit = x.Unit,
                     UnitPrice = x.UnitPrice,
-                    BuyerId = negotiate.BuyerId,
-                    SellerId = negotiate.SellerId,
-                    IsCanceled = negotiate.IsCanceled,
-                    IsFinished = negotiate.IsFinished,
+                    BuyerId = negotiate.Result.BuyerId,
+                    SellerId = negotiate.Result.SellerId,
+                    IsCanceled = negotiate.Result.IsCanceled,
+                    IsFinished = negotiate.Result.IsFinished,
                     ItemType = x.Type,
                     SellerName = sellerInfo.Name,
+                    BuyerName = buyerInfo.Name,
                     BuyerImageString = buyerInfo.ImageString,
-                    SellerImageString = sellerInfo.ImageString
-                }).AsNoTracking().FirstOrDefaultAsync(x => x.ListingId == negotiate.ListingId);
+                    SellerImageString = sellerInfo.ImageString,
+                    BuyerEmail = buyerInfo.Email,
+                    SellerEmail = sellerInfo.Email,
+                }).AsNoTracking().FirstOrDefaultAsync(x => x.ListingId == negotiate.Result.ListingId);
         }
         public async Task<List<CreateNegotiate>> AllListingItemsBuyyer(long BuyerId)
         {

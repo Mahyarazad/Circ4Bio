@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using AM.Application.Contracts.Listing;
 using AM.Application.Contracts.Negotiate;
-using AM.Application.Contracts.Notification;
 using AM.Application.Contracts.User;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -33,7 +31,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.AvailableListing
             _negotiateApplication = negotiateApplication;
         }
 
-        public async void OnGet()
+        public async Task OnGet()
         {
             var userId = long.Parse(_contextAccessor.HttpContext.User.Claims
                 .FirstOrDefault(x => x.Type == "User Id").Value);

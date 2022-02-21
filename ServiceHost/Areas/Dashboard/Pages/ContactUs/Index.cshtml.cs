@@ -12,20 +12,14 @@ namespace ServiceHost.Areas.Dashboard.Pages.ContactUs
         public EditUser user;
 
         private readonly IContactUsApplication _contactUsApplication;
-        private readonly IHttpContextAccessor _contextAccessor;
         public ContactUsViewModel Command;
         public List<ContactUsViewModel> ContactUsMessagList;
         [TempData]
-        public string SuccessMessage { get; set; }
-        [TempData]
         public string Message { get; set; }
 
-        public IndexModel(IContactUsApplication contactUsApplication,
-            IHttpContextAccessor contextAccessor
-            )
+        public IndexModel(IContactUsApplication contactUsApplication)
         {
             _contactUsApplication = contactUsApplication;
-            _contextAccessor = contextAccessor;
         }
 
         public async void OnGet()

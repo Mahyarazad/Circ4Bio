@@ -7,10 +7,12 @@ using System.Collections.Generic;
 using _0_Framework.Application;
 using _0_Framework.Application.Email;
 using AM.Infrastructure.Core;
+using AM.Infrastructure.Repository;
 using AM.Management.API;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
 
 namespace ServiceHost
 {
@@ -32,7 +34,7 @@ namespace ServiceHost
             services.AddTransient<IEmailService<EmailModel>, EmailService>();
             services.AddTransient<IFileUploader, FileUploader>();
             services.AddSingleton<IPasswordHasher, PasswordHasher>();
-            services.AddTransient<IAutenticateHelper, AuthenticateHelper>();
+            services.AddTransient<IAuthenticateHelper, AuthenticateHelper>();
             services.AddSignalR();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -90,6 +92,8 @@ namespace ServiceHost
             });
 
             services.AddRouting(options => options.LowercaseUrls = true);
+            services.AddSignalR();
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -98,17 +102,12 @@ namespace ServiceHost
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                // app.UseSignalR(routes =>
-                // {
-                //     routes.MapHub<Class>("/Index");
-                // });
             }
             else
             {
                 app.UseExceptionHandler("/Error");
                 // app.UseHsts();
             }
-
             // app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
@@ -123,14 +122,13 @@ namespace ServiceHost
                     await next();
                 }
             });
-
             app.UseRouting();
             app.UseCors(_corsPolicy);
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
+                endpoints.MapHub<ChatHub>("/chatHub");
                 endpoints.MapDefaultControllerRoute();
             });
         }

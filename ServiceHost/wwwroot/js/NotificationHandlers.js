@@ -112,11 +112,11 @@ $(document).ready(() => {
 });
 
 setInterval(() => {
-    NotificationAjax();
-    $.ajax(NotificationCountSettings).done(function (response) {
-        $("#notification-counter").text(response)
-        $("#notification-counter-mobile").text(response)
-    });
+    //    NotificationAjax();
+    //    $.ajax(NotificationCountSettings).done(function (response) {
+    //        $("#notification-counter").text(response)
+    //        $("#notification-counter-mobile").text(response)
+    //    });
 },
     10000);
 

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using _0_Framework.Application;
 using AM.Application.Contracts.Listing;
 using AM.Application.Contracts.Notification;
@@ -33,7 +34,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
             _notificationApplication = notificationApplication;
         }
 
-        public async void OnGet()
+        public async Task OnGet()
         {
             ShowDeleted = false;
 
@@ -54,7 +55,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
             }
 
         }
-        public async void OnGetDeleted()
+        public async Task OnGetDeleted()
         {
             ShowDeleted = true;
             user = await _userApplication.GetDetail(
@@ -62,7 +63,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
 
             Listing = await _listingApplication.GetDeletedUserListing(user.Id);
         }
-        public async void OnGetHideDeletedForAdmin()
+        public async Task OnGetHideDeletedForAdmin()
         {
             user = await _userApplication.GetDetail(
                 long.Parse(_contextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "User Id").Value));
@@ -70,28 +71,28 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
             Listing = Listing.Where(x => !x.IsDeleted).ToList();
         }
 
-        public async void OnGetShowDeletedForAdmin()
+        public async Task OnGetShowDeletedForAdmin()
         {
             user = await _userApplication.GetDetail(
                 long.Parse(_contextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "User Id").Value));
             Listing = await _listingApplication.GetAllListing();
         }
 
-        public JsonResult OnPostMarkDelete(long id)
+        public Task<JsonResult> OnPostMarkDelete(long id)
         {
-            return new JsonResult(_listingApplication.Delete(id));
+            return Task.FromResult(new JsonResult(_listingApplication.Delete(id)));
         }
-        public JsonResult OnPostMarkPublic(long id)
+        public Task<JsonResult> OnPostMarkPublic(long id)
         {
-            return new JsonResult(_listingApplication.MarkPublic(id));
+            return Task.FromResult(new JsonResult(_listingApplication.MarkPublic(id)));
         }
-        public JsonResult OnPostMarkPrivate(long id)
+        public Task<JsonResult> OnPostMarkPrivate(long id)
         {
-            return new JsonResult(_listingApplication.MarkPrivate(id));
+            return Task.FromResult(new JsonResult(_listingApplication.MarkPrivate(id)));
         }
-        public IActionResult OnPostMarkRead(long Id)
+        public async Task<IActionResult> OnPostMarkRead(long Id)
         {
-            var result = _notificationApplication.MarkRead(Id);
+            var result = await _notificationApplication.MarkRead(Id);
             var reqUrl = _contextAccessor.HttpContext.Request.Headers.FirstOrDefault(x => x.Key == "Referer").Value;
             return Redirect(reqUrl);
         }
@@ -113,18 +114,17 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
             return Partial("./Decrement", inputAmount);
         }
 
-        public JsonResult OnPostIncrement(InputAmount command)
+        public Task<JsonResult> OnPostIncrement(InputAmount command)
         {
-            return new JsonResult(_listingApplication.IncrementAmount(command));
+            return Task.FromResult(new JsonResult(_listingApplication.IncrementAmount(command)));
         }
-        public JsonResult OnPostDecrement(InputAmount command)
+        public Task<JsonResult> OnPostDecrement(InputAmount command)
         {
-            return new JsonResult(_listingApplication.DeccrementAmount(command));
+            return Task.FromResult(new JsonResult(_listingApplication.DeccrementAmount(command)));
         }
-        public IActionResult OnGetLog(long id)
+        public async Task<IActionResult> OnGetLog(long id)
         {
-            var cds = _listingApplication.GetListingOperationLog(id);
-            return Partial("./Log", _listingApplication.GetListingOperationLog(id));
+            return Partial("./Log", await _listingApplication.GetListingOperationLog(id));
         }
     }
 }

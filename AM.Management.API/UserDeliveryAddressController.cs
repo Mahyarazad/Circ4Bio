@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using AM.Application.Contracts.User;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
@@ -19,7 +20,7 @@ namespace AM.Management.API
 
         [Route("[action]")]
         [HttpPost]
-        public bool RemoveDeliveryLocation(dynamic Command)
+        public async Task<bool> RemoveDeliveryLocation(dynamic Command)
         {
             if (HttpContext.User.Claims.FirstOrDefault() != null)
             {
@@ -31,7 +32,7 @@ namespace AM.Management.API
                     UserId = UserId,
                     LocationId = locationId
                 };
-                return _userApplication.RemoveDeliveryLocation(target);
+                return await _userApplication.RemoveDeliveryLocation(target);
             }
 
             return false;

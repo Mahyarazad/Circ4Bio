@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using _0_Framework;
 using _0_Framework.Application;
 using AM.Application.Contracts.Listing;
-using AM.Application.Contracts.Negotiate;
 using AM.Domain.ListingAggregate;
 using AM.Application.Contracts.Notification;
 using AM.Application.Contracts.User;
@@ -18,7 +16,7 @@ namespace AM.Application
     {
         private readonly IFileUploader _fileUploader;
         private readonly IUserApplication _userApplication;
-        private readonly IAutenticateHelper _autenticateHelper;
+        private readonly IAuthenticateHelper _authenticateHelper;
         private readonly IListingRepository _listingRepository;
         private readonly IRecipientRepository _recipientRepository;
         private readonly INotificationApplication _notificationApplication;
@@ -26,13 +24,13 @@ namespace AM.Application
         public ListingApplication(IListingRepository listingRepository,
             INotificationApplication notificationApplication,
             IRecipientRepository recipientRepository,
-            IAutenticateHelper autenticateHelper,
+            IAuthenticateHelper authenticateHelper,
             IUserApplication userApplication,
             IFileUploader fileUploader)
         {
             _fileUploader = fileUploader;
             _userApplication = userApplication;
-            _autenticateHelper = autenticateHelper;
+            _authenticateHelper = authenticateHelper;
             _listingRepository = listingRepository;
             _recipientRepository = recipientRepository;
             _notificationApplication = notificationApplication;
@@ -40,8 +38,8 @@ namespace AM.Application
         public Task<OperationResult> Create(CreateListing command)
         {
             var result = new OperationResult();
-            var issuerId = _autenticateHelper.CurrentAccountRole().Id;
-            var roleId = Convert.ToInt32(_autenticateHelper.CurrentAccountRole().RoleId);
+            var issuerId = _authenticateHelper.CurrentAccountRole().Id;
+            var roleId = Convert.ToInt32(_authenticateHelper.CurrentAccountRole().RoleId);
             var typeofListing = _userApplication.GetUsertypes().Result
                 .FirstOrDefault(x => x.TypeId == roleId).TypeName;
 
@@ -119,7 +117,7 @@ namespace AM.Application
             if (!_listingRepository.Exist(x => x.Id == command.Id))
                 return Task.FromResult(result.Failed(ApplicationMessage.RecordNotFound));
 
-            var roleId = Convert.ToInt64(_autenticateHelper.CurrentAccountRole().RoleId);
+            var roleId = Convert.ToInt64(_authenticateHelper.CurrentAccountRole().RoleId);
             var typeofListing = _userApplication.GetUsertypes().Result
                 .FirstOrDefault(x => x.TypeId == roleId).TypeName;
 
@@ -215,7 +213,7 @@ namespace AM.Application
 
             return Task.FromResult(result.Succeeded());
         }
-        public Task<List<ListingOperationLog>> GetListingOperationLog(long id)
+        public async Task<List<ListingOperationLog>> GetListingOperationLog(long id)
         {
             var result = _listingRepository.Get(id).Result.ListingOperations
                 .Select(x => new ListingOperationLog
@@ -230,7 +228,7 @@ namespace AM.Application
                     OperationType = x.OperationType,
                     Id = x.Id
                 }).OrderByDescending(x => x.Id);
-            return Task.FromResult(result.ToList());
+            return result.ToList();
 
         }
         public Task<OperationResult> MarkPrivate(long id)

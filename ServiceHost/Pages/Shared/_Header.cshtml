@@ -1,4 +1,4 @@
-﻿@inject _0_Framework.Application.IAutenticateHelper AutenticateHelper;
+﻿@inject _0_Framework.Application.IAuthenticateHelper AuthenticateHelper;
 
 <header class="relative sticky top-0 z-50">
     <div class="bg-sky-700 pt-3 pb-3">
@@ -35,7 +35,7 @@
                 </div>
             </div>
             <div class="hidden md:flex md:items-center md:space-x-6">
-                @if (AutenticateHelper.IsAuthenticated())
+                @if (AuthenticateHelper.IsAuthenticated())
                 {
                     <a asp-page="/Authentication/Login" asp-page-handler="Logout"
                        class="text-base font-medium text-white rounded-md hover:text-gray-300 hover:bg-sky-800 px-3 py-2">
@@ -43,7 +43,7 @@
                     </a>
                     <a asp-area="Dashboard" asp-page="./Index"
                        class="text-base font-medium text-white rounded-md hover:text-gray-300 hover:bg-sky-800 py-2">
-                        @AutenticateHelper.CurrentAccountRole().Email.ToString()
+                        @AuthenticateHelper.CurrentAccountRole().Email.ToString()
                     </a>
                 }
                 else
@@ -101,9 +101,9 @@
                     <a asp-page="/ContactUs" class="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50">About Us</a>
                 </div>
                 <div class="mt-6 px-5 space-y-3 flex flex-col">
-                    @if (AutenticateHelper.IsAuthenticated())
+                    @if (AuthenticateHelper.IsAuthenticated())
                     {
-                        <a asp-page="/Index" asp-area="Dashboard" class="text-center text-base font-medium text-sky-800">@AutenticateHelper.CurrentAccountRole().Email.ToString()</a>
+                        <a asp-page="/Index" asp-area="Dashboard" class="text-center text-base font-medium text-sky-800">@AuthenticateHelper.CurrentAccountRole().Email.ToString()</a>
                         <a asp-page="/Authentication/Login" asp-page-handler="Logout" asp-area=""
                            class="text-center text-base font-medium text-gray-700">
                             Logout

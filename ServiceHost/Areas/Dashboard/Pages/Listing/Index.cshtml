@@ -2,7 +2,7 @@
 @using _0_Framework
 @using AM.Application.Contracts.User
 @model ServiceHost.Areas.Dashboard.Pages.Listing.IndexModel;
-@inject _0_Framework.Application.IAutenticateHelper AutenticateHelper;
+@inject _0_Framework.Application.IAuthenticateHelper AuthenticateHelper;
 @inject IUserApplication _UserApplication;
 @{ ViewData["Title"] = "Dashboard | Your Listing"; }
 
@@ -53,7 +53,7 @@
     </a>
     @if (Model.user.Status)
     {
-        if (!(AutenticateHelper.CurrentAccountRole().RoleId == "1"))
+        if (!(AuthenticateHelper.CurrentAccountRole().RoleId == "1"))
         {
             <a asp-page-handler="Deleted" class="text-center mx-3 my-3 bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
                 <i class="fa fa-plus-circle"></i>
@@ -97,7 +97,7 @@
 <tbody class="block md:table-row-group">
 @foreach (var item in Model.Listing)
 {
-    if (AutenticateHelper.CurrentAccountRole().RoleId == "1")
+    if (AuthenticateHelper.CurrentAccountRole().RoleId == "1")
     {
         <tr class="bg-white border border-grey-500 md:border-none block md:table-row">
             <td class="hidden">@item.Id</td>

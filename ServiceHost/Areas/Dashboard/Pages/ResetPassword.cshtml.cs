@@ -9,18 +9,18 @@ namespace ServiceHost.Areas.Dashboard.Pages
     public class ResetPasswordIndex : PageModel
     {
         private readonly IUserApplication _userApplication;
-        private readonly IAutenticateHelper _autenticateHelper;
+        private readonly IAuthenticateHelper _authenticateHelper;
         public ResetPasswordModel Command { get; set; }
-        public ResetPasswordIndex(IAutenticateHelper autenticateHelper,
+        public ResetPasswordIndex(IAuthenticateHelper authenticateHelper,
             IUserApplication userApplication)
         {
             _userApplication = userApplication;
-            _autenticateHelper = autenticateHelper;
+            _authenticateHelper = authenticateHelper;
         }
 
         public IActionResult OnGet(long Id)
         {
-            if (Id == _autenticateHelper.CurrentAccountRole().Id)
+            if (Id == _authenticateHelper.CurrentAccountRole().Id)
             {
                 Command = new ResetPasswordModel();
                 Command.UserId = Id;

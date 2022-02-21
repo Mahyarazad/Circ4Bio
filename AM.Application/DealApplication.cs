@@ -25,7 +25,7 @@ namespace AM.Application
         private readonly IUserRepository _userRepository;
         private readonly IUserApplication _userApplication;
         private readonly IListingRepository _listingRepository;
-        private readonly IAutenticateHelper _autenticateHelper;
+        private readonly IAuthenticateHelper _authenticateHelper;
         private readonly IEmailService<EmailModel> _emailService;
         private readonly INegotiateRepository _negotiateRepository;
         private readonly IRecipientRepository _recipientRepository;
@@ -34,7 +34,7 @@ namespace AM.Application
         public DealApplication(IDealRepository dealRepository, IUserRepository userRepository
             , IListingApplication listingApplication, IEmailService<EmailModel> emailService
             , IFileUploader fileUploader, IUserApplication userApplication
-            , IAutenticateHelper autenticateHelper, INegotiateRepository negotiateRepository
+            , IAuthenticateHelper authenticateHelper, INegotiateRepository negotiateRepository
             , IListingRepository listingRepository
             , IRecipientRepository recipientRepository, INotificationApplication notificationApplication)
         {
@@ -43,7 +43,7 @@ namespace AM.Application
             _dealRepository = dealRepository;
             _userRepository = userRepository;
             _userApplication = userApplication;
-            _autenticateHelper = autenticateHelper;
+            _authenticateHelper = authenticateHelper;
             _listingRepository = listingRepository;
             _recipientRepository = recipientRepository;
             _negotiateRepository = negotiateRepository;
@@ -163,9 +163,9 @@ namespace AM.Application
             return _dealRepository.GetAllDeals(UserId);
         }
 
-        public Task<DealViewModel> GetDealWithDealId(long DealId)
+        public async Task<DealViewModel> GetDealWithDealId(long DealId)
         {
-            return _dealRepository.GetDealWithDealId(DealId);
+            return await _dealRepository.GetDealWithDealId(DealId);
         }
     }
 }

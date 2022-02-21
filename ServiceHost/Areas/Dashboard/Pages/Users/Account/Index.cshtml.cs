@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Timers;
 using _0_Framework.Application;
 using AM.Application.Contracts.User;
@@ -32,7 +33,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Users.Account
         }
 
         [RequirePermission(UserPermission.GetUserList)]
-        public async void OnGet(UserSearchModel Command)
+        public async Task OnGet(UserSearchModel Command)
         {
             UserList = await _userApplication.Search(Command);
             var userId = _contextAccessor.HttpContext.User.Claims.ToList().FirstOrDefault(x => x.Type == "User Id").Value;

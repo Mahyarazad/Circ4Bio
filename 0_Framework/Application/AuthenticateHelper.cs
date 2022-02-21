@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 
 namespace _0_Framework.Application
 {
-    public class AuthenticateHelper : IAutenticateHelper
+    public class AuthenticateHelper : IAuthenticateHelper
     {
         public AuthenticateHelper(IHttpContextAccessor httpContextAccessor)
         {
@@ -24,6 +24,7 @@ namespace _0_Framework.Application
                 new Claim("User Id", model.Id.ToString()),
                 new Claim(ClaimTypes.Email, model.Email),
                 new Claim(ClaimTypes.Role, model.RoleId.ToString()),
+                new Claim(ClaimTypes.NameIdentifier, model.Id.ToString()),
                 new Claim("Permissions", permissions),
                 new Claim("FullName", model.Fullname),
                 new Claim("IsActive", model.IsActive.ToString()),

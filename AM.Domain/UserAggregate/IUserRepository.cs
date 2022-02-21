@@ -13,16 +13,16 @@ namespace AM.Domain.UserAggregate
 {
     public interface IUserRepository : IRepository<long, User>
     {
-        public Task<List<UserViewModel>> Search(UserSearchModel searchModel);
-        public Task<List<RecipientViewModel>> GetUserListForListing(long id);
-        public Task<EditUser> GetDetail(long Id);
-        public Task<EditUser> GetDetailByUser(string username);
-        public Task<ResendActivationEmail> ResendActivationLink(string email);
-        public Task<EditUser> GetDetailByEmail(string email);
-        public Task<EditUser> GetDetailByActivationUrl(string guid);
-        void AddDeliveryLocation(CreateDeliveryLocation Command);
-        bool RemoveDeliveryLocation(CreateDeliveryLocation Command);
-        public Task<List<CreateDeliveryLocation>> GetDeliveryLocationList(long userId);
-        public Task<List<string>> GetDeliveryLocationDropDown(long userId);
+        Task<List<UserViewModel>> Search(UserSearchModel searchModel);
+        Task<List<RecipientViewModel>> GetUserListForListing(long id);
+        Task<EditUser> GetDetail(long Id);
+        Task<EditUser> GetDetailByUser(string username);
+        Task<ResendActivationEmail> ResendActivationLink(string email);
+        Task<EditUser> GetDetailByEmail(string email);
+        Task<EditUser> GetDetailByActivationUrl(string guid);
+        Task AddDeliveryLocation(CreateDeliveryLocation Command);
+        Task<bool> RemoveDeliveryLocation(CreateDeliveryLocation Command);
+        Task<List<CreateDeliveryLocation>> GetDeliveryLocationList(long userId);
+        Task<List<string>> GetDeliveryLocationDropDown(long userId);
     }
 }

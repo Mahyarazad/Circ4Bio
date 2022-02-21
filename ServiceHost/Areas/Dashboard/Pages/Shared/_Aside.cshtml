@@ -1,12 +1,12 @@
 ﻿@using _0_Framework.Application
 @using Microsoft.AspNetCore.Http
-@inject IAutenticateHelper AutenticateHelper;
+@inject IAuthenticateHelper AuthenticateHelper;
 @inject IHttpContextAccessor Context;
 <aside class="py-6 lg:col-span-3">
     <nav class="space-y-1">
         <!-- Current: "bg-teal-50 border-teal-400 text-teal-700 hover:bg-teal-50 hover:text-teal-700", Default: "border-transparent text-gray-900 hover:bg-gray-50 hover:text-teal-500" -->
         <a asp-page="/Profile"
-           asp-route-id="@AutenticateHelper.CurrentAccountRole().Id"
+           asp-route-id="@AuthenticateHelper.CurrentAccountRole().Id"
            class="border-transparent hover:bg-gray-50 hover:text-teal-500 group
            @((string)Context.HttpContext.Request.RouteValues.Values.First() == "/Profile" ?"bg-teal-50 border-teal-400 text-teal-500" :"text-gray-900" )
            border-l-4 px-3 py-2 flex items-center text-sm font-medium" aria-current="page">
@@ -22,7 +22,7 @@
                 Profile
             </span>
         </a>
-        @if (AutenticateHelper.CurrentAccountRole().RoleId == "1")
+        @if (AuthenticateHelper.CurrentAccountRole().RoleId == "1")
         {
             <a asp-page="/Users/Account/Index" class="border-transparent hover:bg-gray-50 hover:text-teal-500 group
                 @((string)Context.HttpContext.Request.RouteValues.Values.First() == "/Users/Account/Index" ?"bg-teal-50 border-teal-400 text-teal-500" :"text-gray-900" )
@@ -62,27 +62,31 @@
                                         </span>
                                     </a>}
 
-
-        <a asp-page="/Listing/Index"
-           class="border-transparent text-gray-900 hover:bg-gray-50 hover:text-teal-500 group
+        @if (AuthenticateHelper.CurrentAccountRole().RoleId != "5")
+        {
+            <a asp-page="/Listing/Index"
+               class="border-transparent text-gray-900 hover:bg-gray-50 hover:text-teal-500 group
            @((string)Context.HttpContext.Request.RouteValues.Values.First() == "/Listing/Index"
-               | (string)Context.HttpContext.Request.RouteValues.Values.First() == "/Listing/Edit"
-               | (string)Context.HttpContext.Request.RouteValues.Values.First() == "/Listing/Create"
+             | (string)Context.HttpContext.Request.RouteValues.Values.First() == "/Listing/Edit"
+             | (string)Context.HttpContext.Request.RouteValues.Values.First() == "/Listing/Create"
                ?"bg-teal-50 border-teal-400 text-teal-500" :"text-gray-900")
            border-l-4 px-3 py-2 flex items-center text-sm font-medium" aria-current="page">
-            <!-- Heroicon name: outline/key -->
-            <svg xmlns="http://www.w3.org/2000/svg"
-                 class="@((string)Context.HttpContext.Request.RouteValues.Values.First() == "/Listing/Index"
-                          | (string)Context.HttpContext.Request.RouteValues.Values.First() == "/Listing/Edit"
-                          | (string)Context.HttpContext.Request.RouteValues.Values.First() == "/Listing/Create"
-                            ?"text-teal-500" :"text-gray-500" ) group-hover:text-teal-500 flex-shrink-0 -ml-1 mr-3 h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M6 6V5a3 3 0 013-3h2a3 3 0 013 3v1h2a2 2 0 012 2v3.57A22.952 22.952 0 0110 13a22.95 22.95 0 01-8-1.43V8a2 2 0 012-2h2zm2-1a1 1 0 011-1h2a1 1 0 011 1v1H8V5zm1 5a1 1 0 011-1h.01a1 1 0 110 2H10a1 1 0 01-1-1z" clip-rule="evenodd" />
-                <path d="M2 13.692V16a2 2 0 002 2h12a2 2 0 002-2v-2.308A24.974 24.974 0 0110 15c-2.796 0-5.487-.46-8-1.308z" />
-            </svg>
-            <span class="truncate">
-                Your Listing
-            </span>
-        </a>
+                <!-- Heroicon name: outline/key -->
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     class="@((string)Context.HttpContext.Request.RouteValues.Values.First() == "/Listing/Index"
+                              | (string)Context.HttpContext.Request.RouteValues.Values.First() == "/Listing/Edit"
+                              | (string)Context.HttpContext.Request.RouteValues.Values.First() == "/Listing/Create"
+                                ?"text-teal-500" :"text-gray-500" ) group-hover:text-teal-500 flex-shrink-0 -ml-1 mr-3 h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M6 6V5a3 3 0 013-3h2a3 3 0 013 3v1h2a2 2 0 012 2v3.57A22.952 22.952 0 0110 13a22.95 22.95 0 01-8-1.43V8a2 2 0 012-2h2zm2-1a1 1 0 011-1h2a1 1 0 011 1v1H8V5zm1 5a1 1 0 011-1h.01a1 1 0 110 2H10a1 1 0 01-1-1z" clip-rule="evenodd" />
+                    <path d="M2 13.692V16a2 2 0 002 2h12a2 2 0 002-2v-2.308A24.974 24.974 0 0110 15c-2.796 0-5.487-.46-8-1.308z" />
+                </svg>
+                <span class="truncate">
+                    Your Listing
+                </span>
+            </a>
+        }
+
+
         <a asp-page="/Negotiate/Index"
            class="border-transparent hover:bg-gray-50 hover:text-teal-500 group
            @((string)Context.HttpContext.Request.RouteValues.Values.First() == "/Negotiate/Index"
@@ -102,7 +106,7 @@
                 Open Negotiations
             </span>
         </a>
-        <a asp-page="/Deals/Index" asp-route-id="@AutenticateHelper.CurrentAccountRole().Id"
+        <a asp-page="/Deals/Index" asp-route-id="@AuthenticateHelper.CurrentAccountRole().Id"
            class="border-transparent hover:bg-gray-50 hover:text-teal-500 group
            @((string)Context.HttpContext.Request.RouteValues.Values.First() == "/Deals/Index" ?"bg-teal-50 border-teal-400 text-teal-500" :"text-gray-900" )
            border-l-4 px-3 py-2 flex items-center text-sm font-medium" aria-current="page">
@@ -114,7 +118,7 @@
                 Deals
             </span>
         </a>
-        <a asp-page="/ResetPassword" asp-route-id="@AutenticateHelper.CurrentAccountRole().Id"
+        <a asp-page="/ResetPassword" asp-route-id="@AuthenticateHelper.CurrentAccountRole().Id"
            class="border-transparent hover:bg-gray-50 hover:text-teal-500 group
            @((string)Context.HttpContext.Request.RouteValues.Values.First() == "/ResetPassword" ?"bg-teal-50 border-teal-400 text-teal-500" :"text-gray-900" )
            border-l-4 px-3 py-2 flex items-center text-sm font-medium" aria-current="page">
@@ -127,7 +131,7 @@
             </span>
         </a>
 
-        <a asp-page="/Notification" asp-route-id="@AutenticateHelper.CurrentAccountRole().Id"
+        <a asp-page="/Notification" asp-route-id="@AuthenticateHelper.CurrentAccountRole().Id"
            class="border-transparent hover:bg-gray-50 hover:text-teal-500 group
            @((string)Context.HttpContext.Request.RouteValues.Values.First() == "/Notification" ?"bg-teal-50 border-teal-400 text-teal-500" :"text-gray-900" )
            border-l-4 px-3 py-2 flex items-center text-sm font-medium" aria-current="page">

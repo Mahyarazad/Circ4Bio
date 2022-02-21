@@ -1,4 +1,5 @@
-﻿
+﻿"use strict";
+
 $('#mobile-home-menu-close').on('click', function () {
     $('#mobile-home-menu').css('visibility', 'hidden');
     $('#mobile-home-menu').css('opacity', '0');

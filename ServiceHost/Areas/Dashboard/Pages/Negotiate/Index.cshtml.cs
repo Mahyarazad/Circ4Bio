@@ -15,17 +15,17 @@ namespace ServiceHost.Areas.Dashboard.Pages.Negotiate
         public List<ActiveListing> ActiveListing;
         public CreateNegotiate NegotiateDTO;
         private readonly IUserApplication _userApplication;
-        private readonly IAutenticateHelper _autenticateHelper;
+        private readonly IAuthenticateHelper _authenticateHelper;
         private readonly IListingApplication _listingApplication;
         private readonly INegotiateApplication _negotiateApplication;
 
         public IndexModel(IListingApplication listingApplication,
             INegotiateApplication negotiateApplication,
             IUserApplication userApplication,
-            IAutenticateHelper autenticateHelper)
+            IAuthenticateHelper authenticateHelper)
         {
             _userApplication = userApplication;
-            _autenticateHelper = autenticateHelper;
+            _authenticateHelper = authenticateHelper;
             _listingApplication = listingApplication;
             _negotiateApplication = negotiateApplication;
         }
@@ -33,7 +33,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Negotiate
         public async Task OnGet()
         {
             NegotiateList = new List<NegotiateViewModel>();
-            var userId = _autenticateHelper.CurrentAccountRole().Id;
+            var userId = _authenticateHelper.CurrentAccountRole().Id;
             var buyyingNegotiation = await _negotiateApplication.AllListingItemsBuyyer(userId);
             var sellingNegotiation = await _negotiateApplication.AllListingItemsSeller(userId);
             foreach (var item in buyyingNegotiation)

@@ -95,7 +95,7 @@ namespace AM.Infrastructure.Repository
         }
         public Task<EditUser> GetDetailByUser(string username)
         {
-            return _amContext.Users.Select(x => new EditUser
+            var query = _amContext.Users.Select(x => new EditUser
             {
                 Id = x.Id,
                 FirstName = x.FirstName,
@@ -119,7 +119,11 @@ namespace AM.Infrastructure.Repository
                 TwitterUrl = x.TwitterUrl,
                 Status = x.Status,
                 Avatar = x.Avatar,
-            }).AsNoTracking().FirstOrDefaultAsync(x => x.UserId == username);
+
+            }).AsNoTracking().FirstOrDefault(x => x.UserId == username);
+            query.RoleString = _amContext.Roles.ToList().FirstOrDefault(x => x.Id == query.RoleId).Name;
+
+            return Task.FromResult(query);
         }
         public Task<ResendActivationEmail> ResendActivationLink(string email)
         {
@@ -162,23 +166,23 @@ namespace AM.Infrastructure.Repository
                 return Task.FromResult(new EditUser());
             }
         }
-        public void AddDeliveryLocation(CreateDeliveryLocation Commad)
+        public async Task AddDeliveryLocation(CreateDeliveryLocation Commad)
         {
             var deliveryLocationList = _amContext
                 .Users
-                .FirstOrDefault(x => x.Id == Commad.UserId);
+                .FirstOrDefaultAsync(x => x.Id == Commad.UserId);
             if (deliveryLocationList != null)
             {
-                deliveryLocationList.AddDeliveryLocation(Commad.UserId, Commad.Location);
+                deliveryLocationList.Result.AddDeliveryLocation(Commad.UserId, Commad.Location);
                 _amContext.SaveChanges();
             }
             return;
         }
-        public bool RemoveDeliveryLocation(CreateDeliveryLocation Commad)
+        public async Task<bool> RemoveDeliveryLocation(CreateDeliveryLocation Commad)
         {
-            var deliveryLocationList = _amContext
+            var deliveryLocationList = await _amContext
                 .Users
-                .FirstOrDefault(x => x.Id == Commad.UserId);
+                .FirstOrDefaultAsync(x => x.Id == Commad.UserId);
             if (deliveryLocationList != null)
             {
                 var result = deliveryLocationList.RemoveDeliveryLocation(Commad.LocationId);
@@ -202,13 +206,13 @@ namespace AM.Infrastructure.Repository
             return Task.FromResult(result);
 
         }
-        public Task<List<string>> GetDeliveryLocationDropDown(long userId)
+        public async Task<List<string>> GetDeliveryLocationDropDown(long userId)
         {
             var query = _amContext.Users
                 .Where(x => x.Id == userId)
-                .AsNoTracking().AsSplitQuery().First().DeliveryLocations;
+                .AsNoTracking().AsSplitQuery().FirstAsync().Result.DeliveryLocations;
             var result = query.Select(x => new string(x.Location)).ToList();
-            return Task.FromResult(result);
+            return result;
         }
     }
 }

@@ -16,15 +16,15 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
         public CreateListing Command;
         public SelectList CurrencyList;
 
-        private readonly IAutenticateHelper _autenticateHelper;
+        private readonly IAuthenticateHelper _authenticateHelper;
         private readonly IListingApplication _listingApplication;
         private readonly IUserApplication _userApplication;
         public CreateModel(
-            IAutenticateHelper autenticateHelper,
+            IAuthenticateHelper authenticateHelper,
             IUserApplication userApplication,
             IListingApplication listingApplication)
         {
-            _autenticateHelper = autenticateHelper;
+            _authenticateHelper = authenticateHelper;
             _userApplication = userApplication;
             _listingApplication = listingApplication;
         }

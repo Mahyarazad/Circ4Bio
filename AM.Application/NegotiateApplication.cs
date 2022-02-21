@@ -22,14 +22,14 @@ namespace AM.Application
         private readonly IUserRepository _userRepository;
         private readonly IUserApplication _userApplication;
         private readonly IListingRepository _listingRepository;
-        private readonly IAutenticateHelper _autenticateHelper;
+        private readonly IAuthenticateHelper _authenticateHelper;
         private readonly IRecipientRepository _recipientRepository;
         private readonly INegotiateRepository _negotiateRepository;
         private readonly IUserNegotiateRepository _userNegotiateRepository;
         private readonly INotificationApplication _notificationApplication;
 
         public NegotiateApplication(INegotiateRepository negotiateRepository,
-            IAutenticateHelper autenticateHelper,
+            IAuthenticateHelper authenticateHelper,
             IRecipientRepository recipientRepository,
             INotificationApplication notificationApplication,
             IUserApplication userApplication,
@@ -41,7 +41,7 @@ namespace AM.Application
             _fileUploader = fileUploader;
             _userRepository = userRepository;
             _userApplication = userApplication;
-            _autenticateHelper = autenticateHelper;
+            _authenticateHelper = authenticateHelper;
             _listingRepository = listingRepository;
             _recipientRepository = recipientRepository;
             _negotiateRepository = negotiateRepository;
@@ -130,7 +130,7 @@ namespace AM.Application
                 return result.Failed(ApplicationMessage.RecordNotFound);
 
             var negotiate = await _negotiateRepository.Get(Command.NegotiateId);
-            var whoIsTheSender = _autenticateHelper.CurrentAccountRole().Id;
+            var whoIsTheSender = _authenticateHelper.CurrentAccountRole().Id;
 
             var sellerRoleId = _userRepository.GetDetail(negotiate.SellerId).Result.RoleId;
             var sellerRoleString = _userApplication.GetUsertypes().Result
@@ -175,7 +175,7 @@ namespace AM.Application
                 {
                     RecipientList = sellerRecipientList,
                     SenderId = negotiate.SellerId,
-                    NotificationBody = $"{_autenticateHelper.CurrentAccountRole().Email} sends a new message regarding {listingInfo.Result.Name} at {listingInfo.Result.UnitPrice} {listingInfo.Result.Currency}",
+                    NotificationBody = $"{_authenticateHelper.CurrentAccountRole().Email} sends a new message regarding {listingInfo.Result.Name} at {listingInfo.Result.UnitPrice} {listingInfo.Result.Currency}",
                     NotificationTitle = ApplicationMessage.NewMessage,
                     UserId = negotiate.SellerId
                 });
@@ -243,7 +243,7 @@ namespace AM.Application
                     RecipientList = buyyerRecipientList,
                     SenderId = Command.BuyerId,
                     NotificationBody =
-                        $"Negotiation CANCELED for {listingInfo.Result.Name} at {listingInfo.Result.UnitPrice} {listingInfo.Result.Currency} by {(_autenticateHelper.CurrentAccountRole().Id == Command.SellerId ? sellerUserId : buyerUserId)}",
+                        $"Negotiation CANCELED for {listingInfo.Result.Name} at {listingInfo.Result.UnitPrice} {listingInfo.Result.Currency} by {(_authenticateHelper.CurrentAccountRole().Id == Command.SellerId ? sellerUserId : buyerUserId)}",
                     NotificationTitle = ApplicationMessage.CanceledNegotiationRequest,
                     UserId = Command.BuyerId
                 });
@@ -253,7 +253,7 @@ namespace AM.Application
                 {
                     RecipientList = sellerRecipientList,
                     SenderId = Command.SellerId,
-                    NotificationBody = $"Negotiation CANCELED for {listingInfo.Result.Name} at {listingInfo.Result.UnitPrice} {listingInfo.Result.Currency} by {(_autenticateHelper.CurrentAccountRole().Id == Command.SellerId ? sellerUserId : buyerUserId)}",
+                    NotificationBody = $"Negotiation CANCELED for {listingInfo.Result.Name} at {listingInfo.Result.UnitPrice} {listingInfo.Result.Currency} by {(_authenticateHelper.CurrentAccountRole().Id == Command.SellerId ? sellerUserId : buyerUserId)}",
                     NotificationTitle = ApplicationMessage.CanceledNegotiationRequest,
                     UserId = Command.SellerId
                 });

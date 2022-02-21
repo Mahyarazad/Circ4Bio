@@ -15,17 +15,17 @@ namespace ServiceHost.Areas.Dashboard.Pages
     {
         public List<NotificationViewModel> Command;
         private readonly INotificationApplication _notificationApplication;
-        private readonly IAutenticateHelper _autenticateHelper;
+        private readonly IAuthenticateHelper _authenticateHelper;
         public NotificationModel(INotificationApplication notificationApplication,
-            IAutenticateHelper autenticateHelper)
+            IAuthenticateHelper authenticateHelper)
         {
             _notificationApplication = notificationApplication;
-            _autenticateHelper = autenticateHelper;
+            _authenticateHelper = authenticateHelper;
         }
 
         public async Task<IActionResult> OnGet(long Id)
         {
-            var loggedInUserId = _autenticateHelper.CurrentAccountRole().Id;
+            var loggedInUserId = _authenticateHelper.CurrentAccountRole().Id;
 
             if (Id == loggedInUserId)
             {
@@ -39,7 +39,7 @@ namespace ServiceHost.Areas.Dashboard.Pages
         }
         public async Task OnGetMarkAllRead(long Id)
         {
-            _notificationApplication.MarkAllRead(Id);
+            await _notificationApplication.MarkAllRead(Id);
             Command = await _notificationApplication.GetAllUnread(Id);
         }
         public JsonResult OnPostMarkRead(long Id)

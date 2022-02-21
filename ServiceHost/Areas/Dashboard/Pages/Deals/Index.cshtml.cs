@@ -14,23 +14,23 @@ namespace ServiceHost.Areas.Dashboard.Pages.Deals
         public List<DealViewModel> Deals;
         private readonly IDealApplication _dealApplication;
         private readonly IUserApplication _userApplication;
-        private readonly IAutenticateHelper _autenticateHelper;
+        private readonly IAuthenticateHelper _authenticateHelper;
         private readonly IListingApplication _listingApplication;
         public IndexModel(IUserApplication userApplication,
-            IAutenticateHelper autenticateHelper,
+            IAuthenticateHelper authenticateHelper,
             IDealApplication dealApplication,
             IListingApplication listingApplication
         )
         {
             _dealApplication = dealApplication;
             _userApplication = userApplication;
-            _autenticateHelper = autenticateHelper;
+            _authenticateHelper = authenticateHelper;
             _listingApplication = listingApplication;
         }
 
         public async Task<IActionResult> OnGet(long Id)
         {
-            if (Id == _autenticateHelper.CurrentAccountRole().Id)
+            if (Id == _authenticateHelper.CurrentAccountRole().Id)
             {
                 Deals = await _dealApplication.GetAllDeals(Id);
                 return null;
