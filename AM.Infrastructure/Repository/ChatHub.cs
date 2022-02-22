@@ -29,7 +29,7 @@ namespace AM.Infrastructure.Repository
             _contextAccessor = contextAccessor;
         }
 
-        public async Task SendMessage(string messageBody, string negotiateId)
+        public async Task SendMessage(string messageBody, string negotiateId, string loggedUser)
         {
             var Command = new NewMessage();
             var CurrentNegotiate = new NegotiateViewModel();
@@ -42,14 +42,21 @@ namespace AM.Infrastructure.Repository
             if (Command.UserId == CurrentNegotiate.BuyerId)
                 Command.UserEntity = true;
             await _negotiateApplication.SendMessage(Command);
+
+
             await Clients.User(CurrentNegotiate.BuyerId.ToString())
                 .SendAsync("ReceiveMessage", $"https://{_contextAccessor.HttpContext.Request.Host}"
-                    , messageBody, negotiateId, Command.UserEntity, CurrentNegotiate.BuyerImageString, CurrentNegotiate.SellerImageString
+                    , messageBody, negotiateId, CurrentNegotiate.SellerId.ToString(), Command.UserId.ToString()
+                    , CurrentNegotiate.BuyerId.ToString()
+                    , CurrentNegotiate.BuyerImageString, CurrentNegotiate.SellerImageString
                     , CurrentNegotiate.BuyerName.Substring(0, 1), CurrentNegotiate.SellerName.Substring(0, 1));
 
             await Clients.User(CurrentNegotiate.SellerId.ToString())
                 .SendAsync("ReceiveMessage", $"https://{_contextAccessor.HttpContext.Request.Host}"
-                    , messageBody, negotiateId, !Command.UserEntity, CurrentNegotiate.BuyerImageString, CurrentNegotiate.SellerImageString
+                    , messageBody, negotiateId, CurrentNegotiate.BuyerId.ToString(), Command.UserId.ToString()
+                    , CurrentNegotiate.BuyerId.ToString()
+                    , CurrentNegotiate.BuyerImageString
+                    , CurrentNegotiate.SellerImageString
                     , CurrentNegotiate.BuyerName.Substring(0, 1), CurrentNegotiate.SellerName.Substring(0, 1));
         }
         public async Task<List<MessageViewModel>> GettAllMessages(long NegotiateId)

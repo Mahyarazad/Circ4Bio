@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AM.Application.Contracts.Negotiate;
 using AM.Infrastructure.Repository;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 
@@ -34,7 +35,6 @@ namespace AM.Management.API
                 var securityControl = await _negotiateApplication.GetNegotiationViewModel(Command.NegotiateId);
                 if (securityControl.BuyerId == UserId || securityControl.SellerId == UserId)
                 {
-                    
                     return _negotiateApplication.GetMessages(Command.NegotiateId).Result;
                 }
                 else
@@ -59,6 +59,16 @@ namespace AM.Management.API
         public async Task<IActionResult> AddChatMessage(MessageViewModel message)
         {
             await _hubContext.Clients.All.SendAsync("ReceiveMessage", message);
+
+            // _hubContext.Groups.AddToGroupAsync(model)
+            return new NoContentResult();
+
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<IActionResult> PostFile(IFormFile fileForm)
+        {
 
             // _hubContext.Groups.AddToGroupAsync(model)
             return new NoContentResult();

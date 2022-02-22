@@ -15,6 +15,14 @@ namespace AM.Application.Contracts.Negotiate
         [MaxFileSize(1 * 1024 * 1024, ErrorMessage = ValidationMessages.SizeError1M)]
         public IFormFile? File { get; set; }
         public bool UserEntity { get; set; }
+        public bool Receiver
+        {
+            get
+            {
+                return !UserEntity;
+            }
+
+        }
     }
 
     public class MessageViewModel : NewMessage
