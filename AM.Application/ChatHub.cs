@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using _0_Framework.Application;
 using AM.Application.Contracts.Negotiate;
-using Microsoft.AspNet.SignalR.Hubs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SignalR;
-using Org.BouncyCastle.Crypto.Digests;
 
-namespace AM.Infrastructure.Repository
+namespace AM.Application
 {
     // [HubName("chathub")]
     public class ChatHub : Hub

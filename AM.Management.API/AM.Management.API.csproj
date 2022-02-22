@@ -12,6 +12,7 @@
   <ItemGroup>
     <ProjectReference Include="..\0_Framework\0_Framework.csproj" />
     <ProjectReference Include="..\AM.Application.Contracts\AM.Application.Contracts.csproj" />
+    <ProjectReference Include="..\AM.Application\AM.Application.csproj" />
     <ProjectReference Include="..\AM.Infrastructure\AM.Infrastructure.csproj" />
   </ItemGroup>
 

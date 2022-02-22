@@ -274,7 +274,9 @@ namespace AM.Application
         }
         public async Task<NegotiateViewModel> GetNegotiationViewModel(long NegotiateId)
         {
-            return await _negotiateRepository.GetNegotiationViewModel(NegotiateId);
+            if (_negotiateRepository.Exist(x => x.Id == NegotiateId))
+                return await _negotiateRepository.GetNegotiationViewModel(NegotiateId);
+            return new NegotiateViewModel();
         }
         public async Task<List<CreateNegotiate>> AllListingItemsBuyyer(long BuyyerId)
         {

@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using System.Collections.Generic;
 using _0_Framework.Application;
 using _0_Framework.Application.Email;
+using AM.Application;
 using AM.Infrastructure.Core;
 using AM.Infrastructure.Repository;
 using AM.Management.API;
