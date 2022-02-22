@@ -51,8 +51,9 @@ var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
 
 connection.start().then(function () {
     const loggedUser = parseInt($("#messaging-container").attr("data-logged-user-id"));
+    const negotiateId = $('#Command_NegotiateId').val();
     var MessageDom;
-    connection.invoke("GettAllMessages", 2).then(function (response) {
+    connection.invoke("GetAllMessages", parseInt(negotiateId)).then(function (response) {
         if (response) {
             const wrapper = $("#messaging-container");
             response.forEach(item => {

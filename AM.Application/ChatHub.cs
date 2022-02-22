@@ -55,9 +55,9 @@ namespace AM.Application
                     , CurrentNegotiate.SellerImageString
                     , CurrentNegotiate.BuyerName.Substring(0, 1), CurrentNegotiate.SellerName.Substring(0, 1));
         }
-        public async Task<List<MessageViewModel>> GettAllMessages(long NegotiateId)
+        public List<MessageViewModel> GetAllMessages(long NegotiateId)
         {
-            return _negotiateApplication.GetMessages(4).Result;
+            return _negotiateApplication.GetMessages(NegotiateId).Result;
         }
     }
 }

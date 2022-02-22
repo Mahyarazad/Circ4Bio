@@ -161,14 +161,14 @@ Use like this in your CSS:
 
 /* ----------------------- variable ----------------------- */
 
-@font-face {
-    font-family: 'Inter var';
-    font-style: normal;
-    font-weight: 100 900;
-    font-display: swap;
-    src: url('font-files/Inter-roman.var.woff2?v=3.19') format('woff2');
-    font-named-instance: 'Regular';
-}
+/* @font-face { */
+/*     font-family: 'Inter var'; */
+/*     font-style: normal; */
+/*     font-weight: 100 900; */
+/*     font-display: swap; */
+/*     src: url('font-files/Inter-roman.var.woff2?v=3.19') format('woff2'); */
+/*     font-named-instance: 'Regular'; */
+/* } */
 
 @font-face {
     font-family: 'Inter var';
@@ -197,14 +197,14 @@ When using this, you will likely need to set font-variation-settings explicitly,
 }
 
 /* Legacy name (became legacy on Feb 2, 2019) */
-@font-face {
-    font-family: 'Inter var alt';
-    font-weight: 100 900;
-    font-style: normal;
-    font-named-instance: 'Regular';
-    font-display: swap;
-    src: url("font-files/Inter-roman.var.woff2?v=3.19") format("woff2");
-}
+/* @font-face { */
+/*     font-family: 'Inter var alt'; */
+/*     font-weight: 100 900; */
+/*     font-style: normal; */
+/*     font-named-instance: 'Regular'; */
+/*     font-display: swap; */
+/*     src: url("font-files/Inter-roman.var.woff2?v=3.19") format("woff2"); */
+/* } */
 
 @font-face {
     font-family: 'Inter var alt';
