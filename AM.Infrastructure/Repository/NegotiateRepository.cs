@@ -211,7 +211,7 @@ namespace AM.Infrastructure.Repository
 
             }).OrderBy(x => x.MessageId).ToList();
 
-            return result;
+            return await Task.FromResult(result);
         }
         public async Task<OperationResult> ActiveNegotiation(long NegotiateId)
         {

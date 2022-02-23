@@ -15,13 +15,11 @@ namespace AM.Management.API
     public class MessagingController : ControllerBase
     {
         private readonly INegotiateApplication _negotiateApplication;
-        private readonly IHubContext<ChatHub> _hubContext;
         public long UserId { get; set; }
 
-        public MessagingController(INegotiateApplication negotiateApplication, IHubContext<ChatHub> hubContext)
+        public MessagingController(INegotiateApplication negotiateApplication)
         {
             _negotiateApplication = negotiateApplication;
-            _hubContext = hubContext;
         }
 
         //NegotiateId
@@ -50,7 +48,7 @@ namespace AM.Management.API
         [HttpGet]
         public async Task<ActionResult> LoadMessages()
         {
-            await _hubContext.Clients.All.SendAsync("loadmessages", _negotiateApplication.GetMessages(5));
+            // await _hubContext.Clients.All.SendAsync("loadmessages", _negotiateApplication.GetMessages(5));
             return Ok();
         }
 
@@ -58,7 +56,7 @@ namespace AM.Management.API
         [HttpPost]
         public async Task<IActionResult> AddChatMessage(MessageViewModel message)
         {
-            await _hubContext.Clients.All.SendAsync("ReceiveMessage", message);
+            // await _hubContext.Clients.All.SendAsync("ReceiveMessage", message);
 
             // _hubContext.Groups.AddToGroupAsync(model)
             return new NoContentResult();

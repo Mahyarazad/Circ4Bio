@@ -120,7 +120,7 @@ namespace AM.Application
             _userNegotiateRepository.Create(new UserNegotiate(Command.SellerId, negotiate.Id, false));
             _userNegotiateRepository.Save();
 
-            return result.Succeeded();
+            return await Task.FromResult(result.Succeeded());
 
         }
         public async Task<OperationResult> SendMessage(NewMessage Command)
@@ -265,7 +265,7 @@ namespace AM.Application
             var target = _negotiateRepository.Get(Command.NegotiateId);
             target.Result.Canceled();
             _negotiateRepository.SaveChanges();
-            return result.Succeeded();
+            return await Task.FromResult(result.Succeeded());
 
         }
         public async Task<NegotiateViewModel> GetNegotiationViewModel(CreateNegotiate Command)

@@ -48,8 +48,8 @@ namespace ServiceHost.Areas.Dashboard.Pages.AvailableListing
                     .FirstOrDefault(x => x.Type == "User Id").Value),
                 SellerId = await _listingApplication.GetOwnerUserID(Id)
             };
-
-            return (new JsonResult(_negotiateApplication.Create(createNegotiation)));
+            var res = await _negotiateApplication.Create(createNegotiation);
+            return new JsonResult(Task.FromResult(res));
         }
     }
 }

@@ -8,12 +8,9 @@ using _0_Framework.Application;
 using _0_Framework.Application.Email;
 using AM.Application;
 using AM.Infrastructure.Core;
-using AM.Infrastructure.Repository;
 using AM.Management.API;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-
 
 namespace ServiceHost
 {
@@ -28,7 +25,6 @@ namespace ServiceHost
         private readonly string _corsPolicy = "CorsPolicy";
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddHttpContextAccessor();
             var connectionString = Configuration.GetConnectionString("AMContext");
             AccountConfiguration.Configure(services, connectionString);
@@ -36,14 +32,19 @@ namespace ServiceHost
             services.AddTransient<IFileUploader, FileUploader>();
             services.AddSingleton<IPasswordHasher, PasswordHasher>();
             services.AddTransient<IAuthenticateHelper, AuthenticateHelper>();
-            services.AddSignalR();
+            services.AddSignalR(hubOptions =>
+            {
+                hubOptions.EnableDetailedErrors = true;
+                hubOptions.MaximumParallelInvocationsPerClient = 2;
+            });
+
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, c =>
                 {
-                    c.LogoutPath = new PathString("/Index");
-                    c.AccessDeniedPath = new PathString("/AccessDenied");
-                    c.LoginPath = new PathString("/Authentication/Login");
+                    c.LogoutPath = new Microsoft.AspNetCore.Http.PathString("/Index");
+                    c.AccessDeniedPath = new Microsoft.AspNetCore.Http.PathString("/AccessDenied");
+                    c.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Authentication/Login");
                 });
 
 
@@ -84,7 +85,7 @@ namespace ServiceHost
             services.Configure<CookiePolicyOptions>(options =>
             {
                 options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.Lax;
+                options.MinimumSameSitePolicy = Microsoft.AspNetCore.Http.SameSiteMode.Lax;
             });
 
             services.Configure<CookieTempDataProviderOptions>(options =>
@@ -93,7 +94,7 @@ namespace ServiceHost
             });
 
             services.AddRouting(options => options.LowercaseUrls = true);
-            services.AddSignalR();
+
 
         }
 
@@ -114,6 +115,7 @@ namespace ServiceHost
             app.UseCookiePolicy();
             app.UseAuthentication();
 
+
             app.Use(async (context, next) =>
             {
                 await next();
@@ -129,7 +131,7 @@ namespace ServiceHost
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
-                endpoints.MapHub<ChatHub>("/chatHub");
+                endpoints.MapHub<NotificationHub>("/notificationHub");
                 endpoints.MapDefaultControllerRoute();
             });
         }

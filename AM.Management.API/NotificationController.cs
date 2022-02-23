@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AM.Application;
 using AM.Application.Contracts.Notification;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace AM.Management.API
 {
@@ -12,10 +14,13 @@ namespace AM.Management.API
     public class NotificationController : ControllerBase
     {
         private readonly INotificationApplication _notificationApplication;
+        private readonly IHubContext<NotificationHub> _hub;
         public long UserId { get; set; }
-        public NotificationController(INotificationApplication notificationApplication)
+        public NotificationController(INotificationApplication notificationApplication,
+            IHubContext<NotificationHub> hub)
         {
             _notificationApplication = notificationApplication;
+            _hub = hub;
         }
 
         [HttpPost]
