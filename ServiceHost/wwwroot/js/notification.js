@@ -9,13 +9,13 @@ var connection = new signalR.HubConnectionBuilder()
     .build();
 
 var invokeNotification = function () {
-    var NotificationDom;
+    var NotificationDom = document.createElement('template');;
+    var replacer = new DocumentFragment();
     var wrapper = $('#notification-wrapper');
-    wrapper.html('');
     connection.invoke("Notification").then(function (response) {
         if (response.length !== 0) {
             response.forEach(item => {
-                NotificationDom =
+                NotificationDom.innerHTML =
                     `<div data-notification-label="${item.recipientId}"
                     class="max-w-sm w-full bg-white shadow-lg rounded-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden">
                     <div class="p-2">
@@ -47,8 +47,9 @@ var invokeNotification = function () {
                         </div>
                     </div>
                 </div>`;
-                wrapper.append(NotificationDom);
+                replacer.append(NotificationDom.content);
             });
+            wrapper.html(replacer);
         } else {
             wrapper.html(
                 `<div class="max-w-sm w-full bg-white shadow-lg rounded-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden">
