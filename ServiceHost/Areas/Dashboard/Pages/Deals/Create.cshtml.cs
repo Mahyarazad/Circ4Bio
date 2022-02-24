@@ -76,7 +76,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Deals
                 .GetDetailListing(_negotiateApplication
                     .GetNegotiationViewModel(Command.NegotiateId).Result.ListingId);
             Command.TotalCost = (Command.Amount * Command.Listing.UnitPrice) + Command.DeliveryCost;
-            var result = await _dealApplication.CreateDeal(Command);
+            var result = await _dealApplication.CreateQuatation(Command);
 
             return RedirectToPage("/Deals/Index", new { Id = _authenticateHelper.CurrentAccountRole().Id });
         }

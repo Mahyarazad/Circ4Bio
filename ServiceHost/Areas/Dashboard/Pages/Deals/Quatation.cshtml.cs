@@ -6,6 +6,7 @@ using _0_Framework.Application;
 using AM.Application.Contracts.Deal;
 using AM.Application.Contracts.Listing;
 using AM.Application.Contracts.Negotiate;
+using AM.Application.Contracts.User;
 using AM.Domain.NegotiateAggregate;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -17,6 +18,10 @@ namespace ServiceHost.Areas.Dashboard.Pages.Deals
     {
         public DealViewModel Command;
         public SelectList CurrencyList;
+        public SelectList DeliveryCharges;
+        public SelectList DeliveryLocationSelectList;
+        public AuthViewModel LoggedUser;
+        private readonly IUserApplication _userApplication;
         private readonly IDealApplication _dealApplication;
         private readonly IAuthenticateHelper _authenticateHelper;
         private readonly IListingApplication _listingApplication;
@@ -25,8 +30,10 @@ namespace ServiceHost.Areas.Dashboard.Pages.Deals
         public QuatationModel(IListingApplication listingApplication
             , IAuthenticateHelper authenticateHelper,
             INegotiateApplication negotiateApplication,
+            IUserApplication userApplication,
             IDealApplication dealApplication)
         {
+            _userApplication = userApplication;
             _dealApplication = dealApplication;
             _authenticateHelper = authenticateHelper;
             _listingApplication = listingApplication;
@@ -35,12 +42,19 @@ namespace ServiceHost.Areas.Dashboard.Pages.Deals
 
         public async Task<IActionResult> OnGet(long Id)
         {
-            var LoggedUser = _authenticateHelper.CurrentAccountRole().Id;
+            LoggedUser = _authenticateHelper.CurrentAccountRole();
             var Negotiate = await _negotiateApplication.GetNegotiationViewModel(Id);
-
-            if (Negotiate.SellerId == LoggedUser | Negotiate.BuyerId == LoggedUser)
+            CurrencyList = new SelectList(GenerateCurrencyList.GetList());
+            if (Negotiate.SellerId == LoggedUser.Id | Negotiate.BuyerId == LoggedUser.Id)
             {
                 Command = await _dealApplication.GetDealWithDealId(Id);
+                DeliveryCharges = new SelectList(new List<string>
+                {
+                    new string("Buyer"),
+                    new string("Seller"),
+                });
+                DeliveryLocationSelectList =
+                    new SelectList(await _userApplication.GetDeliveryLocationDropDown(_authenticateHelper.CurrentAccountRole().Id));
                 return null;
             }
             else
@@ -49,5 +63,9 @@ namespace ServiceHost.Areas.Dashboard.Pages.Deals
             }
         }
 
+        public JsonResult OnPost(EditDeal Command)
+        {
+            return new JsonResult(_dealApplication.EditDeal(Command));
+        }
     }
 }

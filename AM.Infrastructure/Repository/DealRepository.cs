@@ -91,6 +91,13 @@ namespace AM.Infrastructure.Repository
                 DeliveryMethod = deal.Result.DeliveryMethod,
                 ContractFileString = deal.Result.ContractFile,
                 TrackingCode = deal.Result.TrackingCode,
+                Buyer = new UserViewModel
+                {
+                    Id = deal.Result.BuyerId,
+                    FullName = $"{_amContext.Users.AsNoTracking().FirstOrDefault(z => z.Id == deal.Result.BuyerId).FirstName} {_amContext.Users.AsNoTracking().FirstOrDefault(z => z.Id == deal.Result.BuyerId).LastName}",
+                    Avatar = _amContext.Users.AsNoTracking().FirstOrDefault(z => z.Id == deal.Result.BuyerId).Avatar,
+                    Email = _amContext.Users.AsNoTracking().FirstOrDefault(z => z.Id == deal.Result.BuyerId).Email
+                },
                 Unit = deal.Result.Unit,
                 Listing = new ListingViewModel
                 {

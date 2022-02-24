@@ -84,5 +84,22 @@ namespace AM.Domain
         {
             PaymentStatus = true;
         }
+
+        public void Edit(double deliveryCost, string? deliveryMethod, double totalCost, string? unit
+            , string? curency, double amount, string? location, string? contractFile)
+        {
+            DeliveryCost = deliveryCost;
+            DeliveryMethod = deliveryMethod;
+            TotalCost = totalCost;
+            Unit = unit;
+            Currency = curency;
+            Amount = amount;
+            Location = location;
+            ContractFile = contractFile;
+            PaymentStatus = false;
+            IsDeleted = false;
+            IsActive = false;
+            IsFinished = false;
+        }
     }
 }

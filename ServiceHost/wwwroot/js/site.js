@@ -103,6 +103,21 @@ function handleAjaxPost(formData, url, action) {
                     setTimeout(() => { window.location.replace(url) }, 3000)
                 }
 
+                else if (splited[splited.length - 2] === "quatation") {
+                    if (splited[splited.length - 1].includes('##')) {
+                        var resultDom = $('#operation-result');
+                        var resultDomMessage = $('#operation-result-message');
+                        resultDomMessage.text(data.result.message);
+                        resultDom.css('display', 'block');
+                        setTimeout(() => { window.location.replace(url) }, 3000)
+                    }
+                    var resultDom = $('#operation-result');
+                    var resultDomMessage = $('#operation-result-message');
+                    resultDomMessage.text(data.result.message);
+                    resultDom.css('display', 'block');
+                    setTimeout(() => { window.location.replace(url) }, 3000)
+                }
+
                 else if (action === "CancelNegotiation") {
                     var updatedUrl = splited.slice(0, splited.length - 2);
                     url = updatedUrl.join('/', updatedUrl);

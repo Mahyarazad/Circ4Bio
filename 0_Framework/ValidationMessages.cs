@@ -17,6 +17,7 @@
         public const string MaxCharName = "Name should be less between 7 words and 13 words";
         public const string MaxCharAddress = "Name should be less between 10 words and 13 words";
         public const string MaxCharCurrency = "Currency should be less than three charectors";
+        public const string UnitError = "Symbol for units should be written in letters";
 
         //Deals
         public const string DeliveryMethod = "Delivery method cannot be empty!";

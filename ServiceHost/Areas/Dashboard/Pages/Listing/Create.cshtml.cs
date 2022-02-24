@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using _0_Framework.Application;
 using AM.Application.Contracts.Listing;
 using AM.Application.Contracts.Notification;
@@ -15,7 +16,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
         public List<NotificationViewModel> Notifications;
         public CreateListing Command;
         public SelectList CurrencyList;
-
+        public SelectList DeliveryCharges;
         private readonly IAuthenticateHelper _authenticateHelper;
         private readonly IListingApplication _listingApplication;
         private readonly IUserApplication _userApplication;
@@ -33,6 +34,11 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
         {
             Command = new CreateListing();
             CurrencyList = new SelectList(GenerateCurrencyList.GetList());
+            DeliveryCharges = new SelectList(new List<string>
+            {
+                new string("Buyer"),
+                new string("Seller"),
+            });
 
         }
 

@@ -37,6 +37,7 @@ namespace AM.Application.Contracts.Deal
     public class EditDeal : CreateDeal
     {
         public long DealId { get; set; }
+        public string? Unit { get; set; }
     }
 
     public class DealViewModel : EditDeal
@@ -44,7 +45,6 @@ namespace AM.Application.Contracts.Deal
         public bool IsDeleted { get; set; }
         public bool IsActive { get; set; }
         public bool IsFinished { get; set; }
-        public string? Unit { get; set; }
         public string? ItemName { get; set; }
         public DateTime CreationTime { get; set; }
         public string ContractFileString { get; set; }

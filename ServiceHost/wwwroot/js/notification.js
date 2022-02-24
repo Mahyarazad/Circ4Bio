@@ -300,3 +300,25 @@ connection.on("ReceiveMessage", function (host, messageBody, negotiateId, logged
         element.scrollIntoView({ block: "start" });
     }, 20);
 });
+
+function handleRemoveDeliveryAddress(id) {
+    var removeDeliveryLocation = {
+        "url": `${host}/api/UserDeliveryAddress/RemoveDeliveryLocation`,
+        "method": "POST",
+        "dataType": "json",
+        "crossDomain": "true",
+        "timeout": 0,
+        "headers": {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*"
+        },
+        "data": JSON.stringify({
+            "LocationId": id
+        }),
+    };
+    $.ajax(removeDeliveryLocation).done(function (response) {
+        if (response) {
+            $(`td[data-delivery-address='${id}']`).remove();
+        }
+    });
+}

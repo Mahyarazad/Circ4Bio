@@ -50,6 +50,83 @@ namespace AM.Application
             _notificationApplication = notificationApplication;
         }
 
+        public async Task<OperationResult> CreateQuatation(CreateDeal Command)
+        {
+            var result = new OperationResult();
+
+
+            var negotiate = await _negotiateRepository.Get(Command.NegotiateId);
+
+            var sellerRoleId = _userRepository.GetDetail(negotiate.SellerId).Result.RoleId;
+            var sellerRoleString = _userApplication.GetUsertypes().Result
+                .FirstOrDefault(x => x.TypeId == sellerRoleId).TypeName;
+
+            var buyyerRoleId = _userRepository.GetDetail(negotiate.BuyerId).Result.RoleId;
+            var buyyerUserId = $"{_userRepository.GetDetail(negotiate.BuyerId).Result.UserId}";
+            var SellerUserId = $"{_userRepository.GetDetail(negotiate.SellerId).Result.UserId}";
+            var buyyerRoleString = _userApplication.GetUsertypes().Result
+                .FirstOrDefault(x => x.TypeId == buyyerRoleId).TypeName;
+
+            var listingInfo = _listingRepository.GetListingDetail(Command.ListingId);
+
+            var buyyerRecipientList = new List<RecipientViewModel>();
+            var sellerRecipientList = new List<RecipientViewModel>();
+
+            buyyerRecipientList.Add(new RecipientViewModel
+            {
+                UserId = negotiate.BuyerId,
+                IsReed = false,
+                RoleId = buyyerRoleId
+            });
+
+            sellerRecipientList.Add(new RecipientViewModel
+            {
+                UserId = negotiate.SellerId,
+                IsReed = false,
+                RoleId = sellerRoleId
+            });
+
+            var buyyerNotificationId = _notificationApplication
+                .PushNotification(new NotificationViewModel
+                {
+                    RecipientList = buyyerRecipientList,
+                    SenderId = negotiate.BuyerId,
+                    NotificationBody = $"{SellerUserId} send a quatation for {listingInfo.Result.Name} to you. Total cost is {Command.TotalCost} {Command.Currency}",
+                    NotificationTitle = ApplicationMessage.DealsCreated,
+                    UserId = negotiate.BuyerId
+                });
+
+            var sellerNotificationId = _notificationApplication
+                .PushNotification(new NotificationViewModel
+                {
+                    RecipientList = sellerRecipientList,
+                    SenderId = negotiate.SellerId,
+                    NotificationBody = $"You have issued a new quatation for {listingInfo.Result.Name} with {buyyerUserId}",
+                    NotificationTitle = ApplicationMessage.DealsCreated,
+                    UserId = negotiate.SellerId
+                });
+
+            _recipientRepository.Create(new Recipient(negotiate.SellerId, sellerRoleId, sellerNotificationId.Result));
+            _recipientRepository.Create(new Recipient(negotiate.BuyerId, buyyerRoleId, buyyerNotificationId.Result));
+            _recipientRepository.SaveChanges();
+
+
+
+            var trackingCode = "Draft Quatation";
+            var filePathString = _fileUploader
+                .Uploader(Command.ContractFile, $"Deal Documents/{Command.NegotiateId}",
+                    Guid.NewGuid().ToString());
+
+            var deal = new Deal(Command.DeliveryCost, Command.DeliveryMethod, Command.TotalCost, listingInfo.Result.Unit
+                , Command.Currency, Command.Amount, Command.Location, trackingCode,
+                filePathString, Command.DueTime, Command.ListingId, Command.NegotiateId, negotiate.BuyerId
+                , negotiate.SellerId);
+            await _negotiateRepository.ActiveNegotiation(Command.NegotiateId);
+            _dealRepository.Create(deal);
+            _dealRepository.SaveChanges();
+
+            return result.Succeeded();
+        }
         public async Task<OperationResult> CreateDeal(CreateDeal Command)
         {
             var result = new OperationResult();
@@ -127,11 +204,22 @@ namespace AM.Application
 
             return result.Succeeded();
         }
-
         public Task<OperationResult> EditDeal(EditDeal Command)
         {
             var result = new OperationResult();
-            return Task.FromResult(result);
+            if (!_dealRepository.Exist(x => x.Id == Command.DealId))
+                return Task.FromResult(result.Failed(ApplicationMessage.RecordNotFound));
+            var quatation = _dealRepository.Get(Command.DealId).Result;
+
+            var filePathString = _fileUploader
+                .Uploader(Command.ContractFile, $"Deal Documents/{Command.NegotiateId}",
+                    Guid.NewGuid().ToString());
+
+            quatation.Edit(Command.DeliveryCost, Command.DeliveryMethod, Command.TotalCost, Command.Unit
+                , Command.Currency, Command.Amount, Command.Location, filePathString);
+            _dealRepository.SaveChanges();
+
+            return Task.FromResult(result.Succeeded());
         }
 
         public Task<OperationResult> RejectDeal(long Id)

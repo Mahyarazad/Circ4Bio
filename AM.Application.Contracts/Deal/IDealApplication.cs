@@ -6,7 +6,7 @@ namespace AM.Application.Contracts.Deal
 {
     public interface IDealApplication
     {
-        Task<OperationResult> CreateDeal(CreateDeal Command);
+        Task<OperationResult> CreateQuatation(CreateDeal Command);
         Task<OperationResult> EditDeal(EditDeal Command);
         Task<OperationResult> RejectDeal(long Id);
         Task<OperationResult> FinishDeal(long Id);
