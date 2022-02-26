@@ -33,6 +33,8 @@ namespace AM.Infrastructure.Repository
                     IsDeleted = x.IsDeleted,
                     IsActive = x.IsActive,
                     IsFinished = x.IsFinished,
+                    IsRejected = x.IsRejected,
+                    QuatationSent = x.QuatationSent,
                     Location = x.Location,
                     TotalCost = x.TotalCost,
                     DeliveryCost = x.DeliveryCost,
@@ -86,6 +88,7 @@ namespace AM.Infrastructure.Repository
                 IsActive = deal.Result.IsActive,
                 IsFinished = deal.Result.IsFinished,
                 Location = deal.Result.Location,
+                ListingId = deal.Result.ListingId,
                 TotalCost = deal.Result.TotalCost,
                 DeliveryCost = deal.Result.DeliveryCost,
                 DeliveryMethod = deal.Result.DeliveryMethod,
@@ -97,6 +100,13 @@ namespace AM.Infrastructure.Repository
                     FullName = $"{_amContext.Users.AsNoTracking().FirstOrDefault(z => z.Id == deal.Result.BuyerId).FirstName} {_amContext.Users.AsNoTracking().FirstOrDefault(z => z.Id == deal.Result.BuyerId).LastName}",
                     Avatar = _amContext.Users.AsNoTracking().FirstOrDefault(z => z.Id == deal.Result.BuyerId).Avatar,
                     Email = _amContext.Users.AsNoTracking().FirstOrDefault(z => z.Id == deal.Result.BuyerId).Email
+                },
+                Seller = new UserViewModel
+                {
+                    Id = deal.Result.SellerId,
+                    FullName = $"{_amContext.Users.AsNoTracking().FirstOrDefault(z => z.Id == deal.Result.SellerId).FirstName} {_amContext.Users.AsNoTracking().FirstOrDefault(z => z.Id == deal.Result.SellerId).LastName}",
+                    Avatar = _amContext.Users.AsNoTracking().FirstOrDefault(z => z.Id == deal.Result.SellerId).Avatar,
+                    Email = _amContext.Users.AsNoTracking().FirstOrDefault(z => z.Id == deal.Result.SellerId).Email
                 },
                 Unit = deal.Result.Unit,
                 Listing = new ListingViewModel

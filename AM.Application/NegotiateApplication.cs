@@ -268,27 +268,27 @@ namespace AM.Application
             return await Task.FromResult(result.Succeeded());
 
         }
-        public async Task<NegotiateViewModel> GetNegotiationViewModel(CreateNegotiate Command)
+        public NegotiateViewModel GetNegotiationViewModel(CreateNegotiate Command)
         {
-            return await _negotiateRepository.GetNegotiationViewModel(Command);
+            return _negotiateRepository.GetNegotiationViewModel(Command);
         }
-        public async Task<NegotiateViewModel> GetNegotiationViewModel(long NegotiateId)
+        public NegotiateViewModel GetNegotiationViewModel(long NegotiateId)
         {
             if (_negotiateRepository.Exist(x => x.Id == NegotiateId))
-                return await _negotiateRepository.GetNegotiationViewModel(NegotiateId);
+                return _negotiateRepository.GetNegotiationViewModel(NegotiateId);
             return new NegotiateViewModel();
         }
-        public async Task<List<CreateNegotiate>> AllListingItemsBuyyer(long BuyyerId)
+        public List<CreateNegotiate> AllListingItemsBuyyer(long BuyyerId)
         {
-            return await _negotiateRepository.AllListingItemsBuyyer(BuyyerId);
+            return _negotiateRepository.AllListingItemsBuyyer(BuyyerId);
         }
-        public async Task<List<CreateNegotiate>> AllListingItemsSeller(long SellerId)
+        public List<CreateNegotiate> AllListingItemsSeller(long SellerId)
         {
-            return await _negotiateRepository.AllListingItemsSeller(SellerId);
+            return _negotiateRepository.AllListingItemsSeller(SellerId);
         }
-        public async Task<List<MessageViewModel>> GetMessages(long NegotiateId)
+        public List<MessageViewModel> GetMessages(long NegotiateId)
         {
-            return await _negotiateRepository.GetMessages(NegotiateId);
+            return _negotiateRepository.GetMessages(NegotiateId);
         }
         public async Task<OperationResult> ActiveNegotiation(long NegotiateId)
         {

@@ -95,7 +95,7 @@ namespace AM.Application
             Command.MessageBody = messageBody;
             Command.NegotiateId = Convert.ToInt64(negotiateId);
             // Command.File = fileInput;
-            CurrentNegotiate = await _negotiateApplication.GetNegotiationViewModel(Convert.ToInt64(negotiateId));
+            CurrentNegotiate = _negotiateApplication.GetNegotiationViewModel(Convert.ToInt64(negotiateId));
             Command.UserId = _authenticateHelper.CurrentAccountRole().Id;
             if (Command.UserId == CurrentNegotiate.BuyerId)
                 Command.UserEntity = true;
@@ -120,7 +120,7 @@ namespace AM.Application
         }
         public List<MessageViewModel> GetAllMessages(long NegotiateId)
         {
-            return _negotiateApplication.GetMessages(NegotiateId).Result;
+            return _negotiateApplication.GetMessages(NegotiateId);
         }
     }
 }

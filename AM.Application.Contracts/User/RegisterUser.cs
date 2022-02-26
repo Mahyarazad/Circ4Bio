@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Dynamic;
 using _0_Framework;
-using Microsoft.AspNetCore.Http;
 
 namespace AM.Application.Contracts.User
 {
@@ -14,6 +12,7 @@ namespace AM.Application.Contracts.User
         public int Type { get; set; }
         public string? PhoneNumber { get; set; }
         [Required(ErrorMessage = ValidationMessages.Password)]
+        // [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,15}$", ErrorMessage = ValidationMessages.StrongerPassword)]
         public string? Password { get; set; }
         [Compare("Password", ErrorMessage = ValidationMessages.PasswordNotMatch)]
         [Required(ErrorMessage = ValidationMessages.ConfirmPassword)]

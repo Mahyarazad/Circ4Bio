@@ -16,16 +16,21 @@ namespace AM.Infrastructure.Repository
         {
             _amContext = amContext;
         }
-        public async Task<NegotiateViewModel> GetNegotiationViewModel(CreateNegotiate Command)
+        public NegotiateViewModel GetNegotiationViewModel(CreateNegotiate Command)
         {
             var negotiate = _amContext.Negotiates
                 .Include(x => x.UserNegotiate)
                 .AsNoTracking()
                 .AsSingleQuery()
-                .FirstOrDefaultAsync(x => x.Id == Command.NegotiateId);
+                .FirstOrDefault(x => x.Id == Command.NegotiateId);
 
-            var sellerId = negotiate.Result.UserNegotiate.Where(x => !x.BuyerBool).First().UserId;
-            var buyerId = negotiate.Result.UserNegotiate.Where(x => x.BuyerBool).First().UserId;
+            var sellerId = negotiate.UserNegotiate
+                .Where(x => !x.BuyerBool)
+                .First().UserId;
+            var buyerId = negotiate.UserNegotiate
+                .Where(x => x.BuyerBool)
+                .First().UserId;
+
             var sellerInfo = _amContext.Users
                 .AsNoTracking()
                 .AsSingleQuery()
@@ -35,7 +40,7 @@ namespace AM.Infrastructure.Repository
                     ImageString = x.Avatar,
                     Name = $"{x.FirstName} {x.LastName}",
                     Email = x.Email
-                }).FirstAsync();
+                }).First();
 
             var buyerInfo = _amContext.Users
                 .AsNoTracking()
@@ -46,9 +51,9 @@ namespace AM.Infrastructure.Repository
                     ImageString = x.Avatar,
                     Name = $"{x.FirstName} {x.LastName}",
                     Email = x.Email
-                }).FirstAsync();
+                }).First();
 
-            return await _amContext.Listing
+            return _amContext.Listing.AsSingleQuery()
                 .Select(x => new NegotiateViewModel
                 {
                     CreationTime = x.CreationTime,
@@ -59,8 +64,8 @@ namespace AM.Infrastructure.Repository
                     ImageString = x.Image,
                     DeliveryMethod = x.DeliveryMethod,
                     Amount = x.Amount,
-                    SellerEmail = sellerInfo.Result.Email,
-                    BuyerEmail = buyerInfo.Result.Email,
+                    SellerEmail = sellerInfo.Email,
+                    BuyerEmail = buyerInfo.Email,
                     Unit = x.Unit,
                     UnitPrice = x.UnitPrice,
                     BuyerId = Command.BuyerId,
@@ -68,25 +73,27 @@ namespace AM.Infrastructure.Repository
                     IsCanceled = Command.IsCanceled,
                     IsFinished = Command.IsFinished,
                     IsActive = Command.IsActive,
+                    QuatationSent = negotiate.QuatationSent,
+                    IsRejected = negotiate.IsRejected,
                     ItemType = x.Type,
-                    SellerName = sellerInfo.Result.Name,
-                    BuyerName = buyerInfo.Result.Name,
-                    BuyerImageString = buyerInfo.Result.ImageString,
-                    SellerImageString = sellerInfo.Result.ImageString,
-                }).AsNoTracking().FirstOrDefaultAsync(x => x.ListingId == Command.ListingId);
+                    SellerName = sellerInfo.Name,
+                    BuyerName = buyerInfo.Name,
+                    BuyerImageString = buyerInfo.ImageString,
+                    SellerImageString = sellerInfo.ImageString,
+                }).AsNoTracking().FirstOrDefault(x => x.ListingId == Command.ListingId);
 
         }
-        public async Task<NegotiateViewModel> GetNegotiationViewModel(long NegotiateId)
+        public NegotiateViewModel GetNegotiationViewModel(long NegotiateId)
         {
             var negotiate = _amContext.Negotiates
                 .Include(x => x.UserNegotiate)
                 .AsNoTracking()
                 .AsSingleQuery()
-                .FirstOrDefaultAsync(x => x.Id == NegotiateId);
+                .FirstOrDefault(x => x.Id == NegotiateId);
 
-            var sellerId = negotiate.Result.UserNegotiate.Where(x => !x.BuyerBool).First().UserId;
-            var buyerId = negotiate.Result.UserNegotiate.Where(x => x.BuyerBool).First().UserId;
-            var sellerInfo = await _amContext.Users
+            var sellerId = negotiate.UserNegotiate.Where(x => !x.BuyerBool).First().UserId;
+            var buyerId = negotiate.UserNegotiate.Where(x => x.BuyerBool).First().UserId;
+            var sellerInfo = _amContext.Users
                 .AsNoTracking()
                 .AsSingleQuery()
                 .Where(x => x.Id == sellerId)
@@ -96,9 +103,9 @@ namespace AM.Infrastructure.Repository
                     Name = $"{x.FirstName} {x.LastName}",
                     Email = x.Email
 
-                }).FirstAsync();
+                }).First();
 
-            var buyerInfo = await _amContext.Users
+            var buyerInfo = _amContext.Users
                 .AsNoTracking()
                 .AsSingleQuery()
                 .Where(x => x.Id == buyerId)
@@ -107,9 +114,9 @@ namespace AM.Infrastructure.Repository
                     ImageString = x.Avatar,
                     Name = $"{x.FirstName} {x.LastName}",
                     Email = x.Email
-                }).FirstAsync();
+                }).First();
 
-            return await _amContext.Listing
+            return _amContext.Listing
                 .Select(x => new NegotiateViewModel
                 {
                     NegotiateId = NegotiateId,
@@ -120,10 +127,10 @@ namespace AM.Infrastructure.Repository
                     Amount = x.Amount,
                     Unit = x.Unit,
                     UnitPrice = x.UnitPrice,
-                    BuyerId = negotiate.Result.BuyerId,
-                    SellerId = negotiate.Result.SellerId,
-                    IsCanceled = negotiate.Result.IsCanceled,
-                    IsFinished = negotiate.Result.IsFinished,
+                    BuyerId = negotiate.BuyerId,
+                    SellerId = negotiate.SellerId,
+                    IsCanceled = negotiate.IsCanceled,
+                    IsFinished = negotiate.IsFinished,
                     ItemType = x.Type,
                     SellerName = sellerInfo.Name,
                     BuyerName = buyerInfo.Name,
@@ -131,11 +138,11 @@ namespace AM.Infrastructure.Repository
                     SellerImageString = sellerInfo.ImageString,
                     BuyerEmail = buyerInfo.Email,
                     SellerEmail = sellerInfo.Email,
-                }).AsNoTracking().FirstOrDefaultAsync(x => x.ListingId == negotiate.Result.ListingId);
+                }).AsNoTracking().FirstOrDefault(x => x.ListingId == negotiate.ListingId);
         }
-        public async Task<List<CreateNegotiate>> AllListingItemsBuyyer(long BuyerId)
+        public List<CreateNegotiate> AllListingItemsBuyyer(long BuyerId)
         {
-            return await _amContext.Negotiates
+            return _amContext.Negotiates
                 .Where(x => x.BuyerId == BuyerId)
                 .Select(x => new CreateNegotiate
                 {
@@ -146,11 +153,11 @@ namespace AM.Infrastructure.Repository
                     IsCanceled = x.IsCanceled,
                     IsFinished = x.IsFinished,
                     IsActive = x.IsActive,
-                }).AsNoTracking().OrderByDescending(x => x.NegotiateId).ToListAsync();
+                }).AsNoTracking().OrderByDescending(x => x.NegotiateId).ToList();
         }
-        public async Task<List<CreateNegotiate>> AllListingItemsSeller(long SellerId)
+        public List<CreateNegotiate> AllListingItemsSeller(long SellerId)
         {
-            return await _amContext.Negotiates
+            return _amContext.Negotiates
                 .Where(x => x.SellerId == SellerId)
                 .Select(x => new CreateNegotiate
                 {
@@ -161,18 +168,18 @@ namespace AM.Infrastructure.Repository
                     IsCanceled = x.IsCanceled,
                     IsFinished = x.IsFinished,
                     IsActive = x.IsActive
-                }).AsNoTracking().OrderByDescending(x => x.NegotiateId).ToListAsync();
+                }).AsNoTracking().OrderByDescending(x => x.NegotiateId).ToList();
         }
-        public async Task<List<MessageViewModel>> GetMessages(long NegotiateId)
+        public List<MessageViewModel> GetMessages(long NegotiateId)
         {
             var query = _amContext.Negotiates
                 .Include(x => x.UserNegotiate)
                 .AsNoTracking()
                 .AsSingleQuery()
-                .FirstOrDefaultAsync(x => x.Id == NegotiateId);
+                .FirstOrDefault(x => x.Id == NegotiateId);
 
-            var sellerId = query.Result.UserNegotiate.Where(x => !x.BuyerBool).First().UserId;
-            var buyerId = query.Result.UserNegotiate.Where(x => x.BuyerBool).First().UserId;
+            var sellerId = query.UserNegotiate.Where(x => !x.BuyerBool).First().UserId;
+            var buyerId = query.UserNegotiate.Where(x => x.BuyerBool).First().UserId;
             var sellerInfo = _amContext.Users
                 .AsNoTracking()
                 .AsSingleQuery()
@@ -181,7 +188,7 @@ namespace AM.Infrastructure.Repository
                 {
                     ImageString = x.Avatar,
                     Letter = x.Email.Substring(0, 1)
-                }).FirstAsync();
+                }).First();
 
             var buyerInfo = _amContext.Users
                 .AsNoTracking()
@@ -191,9 +198,9 @@ namespace AM.Infrastructure.Repository
                 {
                     ImageString = x.Avatar,
                     Letter = x.Email.Substring(0, 1)
-                }).FirstAsync();
+                }).First();
 
-            var result = query.Result.Messages.Select(x => new MessageViewModel
+            var result = query.Messages.Select(x => new MessageViewModel
             {
                 MessageId = x.Id,
                 UserId = x.UserId,
@@ -204,14 +211,14 @@ namespace AM.Infrastructure.Repository
                 CreationTime = x.CreationTime,
                 BuyerId = buyerId,
                 SellerId = sellerId,
-                BuyyerImageString = buyerInfo.Result.ImageString,
-                SellerImageString = sellerInfo.Result.ImageString,
-                BuyyerLetter = buyerInfo.Result.Letter,
-                SellerLetter = sellerInfo.Result.Letter
+                BuyyerImageString = buyerInfo.ImageString,
+                SellerImageString = sellerInfo.ImageString,
+                BuyyerLetter = buyerInfo.Letter,
+                SellerLetter = sellerInfo.Letter
 
             }).OrderBy(x => x.MessageId).ToList();
 
-            return await Task.FromResult(result);
+            return result;
         }
         public async Task<OperationResult> ActiveNegotiation(long NegotiateId)
         {

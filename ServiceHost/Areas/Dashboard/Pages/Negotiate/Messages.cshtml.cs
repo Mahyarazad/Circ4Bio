@@ -22,16 +22,16 @@ namespace ServiceHost.Areas.Dashboard.Pages.Negotiate
             _negotiateApplication = negotiateApplication;
         }
 
-        public async Task<IActionResult> OnGet(long Id)
+        public IActionResult OnGet(long Id)
         {
             var loggedInUserId = _authenticateHelper.CurrentAccountRole().Id;
-            CurrentNegotiate = await _negotiateApplication.GetNegotiationViewModel(Id);
+            CurrentNegotiate = _negotiateApplication.GetNegotiationViewModel(Id);
             if (CurrentNegotiate.SellerId == loggedInUserId ||
                 CurrentNegotiate.BuyerId == loggedInUserId)
             {
                 Command = new NewMessage();
                 MessageList = new List<MessageViewModel>();
-                MessageList = await _negotiateApplication.GetMessages(Id);
+                MessageList = _negotiateApplication.GetMessages(Id);
                 return null;
             }
             else
@@ -43,7 +43,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Negotiate
         public async Task<JsonResult> OnPost(NewMessage Command)
         {
             Command.UserEntity = false;
-            CurrentNegotiate = await _negotiateApplication.GetNegotiationViewModel(Command.NegotiateId);
+            CurrentNegotiate = _negotiateApplication.GetNegotiationViewModel(Command.NegotiateId);
             Command.UserId = _authenticateHelper.CurrentAccountRole().Id;
             if (Command.UserId == CurrentNegotiate.BuyerId)
                 Command.UserEntity = true;

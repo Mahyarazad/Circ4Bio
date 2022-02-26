@@ -9,11 +9,11 @@ namespace AM.Application.Contracts.Negotiate
         Task<OperationResult> Create(CreateNegotiate Command);
         Task<OperationResult> SendMessage(NewMessage Command);
         Task<OperationResult> CancelNegotiation(CreateNegotiate Command);
-        Task<NegotiateViewModel> GetNegotiationViewModel(CreateNegotiate Command);
-        Task<NegotiateViewModel> GetNegotiationViewModel(long NegotiateId);
-        Task<List<CreateNegotiate>> AllListingItemsBuyyer(long BuyyerId);
-        Task<List<CreateNegotiate>> AllListingItemsSeller(long SellerId);
-        Task<List<MessageViewModel>> GetMessages(long NegotiateId);
+        NegotiateViewModel GetNegotiationViewModel(CreateNegotiate Command);
+        NegotiateViewModel GetNegotiationViewModel(long NegotiateId);
+        List<CreateNegotiate> AllListingItemsBuyyer(long BuyyerId);
+        List<CreateNegotiate> AllListingItemsSeller(long SellerId);
+        List<MessageViewModel> GetMessages(long NegotiateId);
         Task<OperationResult> ActiveNegotiation(long NegotiateId);
     }
 }

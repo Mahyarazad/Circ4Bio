@@ -30,15 +30,15 @@ namespace ServiceHost.Areas.Dashboard.Pages.Negotiate
             _negotiateApplication = negotiateApplication;
         }
 
-        public async Task OnGet()
+        public void OnGet()
         {
             NegotiateList = new List<NegotiateViewModel>();
             var userId = _authenticateHelper.CurrentAccountRole().Id;
-            var buyyingNegotiation = await _negotiateApplication.AllListingItemsBuyyer(userId);
-            var sellingNegotiation = await _negotiateApplication.AllListingItemsSeller(userId);
+            var buyyingNegotiation = _negotiateApplication.AllListingItemsBuyyer(userId);
+            var sellingNegotiation = _negotiateApplication.AllListingItemsSeller(userId);
             foreach (var item in buyyingNegotiation)
             {
-                NegotiateList.Add(await _negotiateApplication.GetNegotiationViewModel(new CreateNegotiate
+                NegotiateList.Add(_negotiateApplication.GetNegotiationViewModel(new CreateNegotiate
                 {
                     NegotiateId = item.NegotiateId,
                     ListingId = item.ListingId,
@@ -46,12 +46,14 @@ namespace ServiceHost.Areas.Dashboard.Pages.Negotiate
                     SellerId = item.SellerId,
                     IsCanceled = item.IsCanceled,
                     IsFinished = item.IsFinished,
+                    IsRejected = item.IsRejected,
+                    QuatationSent = item.QuatationSent,
                     IsActive = item.IsActive
                 }));
             }
             foreach (var item in sellingNegotiation)
             {
-                NegotiateList.Add(await _negotiateApplication.GetNegotiationViewModel(new CreateNegotiate
+                NegotiateList.Add(_negotiateApplication.GetNegotiationViewModel(new CreateNegotiate
                 {
                     NegotiateId = item.NegotiateId,
                     ListingId = item.ListingId,
@@ -59,6 +61,8 @@ namespace ServiceHost.Areas.Dashboard.Pages.Negotiate
                     SellerId = userId,
                     IsCanceled = item.IsCanceled,
                     IsFinished = item.IsFinished,
+                    IsRejected = item.IsRejected,
+                    QuatationSent = item.QuatationSent,
                     IsActive = item.IsActive
                 }));
             }

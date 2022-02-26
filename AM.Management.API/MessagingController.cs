@@ -30,10 +30,10 @@ namespace AM.Management.API
             if (HttpContext.User.Claims.FirstOrDefault() != null)
             {
                 UserId = Convert.ToInt64(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "User Id").Value);
-                var securityControl = await _negotiateApplication.GetNegotiationViewModel(Command.NegotiateId);
+                var securityControl = _negotiateApplication.GetNegotiationViewModel(Command.NegotiateId);
                 if (securityControl.BuyerId == UserId || securityControl.SellerId == UserId)
                 {
-                    return _negotiateApplication.GetMessages(Command.NegotiateId).Result;
+                    return _negotiateApplication.GetMessages(Command.NegotiateId);
                 }
                 else
                 {

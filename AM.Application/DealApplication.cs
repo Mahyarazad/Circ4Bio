@@ -121,8 +121,12 @@ namespace AM.Application
                 , Command.Currency, Command.Amount, Command.Location, trackingCode,
                 filePathString, Command.DueTime, Command.ListingId, Command.NegotiateId, negotiate.BuyerId
                 , negotiate.SellerId);
+
+            deal.QuatationHasSent();
+            negotiate.QuatationHasSent();
             await _negotiateRepository.ActiveNegotiation(Command.NegotiateId);
             _dealRepository.Create(deal);
+            _negotiateRepository.SaveChanges();
             _dealRepository.SaveChanges();
 
             return result.Succeeded();
@@ -214,6 +218,67 @@ namespace AM.Application
             var filePathString = _fileUploader
                 .Uploader(Command.ContractFile, $"Deal Documents/{Command.NegotiateId}",
                     Guid.NewGuid().ToString());
+
+
+            ////Notification Push
+            var negotiate = _negotiateRepository.Get(Command.NegotiateId).Result;
+
+            var sellerRoleId = _userRepository.GetDetail(negotiate.SellerId).Result.RoleId;
+            var sellerRoleString = _userApplication.GetUsertypes().Result
+                .FirstOrDefault(x => x.TypeId == sellerRoleId).TypeName;
+
+            var buyyerRoleId = _userRepository.GetDetail(negotiate.BuyerId).Result.RoleId;
+            var buyyerUserId = $"{_userRepository.GetDetail(negotiate.BuyerId).Result.UserId}";
+            var SellerUserId = $"{_userRepository.GetDetail(negotiate.SellerId).Result.UserId}";
+            var buyyerRoleString = _userApplication.GetUsertypes().Result
+                .FirstOrDefault(x => x.TypeId == buyyerRoleId).TypeName;
+
+            var listingInfo = _listingRepository.GetListingDetail(Command.ListingId);
+
+            var buyyerRecipientList = new List<RecipientViewModel>();
+            var sellerRecipientList = new List<RecipientViewModel>();
+
+            buyyerRecipientList.Add(new RecipientViewModel
+            {
+                UserId = negotiate.BuyerId,
+                IsReed = false,
+                RoleId = buyyerRoleId
+            });
+
+            sellerRecipientList.Add(new RecipientViewModel
+            {
+                UserId = negotiate.SellerId,
+                IsReed = false,
+                RoleId = sellerRoleId
+            });
+
+            var buyyerNotificationId = _notificationApplication
+                .PushNotification(new NotificationViewModel
+                {
+                    RecipientList = buyyerRecipientList,
+                    SenderId = negotiate.BuyerId,
+                    NotificationBody = $"{SellerUserId} update the quatation for {listingInfo.Result.Name} to you. Total cost is {Command.TotalCost} {Command.Currency}",
+                    NotificationTitle = ApplicationMessage.DealsCreated,
+                    UserId = negotiate.BuyerId
+                });
+
+            var sellerNotificationId = _notificationApplication
+                .PushNotification(new NotificationViewModel
+                {
+                    RecipientList = sellerRecipientList,
+                    SenderId = negotiate.SellerId,
+                    NotificationBody = $"You have updated the quatation for {listingInfo.Result.Name} with {buyyerUserId}",
+                    NotificationTitle = ApplicationMessage.DealsCreated,
+                    UserId = negotiate.SellerId
+                });
+
+            _recipientRepository.Create(new Recipient(negotiate.SellerId, sellerRoleId, sellerNotificationId.Result));
+            _recipientRepository.Create(new Recipient(negotiate.BuyerId, buyyerRoleId, buyyerNotificationId.Result));
+            _recipientRepository.SaveChanges();
+
+
+
+
 
             quatation.Edit(Command.DeliveryCost, Command.DeliveryMethod, Command.TotalCost, Command.Unit
                 , Command.Currency, Command.Amount, Command.Location, filePathString);

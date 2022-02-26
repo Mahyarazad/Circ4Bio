@@ -31,7 +31,9 @@ namespace AM.Domain
             PaymentStatus = false;
             IsDeleted = false;
             IsActive = false;
+            IsRejected = false;
             IsFinished = false;
+            QuatationSent = false;
             DueTime = dueDate;
             ListingId = listingId;
             NegotiateId = negotiateId;
@@ -58,20 +60,30 @@ namespace AM.Domain
         public string? TrackingCode { get; private set; }
         public string? ContractFile { get; private set; }
         //Deal Status(IsFinished[true] = Closed  , IsFinished[false] = Open)
-        //Deal Status(IsDeleted[true] = Rejected , IsDeleted[false] = Pending)
+        //Deal Status(IsRejected[true] = Rejected , IsRejected[false] = Pending)
+        //Deal Status(IsDeleted[true] = Canceled by Buyer , IsDeleted[false] = Pending)
         //Deal Status(IsActivate[true] = When the Contract Approved by both parties , IsDeleted[false] = Pending)
         public bool PaymentStatus { get; private set; }
         public bool IsDeleted { get; private set; }
+        public bool IsRejected { get; private set; }
         public bool IsActive { get; private set; }
+        public bool QuatationSent { get; private set; }
         public bool IsFinished { get; private set; }
         public DateTime StartTime { get; private set; }
         public DateTime DueTime { get; private set; }
 
         public void RejectDeal()
         {
+            IsRejected = true;
+        }
+        public void QuatationHasSent()
+        {
+            QuatationSent = true;
+        }
+        public void CancelDeal()
+        {
             IsDeleted = true;
         }
-
         public void FinishDeal()
         {
             IsFinished = true;

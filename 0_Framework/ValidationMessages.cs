@@ -11,6 +11,8 @@
         public const string DeliveryLocation = "Delivery location cannot be empty";
         public const string Password = "Please enter password";
         public const string ConfirmPassword = "Please enter confirm password";
+        public const string StrongerPassword = "Please choose a stronger password";
+        public const string SpecialCharacter = "Password must contain at least one one special character.";
         public const string SelectUserType = "Please select the user type";
         public const string PasswordNotMatch = "Password and confirm password do not match";
         public const string MaxChar2000 = "Description should be less between 250 words and 500 words";

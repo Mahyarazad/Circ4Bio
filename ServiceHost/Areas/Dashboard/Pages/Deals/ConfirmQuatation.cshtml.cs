@@ -1,38 +1,33 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net.Mime;
 using System.Threading.Tasks;
 using _0_Framework.Application;
 using AM.Application.Contracts.Deal;
 using AM.Application.Contracts.Listing;
 using AM.Application.Contracts.Negotiate;
 using AM.Application.Contracts.User;
-using AM.Domain.NegotiateAggregate;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ServiceHost.Areas.Dashboard.Pages.Deals
 {
-    public class CreateModel : PageModel
+    public class ConfirmQuatationModel : PageModel
     {
-        public CreateDeal Command;
-        public AuthViewModel LoggedUser;
+        public DealViewModel Command;
         public SelectList CurrencyList;
-        public SelectList DeliveryLocationSelectList;
-        public SelectList DeliveryMethod;
         public SelectList DeliveryCharges;
-        private readonly IDealApplication _dealApplication;
+        public SelectList DeliveryLocationSelectList;
+        public AuthViewModel LoggedUser;
         private readonly IUserApplication _userApplication;
+        private readonly IDealApplication _dealApplication;
         private readonly IAuthenticateHelper _authenticateHelper;
         private readonly IListingApplication _listingApplication;
         private readonly INegotiateApplication _negotiateApplication;
 
-        public CreateModel(IListingApplication listingApplication
-            , IUserApplication userApplication
+        public ConfirmQuatationModel(IListingApplication listingApplication
             , IAuthenticateHelper authenticateHelper,
             INegotiateApplication negotiateApplication,
+            IUserApplication userApplication,
             IDealApplication dealApplication)
         {
             _userApplication = userApplication;
@@ -46,15 +41,10 @@ namespace ServiceHost.Areas.Dashboard.Pages.Deals
         {
             LoggedUser = _authenticateHelper.CurrentAccountRole();
             var Negotiate = _negotiateApplication.GetNegotiationViewModel(Id);
-
-            if (Negotiate.SellerId == LoggedUser.Id)
+            CurrencyList = new SelectList(GenerateCurrencyList.GetList());
+            if (Negotiate.SellerId == LoggedUser.Id | Negotiate.BuyerId == LoggedUser.Id)
             {
-                Command = new CreateDeal();
-                CurrencyList = new SelectList(GenerateCurrencyList.GetList());
-                Command.Listing = await _listingApplication
-                    .GetDetailListing(Negotiate.ListingId);
-                Command.NegotiateId = Id;
-                Command.ListingId = Command.Listing.Id;
+                Command = await _dealApplication.GetDealWithDealId(Id);
                 DeliveryCharges = new SelectList(new List<string>
                 {
                     new string("Buyer"),
@@ -70,15 +60,9 @@ namespace ServiceHost.Areas.Dashboard.Pages.Deals
             }
         }
 
-        public async Task<IActionResult> OnPost(CreateDeal Command)
+        public JsonResult OnPost(EditDeal Command)
         {
-            Command.Listing = await _listingApplication
-                .GetDetailListing(_negotiateApplication
-                    .GetNegotiationViewModel(Command.NegotiateId).ListingId);
-            Command.TotalCost = (Command.Amount * Command.Listing.UnitPrice) + Command.DeliveryCost;
-            var result = await _dealApplication.CreateQuatation(Command);
-
-            return RedirectToPage("/Deals/Index", new { Id = _authenticateHelper.CurrentAccountRole().Id });
+            return new JsonResult(_dealApplication.EditDeal(Command));
         }
     }
 }

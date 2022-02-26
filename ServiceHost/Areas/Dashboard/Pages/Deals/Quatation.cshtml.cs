@@ -43,7 +43,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Deals
         public async Task<IActionResult> OnGet(long Id)
         {
             LoggedUser = _authenticateHelper.CurrentAccountRole();
-            var Negotiate = await _negotiateApplication.GetNegotiationViewModel(Id);
+            var Negotiate = _negotiateApplication.GetNegotiationViewModel(Id);
             CurrencyList = new SelectList(GenerateCurrencyList.GetList());
             if (Negotiate.SellerId == LoggedUser.Id | Negotiate.BuyerId == LoggedUser.Id)
             {
