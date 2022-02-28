@@ -1,0 +1,47 @@
+﻿@using _0_Framework.Application
+@using Microsoft.AspNetCore.Http
+@inject IAuthenticateHelper AuthenticateHelper;
+@inject IHttpContextAccessor Context;
+<aside class="py-6 lg:col-span-3">
+    <nav class="space-y-1">
+        <div class="grid grid-cols-1">
+            <h3 class="px-4 text-gray-800">Availalbe Filters</h3>
+                <div class="border-gray-200 py-6 px-4">
+                    <h3 class="-my-3 flow-root">
+                        <!-- Expand/collapse section button -->
+                        <button type="button" onclick="handleFilter()" class="py-3 bg-white w-full flex items-center justify-between text-sm text-gray-400 hover:text-gray-500" aria-controls="filter-section-0" aria-expanded="false">
+                            <span class="font-medium text-gray-900"> Type </span>
+                            <span class="px-4 mb-5">
+                                <svg class="h-5 w-5 absolute" id="svg-plus" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
+                                </svg>
+
+                                <svg class="h-5 w-5 invisible absolute" id="svg-minus" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path fill-rule="evenodd" d="M5 10a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1z" clip-rule="evenodd" />
+                                </svg>
+                            </span>
+                        </button>
+                    </h3>
+                    <!-- Filter section, show/hide based on section state. -->
+                    <div class="pt-6 invisible opacity-0 trasnform duration-200 -translate-y-[5rem]" id="filter-section-0">
+                        <div class="space-y-4">
+                            <div class="flex items-center">
+                                <input id="filter-technology" onchange="handelFilter()" type="checkbox" class="h-4 w-4 border-gray-300 rounded text-sky-800 focus:ring-sky-800">
+                                <label for="filter-color-0" class="ml-3 text-sm text-gray-600"> Technology Provider </label>
+                            </div>
+
+                            <div class="flex items-center">
+                                <input id="filter-plant" onchange="handelFilter()" type="checkbox" class="h-4 w-4 border-gray-300 rounded text-sky-800 focus:ring-sky-800">
+                                <label for="filter-color-1" class="ml-3 text-sm text-gray-600"> Plant </label>
+                            </div>
+
+                            <div class="flex items-center">
+                                <input id="filter-supplier" onchange="handelFilter()" type="checkbox" class="h-4 w-4 border-gray-300 rounded text-sky-800 focus:ring-sky-800">
+                                <label for="filter-color-2" class="ml-3 text-sm text-gray-600"> Supplier of Raw Material </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </nav>
+</aside>

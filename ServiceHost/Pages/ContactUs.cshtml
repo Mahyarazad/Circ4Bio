@@ -46,7 +46,7 @@
 
                 <div class="grid grid-cols-1 lg:grid-cols-3">
                     <!-- Contact information -->
-                    <div class="relative overflow-hidden py-10 px-6 bg-gradient-to-b from-teal-500 to-teal-600 sm:px-10 xl:p-12">
+                    <div class="relative overflow-hidden py-10 px-6 bg-gradient-to-b from-sky-700 to-sky-800 sm:px-10 xl:p-12">
                         <!-- Decorative angle backgrounds -->
                         <div class="absolute inset-0 pointer-events-none sm:hidden" aria-hidden="true">
                             <svg class="absolute inset-0 w-full h-full" width="343" height="388" viewBox="0 0 343 388" fill="none" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
@@ -149,14 +149,14 @@
                             <div>
                                 <label asp-for="Command.FullName" class="block text-sm font-medium text-warm-gray-900">Full Name</label>
                                 <div class="mt-1">
-                                    <input type="text" asp-for="Command.FullName" autocomplete="given-name" class="py-3 px-4 block w-full shadow-sm text-warm-gray-900 focus:ring-teal-500 focus:border-teal-500 border-warm-gray-300 rounded-md">
+                                    <input type="text" asp-for="Command.FullName" autocomplete="given-name" class="py-3 px-4 block w-full shadow-sm text-warm-gray-900 focus:ring-sky-700 focus:border-sky-700 border-warm-gray-300 rounded-md">
                                 </div>
                                 <span asp-validation-for="Command.FullName" class="text-red-500"></span>
                             </div>
                             <div>
                                 <label asp-for="Command.Email" class="block text-sm font-medium text-warm-gray-900"></label>
                                 <div class="mt-1">
-                                    <input asp-for="Command.Email" type="email" autocomplete="email" class="py-3 px-4 block w-full shadow-sm text-warm-gray-900 focus:ring-teal-500 focus:border-teal-500 border-warm-gray-300 rounded-md">
+                                    <input asp-for="Command.Email" type="email" autocomplete="email" class="py-3 px-4 block w-full shadow-sm text-warm-gray-900 focus:ring-sky-700 focus:border-sky-700 border-warm-gray-300 rounded-md">
                                 </div>
                                 <span asp-validation-for="Command.Email" class="text-red-500"></span>
                             </div>
@@ -166,13 +166,13 @@
                                     <span id="phone-optional" class="text-sm text-warm-gray-500">Optional</span>
                                 </div>
                                 <div class="mt-1">
-                                    <input type="text" asp-for="Command.Phone" autocomplete="tel" class="py-3 px-4 block w-full shadow-sm text-warm-gray-900 focus:ring-teal-500 focus:border-teal-500 border-warm-gray-300 rounded-md" aria-describedby="phone-optional">
+                                    <input type="text" asp-for="Command.Phone" autocomplete="tel" class="py-3 px-4 block w-full shadow-sm text-warm-gray-900 focus:ring-sky-700 focus:border-sky-700 border-warm-gray-300 rounded-md" aria-describedby="phone-optional">
                                 </div>
                             </div>
                             <div class="sm:col-span-2">
                                 <label asp-for="Command.Subject" class="block text-sm font-medium text-warm-gray-900">Subject</label>
                                 <div class="mt-1">
-                                    <input type="text" asp-for="Command.Subject" class="py-3 px-4 block w-full shadow-sm text-warm-gray-900 focus:ring-teal-500 focus:border-teal-500 border-warm-gray-300 rounded-md">
+                                    <input type="text" asp-for="Command.Subject" class="py-3 px-4 block w-full shadow-sm text-warm-gray-900 focus:ring-sky-700 focus:border-sky-700 border-warm-gray-300 rounded-md">
                                 </div>
                                 <span asp-validation-for="Command.Subject" class="text-red-500"></span>
                             </div>
@@ -182,13 +182,13 @@
                                     <span id="message-max" class="text-sm text-warm-gray-500">Max. 1500 characters</span>
                                 </div>
                                 <div class="mt-1">
-                                    <textarea asp-for="Command.Body" rows="4" class="py-3 px-4 block w-full shadow-sm text-warm-gray-900 focus:ring-teal-500 focus:border-teal-500 border border-warm-gray-300 rounded-md" aria-describedby="message-max"></textarea>
+                                    <textarea asp-for="Command.Body" rows="4" class="py-3 px-4 block w-full shadow-sm text-warm-gray-900 focus:ring-sky-700 focus:border-sky-700 border border-warm-gray-300 rounded-md" aria-describedby="message-max"></textarea>
                                 </div>
                                 <span asp-validation-for="Command.Body" class="text-red-500"></span>
                             </div>
                             <div class="sm:col-span-2 sm:flex sm:justify-end">
                                 <button type="submit" id="contact-us-button" onclick="loading()"
-                                        class="mt-2 w-full inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-teal-500 hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 sm:w-auto">
+                                        class="mt-2 w-full inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-sky-700 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-700 sm:w-auto">
                                     Submit
                                 </button>
                             </div>

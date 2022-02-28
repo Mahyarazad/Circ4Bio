@@ -1,152 +1,394 @@
 ﻿@page
 @using _0_Framework
-@using AM.Application.Contracts.Negotiate
+@using Newtonsoft.Json
 @model ServiceHost.Areas.Dashboard.Pages.AvailableListing.AvailableListingModel;
 @inject _0_Framework.Application.IAuthenticateHelper AuthenticateHelper;
-@{ ViewData["Title"] = "Market";}
+@{ ViewData["Title"] = "Market Place";}
 
 
 <div class="divide-y divide-gray-200 lg:col-span-9">
-    <div class="flex flex-col">
-        <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-            <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-                <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                    <!-- operation-result -->
-                    <div class="rounded-md bg-green-50 p-4 transition ease-in-out duration-75" id="operation-result" style="display: none">
-                        <div class="flex">
-                            <div class="flex-shrink-0">
-                                <!-- Heroicon name: solid/check-circle -->
-                                <svg class="h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                                </svg>
-                            </div>
-                            <div class="ml-3">
-                                <p class="text-sm font-medium text-green-800" id="operation-result-message">
 
-                                </p>
-                            </div>
+<div class="flex flex-col">
+    <input class="mt-1 w-1/2 border-gray-300 mx-2 my-2 border
+           rounded-md shadow-sm py-2 mb-2 px-3 focus:outline-none focus:border-sky-500
+           focus:ring-sky-500 sm:text-sm float-left font-medium searchBox form-control"
+           id="search-input"
+           placeholder="Search Everything">
+    <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+            <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                <!-- operation-result -->
+                <div class="rounded-md bg-green-50 p-4 transition ease-in-out duration-75" id="operation-result" style="display: none">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <!-- Heroicon name: solid/check-circle -->
+                            <svg class="h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm font-medium text-green-800" id="operation-result-message">
+
+                            </p>
                         </div>
                     </div>
-                    <div class="rounded-md bg-red-50 p-4 transition ease-in-out duration-75" id="operation-result-failed" style="display: none">
-                        <div class="flex">
-                            <div class="flex-shrink-0">
-                                <!-- Heroicon name: solid/check-circle -->
-                                <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
-                                </svg>
-                            </div>
-                            <div class="ml-3">
-                                <p class="text-sm font-medium text-red-800" id="operation-result-failed-message">
+                </div>
+                <div class="rounded-md bg-red-50 p-4 transition ease-in-out duration-75" id="operation-result-failed" style="display: none">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <!-- Heroicon name: solid/check-circle -->
+                            <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm font-medium text-red-800" id="operation-result-failed-message">
 
-                                </p>
-                            </div>
+                            </p>
                         </div>
                     </div>
-                    <!-- end -->
-                    <div class="flex justify-start">
+                </div>
+                <!-- end -->
+                <div class="flex justify-start">
 
 
-                        @if (!Model.user.Status)
-                        {
-                            <span class="text-red-500 pb-3 mx-5 mt-4"> @ApplicationMessage.SubmitRequiredInfo</span>
-                        }
+                    @if (!Model.user.Status)
+                    {
+                        <span class="text-red-500 pb-3 mx-5 mt-4"> @ApplicationMessage.SubmitRequiredInfo</span>}
+                </div>
+                <div class="bg-white" id="listing-pagination">
+
+                    <div class="max-w-7xl mx-auto py-4 px-4 overflow-hidden sm:px-6 lg:px-8">
+                        <div class="grid grid-cols-1 gap-y-4 gap-x-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-8" id="content">
+                            <h3 id="no-result" class="hidden"></h3>
+                            @foreach (var item in Model.Listing)
+                            {
+                                <div id="market-place-item"
+                                     class="group text-sm result" data-type="@item.Type" data-item="@item.Id">
+                                    <a class="w-full rounded-lg overflow-hidden bg-gray-100 group-hover:opacity-75"
+                                       href="#showmodal=@Url.Page("./Index", "Load", new {Id = item.Id})"
+                                       onclick="showModal()">
+                                        <img src="~/Site Files/Listing_Images/@(item.Image == "listing-default.png" ? "listing-default.png" : $"{item.Type}/{item.Image}")"
+                                             alt="@item.Name" class="h-44 object-center object-cover rounded mx-auto">
+                                    </a>
+                                    <div class="grid grid-cols-3 items-center">
+                                        <div class="col-span-2">
+                                            @if (item.PublicStatus)
+                                            {
+                                                <h3 class="mt-4 font-medium text-gray-900">
+                                                    Private Listing
+                                                </h3>}
+                                            @if (item.IsService)
+                                            {
+                                                <h3 class="mt-4 font-medium text-gray-900">
+                                                    Service Listing
+                                                </h3>}
+                                            <h3 class="mt-4 font-medium text-gray-900">@item.Type</h3>
+                                            <p class="text-gray-500 italic">@item.Name</p>
+                                            <p class="mt-2 font-medium text-gray-900">@item.Currency @item.UnitPrice</p>
+                                        </div>
+                                        <div class="col-span-1 place-self-center">
+                                            <form method="post" id="edit-user-form"
+                                                  data-callback="" data-ajax="true" data-action="Refresh">
+                                                <input type="hidden" value="@item.Id" name="Id"/>
+                                                @if (!AuthenticateHelper.CurrentAccountRole().Status)
+                                                {
+                                                    <button onclick="gototop()"
+                                                            type="submit" @(!AuthenticateHelper.CurrentAccountRole().Status ? "disabled" : "")
+                                                            class="@(!AuthenticateHelper.CurrentAccountRole().Status ? "bg-gray-100" : "bg-sky-700") border border-transparent rounded-md shadow-sm py-1 px-1 inline-flex justify-center text-xs font-medium text-white @(!AuthenticateHelper.CurrentAccountRole().Status ? "hover:bg-gray-200" : "hover:bg-sky-800") focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+                                                        Start Negotiation
+                                                    </button>
+                                                }
+                                                else
+                                                {
+                                                    <button type="submit" onclick="gototop()" @(item.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "disabled" : "")
+                                                            class="@(item.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "bg-gray-100" : "bg-sky-700") border border-transparent rounded-md shadow-sm py-1 px-1 inline-flex justify-center text-xs font-medium text-white @(item.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "hover:bg-gray-200" : "hover:bg-sky-800") focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+                                                        @(item.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "Owend Item" : "Start Negotiation")
+                                                    </button>}
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>}
+
+                        </div>
                     </div>
+                    <div class="flex items-center justify-center py-4 lg:px-0 sm:px-6 px-4">
+                        <div class="lg:w-3/5 w-full  flex items-center justify-between border-t border-gray-200" id="pagingControls">
 
-                    <table class="min-w-full border-collapse block md:table" id="main-table">
-                        <thead class="block md:table-header-group">
-                        <tr class="border border-grey-500 md:border-none block md:table-row absolute -top-full md:top-auto -left-full md:left-auto  md:relative ">
-                            <th class="bg-gray-50 p-2 text-gray-600 font-bold md:border md:border-grey-500 text-left block md:table-cell">Listing Info</th>
-                            <th class="bg-gray-50 p-2 text-gray-600 font-bold md:border md:border-grey-500 text-left block md:table-cell">Unit Price | Amount</th>
-                            <th class="bg-gray-50 p-2 text-gray-600 font-bold md:border md:border-grey-500 text-left block md:table-cell">Image</th>
-                            <th class="bg-gray-50 p-2 text-gray-600 font-bold md:border md:border-grey-500 text-left block md:table-cell">Actions</th>
-                        </tr>
-                        </thead>
-                        <tbody class="block md:table-row-group">
-                        @foreach (var item in Model.Listing)
-                        {
-                            <tr class="bg-white border border-grey-500 md:border-none block md:table-row">
-                                <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell">
-                                    <span class="inline-block w-1/3 md:hidden font-bold">Listing Info</span>
-                                    <div>
-                                        <div class="text-sm font-medium text-gray-900">
-                                            @item.Type
-                                        </div>
-                                        <div class="text-sm font-medium text-gray-900">
-                                            @item.Name
-                                        </div>
-                                        <div class="text-xs text-gray-500">
-                                            @item.CreationTime
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell">
-                                    <span class="inline-block w-1/3 md:hidden font-bold">Unit Price | Amount | Private & Public</span>
-                                    <div class="text-sm text-gray-900">
-                                        <span class="text-xs text-gray-600"> Unit Price:</span>
-                                        @item.UnitPrice <b class="text-xs">@item.Currency</b>
-                                        <div class="text-sm text-gray-900">
-                                            <span class="text-xs text-gray-600"> Available Amount:</span> @item.Amount
-                                            <b class="text-xs">@item.Unit</b>
-                                        </div>
-                                        @if (item.PublicStatus)
-                                        {
-                                            <div class="text-sm text-gray-500 font-bold">
-                                                Private Listing
-                                            </div>}
-                                        @if (item.IsService)
-                                        {
-                                            <div class="text-sm text-sky-800 font-bold">
-                                                Service Listing
-                                            </div>}
-                                    </div>
-                                </td>
-                                <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell">
-                                    <span class="inline-block w-1/3 md:hidden font-bold">Image</span>
-                                    <div class="flex-shrink-0 h-10 w-10">
-                                        <img class="h-10 w-10 rounded-full"
-                                             src="~/Site Files/Listing_Images/@(item.Image == "listing-default.png" ? "listing-default.png" : $"{item.Type}/{item.Image}")"
-                                             alt=""/>
-                                    </div>
-                                </td>
-                                <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell">
-                                    <span class="inline-block w-1/3 md:hidden font-bold">Actions</span>
-                                    <div class="flex justify-start my-2">
-
-                                        <a asp-page="Detail" asp-route-id="@item.Id" class="mx-2 inline-flex items-center px-2 py-2 border border-gray-300 shadow-sm text-xs font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
-                                            More Details
-                                        </a>
-                                        <form method="post" id="edit-user-form"
-                                              data-callback="" data-ajax="true" data-action="Refresh">
-                                            <input type="hidden" value="@item.Id" name="Id"/>
-                                            @if (!AuthenticateHelper.CurrentAccountRole().Status)
-                                            {
-                                                <button type="submit" @(!AuthenticateHelper.CurrentAccountRole().Status ? "disabled" : "") onclick="gotoTop()"
-                                                        class="ml-5 @(!AuthenticateHelper.CurrentAccountRole().Status ? "bg-gray-100" : "bg-sky-700") border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white @(!AuthenticateHelper.CurrentAccountRole().Status ? "hover:bg-gray-200" : "hover:bg-sky-800") focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
-                                                    Start Negotiation
-                                                </button>
-                                            }
-                                            else
-                                            {
-                                                <button type="submit" onclick="gotoTop()" @(item.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "disabled" : "")
-                                                        class="ml-5 @(item.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "bg-gray-100" : "bg-sky-700") border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white @(item.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "hover:bg-gray-200" : "hover:bg-sky-800") focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
-                                                    @(item.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "Owend Item" : "Start Negotiation")
-                                                </button>
-                                            }
-                                        </form>
-                                    </div>
-                                </td>
-
-                            </tr>
-                        }
-
-                        </tbody>
-                    </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
+</div>
 @section Scripts{
-    <script src="~/js/AlterDataTableDesign.js"></script>
+
+    <script src="~/Paginate/flexible.pagination.js"></script>
+    <script>
+        var items = @Html.Raw(JsonConvert.SerializeObject(Model.Listing));
+        var filtered = items;
+
+        function paginate(
+            totalItems,
+            currentPage,
+            pageSize = 8,
+            maxPages = 1000
+        ) {
+            // calculate total pages
+            var totalPages = Math.ceil(totalItems / pageSize);
+
+            // ensure current page isn't out of range
+            if (currentPage < 1) {
+                currentPage = 1;
+            } else if (currentPage > totalPages) {
+                currentPage = totalPages;
+            }
+
+            var startPage, endPage;
+            if (totalPages <= maxPages) {
+                // total pages less than max so show all pages
+                startPage = 1;
+                endPage = totalPages;
+            } else {
+                // total pages more than max so calculate start and end pages
+                var maxPagesBeforeCurrentPage = Math.floor(maxPages / 2);
+                var maxPagesAfterCurrentPage = Math.ceil(maxPages / 2) - 1;
+                if (currentPage <= maxPagesBeforeCurrentPage) {
+                    // current page near the start
+                    startPage = 1;
+                    endPage = maxPages;
+                } else if (currentPage + maxPagesAfterCurrentPage >= totalPages) {
+                    // current page near the end
+                    startPage = totalPages - maxPages + 1;
+                    endPage = totalPages;
+                } else {
+                    // current page somewhere in the middle
+                    startPage = currentPage - maxPagesBeforeCurrentPage;
+                    endPage = currentPage + maxPagesAfterCurrentPage;
+                }
+            }
+
+            // calculate start and end item indexes
+            var startIndex = (currentPage - 1) * pageSize;
+            var endIndex = Math.min(startIndex + pageSize - 1, totalItems - 1);
+
+            // create an array of pages to ng-repeat in the pager control
+            var pages = Array.from(Array((endPage + 1) - startPage).keys()).map(i => startPage + i);
+
+            // return object with all pager properties required by the view
+            return {
+                totalItems: totalItems,
+                currentPage: currentPage,
+                pageSize: pageSize,
+                totalPages: totalPages,
+                startPage: startPage,
+                endPage: endPage,
+                startIndex: startIndex,
+                endIndex: endIndex,
+                pages: pages
+            };
+        }
+
+        // selecting required element
+        var element = document.getElementById("pagingControls");
+        var paginateObject = paginate(filtered.length, 1);
+        var _totalPages = paginateObject.pages.length;
+
+        var page = 1;
+
+        var hideItems = function() {
+            items.forEach(e => {
+                $(`div[data-item=${e.Id}]`).css('display', 'none');
+            });
+        };
+
+        function createPagination(totalPages, page) {
+            hideItems();
+            var $totalPages = totalPages;
+            var liTag = '';
+            var active;
+            var beforePage = page - 1;
+            var afterPage = page + 1;
+            if (page > 1) {
+                liTag += `<p class="btn prev text-sm font-medium leading-none cursor-pointer text-gray-600 hover:text-sky-700 border-t border-transparent hover:border-sky-400 pt-3 mr-4 px-2" onclick="createPagination(_totalPages, ${page - 1})"><span><i class="fas fa-angle-left"></i> Previous</span></p>`;
+                //show the next button if the page value is greater than 1
+            }
+            if (_totalPages > 5) {
+                if (page > 2) { //if page value is less than 2 then add 1 after the previous button
+                    liTag += `<p class="first numb text-sm font-medium leading-none cursor-pointer text-gray-600 hover:text-sky-700 border-t border-transparent hover:border-sky-400 pt-3 mr-4 px-2" onclick="createPagination(_totalPages, 1)"><span>1</span></p>`;
+                    //if page value is greater than 3 then add this (...) after the first li or page
+
+                    liTag += `<p class="dots text-sm font-medium leading-none cursor-pointer text-gray-600 hover:text-sky-700 border-t border-transparent hover:border-sky-400 pt-3 mr-4 px-2"><span>...</span></p>`;
+
+                }
+            }
+
+            // how many pages or li show before the current li
+            if (page == totalPages) {
+                beforePage = beforePage - 2;
+            } else if (page == totalPages - 1) {
+                beforePage = beforePage - 1;
+            }
+            // how many pages or li show after the current li
+            if (page == 1) {
+                afterPage = afterPage + 2;
+            } else if (page == 2) {
+                afterPage = afterPage + 1;
+            }
+
+            for (var plength = beforePage; plength <= afterPage; plength++) {
+                if (plength > totalPages) { //if plength is greater than totalPage length then continue
+                    continue;
+                }
+                if (plength == 0) { //if plength is 0 than add +1 in plength value
+                    plength = plength + 1;
+                }
+                if (page == plength) {
+//                    console.log(paginate(totalPages, page))
+                    //if page is equal to plength than assign active string in the active variable
+                    active = "active";
+
+                } else { //else leave empty to the active variable
+                    active = "";
+                }
+                if (plength !== -1) {
+                    liTag += `<p class="numb ${active} text-sm font-medium leading-none cursor-pointer ${active == "active" ? 'text-sky-700 border-sky-400' : 'text-gray-600 hover:text-sky-700 over:border-sky-400 border-transparent'}  border-t pt-3 mr-4 px-2" onclick="createPagination(_totalPages, ${plength})"><span>${plength}</span></p>`;
+                }
+
+
+
+            }
+            var pageSize = paginateObject.pageSize;
+            var maxPages = 100;
+            if (totalPages <= maxPages) {
+                // total pages less than max so show all pages
+                startPage = 1;
+                endPage = totalPages;
+            } else {
+                // total pages more than max so calculate start and end pages
+                var maxPagesBeforeCurrentPage = Math.floor(maxPages / 2);
+                var maxPagesAfterCurrentPage = Math.ceil(maxPages / 2) - 1;
+                if (currentPage <= maxPagesBeforeCurrentPage) {
+                    // current page near the start
+                    startPage = 1;
+                    endPage = maxPages;
+                } else if (currentPage + maxPagesAfterCurrentPage >= totalPages) {
+                    // current page near the end
+                    startPage = totalPages - maxPages + 1;
+                    endPage = totalPages;
+                } else {
+                    // current page somewhere in the middle
+                    startPage = currentPage - maxPagesBeforeCurrentPage;
+                    endPage = currentPage + maxPagesAfterCurrentPage;
+                }
+            }
+            var startIndex = (page - 1) * pageSize;
+            var endIndex = Math.min(startIndex + pageSize - 1, filtered.length - 1);
+            for (var i = startIndex; i <= endIndex; i++) {
+                $(`div[data-item=${filtered[i].Id}]`).css('display', 'block');
+            }
+
+            if (_totalPages > 5) {
+                if (page < totalPages - 1) { //if page value is less than totalPage value by -1 then show the last li or page
+                    if (page < totalPages - 2) { //if page value is less than totalPage value by -2 then add this (...) before the last li or page
+                        liTag += `<p class="dots"><span>...</span></p>`;
+                    }
+                    liTag += `<p class="last numb text-sm font-medium leading-none cursor-pointer text-gray-600 hover:text-sky-700 border-t border-transparent hover:border-sky-400 pt-3 mr-4 px-2" onclick="createPagination(_totalPages, ${totalPages})"><span>${totalPages}</span></p>`;
+                }
+            }
+
+
+            if (page < totalPages) {
+                liTag += `<p class="btn next text-sm font-medium leading-none cursor-pointer text-gray-600 hover:text-sky-700 border-t border-transparent hover:border-sky-400 pt-3 mr-4 px-2" onclick="createPagination(_totalPages, ${page + 1})"><span>Next <i class="fas fa-angle-right"></i></span></p>`;
+                //show the next button if the page value is less than totalPage(20)
+            }
+            element.innerHTML = liTag; //add li tag inside ul tag
+
+            return liTag; //reurn the li tag
+        }
+
+        //calling function with passing parameters and adding inside element which is ul tag
+        element.innerHTML = createPagination(_totalPages, page);
+
+        function handelFilter() {
+//            items.forEach(e => {
+//                $(`div[data-item=${e.Id}]`).css('display', 'none');
+//            });
+
+            var _filter1 = $("#filter-technology").prop('checked');
+            var _filter2 = $("#filter-plant").prop('checked');
+            var _filter3 = $("#filter-supplier").prop('checked');
+
+
+            filtered = items.filter(function(data) {
+                element.innerHTML = '';
+                switch (_filter1 + "-" + _filter2 + "-" + _filter3) {
+                case "true-false-false":
+                    return data.Type === "Technology Provider";
+                    break;
+                case "false-true-false":
+                    return data.Type === "Plant";
+                    break;
+                case "false-false-true":
+                    return data.Type === "Supplier of Raw Material";
+                    break;
+                case "true-false-true":
+                    return data.Type !== "Plant";
+                    break;
+                case "false-true-true":
+                    return data.Type !== "Technology Provider";
+                    break;
+                case "true-true-false":
+                    return data.Type !== "Supplier of Raw Material";
+                    break;
+                default:
+                    return items
+                }
+
+            });
+            paginateObject = paginate(filtered.length, 1);
+            _totalPages = paginateObject.pages.length;
+            element.innerHTML = createPagination(_totalPages, page);
+//            filtered.forEach(e => {
+//                $(`div[data-item=${e.Id}]`).css('display', 'block');
+//            });
+
+        };
+
+        $("#search-input").on("keyup",
+            function() {
+                var value = $(this).val();
+                filtered = items.filter(function (data) {
+                    return data.Name.includes(value) || data.Description.includes(value) || data.Email.includes(value)
+                });
+                element.innerHTML = '';
+                paginateObject = paginate(filtered.length, 1);
+                _totalPages = paginateObject.pages.length;
+
+                if (_totalPages === 1) {
+                    element.innerHTML = ''
+                    $("#no-result").addClass('hidden');
+                }
+                else if (filtered.length === 0) {
+                    hideItems();
+                    $("#no-result").removeClass('hidden');
+                    $("#no-result").html("No Result");
+                }
+                else {
+                    $("#no-result").addClass('hidden');
+                    element.innerHTML = createPagination(_totalPages, page);
+                }
+
+            });
+//
+    </script>
+
 }
+@section CSS
+{
+    <link href="~/Paginate/pagination.css"/>
+}
+
+

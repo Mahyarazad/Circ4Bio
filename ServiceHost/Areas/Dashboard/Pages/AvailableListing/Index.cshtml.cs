@@ -14,6 +14,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.AvailableListing
     {
         public EditUser user;
         public List<ListingViewModel> Listing;
+        public ListingViewModel Item;
         private readonly IUserApplication _userApplication;
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly IListingApplication _listingApplication;
@@ -50,6 +51,12 @@ namespace ServiceHost.Areas.Dashboard.Pages.AvailableListing
             };
             var res = await _negotiateApplication.Create(createNegotiation);
             return new JsonResult(Task.FromResult(res));
+        }
+
+        public IActionResult OnGetLoad(long Id)
+        {
+            Item = _listingApplication.GetDetailListing(Id).Result;
+            return Partial("./DetailModal", Item);
         }
     }
 }

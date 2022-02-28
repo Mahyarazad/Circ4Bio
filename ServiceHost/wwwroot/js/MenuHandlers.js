@@ -207,9 +207,13 @@ $(document).on('keydown', function (e) {
     }
 });
 
-
+function gototop() {
+    document.body.scrollTop = 0; // For Safari
+    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+}
 
 function gotoTop() {
+    hideModal();
     var element = document.getElementById('operation-result');
     element.scrollIntoView({ behavior: "smooth" });
 }
@@ -221,3 +225,23 @@ function MarketSelect() {
 function DashboardSelect() {
     $('#dashboard').addClass("bg-black");
 }
+
+function handleFilter() {
+    var stat = $("#filter-section-0").css('visibility');
+    if (stat === 'hidden') {
+        $("#svg-plus").addClass('invisible');
+        $("#svg-minus").removeClass('invisible');
+        $("#filter-section-0").removeClass('invisible');
+        $('#filter-section-0').removeClass('-translate-y-[5rem]');
+        $('#filter-section-0').css('opacity', '1');
+    } else {
+        $("#svg-plus").removeClass('invisible');
+        $("#svg-minus").addClass('invisible');
+        $("#filter-section-0").addClass('invisible');
+        $('#filter-section-0').addClass('-translate-y-[5rem]');
+        $('#filter-section-0').css('opacity', '0');
+    }
+};
+
+
+
