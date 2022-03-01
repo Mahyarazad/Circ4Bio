@@ -301,7 +301,7 @@ namespace AM.Application
 
             user.Edit(command.FirstName, command.LastName, command.UserId, command.Email, command.City, command.Country,
                 command.PostalCode, command.Latitude, command.Longitude, command.Description,
-                command.CompanyName, command.VatNumber, command.Status, avatarFileName, command.WebUrl, command.LinkdinUrl,
+                command.CompanyName, command.VatNumber, avatarFileName, command.WebUrl, command.LinkdinUrl,
                 command.TwitterUrl, command.InstagramUrl, command.FaceBookUrl, command.RoleId);
 
             _userRepository.SaveChanges();
@@ -356,7 +356,7 @@ namespace AM.Application
 
             user.Edit(command.FirstName, command.LastName, command.UserId, command.Address, command.City, command.Country,
                 command.PostalCode, command.Latitude, command.Longitude, command.Description,
-                command.CompanyName, command.VatNumber, command.Status, avatarFileName, command.WebUrl, command.LinkdinUrl,
+                command.CompanyName, command.VatNumber, avatarFileName, command.WebUrl, command.LinkdinUrl,
                 command.TwitterUrl, command.InstagramUrl, command.FaceBookUrl, user.RoleId);
 
             _userRepository.SaveChanges();

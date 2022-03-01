@@ -1,6 +1,6 @@
 ﻿"use strict";
-var host = "https://localhost:5001";
-//var host = "http://www.maahyarazad.ir";
+//var host = "https://localhost:5001";
+var host = "http://www.maahyarazad.ir";
 
 var connection = new signalR.HubConnectionBuilder()
     .withUrl("/notificationHub")
@@ -106,11 +106,15 @@ var messaging = function () {
                             ? "default-avatar.png"
                             : item.sellerImageString}"
                                              alt=""/>
-                                        <div class="absolute text-gray-600 inset-y-7 inset-x-8 text-xs">
+                                        <div class="absolute text-gray-600 inset-y-7 inset-x-8 text-xs font-bold">
                                             ${item.userId === item.buyerId
                         ? item.buyyerLetter.toUpperCase()
                         : item.sellerLetter.toUpperCase()}
+
                                         </div>
+<div class="text-xs absolute top-10 w-32 tracking-tight ${item.userId === loggedUser
+                        ? "right-0"
+                        : ""}">${item.creationTime.slice(0, 10)} ${item.creationTime.slice(11, item.creationTime.length - 8)}</div>
                                     </div>
                                     <div class="relative mr-3 ml-3 text-sm ${item.userId === loggedUser
                         ? "bg-sky-100"
@@ -269,7 +273,7 @@ if (sendMessageListiner) {
 }
 
 connection.on("ReceiveMessage", function (host, messageBody, negotiateId, loggedUser, userId,
-    buyerId, buyerImageString, sellerImageString, buyerLetter, sellerLetter) {
+    buyerId, buyerImageString, sellerImageString, buyerLetter, sellerLetter, creationTime) {
     const wrapper = $("#messaging-container");
     var MessageDom;
     // We can assign user-supplied strings to an element's textContent because it
@@ -285,6 +289,9 @@ connection.on("ReceiveMessage", function (host, messageBody, negotiateId, logged
                                         <div class="absolute text-gray-600 inset-y-7 inset-x-8 text-xs">
                                             ${userId === buyerId ? buyerLetter.toUpperCase() : sellerLetter.toUpperCase()}
                                         </div>
+                                        <div class="text-xs absolute top-10 w-32 tracking-tight ${userId !== loggedUser
+            ? "right-0"
+            : ""}">${new Date().toISOString().split('T')[0]} ${new Date().toLocaleTimeString('en-US', { hour12: false })}</div>
                                     </div>
                                     <div class="relative mr-3 ml-3 text-sm ${userId !== loggedUser ? "bg-sky-100" : ""} py-2 px-4 shadow rounded-xl">
                                         <div>${messageBody}</div>

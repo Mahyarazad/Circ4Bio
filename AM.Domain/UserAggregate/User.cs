@@ -35,7 +35,7 @@ namespace AM.Domain.UserAggregate
         public void Edit(string? firstName, string? lastName, string userId
             , string address, string city, string country, long postalCode
             , double latitude, double longitude, string description, string companyName, long vatNumber
-            , bool status, string avatar, string webUrl, string linkdinUrl
+            , string avatar, string webUrl, string linkdinUrl
             , string twitterUrl, string instagramUrl, string faceBookUrl, int roleID)
         {
             FirstName = firstName;
@@ -50,7 +50,7 @@ namespace AM.Domain.UserAggregate
             Description = description;
             CompanyName = companyName;
             VatNumber = vatNumber;
-            Status = status;
+
             if (!string.IsNullOrWhiteSpace(avatar))
                 Avatar = avatar;
             WebUrl = webUrl;

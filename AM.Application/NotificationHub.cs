@@ -102,14 +102,15 @@ namespace AM.Application
             await _negotiateApplication.SendMessage(Command);
 
             await Clients.User(CurrentNegotiate.BuyerId.ToString())
-                .SendAsync("ReceiveMessage", $"https://{_contextAccessor.HttpContext.Request.Host}"
+                .SendAsync("ReceiveMessage", $"http://{_contextAccessor.HttpContext.Request.Host}"
                     , messageBody, negotiateId, CurrentNegotiate.SellerId.ToString(), Command.UserId.ToString()
                     , CurrentNegotiate.BuyerId.ToString()
                     , CurrentNegotiate.BuyerImageString, CurrentNegotiate.SellerImageString
-                    , CurrentNegotiate.BuyerEmail.Substring(0, 1), CurrentNegotiate.SellerEmail.Substring(0, 1));
+                    , CurrentNegotiate.BuyerEmail.Substring(0, 1)
+                    , CurrentNegotiate.SellerEmail.Substring(0, 1));
 
             await Clients.User(CurrentNegotiate.SellerId.ToString())
-                .SendAsync("ReceiveMessage", $"https://{_contextAccessor.HttpContext.Request.Host}"
+                .SendAsync("ReceiveMessage", $"http://{_contextAccessor.HttpContext.Request.Host}"
                     , messageBody, negotiateId, CurrentNegotiate.BuyerId.ToString(), Command.UserId.ToString()
                     , CurrentNegotiate.BuyerId.ToString()
                     , CurrentNegotiate.BuyerImageString
@@ -117,6 +118,7 @@ namespace AM.Application
                     , CurrentNegotiate.BuyerEmail.Substring(0, 1), CurrentNegotiate.SellerEmail.Substring(0, 1));
 
             await Task.Run(CountUnreadNotification);
+
         }
         public List<MessageViewModel> GetAllMessages(long NegotiateId)
         {

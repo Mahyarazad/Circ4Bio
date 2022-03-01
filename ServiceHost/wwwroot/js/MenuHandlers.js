@@ -243,5 +243,16 @@ function handleFilter() {
     }
 };
 
-
+$("#grid-size-handler").on('click', () => {
+    var stat = $("#grid-size-container").css('visibility');
+    if (stat === 'hidden') {
+        $("#grid-size-container").removeClass('invisible');
+        $("#grid-size-container").removeClass('scale-95');
+        $('#grid-size-container').css('opacity', '1');
+    } else {
+        $("#grid-size-container").addClass('invisible');
+        $("#grid-size-container").addClass('scale-95');
+        $('#grid-size-container').css('opacity', '0');
+    }
+})
 
