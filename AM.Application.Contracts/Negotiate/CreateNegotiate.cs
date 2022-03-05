@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using AM.Application.Contracts.User;
 
 namespace AM.Application.Contracts.Negotiate
 {
@@ -33,6 +34,7 @@ namespace AM.Application.Contracts.Negotiate
         public double UnitPrice { get; set; }
         public double Amount { get; set; }
         public string? Currency { get; set; }
+        public CreateDeliveryLocation DeliveryLocation { get; set; }
 
     }
 

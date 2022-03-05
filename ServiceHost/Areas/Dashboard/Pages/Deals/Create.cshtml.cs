@@ -60,8 +60,9 @@ namespace ServiceHost.Areas.Dashboard.Pages.Deals
                     new string("Buyer"),
                     new string("Seller"),
                 });
-                DeliveryLocationSelectList =
-                    new SelectList(await _userApplication.GetDeliveryLocationDropDown(_authenticateHelper.CurrentAccountRole().Id));
+                var ListView =
+                    await _userApplication.GetDeliveryLocationDropDown(_authenticateHelper.CurrentAccountRole().Id);
+                DeliveryLocationSelectList = new SelectList(ListView, "LocationId", "Name");
                 return null;
             }
             else

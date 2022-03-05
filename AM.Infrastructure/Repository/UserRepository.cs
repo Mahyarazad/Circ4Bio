@@ -5,9 +5,10 @@ using AM.Domain.UserAggregate;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
+using _0_Framework;
 using _0_Framework.Application;
 using AM.Application.Contracts.Notification;
-using AM.Domain.RoleAggregate;
+
 
 namespace AM.Infrastructure.Repository
 {
@@ -166,18 +167,39 @@ namespace AM.Infrastructure.Repository
                 return Task.FromResult(new EditUser());
             }
         }
-        public async Task AddDeliveryLocation(CreateDeliveryLocation Commad)
+        public async Task<OperationResult> AddDeliveryLocation(CreateDeliveryLocation Commad)
         {
-            var deliveryLocationList = _amContext
+            var result = new OperationResult();
+            var deliveryLocationList = await _amContext
                 .Users
                 .FirstOrDefaultAsync(x => x.Id == Commad.UserId);
             if (deliveryLocationList != null)
             {
-                deliveryLocationList.Result.AddDeliveryLocation(Commad.UserId, Commad.Location);
+                deliveryLocationList.AddDeliveryLocation(Commad.UserId, Commad.Name, Commad.AddressLineOne,
+                    Commad.AddressLineTwo, Commad.City, Commad.Country, Commad.Latitude, Commad.Longitude, Commad.PostalCode);
                 _amContext.SaveChanges();
+                return result.Succeeded();
             }
-            return;
+            return result.Failed(ApplicationMessage.RecordExists);
         }
+
+        public async Task<OperationResult> EditDeliveryLocation(CreateDeliveryLocation Commad)
+        {
+            var result = new OperationResult();
+            var deliveryLocationList = await _amContext
+                .Users
+                .FirstOrDefaultAsync(x => x.Id == Commad.UserId);
+            if (deliveryLocationList != null)
+            {
+                deliveryLocationList.EditDeliveryLocation(Commad.UserId, Commad.Name, Commad.AddressLineOne,
+                    Commad.AddressLineTwo, Commad.City, Commad.Country, Commad.Latitude
+                    , Commad.Longitude, Commad.PostalCode, Commad.LocationId);
+                _amContext.SaveChanges();
+                return result.Succeeded();
+            }
+            return result.Failed(ApplicationMessage.RecordExists);
+        }
+
         public async Task<bool> RemoveDeliveryLocation(CreateDeliveryLocation Commad)
         {
             var deliveryLocationList = await _amContext
@@ -198,7 +220,14 @@ namespace AM.Infrastructure.Repository
                 .AsNoTracking().AsSplitQuery().First().DeliveryLocations;
             var result = query.Select(x => new CreateDeliveryLocation
             {
-                Location = x.Location,
+                AddressLineOne = x.AddressLineOne,
+                AddressLineTwo = x.AddressLineTwo,
+                Name = x.Name,
+                City = x.City,
+                Country = x.Country,
+                Latitude = x.Latitude,
+                Longitude = x.Longitude,
+                PostalCode = x.PostalCode,
                 LocationId = x.Id,
                 UserId = x.UserId
             }).ToList();
@@ -206,13 +235,51 @@ namespace AM.Infrastructure.Repository
             return Task.FromResult(result);
 
         }
-        public async Task<List<string>> GetDeliveryLocationDropDown(long userId)
+
+        public Task<CreateDeliveryLocation> GetDeliveryLocation(long userId, long locationId)
         {
             var query = _amContext.Users
                 .Where(x => x.Id == userId)
                 .AsNoTracking().AsSplitQuery().FirstAsync().Result.DeliveryLocations;
-            var result = query.Select(x => new string(x.Location)).ToList();
+
+            var result = query.Select(x => new CreateDeliveryLocation
+            {
+                Name = x.Name,
+                LocationId = x.Id,
+                AddressLineOne = x.AddressLineOne,
+                AddressLineTwo = x.AddressLineTwo,
+                City = x.City,
+                Country = x.Country,
+                Latitude = x.Latitude,
+                Longitude = x.Longitude,
+                PostalCode = x.PostalCode,
+                UserId = x.UserId
+            }).First();
+
+            return Task.FromResult(result);
+        }
+
+        public async Task<List<CreateDeliveryLocation>> GetDeliveryLocationDropDown(long userId)
+        {
+            var query = _amContext.Users
+                .Where(x => x.Id == userId)
+                .AsNoTracking().AsSplitQuery().FirstAsync().Result.DeliveryLocations;
+            var result = query.Select(x => new CreateDeliveryLocation
+            {
+                Name = x.Name,
+                LocationId = x.Id
+            }).ToList();
             return result;
+        }
+
+        public Task<bool> CheckDeliveryLocationName(string Name, long userId)
+        {
+            var query = _amContext.Users
+                .Where(x => x.Id == userId)
+                .AsNoTracking().AsSplitQuery().First().DeliveryLocations;
+
+            return Task.FromResult(!query.Any(x => x.Name == Name));
+
         }
     }
 }

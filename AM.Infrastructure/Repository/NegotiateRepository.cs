@@ -126,6 +126,7 @@ namespace AM.Infrastructure.Repository
                     ImageString = x.Image,
                     Amount = x.Amount,
                     Unit = x.Unit,
+                    CreationTime = x.CreationTime,
                     UnitPrice = x.UnitPrice,
                     BuyerId = negotiate.BuyerId,
                     SellerId = negotiate.SellerId,

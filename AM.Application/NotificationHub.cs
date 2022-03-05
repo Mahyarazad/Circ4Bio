@@ -99,6 +99,7 @@ namespace AM.Application
             Command.UserId = _authenticateHelper.CurrentAccountRole().Id;
             if (Command.UserId == CurrentNegotiate.BuyerId)
                 Command.UserEntity = true;
+
             await _negotiateApplication.SendMessage(Command);
 
             await Clients.User(CurrentNegotiate.BuyerId.ToString())

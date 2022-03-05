@@ -8,13 +8,14 @@ namespace AM.Application.Contracts.Notification
         public long Id { get; set; }
         public string? NotificationBody { get; set; }
         public string? NotificationTitle { get; set; }
+        public string? RedirectUrl { get; set; }
         public long SenderId { get; set; }
         public long UserId { get; set; }
         public long RecipientId { get; set; }
         public DateTime CreationTime { get; set; }
         public List<RecipientViewModel>? RecipientList { get; set; }
     }
-    public class RecipientViewModel 
+    public class RecipientViewModel
     {
         public long Id { get; set; }
         public long UserId { get; set; }

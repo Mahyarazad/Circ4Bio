@@ -27,9 +27,11 @@ namespace AM.Application.Contracts.User
         Task<OperationResult> Login(EditUser command);
         void Logout();
         Task<List<Usertype>> GetUsertypes();
-        Task AddDeliveryLocation(CreateDeliveryLocation Command);
+        Task<OperationResult> AddDeliveryLocation(CreateDeliveryLocation Command);
+        Task<OperationResult> EditDeliveryLocation(CreateDeliveryLocation Command);
         Task<bool> RemoveDeliveryLocation(CreateDeliveryLocation Command);
         Task<List<CreateDeliveryLocation>> GetDeliveryLocationList(long userId);
-        Task<List<string>> GetDeliveryLocationDropDown(long userId);
+        Task<CreateDeliveryLocation> GetDeliveryLocation(long UserId, long LocationId);
+        Task<List<CreateDeliveryLocation>> GetDeliveryLocationDropDown(long userId);
     }
 }

@@ -127,6 +127,7 @@ namespace ServiceHost
             });
             app.UseRouting();
             app.UseCors(_corsPolicy);
+            app.UseWebSockets();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {

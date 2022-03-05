@@ -239,6 +239,7 @@ function CallBackHandler(data, action, form) {
             $("#modal").hide();
             if (data.result.isSucceeded) {
                 window.location.reload();
+                connection();
                 setInterval(function () {
                     var resultDom = $('#operation-result');
                     resultDom.css('display', 'none');
@@ -250,6 +251,8 @@ function CallBackHandler(data, action, form) {
                 setInterval(function () {
                     var resultDom = $('#operation-result-failed');
                     resultDom.css('display', 'none');
+                    window.location.reload();
+                    connection();
                 },
                     2000)
             }

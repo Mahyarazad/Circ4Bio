@@ -1,5 +1,8 @@
 ﻿@page "{id}"
 @using _0_Framework.Application
+@using Microsoft.Extensions.Configuration
+@using Newtonsoft.Json
+@inject IConfiguration _Configuration;
 @model ServiceHost.Areas.Dashboard.Pages.Deals.ConfirmQuatationModel;
 @inject IAuthenticateHelper AuthenticateHelper;
 @{ ViewData["Title"] = $"Dashboard | Deals | {@Model.Command.ItemName} Quatation"; }
@@ -65,13 +68,6 @@
                         @Model.Command.Listing.Name
                     </p>
                 </div>
-
-                <div class="col-span-12 sm:col-span-6">
-                    <label asp-for="@Model.Command.Listing.Description" class="block text-sm font-medium text-gray-700"></label>
-                    <p class="mt-1 block w-full border bg-gray-100 border-gray-100 rounded-md shadow-sm py-2 px-3 sm:text-sm">
-                        @Model.Command.Listing.Description
-                    </p>
-                </div>
                 <div class="col-span-12 sm:col-span-6">
                     <label class="block text-sm font-medium text-gray-700"> Delivery Charges </label>
                     <div class="mt-1 block w-full bg-gray-100 pl-3 pr-10 py-2 text-base border-gray-100  sm:text-sm rounded-md">
@@ -79,61 +75,88 @@
                     </div>
                 </div>
                 <div class="col-span-12 sm:col-span-6">
+                    <label asp-for="@Model.Command.Listing.Description" class="block text-sm font-medium text-gray-700"></label>
+                    <p class="mt-1 block w-full border bg-gray-100 border-gray-100 rounded-md shadow-sm py-2 px-3 sm:text-sm">
+                        @Model.Command.Listing.Description
+                    </p>
+                </div>
+
+                <div class="col-span-12 sm:col-span-6">
                     <label class="block text-sm font-medium text-gray-700 mt-3">Delivery Cost</label>
-                    <div class="mt-1 block w-full bg-gray-100 border border-gray-100 rounded-md shadow-sm py-2 px-3  sm:text-sm">
+                    <div class="mt-1 block w-full bg-gray-100 border border-gray-100 rounded-md shadow-sm py-2 px-3 sm:text-sm flex justify-between">
                         <p>@Model.Command.DeliveryCost</p>
+                        <span>@Model.Command.Currency</span>
                     </div>
+
+                    <label asp-for="@Model.Command.Amount" class="block text-sm font-medium text-gray-700"></label>
+                    <div class="mt-1 block w-full bg-gray-100 rounded-md shadow-sm py-2 px-3  sm:text-sm flex justify-between">
+                        <p>@Model.Command.Amount</p>
+                        <span>@Model.Command.Unit</span>
+                    </div>
+
+                    <label class="block text-sm font-medium text-gray-700"> Unit Price </label>
+                    <div class="mt-1 block w-full bg-gray-100 rounded-md shadow-sm py-2 px-3 sm:text-sm flex justify-between">
+                        <p>@Model.Command.Listing.UnitPrice</p>
+                        <span>@Model.Command.Currency</span>
+                    </div>
+
+                    <span id="show-currency" class="absolute ml-72 sm:ml-56 mt-8 md:ml-72"></span>
+                    <label class="block text-sm font-medium text-gray-700">Total Cost</label>
+                    <div class="mt-1 block w-full bg-gray-100 rounded-md shadow-sm py-2 px-3 sm:text-sm flex justify-between">
+                        <p>@Model.Command.TotalCost</p>
+                        <span>@Model.Command.Currency</span>
+                    </div>
+
                 </div>
                 <div class="col-span-12 sm:col-span-6">
                     <label class="block text-sm font-medium text-gray-700 mt-3">Delivery Location</label>
-                    <div class="mt-1 block bg-gray-100 border-gray-100 w-full pl-3 pr-10 py-2 text-base border-gray-300  sm:text-sm rounded-md">
-                        <p>@Model.Command.Location</p>
-                    </div>
-                </div>
-                <div class="col-span-12 sm:col-span-6">
-                    <label asp-for="@Model.Command.Amount" class="block text-sm font-medium text-gray-700"></label>
-                    <div class="mt-1 block w-full bg-gray-100 rounded-md shadow-sm py-2 px-3  sm:text-sm">
-                        <p>@Model.Command.Amount</p>
-                    </div>
-                </div>
-                <div class="col-span-12 sm:col-span-6">
-                    <label asp-for="@Model.Command.Currency" class="block text-sm font-medium text-gray-700"></label>
-                    <div class="mt-1 block w-full bg-gray-100 rounded-md shadow-sm py-2 px-3  sm:text-sm">
-                        <p>@Model.Command.Currency</p>
-                    </div>
-                </div>
-                <div class="col-span-12 sm:col-span-6">
-                    <label asp-for="@Model.Command.Unit" class="block text-sm font-medium text-gray-700"></label>
-                    <div class="mt-1 block w-full bg-gray-100 rounded-md shadow-sm py-2 px-3  sm:text-sm">
-                        <p>@Model.Command.Unit</p>
-                    </div>
-                </div>
-                <div class="col-span-12 sm:col-span-6">
-                    <label class="block text-sm font-medium text-gray-700"> Unit Price </label>
-                    <div class="mt-1 block w-full bg-gray-100 rounded-md shadow-sm py-2 px-3  sm:text-sm">
-                        <p>@Model.Command.Listing.UnitPrice</p>
-                    </div>
-                </div>
-                <div class="col-span-12 sm:col-span-6">
-                    <span id="show-currency" class="absolute ml-72 sm:ml-56 mt-8 md:ml-72"></span>
-                    <label class="block text-sm font-medium text-gray-700">Total Cost</label>
-                    <div class="mt-1 block w-full bg-gray-100 rounded-md shadow-sm py-2 px-3  sm:text-sm">
-                        <p>@Model.Command.TotalCost</p>
+                    <div class="mt-1 block bg-gray-100 border-gray-100 w-full px-2 py-2 text-base border-gray-300 sm:text-sm rounded-md">
+                        <div class="flex justify-between flex-col">
+                            <div class="text-sm text-gray-800">
+                                <span class="text-sm text-gray-900 font-medium">Address Title:</span>
+                                @Model.Command.DeliveryLocation.Name
+                                <div class="flex flex-col">
+                                    <p class="text-sm text-gray-800">
+                                        <span class="text-sm text-gray-900 font-medium">Country:</span>
+                                        @Model.Command.DeliveryLocation.Country
+                                    </p>
+                                    <p class="text-sm text-gray-800">
+                                        <span class="text-sm text-gray-900 font-medium">City:</span>
+                                        @Model.Command.DeliveryLocation.City
+                                    </p>
+                                    <p class="text-sm text-gray-800">
+                                        <span class="text-sm text-gray-900 font-medium">Address Line 1:</span>
+                                        @Model.Command.DeliveryLocation.AddressLineOne
+                                    </p>
+                                    <p class="text-sm text-gray-800">
+                                        <span class="text-sm text-gray-900 font-medium">Address Line 2:</span>
+                                        @Model.Command.DeliveryLocation.AddressLineTwo
+                                    </p>
+                                    <p class="text-sm text-gray-800">
+                                        <span class="text-sm text-gray-900 font-medium">Postal Code:</span>
+                                        @Model.Command.DeliveryLocation.PostalCode
+                                    </p>
+
+                                </div>
+                                <div class="space-y-32 rounded-l-md w-full" id="@Model.Command.DeliveryLocation.LocationId"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <div class="col-span-12 sm:col-span-6">
                     <label class="block text-sm font-medium text-gray-700">Contract</label>
-                    @if(Model.Command.ContractFileString != null){
-                    <a href="~/Site Files/Deal Documents/@Model.Command.NegotiateId/@Model.Command.ContractFileString"
-                       class="mt-1 w-full border border-gray-100 rounded-md shadow-sm py-2 px-3 sm:text-sm">
-                        @(Model.Command.ContractFileString != null ? "Open Contract File" : "No Contract File")
-                    </a>
-                    } else {
-                    <p class="mt-1 w-full border bg-gray-100 border-gray-100 rounded-md shadow-sm py-2 px-3 sm:text-sm">
-                        No Contract File
-                    </p>
-                    }
+                    @if (Model.Command.ContractFileString != null)
+                    {
+        <a href="~/Site Files/Deal Documents/@Model.Command.NegotiateId/@Model.Command.ContractFileString"
+           class="mt-1 w-full border border-gray-100 rounded-md shadow-sm py-2 px-3 sm:text-sm">
+            @(Model.Command.ContractFileString != null ? "Open Contract File" : "No Contract File")
+        </a> }
+                    else
+                    {
+        <p class="mt-1 w-full border bg-gray-100 border-gray-100 rounded-md shadow-sm py-2 px-3 sm:text-sm">
+            No Contract File
+        </p>}
 
                 </div>
                 <input type="hidden" asp-for="@Model.Command.NegotiateId">
@@ -155,5 +178,26 @@
 
 @section Scripts
 {
-    <script src="~/js/CalculateDeal.js"></script>
+    <script src="~/js/mapbox-gl.js"></script>
+    <script>
+        mapboxgl.accessToken = @Html.Raw(Json.Serialize(_Configuration.GetSection("MapBox")["SecretKey"]));
+        var deliveryAddress = @Html.Raw(JsonConvert.SerializeObject(Model.Command.DeliveryLocation));
+        console.log(deliveryAddress);
+        var map = new mapboxgl.Map({
+            container: deliveryAddress.LocationId.toString(), // container ID
+            style: 'mapbox://styles/mapbox/streets-v11', // style URL
+            center: [deliveryAddress.Longitude, deliveryAddress.Latitude], // starting position [lng, lat]
+            zoom: 12 // starting zoom
+        });
+        // Create a default Marker and add it to the map.
+        var marker = new mapboxgl.Marker({ color: 'red', rotation: 0 })
+            .setLngLat([deliveryAddress.Longitude, deliveryAddress.Latitude])
+            .addTo(map);
+
+    </script>
+}
+@section CSS
+{
+    <script src="~/js/mapbox-gl.js"></script>
+    <link rel="stylesheet" href="~/css/mapbox-gl.css" />
 }

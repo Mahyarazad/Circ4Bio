@@ -43,5 +43,8 @@
 
         //Deal Title
         public const string DealsCreated = "New deal has issued";
+
+        //DeliveryLocationAddress
+        public const string DuplicateDeliveryLocationName = "This name has been taken, please chose another name.";
     }
 }

@@ -58,6 +58,7 @@ namespace AM.Infrastructure.Repository
                     UserId = x.UserId,
                     Id = x.NotificationId,
                     RecipientId = x.Id,
+                    RedirectUrl = x.Notification.RedirectUrl,
                     NotificationBody = x.Notification.NotificationBody,
                     NotificationTitle = x.Notification.NotificationTitle,
                 }).OrderByDescending(x => x.Id)
@@ -77,6 +78,7 @@ namespace AM.Infrastructure.Repository
                     UserId = x.UserId,
                     Id = x.NotificationId,
                     RecipientId = x.Id,
+                    RedirectUrl = x.Notification.RedirectUrl,
                     NotificationBody = x.Notification.NotificationBody,
                     NotificationTitle = x.Notification.NotificationTitle,
                     CreationTime = x.CreationTime

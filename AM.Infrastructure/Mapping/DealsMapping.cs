@@ -23,6 +23,7 @@ namespace AM.Infrastructure.Mapping
             builder.Property(x => x.IsDeleted).IsRequired();
             builder.Property(x => x.IsActive).IsRequired();
             builder.Property(x => x.IsFinished).IsRequired();
+            builder.Property(x => x.DeliveryLocationId).IsRequired();
 
 
             builder.HasOne(x => x.Listing).WithMany(x => x.DealList).HasForeignKey(x => x.ListingId);

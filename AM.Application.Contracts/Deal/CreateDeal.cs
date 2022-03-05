@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Dynamic;
 using _0_Framework;
 using _0_Framework.Application;
 using AM.Application.Contracts.Listing;
@@ -49,6 +50,7 @@ namespace AM.Application.Contracts.Deal
         public bool QuatationSent { get; set; }
         public string? ItemName { get; set; }
         public DateTime CreationTime { get; set; }
-        public string ContractFileString { get; set; }
+        public string? ContractFileString { get; set; }
+        public CreateDeliveryLocation? DeliveryLocation { get; set; }
     }
 }

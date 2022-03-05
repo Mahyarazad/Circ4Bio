@@ -68,12 +68,18 @@ namespace AM.Application
             var result = new OperationResult();
             if (_userRepository.Exist(x => x.Email == command.Email))
                 return result.Failed(ApplicationMessage.RecordExists);
+
+            var RedirectUrl = _contextAccessor.HttpContext.Request.Headers
+                .FirstOrDefault(x => x.Key == "Origin").Value
+                .ToString();
+
             // Check the role for status management
             var roles = await _roleRepository.GetAll();
             command.Status = false;
             var check = roles.FirstOrDefault(x => x.Name == "Customer of Raw Material").Id;
             if (command.RoleId == check)
                 command.Status = true;
+
 
             var password = _passwordHasher.Hash(command.Password);
             var activationGuid = Guid.NewGuid();
@@ -100,6 +106,7 @@ namespace AM.Application
                     .PushNotification(new NotificationViewModel
                     {
                         SenderId = 1,
+                        RedirectUrl = RedirectUrl + $"/dashboard/profile/{user.Id}",
                         NotificationBody = ApplicationMessage.ListingNewItemListed,
                         NotificationTitle = ApplicationMessage.SystemMessage,
                         UserId = user.Id
@@ -443,17 +450,21 @@ namespace AM.Application
             var type = new Usertype(0, "Default");
             return Task.FromResult(type.GetUserTypeList());
         }
-        public async Task AddDeliveryLocation(CreateDeliveryLocation Command)
+        public async Task<OperationResult> AddDeliveryLocation(CreateDeliveryLocation Command)
         {
-            if (_userRepository.Exist(x => x.Id == Command.UserId))
+            var result = new OperationResult();
+            if (await _userRepository.CheckDeliveryLocationName(Command.Name, Command.UserId))
             {
-                await _userRepository.AddDeliveryLocation(Command);
+                if (_userRepository.Exist(x => x.Id == Command.UserId))
+                {
+                    return await _userRepository.AddDeliveryLocation(Command);
+                }
+                return result.Failed(ApplicationMessage.SomethingWentWrong);
             }
             else
             {
-                return;
+                return result.Failed(ApplicationMessage.DuplicateDeliveryLocationName);
             }
-
         }
         public async Task<bool> RemoveDeliveryLocation(CreateDeliveryLocation Command)
         {
@@ -478,7 +489,21 @@ namespace AM.Application
             }
 
         }
-        public async Task<List<string>> GetDeliveryLocationDropDown(long userId)
+
+        public Task<CreateDeliveryLocation> GetDeliveryLocation(long UserId, long LocationId)
+        {
+            if (_userRepository.Exist(x => x.Id == UserId))
+            {
+                return _userRepository.GetDeliveryLocation(UserId, LocationId);
+            }
+            else
+            {
+                return Task.FromResult(new CreateDeliveryLocation());
+            }
+        }
+
+
+        public async Task<List<CreateDeliveryLocation>> GetDeliveryLocationDropDown(long userId)
         {
             if (_userRepository.Exist(x => x.Id == userId))
             {
@@ -486,8 +511,19 @@ namespace AM.Application
             }
             else
             {
-                return new List<string>();
+                return new List<CreateDeliveryLocation>();
             }
+        }
+
+        public async Task<OperationResult> EditDeliveryLocation(CreateDeliveryLocation Command)
+        {
+            var result = new OperationResult();
+            if (_userRepository.Exist(x => x.Id == Command.UserId))
+            {
+                return await _userRepository.EditDeliveryLocation(Command);
+            }
+
+            return result.Failed(ApplicationMessage.SomethingWentWrong);
         }
     }
 }

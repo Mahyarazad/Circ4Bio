@@ -61,9 +61,19 @@ namespace AM.Domain.UserAggregate
             RoleId = roleID;
         }
 
-        public void AddDeliveryLocation(long userId, string? location)
+        public void AddDeliveryLocation(long userId, string? name, string? addressLineOne, string? addressLineTwo,
+            string? city, string? country, double latitude, double longitude, long postalCode)
         {
-            DeliveryLocations.Add(new DeliveryLocation(userId, location));
+            DeliveryLocations.Add(new DeliveryLocation(userId, name, addressLineOne, addressLineTwo,
+                 city, country, latitude, longitude, postalCode));
+        }
+
+        public void EditDeliveryLocation(long userId, string? name, string? addressLineOne, string? addressLineTwo,
+            string? city, string? country, double latitude, double longitude, long postalCode, int locationId)
+        {
+            DeliveryLocation target = DeliveryLocations.FirstOrDefault(x => x.Id == locationId);
+            target._EditDeliveryLocation(userId, name, addressLineOne, addressLineTwo,
+                city, country, latitude, longitude, postalCode);
         }
 
         public bool RemoveDeliveryLocation(int Id)

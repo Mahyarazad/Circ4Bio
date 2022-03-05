@@ -11,7 +11,8 @@ namespace AM.Infrastructure.Mapping
         {
             builder.ToTable("Notification", schema: "dbo");
             builder.HasKey(x => x.Id);
-            builder.Property(x => x.NotificationBody).IsRequired().HasMaxLength(1000);
+            builder.Property(x => x.RedirectUrl).IsRequired().HasMaxLength(300);
+            builder.Property(x => x.NotificationBody).IsRequired().HasMaxLength(500);
             builder.Property(x => x.NotificationTitle).IsRequired().HasMaxLength(200);
             builder.HasOne(x => x.User).WithMany(x => x.Notifications).HasForeignKey(x => x.UserId);
             builder.HasMany(x => x.Recipient).WithOne(x => x.Notification).HasForeignKey(x => x.NotificationId);

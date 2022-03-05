@@ -15,7 +15,7 @@ namespace AM.Domain
         }
 
         public Deal(double deliveryCost, string? deliveryMethod, double totalCost, string? unit
-            , string? curency, double amount, string? location, string? trackingCode
+            , string? curency, double amount, int deliveryLocationId, string? trackingCode
             , string? contractFile, DateTime dueDate, long listingId
             , long negotiateId, long buyerId, long sellerId)
         {
@@ -25,7 +25,7 @@ namespace AM.Domain
             Unit = unit;
             Currency = curency;
             Amount = amount;
-            Location = location;
+            DeliveryLocationId = deliveryLocationId;
             TrackingCode = trackingCode;
             ContractFile = contractFile;
             PaymentStatus = false;
@@ -45,6 +45,7 @@ namespace AM.Domain
         public long ListingId { get; private set; }
         public Listing? Listing { get; private set; }
         public long NegotiateId { get; private set; }
+        public int DeliveryLocationId { get; private set; }
         public long BuyerId { get; private set; }
         public long SellerId { get; private set; }
         public List<Negotiate>? Negotiates { get; private set; }

@@ -26,6 +26,17 @@ li.active, li.next, li {
     border-radius: 5px 5px 5px 5px;
 }
 
+.special-text {
+    text-shadow: 0.05em 0 black, 0 0.05em black, -0.05em 0 black, 0 -0.05em black, -0.05em -0.05em black, -0.05em 0.05em black, 0.05em -0.05em black, 0.05em 0.05em black;
+}
+
 .file-input {
     height: 45px !important;
+}
+
+#map-wrapper {
+    /* position: absolute; */
+    width: 100%;
+    top: 0;
+    bottom: 0;
 }

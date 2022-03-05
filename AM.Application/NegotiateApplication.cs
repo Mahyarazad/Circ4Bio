@@ -13,6 +13,9 @@ using AM.Domain.NegotiateAggregate;
 using AM.Domain.NotificationAggregate;
 using AM.Domain.RoleAggregate;
 using AM.Domain.UserAggregate;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.SignalR;
 
 namespace AM.Application
 {
@@ -21,17 +24,18 @@ namespace AM.Application
         private readonly IFileUploader _fileUploader;
         private readonly IUserRepository _userRepository;
         private readonly IUserApplication _userApplication;
+        private readonly IHttpContextAccessor _contextAccessor;
         private readonly IListingRepository _listingRepository;
         private readonly IAuthenticateHelper _authenticateHelper;
         private readonly IRecipientRepository _recipientRepository;
         private readonly INegotiateRepository _negotiateRepository;
         private readonly IUserNegotiateRepository _userNegotiateRepository;
         private readonly INotificationApplication _notificationApplication;
-
         public NegotiateApplication(INegotiateRepository negotiateRepository,
             IAuthenticateHelper authenticateHelper,
             IRecipientRepository recipientRepository,
             INotificationApplication notificationApplication,
+            IHttpContextAccessor contextAccessor,
             IUserApplication userApplication,
             IListingRepository listingRepository,
             IUserNegotiateRepository userNegotiateRepository,
@@ -41,16 +45,23 @@ namespace AM.Application
             _fileUploader = fileUploader;
             _userRepository = userRepository;
             _userApplication = userApplication;
-            _authenticateHelper = authenticateHelper;
+            _contextAccessor = contextAccessor;
             _listingRepository = listingRepository;
+            _authenticateHelper = authenticateHelper;
             _recipientRepository = recipientRepository;
             _negotiateRepository = negotiateRepository;
             _userNegotiateRepository = userNegotiateRepository;
             _notificationApplication = notificationApplication;
         }
+
+
         public async Task<OperationResult> Create(CreateNegotiate Command)
         {
             var result = new OperationResult();
+            var RedirectUrl = _contextAccessor.HttpContext.Request.Headers
+                .FirstOrDefault(x => x.Key == "Origin").Value
+                .ToString();
+
 
             if (!_listingRepository.Exist(x => x.Id == Command.ListingId))
                 return result.Failed(ApplicationMessage.RecordNotFound);
@@ -88,11 +99,16 @@ namespace AM.Application
                 RoleId = sellerRoleId
             });
 
+            var negotiate = new Negotiate(Command.ListingId, Command.BuyerId, Command.SellerId);
+            _negotiateRepository.Create(negotiate);
+            _negotiateRepository.SaveChanges();
+
             var buyerNotificationId = _notificationApplication
                 .PushNotification(new NotificationViewModel
                 {
                     RecipientList = buyyerRecipientList,
                     SenderId = Command.BuyerId,
+                    RedirectUrl = RedirectUrl + $"/dashboard/negotiate/messages/{negotiate.Id}",
                     NotificationBody = $"Negotiation opened for {listingInfo.Name} at {listingInfo.UnitPrice} {listingInfo.Currency}",
                     NotificationTitle = ApplicationMessage.SubmitNegotiationRequest,
                     UserId = Command.BuyerId
@@ -103,6 +119,7 @@ namespace AM.Application
                 {
                     RecipientList = sellerRecipientList,
                     SenderId = Command.SellerId,
+                    RedirectUrl = RedirectUrl + $"/dashboard/negotiate/messages/{negotiate.Id}",
                     NotificationBody = $"{buyerUserId} opened a negotiation for {listingInfo.Name} at {listingInfo.UnitPrice} {listingInfo.Currency}",
                     NotificationTitle = ApplicationMessage.ReceivedNegotiation,
                     UserId = Command.SellerId
@@ -112,9 +129,7 @@ namespace AM.Application
             _recipientRepository.Create(new Recipient(Command.SellerId, sellerRoleId, sellerNotificationId.Result));
             _recipientRepository.SaveChanges();
 
-            var negotiate = new Negotiate(Command.ListingId, Command.BuyerId, Command.SellerId);
-            _negotiateRepository.Create(negotiate);
-            _negotiateRepository.SaveChanges();
+
 
             _userNegotiateRepository.Create(new UserNegotiate(Command.BuyerId, negotiate.Id, true));
             _userNegotiateRepository.Create(new UserNegotiate(Command.SellerId, negotiate.Id, false));
@@ -123,6 +138,7 @@ namespace AM.Application
             return await Task.FromResult(result.Succeeded());
 
         }
+
         public async Task<OperationResult> SendMessage(NewMessage Command)
         {
             var result = new OperationResult();
@@ -131,6 +147,10 @@ namespace AM.Application
 
             var negotiate = await _negotiateRepository.Get(Command.NegotiateId);
             var whoIsTheSender = _authenticateHelper.CurrentAccountRole().Id;
+            // var RedirectUrl = _contextAccessor.HttpContext.Request.QueryString.Value
+            // .Substring(13, _contextAccessor.HttpContext.Request.QueryString.Value.Length - 39);
+            var RedirectUrl =
+                $"/dashboard/negotiate/messages/{Command.NegotiateId}";
 
             var sellerRoleId = _userRepository.GetDetail(negotiate.SellerId).Result.RoleId;
             var sellerRoleString = _userApplication.GetUsertypes().Result
@@ -165,6 +185,7 @@ namespace AM.Application
                 {
                     RecipientList = buyyerRecipientList,
                     SenderId = negotiate.BuyerId,
+                    RedirectUrl = RedirectUrl,
                     NotificationBody = $"{sellerRoleString} has replied to you regarding {listingInfo.Result.Name} at {listingInfo.Result.UnitPrice} {listingInfo.Result.Currency}",
                     NotificationTitle = ApplicationMessage.NewMessage,
                     UserId = negotiate.BuyerId
@@ -175,6 +196,7 @@ namespace AM.Application
                 {
                     RecipientList = sellerRecipientList,
                     SenderId = negotiate.SellerId,
+                    RedirectUrl = RedirectUrl,
                     NotificationBody = $"{_authenticateHelper.CurrentAccountRole().Email} sends a new message regarding {listingInfo.Result.Name} at {listingInfo.Result.UnitPrice} {listingInfo.Result.Currency}",
                     NotificationTitle = ApplicationMessage.NewMessage,
                     UserId = negotiate.SellerId
@@ -206,6 +228,10 @@ namespace AM.Application
             var result = new OperationResult();
             if (!_negotiateRepository.Exist(x => x.Id == Command.NegotiateId))
                 return result.Failed(ApplicationMessage.RecordNotFound);
+
+            var RedirectUrl = _contextAccessor.HttpContext.Request.Headers
+                .FirstOrDefault(x => x.Key == "Origin").Value
+                .ToString();
 
             var sellerRoleId = _userRepository.GetDetail(Command.SellerId).Result.RoleId;
             var sellerUserId = $"{_userRepository.GetDetail(Command.SellerId).Result.UserId}";
@@ -242,6 +268,7 @@ namespace AM.Application
                 {
                     RecipientList = buyyerRecipientList,
                     SenderId = Command.BuyerId,
+                    RedirectUrl = RedirectUrl + $"/dashboard",
                     NotificationBody =
                         $"Negotiation CANCELED for {listingInfo.Result.Name} at {listingInfo.Result.UnitPrice} {listingInfo.Result.Currency} by {(_authenticateHelper.CurrentAccountRole().Id == Command.SellerId ? sellerUserId : buyerUserId)}",
                     NotificationTitle = ApplicationMessage.CanceledNegotiationRequest,
@@ -253,6 +280,7 @@ namespace AM.Application
                 {
                     RecipientList = sellerRecipientList,
                     SenderId = Command.SellerId,
+                    RedirectUrl = RedirectUrl + $"/dashboard",
                     NotificationBody = $"Negotiation CANCELED for {listingInfo.Result.Name} at {listingInfo.Result.UnitPrice} {listingInfo.Result.Currency} by {(_authenticateHelper.CurrentAccountRole().Id == Command.SellerId ? sellerUserId : buyerUserId)}",
                     NotificationTitle = ApplicationMessage.CanceledNegotiationRequest,
                     UserId = Command.SellerId

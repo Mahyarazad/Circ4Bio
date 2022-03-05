@@ -9,6 +9,7 @@ using AM.Domain.ListingAggregate;
 using AM.Application.Contracts.Notification;
 using AM.Application.Contracts.User;
 using AM.Domain.NotificationAggregate;
+using Microsoft.AspNetCore.Http;
 
 namespace AM.Application
 {
@@ -16,22 +17,25 @@ namespace AM.Application
     {
         private readonly IFileUploader _fileUploader;
         private readonly IUserApplication _userApplication;
-        private readonly IAuthenticateHelper _authenticateHelper;
+        private readonly IHttpContextAccessor _contextAccessor;
         private readonly IListingRepository _listingRepository;
+        private readonly IAuthenticateHelper _authenticateHelper;
         private readonly IRecipientRepository _recipientRepository;
         private readonly INotificationApplication _notificationApplication;
 
         public ListingApplication(IListingRepository listingRepository,
             INotificationApplication notificationApplication,
+            IHttpContextAccessor contextAccessor,
             IRecipientRepository recipientRepository,
             IAuthenticateHelper authenticateHelper,
             IUserApplication userApplication,
             IFileUploader fileUploader)
         {
             _fileUploader = fileUploader;
+            _contextAccessor = contextAccessor;
             _userApplication = userApplication;
-            _authenticateHelper = authenticateHelper;
             _listingRepository = listingRepository;
+            _authenticateHelper = authenticateHelper;
             _recipientRepository = recipientRepository;
             _notificationApplication = notificationApplication;
         }
@@ -42,6 +46,12 @@ namespace AM.Application
             var roleId = Convert.ToInt32(_authenticateHelper.CurrentAccountRole().RoleId);
             var typeofListing = _userApplication.GetUsertypes().Result
                 .FirstOrDefault(x => x.TypeId == roleId).TypeName;
+
+            var RedirectUrl = _contextAccessor.HttpContext.Request.Headers
+                .FirstOrDefault(x => x.Key == "Referer").Value
+                .ToString()
+                .Replace("listing", "availablelisting")
+                .Replace("create", "detail");
 
             command.ImageString = _fileUploader
                     .Uploader(command.Image, $"Listing_Images/{typeofListing}", Guid.NewGuid().ToString());
@@ -64,6 +74,13 @@ namespace AM.Application
                     break;
             }
 
+            var listing = new Listing(command.Name, typeofListing, command.Description, command.ImageString,
+                command.DeliveryMethod, command.Unit, command.UnitPrice, command.Amount, command.Status,
+                issuerId, command.IsService, command.Currency);
+
+            _listingRepository.Create(listing);
+            _listingRepository.SaveChanges();
+
             var recipientList = _userApplication.GetUserListForListing(issuerId).Result;
 
             if (command.IsService)
@@ -76,6 +93,7 @@ namespace AM.Application
                 {
                     RecipientList = _userApplication.GetUserListForListing(issuerId).Result,
                     SenderId = issuerId,
+                    RedirectUrl = RedirectUrl + $"/{listing.Id}",
                     NotificationBody = $"{command.Name} is available now in Listing, Available amount is " +
                                        $"{command.Amount.ToString()} {command.Unit.ToString()} at {command.UnitPrice.ToString()}",
                     NotificationTitle = notificationTitle,
@@ -86,12 +104,13 @@ namespace AM.Application
             {
                 _recipientRepository.Create(new Recipient(receiver.UserId, receiver.RoleId, notificationId.Result));
             }
-            _recipientRepository.SaveChanges();
 
+            _recipientRepository.SaveChanges();
             var systemNotificationId = _notificationApplication
                 .PushNotification(new NotificationViewModel
                 {
                     SenderId = 1,
+                    RedirectUrl = RedirectUrl + $"/{listing.Id}",
                     NotificationBody = ApplicationMessage.ListingNewItemListed,
                     NotificationTitle = ApplicationMessage.SystemMessage,
                     UserId = issuerId
@@ -100,14 +119,6 @@ namespace AM.Application
             _recipientRepository.Create(new Recipient(issuerId, roleId, systemNotificationId.Result));
             _recipientRepository.SaveChanges();
 
-
-
-            var listing = new Listing(command.Name, typeofListing, command.Description, command.ImageString,
-                command.DeliveryMethod, command.Unit, command.UnitPrice, command.Amount, command.Status,
-                issuerId, command.IsService, command.Currency);
-
-            _listingRepository.Create(listing);
-            _listingRepository.SaveChanges();
 
             return Task.FromResult(result.Succeeded());
         }

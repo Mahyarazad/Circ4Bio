@@ -1,12 +1,18 @@
 ﻿"use strict";
-//var host = "https://localhost:5001";
-var host = "http://www.maahyarazad.ir";
-
+var host = "https://localhost:5001";
+//var host = "http://www.maahyarazad.ir";
+//?QueryString = ${ window.location.href }
 var connection = new signalR.HubConnectionBuilder()
-    .withUrl("/notificationHub")
+    .withUrl(`/notificationHub`,
+        {
+            headers: { "QueryString": `${window.location.href}` },
+            transport: signalR.HttpTransportType.WebSockets | signalR.HttpTransportType.LongPolling
+        })
     .withAutomaticReconnect()
     .configureLogging(signalR.LogLevel.Debug)
     .build();
+
+
 
 var invokeNotification = function () {
     var NotificationDom = document.createElement('template');;
@@ -26,14 +32,16 @@ var invokeNotification = function () {
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
                                 </svg>
                             </div>
-                            <div class="ml-3 w-0 flex-1 pt-0.5">
-                                <p class="text-sm font-medium text-gray-900">
-                                   ${item.notificationTitle}
-                                </p>
-                                <p class="mt-1 font-medium text-sm text-gray-600">
-                                    ${item.notificationBody}
-                                </p>
-                            </div>
+                            <a class="ml-3 w-0 flex-1 pt-0.5" href="${item.redirectUrl}">
+                                <div>
+                                    <p class="text-sm font-medium text-gray-900">
+                                       ${item.notificationTitle}
+                                    </p>
+                                    <p class="mt-1 font-medium text-sm text-gray-600">
+                                        ${item.notificationBody}
+                                    </p>
+                                </div>
+                            </a>
                             <div class="ml-4 flex-shrink-0 flex">
                                 <button type="button" id="notification-markread" data-notification-id="${item.recipientId}" onclick="handleNotificationRead(${item.recipientId})"
                                         class="bg-white rounded-md inline-flex text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
@@ -140,30 +148,44 @@ var messaging = function () {
 }
 var messagingLoader = window.location.pathname.split('/');
 
-connection.start().then(() => {
-    invokeNotification();
-    invokeCountUnreadNotifications();
-    setInterval(() => {
-        try {
-            invokeNotification();
-        } catch (e) {
-            console.log(e);
-        }
-        try {
-            invokeCountUnreadNotifications();
-        } catch (e) {
-            console.log(e);
-        }
-    }, 5000);
+async function start() {
 
-    if (messagingLoader[messagingLoader.length - 2] === 'messages') {
-        try {
-            messaging();
-        } catch (e) {
-            console.log(e);
+    try {
+        await connection.start();
+        invokeNotification();
+        invokeCountUnreadNotifications();
+        setInterval(() => {
+            try {
+                invokeNotification();
+            } catch (e) {
+                console.log(e);
+            }
+            try {
+                invokeCountUnreadNotifications();
+            } catch (e) {
+                console.log(e);
+            }
+        }, 5000);
+
+        if (messagingLoader[messagingLoader.length - 2] === 'messages') {
+            try {
+                messaging();
+            } catch (e) {
+                console.log(e);
+            }
         }
+    } catch (err) {
+        console.log(err);
+        setTimeout(start, 5000);
     }
-}).catch(e => console.log(e));
+};
+
+connection.onclose(async () => {
+    await start();
+});
+
+// Start the connection.
+start();
 
 function handleNotificationRead(notificationId) {
     connection.invoke("MarkRead", notificationId).then(() => {

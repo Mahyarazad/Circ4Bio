@@ -14,6 +14,7 @@ using AM.Domain.ListingAggregate;
 using AM.Domain.NegotiateAggregate;
 using AM.Domain.NotificationAggregate;
 using AM.Domain.UserAggregate;
+using Microsoft.AspNetCore.Http;
 using DealViewModel = AM.Application.Contracts.Deal.DealViewModel;
 
 namespace AM.Application
@@ -25,6 +26,7 @@ namespace AM.Application
         private readonly IUserRepository _userRepository;
         private readonly IUserApplication _userApplication;
         private readonly IListingRepository _listingRepository;
+        private readonly IHttpContextAccessor _contextAccessor;
         private readonly IAuthenticateHelper _authenticateHelper;
         private readonly IEmailService<EmailModel> _emailService;
         private readonly INegotiateRepository _negotiateRepository;
@@ -35,16 +37,17 @@ namespace AM.Application
             , IListingApplication listingApplication, IEmailService<EmailModel> emailService
             , IFileUploader fileUploader, IUserApplication userApplication
             , IAuthenticateHelper authenticateHelper, INegotiateRepository negotiateRepository
-            , IListingRepository listingRepository
+            , IListingRepository listingRepository, IHttpContextAccessor contextAccessor
             , IRecipientRepository recipientRepository, INotificationApplication notificationApplication)
         {
             _fileUploader = fileUploader;
             _emailService = emailService;
             _dealRepository = dealRepository;
             _userRepository = userRepository;
+            _contextAccessor = contextAccessor;
             _userApplication = userApplication;
-            _authenticateHelper = authenticateHelper;
             _listingRepository = listingRepository;
+            _authenticateHelper = authenticateHelper;
             _recipientRepository = recipientRepository;
             _negotiateRepository = negotiateRepository;
             _notificationApplication = notificationApplication;
@@ -53,6 +56,11 @@ namespace AM.Application
         public async Task<OperationResult> CreateQuatation(CreateDeal Command)
         {
             var result = new OperationResult();
+
+            var RedirectUrlSeller = _contextAccessor.HttpContext.Request.Headers
+                .FirstOrDefault(x => x.Key == "Referer").Value.ToString().Replace("create", "quatation");
+            var RedirectUrlBuyer = _contextAccessor.HttpContext.Request.Headers
+                .FirstOrDefault(x => x.Key == "Referer").Value.ToString().Replace("create", "confirmquatation");
 
 
             var negotiate = await _negotiateRepository.Get(Command.NegotiateId);
@@ -91,6 +99,7 @@ namespace AM.Application
                 {
                     RecipientList = buyyerRecipientList,
                     SenderId = negotiate.BuyerId,
+                    RedirectUrl = RedirectUrlBuyer,
                     NotificationBody = $"{SellerUserId} send a quatation for {listingInfo.Result.Name} to you. Total cost is {Command.TotalCost} {Command.Currency}",
                     NotificationTitle = ApplicationMessage.DealsCreated,
                     UserId = negotiate.BuyerId
@@ -101,6 +110,7 @@ namespace AM.Application
                 {
                     RecipientList = sellerRecipientList,
                     SenderId = negotiate.SellerId,
+                    RedirectUrl = RedirectUrlSeller,
                     NotificationBody = $"You have issued a new quatation for {listingInfo.Result.Name} with {buyyerUserId}",
                     NotificationTitle = ApplicationMessage.DealsCreated,
                     UserId = negotiate.SellerId
@@ -118,7 +128,7 @@ namespace AM.Application
                     Guid.NewGuid().ToString());
 
             var deal = new Deal(Command.DeliveryCost, Command.DeliveryMethod, Command.TotalCost, listingInfo.Result.Unit
-                , Command.Currency, Command.Amount, Command.Location, trackingCode,
+                , Command.Currency, Command.Amount, Convert.ToInt32(Command.Location), trackingCode,
                 filePathString, Command.DueTime, Command.ListingId, Command.NegotiateId, negotiate.BuyerId
                 , negotiate.SellerId);
 
@@ -199,7 +209,7 @@ namespace AM.Application
                     Guid.NewGuid().ToString());
 
             var deal = new Deal(Command.DeliveryCost, Command.DeliveryMethod, Command.TotalCost, listingInfo.Result.Unit
-                , Command.Currency, Command.Amount, Command.Location, trackingCode,
+                , Command.Currency, Command.Amount, Convert.ToInt32(Command.Location), trackingCode,
                 filePathString, Command.DueTime, Command.ListingId, Command.NegotiateId, negotiate.BuyerId
                 , negotiate.SellerId);
             await _negotiateRepository.ActiveNegotiation(Command.NegotiateId);
@@ -219,6 +229,9 @@ namespace AM.Application
                 .Uploader(Command.ContractFile, $"Deal Documents/{Command.NegotiateId}",
                     Guid.NewGuid().ToString());
 
+            var RedirectUrlSeller = _contextAccessor.HttpContext.Request.Headers.FirstOrDefault(x => x.Key == "Referer").Value;
+            var RedirectUrlBuyer = _contextAccessor.HttpContext.Request.Headers
+                .FirstOrDefault(x => x.Key == "Referer").Value.ToString().Replace("quatation", "confirmquatation");
 
             ////Notification Push
             var negotiate = _negotiateRepository.Get(Command.NegotiateId).Result;
@@ -257,6 +270,7 @@ namespace AM.Application
                 {
                     RecipientList = buyyerRecipientList,
                     SenderId = negotiate.BuyerId,
+                    RedirectUrl = RedirectUrlBuyer,
                     NotificationBody = $"{SellerUserId} update the quatation for {listingInfo.Result.Name} to you. Total cost is {Command.TotalCost} {Command.Currency}",
                     NotificationTitle = ApplicationMessage.DealsCreated,
                     UserId = negotiate.BuyerId
@@ -267,6 +281,7 @@ namespace AM.Application
                 {
                     RecipientList = sellerRecipientList,
                     SenderId = negotiate.SellerId,
+                    RedirectUrl = RedirectUrlSeller,
                     NotificationBody = $"You have updated the quatation for {listingInfo.Result.Name} with {buyyerUserId}",
                     NotificationTitle = ApplicationMessage.DealsCreated,
                     UserId = negotiate.SellerId
@@ -316,9 +331,9 @@ namespace AM.Application
             return _dealRepository.GetAllDeals(UserId);
         }
 
-        public async Task<DealViewModel> GetDealWithDealId(long DealId)
+        public DealViewModel GetDealWithDealId(long DealId)
         {
-            return await _dealRepository.GetDealWithDealId(DealId);
+            return  _dealRepository.GetDealWithDealId(DealId);
         }
     }
 }

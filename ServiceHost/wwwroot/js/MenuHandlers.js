@@ -256,3 +256,4 @@ $("#grid-size-handler").on('click', () => {
     }
 })
 
+

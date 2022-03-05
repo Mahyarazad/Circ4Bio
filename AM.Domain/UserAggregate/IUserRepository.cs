@@ -20,9 +20,12 @@ namespace AM.Domain.UserAggregate
         Task<ResendActivationEmail> ResendActivationLink(string email);
         Task<EditUser> GetDetailByEmail(string email);
         Task<EditUser> GetDetailByActivationUrl(string guid);
-        Task AddDeliveryLocation(CreateDeliveryLocation Command);
+        Task<OperationResult> AddDeliveryLocation(CreateDeliveryLocation Command);
+        Task<OperationResult> EditDeliveryLocation(CreateDeliveryLocation Command);
         Task<bool> RemoveDeliveryLocation(CreateDeliveryLocation Command);
         Task<List<CreateDeliveryLocation>> GetDeliveryLocationList(long userId);
-        Task<List<string>> GetDeliveryLocationDropDown(long userId);
+        Task<CreateDeliveryLocation> GetDeliveryLocation(long userId, long locationId);
+        Task<List<CreateDeliveryLocation>> GetDeliveryLocationDropDown(long userId);
+        Task<bool> CheckDeliveryLocationName(string Name, long userId);
     }
 }

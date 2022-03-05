@@ -13,7 +13,7 @@ namespace AM.Application.Contracts.Deal
         Task<OperationResult> AtivateDeal(long Id);
         Task<OperationResult> PaymentReceived(long Id);
         Task<List<DealViewModel>> GetAllDeals(long UserId);
-        Task<DealViewModel> GetDealWithDealId(long DealId);
+        DealViewModel GetDealWithDealId(long DealId);
 
     }
 }

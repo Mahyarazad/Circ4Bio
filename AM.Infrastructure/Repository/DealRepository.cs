@@ -70,52 +70,72 @@ namespace AM.Infrastructure.Repository
                 .ToListAsync();
         }
 
-        public async Task<DealViewModel> GetDealWithDealId(long DealId)
+        public DealViewModel GetDealWithDealId(long DealId)
         {
             var deal = _amContext.Deals
                 .Include(x => x.Listing)
                 .AsNoTracking()
                 .AsSingleQuery()
-                .FirstOrDefaultAsync(x => x.NegotiateId == DealId);
+                .FirstOrDefault(x => x.NegotiateId == DealId);
+
+            var deliveryLocation = _amContext.Users
+                .AsNoTracking()
+                .AsSingleQuery()
+                .FirstOrDefault(x => x.Id == deal.SellerId).DeliveryLocations
+                .FirstOrDefault(x => x.Id == deal.DeliveryLocationId);
 
             var query = new DealViewModel
             {
-                DealId = deal.Result.Id,
-                Currency = deal.Result.Currency,
-                NegotiateId = deal.Result.NegotiateId,
-                Amount = deal.Result.Amount,
-                IsDeleted = deal.Result.IsDeleted,
-                IsActive = deal.Result.IsActive,
-                IsFinished = deal.Result.IsFinished,
-                Location = deal.Result.Location,
-                ListingId = deal.Result.ListingId,
-                TotalCost = deal.Result.TotalCost,
-                DeliveryCost = deal.Result.DeliveryCost,
-                DeliveryMethod = deal.Result.DeliveryMethod,
-                ContractFileString = deal.Result.ContractFile,
-                TrackingCode = deal.Result.TrackingCode,
+                DealId = deal.Id,
+                Currency = deal.Currency,
+                NegotiateId = deal.NegotiateId,
+                Amount = deal.Amount,
+                IsDeleted = deal.IsDeleted,
+                IsActive = deal.IsActive,
+                IsFinished = deal.IsFinished,
+                CreationTime = deal.CreationTime,
+                Location = deal.Location,
+                ListingId = deal.ListingId,
+                TotalCost = deal.TotalCost,
+                DeliveryCost = deal.DeliveryCost,
+                DeliveryMethod = deal.DeliveryMethod,
+                ContractFileString = deal.ContractFile,
+                TrackingCode = deal.TrackingCode,
                 Buyer = new UserViewModel
                 {
-                    Id = deal.Result.BuyerId,
-                    FullName = $"{_amContext.Users.AsNoTracking().FirstOrDefault(z => z.Id == deal.Result.BuyerId).FirstName} {_amContext.Users.AsNoTracking().FirstOrDefault(z => z.Id == deal.Result.BuyerId).LastName}",
-                    Avatar = _amContext.Users.AsNoTracking().FirstOrDefault(z => z.Id == deal.Result.BuyerId).Avatar,
-                    Email = _amContext.Users.AsNoTracking().FirstOrDefault(z => z.Id == deal.Result.BuyerId).Email
+                    Id = deal.BuyerId,
+                    FullName = $"{_amContext.Users.AsNoTracking().FirstOrDefault(z => z.Id == deal.BuyerId).FirstName} {_amContext.Users.AsNoTracking().FirstOrDefault(z => z.Id == deal.BuyerId).LastName}",
+                    Avatar = _amContext.Users.AsNoTracking().FirstOrDefault(z => z.Id == deal.BuyerId).Avatar,
+                    Email = _amContext.Users.AsNoTracking().FirstOrDefault(z => z.Id == deal.BuyerId).Email
                 },
                 Seller = new UserViewModel
                 {
-                    Id = deal.Result.SellerId,
-                    FullName = $"{_amContext.Users.AsNoTracking().FirstOrDefault(z => z.Id == deal.Result.SellerId).FirstName} {_amContext.Users.AsNoTracking().FirstOrDefault(z => z.Id == deal.Result.SellerId).LastName}",
-                    Avatar = _amContext.Users.AsNoTracking().FirstOrDefault(z => z.Id == deal.Result.SellerId).Avatar,
-                    Email = _amContext.Users.AsNoTracking().FirstOrDefault(z => z.Id == deal.Result.SellerId).Email
+                    Id = deal.SellerId,
+                    FullName = $"{_amContext.Users.AsNoTracking().FirstOrDefault(z => z.Id == deal.SellerId).FirstName} {_amContext.Users.AsNoTracking().FirstOrDefault(z => z.Id == deal.SellerId).LastName}",
+                    Avatar = _amContext.Users.AsNoTracking().FirstOrDefault(z => z.Id == deal.SellerId).Avatar,
+                    Email = _amContext.Users.AsNoTracking().FirstOrDefault(z => z.Id == deal.SellerId).Email
                 },
-                Unit = deal.Result.Unit,
+                Unit = deal.Unit,
                 Listing = new ListingViewModel
                 {
-                    Name = deal.Result.Listing.Name,
-                    Image = deal.Result.Listing.Image,
-                    Type = deal.Result.Listing.Type,
-                    UnitPrice = deal.Result.Listing.UnitPrice,
-                    Description = deal.Result.Listing.Description,
+                    Name = deal.Listing.Name,
+                    Image = deal.Listing.Image,
+                    Type = deal.Listing.Type,
+                    UnitPrice = deal.Listing.UnitPrice,
+                    Description = deal.Listing.Description,
+
+                },
+                DeliveryLocation = new CreateDeliveryLocation
+                {
+                    AddressLineOne = deliveryLocation.AddressLineOne,
+                    AddressLineTwo = deliveryLocation.AddressLineTwo,
+                    City = deliveryLocation.City,
+                    Country = deliveryLocation.Country,
+                    Latitude = deliveryLocation.Latitude,
+                    Longitude = deliveryLocation.Longitude,
+                    Name = deliveryLocation.Name,
+                    PostalCode = deliveryLocation.PostalCode,
+                    LocationId = deliveryLocation.Id
 
                 }
             };

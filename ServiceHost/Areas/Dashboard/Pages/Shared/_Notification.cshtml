@@ -5,19 +5,20 @@
 <!--Notification Section-->
 <div id="notification-panel" aria-live="assertive"
      class="inset-0 flex px-4 py-6 pointer-events-none sm:p-6 sm:items-start open:bg-white lg:mr-16 xl:mr-16 2xl:mr-44 invisible opacity-0 transform duration-300 fixed top-0 -translate-y-[20rem]">
-    <div class="w-full flex flex-col items-center space-y-2 sm:items-start md:items-start lg:items-end mt-10 z-10">
+    <div class="w-full flex flex-col items-center space-y-0 sm:items-start md:items-start lg:items-end mt-10 z-10">
         <div class="max-w-sm w-full pointer-events-auto overflow-hidden flex justify-between">
             <div class="mt-2 font-medium text-sm text-white ">
                 <a asp-page="/Notification" asp-route-id="@AuthenticateHelper.CurrentAccountRole().Id"
                    title="Open Notifications"
-                   class="p-1 truncate bg-transparent-customized text-gray-100 hover:cursor-pointer hover:text-gray-300">
+                   class="p-1 truncate special-text text-gray-100 hover:cursor-pointer hover:text-gray-300">
                     <span id="view-all">
                         View All
                     </span>
                 </a>
             </div>
             <div class="p-1 font-medium text-sm text-white">
-                <button type='button' onclick="handleNotificationAllRead()" class="p-1 font-medium truncate bg-transparent-customized text-gray-100 hover:cursor-pointer hover:text-gray-300">
+                <button type='button' onclick="handleNotificationAllRead()"
+                        class="p-1 font-medium truncate special-text text-gray-100 hover:cursor-pointer hover:text-gray-300">
                     Mark All Read
                 </button>
             </div>

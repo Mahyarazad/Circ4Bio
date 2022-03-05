@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Globalization;
 using System.Threading.Tasks;
 using _0_Framework.Application;
-using AM.Application.Contracts.Notification;
 using AM.Application.Contracts.User;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -73,8 +71,18 @@ namespace ServiceHost.Areas.Dashboard.Pages
         }
         public async Task<JsonResult> OnPostAddDeliveryLocation(CreateDeliveryLocation Command)
         {
-            await _userApplication.AddDeliveryLocation(Command);
-            return new JsonResult(Task.FromResult(new OperationResult().Succeeded()));
+            var result = await _userApplication.AddDeliveryLocation(Command);
+            return new JsonResult(Task.FromResult(result));
+        }
+
+        public async Task<IActionResult> OnGetEditDeliveryLocation(long userId, long locationId)
+        {
+            return Partial("./EditDeliveryLocation", await _userApplication.GetDeliveryLocation(userId, locationId));
+        }
+        public async Task<JsonResult> OnPostEditDeliveryLocation(CreateDeliveryLocation Command)
+        {
+            var result = await _userApplication.EditDeliveryLocation(Command);
+            return new JsonResult(Task.FromResult(result));
         }
     }
 }

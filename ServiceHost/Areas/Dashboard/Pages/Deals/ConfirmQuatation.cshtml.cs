@@ -44,7 +44,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Deals
             CurrencyList = new SelectList(GenerateCurrencyList.GetList());
             if (Negotiate.SellerId == LoggedUser.Id | Negotiate.BuyerId == LoggedUser.Id)
             {
-                Command = await _dealApplication.GetDealWithDealId(Id);
+                Command = _dealApplication.GetDealWithDealId(Id);
                 DeliveryCharges = new SelectList(new List<string>
                 {
                     new string("Buyer"),

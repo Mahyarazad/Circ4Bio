@@ -39,7 +39,7 @@ namespace AM.Application
 
         public Task<long> PushNotification(NotificationViewModel Command)
         {
-            var notification = new Notification(Command.NotificationBody, Command.NotificationTitle,
+            var notification = new Notification(Command.NotificationBody, Command.NotificationTitle, Command.RedirectUrl,
                 Command.SenderId, Command.UserId);
             _notificationRepository.Create(notification);
             _notificationRepository.SaveChanges();

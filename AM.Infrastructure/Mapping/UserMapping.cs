@@ -44,8 +44,13 @@ namespace AM.Infrastructure.Mapping
             builder.OwnsMany(x => x.DeliveryLocations, ModelBuilder =>
             {
                 ModelBuilder.HasKey(x => x.Id);
-                ModelBuilder.Property(x => x.Location).IsRequired().HasMaxLength(500);
+                ModelBuilder.Property(x => x.Name).IsRequired().HasMaxLength(20);
+                ModelBuilder.Property(x => x.AddressLineOne).IsRequired().HasMaxLength(100);
+                ModelBuilder.Property(x => x.AddressLineTwo).HasMaxLength(100);
+                ModelBuilder.Property(x => x.Country).IsRequired().HasMaxLength(30);
+                ModelBuilder.Property(x => x.City).IsRequired().HasMaxLength(30);
                 ModelBuilder.WithOwner(x => x.User).HasForeignKey(x => x.UserId);
+
             });
         }
     }
