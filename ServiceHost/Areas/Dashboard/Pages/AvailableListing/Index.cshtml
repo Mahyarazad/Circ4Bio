@@ -151,6 +151,7 @@
     <script>
         var items = @Html.Raw(JsonConvert.SerializeObject(Model.Listing));
         var filtered = items;
+
         function paginate(
             totalItems,
             currentPage,
@@ -222,6 +223,12 @@
         var hideItems = function() {
             items.forEach(e => {
                 $(`div[data-item=${e.Id}]`).css('display', 'none');
+            });
+        };
+
+        var showItems = function () {
+            filtered.forEach(e => {
+                $(`div[data-item=${e.Id}]`).css('display', 'block');
             });
         };
 
@@ -336,9 +343,6 @@
         }
 
         function handelFilter() {
-//            items.forEach(e => {
-//                $(`div[data-item=${e.Id}]`).css('display', 'none');
-//            });
 
             var _filter1 = $("#filter-technology").prop('checked');
             var _filter2 = $("#filter-plant").prop('checked');
@@ -374,9 +378,6 @@
             paginateObject = paginate(filtered.length, 1);
             _totalPages = paginateObject.pages.length;
             element.innerHTML = createPagination(_totalPages, page);
-//            filtered.forEach(e => {
-//                $(`div[data-item=${e.Id}]`).css('display', 'block');
-//            });
 
         };
 
@@ -414,7 +415,11 @@
             element.innerHTML = '';
             paginateObject = paginate(filtered.length, 1, pageSize);
             _totalPages = paginateObject.pages.length;
-            element.innerHTML = createPagination(_totalPages, page);
+            if (_totalPages > 1) {
+                element.innerHTML = createPagination(_totalPages, page);
+            } else {
+                showItems();
+            }
         }
     </script>
 

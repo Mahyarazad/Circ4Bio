@@ -188,10 +188,34 @@ connection.onclose(async () => {
 start();
 
 function handleNotificationRead(notificationId) {
+    var table = $('#main-table').DataTable();
     connection.invoke("MarkRead", notificationId).then(() => {
         $(`div[data-notification-label='${notificationId}']`).remove();
+
+        table.row($(`td[data-id='${notificationId}']`).parents('tr'))
+            .remove()
+            .draw();
+
         invokeNotification();
         invokeCountUnreadNotifications();
+    }).catch(function (err) {
+        return console.error(err.toString());
+    });
+}
+
+function $handleNotificationRead(notificationId) {
+    var table = $('#main-table').DataTable();
+    connection.invoke("MarkRead", notificationId).then(() => {
+
+        $('#main-table tbody').on('click', 'button', function () {
+            table
+                .row($(this).parents('tr'))
+                .remove()
+                .draw();
+        });
+        invokeNotification();
+        invokeCountUnreadNotifications();
+
     }).catch(function (err) {
         return console.error(err.toString());
     });

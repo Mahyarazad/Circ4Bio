@@ -78,6 +78,7 @@ namespace AM.Application
 
         }
 
+
         public async Task MarkReadAll()
         {
             if (_contextAccessor.HttpContext.User.Claims.FirstOrDefault() != null)

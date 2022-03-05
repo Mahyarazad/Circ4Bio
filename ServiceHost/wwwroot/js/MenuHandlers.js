@@ -1,4 +1,6 @@
 ﻿"use strict";
+var host = "https://localhost:5001";
+//var host = "http://www.maahyarazad.ir";
 
 $('#mobile-home-menu-close').on('click', function () {
     $('#mobile-home-menu').css('visibility', 'hidden');

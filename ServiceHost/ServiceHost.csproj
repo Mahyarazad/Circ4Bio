@@ -33,6 +33,7 @@
     <Folder Include="Areas\Dashboard\Pages\Shared\Components\Notification\" />
     <Folder Include="ViewComponents\" />
     <Folder Include="wwwroot\Images\" />
+    <Folder Include="wwwroot\Terms\" />
     <Folder Include="wwwroot\NewFolder\" />
   </ItemGroup>
 
