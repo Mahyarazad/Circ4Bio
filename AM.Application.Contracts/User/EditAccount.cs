@@ -10,6 +10,7 @@ namespace AM.Application.Contracts.User
         public long Id { get; set; }
         public string? ActivationGuid { get; set; }
         public string? FirstName { get; set; }
+        public string? Password { get; set; }
         public string? LastName { get; set; }
         [Required(ErrorMessage = ValidationMessages.IsRequired)]
         public string? UserId { get; set; }

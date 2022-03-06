@@ -14,8 +14,10 @@
         public const string DeliveryLocationName = "Please provide a name for this address";
         public const string Password = "Please enter password";
         public const string ConfirmPassword = "Please enter confirm password";
-        public const string StrongerPassword = "Please choose a stronger password";
-        public const string SpecialCharacter = "Password must contain at least one one special character.";
+        public const string StrongerPassword8Character = "Password must be at least 8 characters long, but no more than 32";
+        public const string StrongerPasswordDigit = "Password must contain at least one digit";
+        public const string StrongerPasswordUpperCaseLetter = "Password must contain at least uppercase letter";
+        public const string StrongerPassword = "Password must have at least one numeric, one uppercase, and lowercase letter";
         public const string SelectUserType = "Please select the user type";
         public const string PasswordNotMatch = "Password and confirm password do not match";
         public const string MaxChar2000 = "Description should be less between 250 words and 500 words";

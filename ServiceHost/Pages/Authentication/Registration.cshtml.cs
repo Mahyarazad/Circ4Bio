@@ -3,7 +3,6 @@ using _0_Framework;
 using AM.Application.Contracts.User;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ServiceHost.Pages.Authentication
 {

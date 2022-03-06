@@ -7,9 +7,12 @@ using System.Collections.Generic;
 using _0_Framework.Application;
 using _0_Framework.Application.Email;
 using AM.Application;
+using AM.Application.Contracts.User;
+using AM.Infrastructure;
 using AM.Infrastructure.Core;
 using AM.Management.API;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ServiceHost
@@ -94,7 +97,6 @@ namespace ServiceHost
             });
 
             services.AddRouting(options => options.LowercaseUrls = true);
-
 
         }
 
