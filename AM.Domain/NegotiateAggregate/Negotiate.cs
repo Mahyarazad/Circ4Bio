@@ -24,6 +24,11 @@ namespace AM.Domain.NegotiateAggregate
             Messages = new List<Message>();
         }
 
+        public void AttachDealId(long dealId)
+        {
+            DealId = dealId;
+        }
+
         public long ListingId { get; private set; }
         public Listing? Listing { get; private set; }
         public List<UserNegotiate>? UserNegotiate { get; private set; }

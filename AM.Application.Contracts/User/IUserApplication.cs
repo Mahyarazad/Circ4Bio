@@ -11,7 +11,7 @@ namespace AM.Application.Contracts.User
     {
         Task<List<UserViewModel>> Search(UserSearchModel searchModel);
         Task<List<RecipientViewModel>> GetUserListForListing(long id);
-        Task<OperationResult> Register(RegisterUser command);
+        OperationResult Register(RegisterUser command);
         Task<OperationResult> ChangePassword(ResetPasswordModel command);
         Task<OperationResult> ResetPassword(ResetPasswordModel command);
         Task<OperationResult> ActivateUser(string command);

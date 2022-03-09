@@ -1,4 +1,5 @@
-﻿"use strict";
+﻿
+"use strict";
 var host = "https://localhost:5001";
 //var host = "http://www.maahyarazad.ir";
 //?QueryString = ${ window.location.href }
@@ -373,5 +374,85 @@ function handleRemoveDeliveryAddress(id) {
         if (response) {
             $(`td[data-delivery-address='${id}']`).remove();
         }
+    });
+}
+
+
+function checkAmount(amount, listingId) {
+    const unitPrice = parseFloat($("#deal-unit-price").val());
+    var amount = parseFloat($("#deal-amount").val());
+    var deliveryCost = parseFloat($("#delivery-cost").val());
+    $("#total-cost").val((amount * unitPrice) + deliveryCost);
+    $("#show-currency-1").text($("#selected-currency").find(":selected").text());
+    $("#show-currency-2").text($("#selected-currency").find(":selected").text());
+    $("#show-currency-3").text($("#selected-currency").find(":selected").text());
+    $("#show-currency-4").text($("#selected-currency").find(":selected").text());
+
+    if (typeof listingId === 'undefined') {
+        return;
+    } else {
+        if (amount === null) {
+            $("#check-amount-wrapper").addClass("hidden");
+            $("#save").prop('disabled', false);
+        } else {
+            connection.invoke("CheckAmount", listingId).then(response => {
+                if (response !== null) {
+                    if (amount > response) {
+                        $("#check-amount-wrapper").removeClass("hidden");
+                        $("#check-amount")
+                            .text(`Available amount is ${response}, you cannot create quatation more than current amount.`);
+                        $("#save").prop('disabled', true);
+                    }
+                    if (amount <= response) {
+                        $("#check-amount-wrapper").addClass("hidden");
+                        $("#save").prop('disabled', false);
+                    }
+                }
+            });
+        }
+    }
+}
+
+function renderLocation(locationId) {
+    mapboxgl.accessToken = "pk.eyJ1IjoibWFoeWFyYXphZCIsImEiOiJjazhzaG9pNjIwYzJ4M2VyczJlNnNndzF6In0.ZFGc5daAFPaXObvBKA20CA";
+    var map, marker;
+
+    connection.invoke("GetLocation", locationId).then(response => {
+        if (response) {
+            if (response.userId !== 0) {
+                $("#address-name").text(response.name);
+
+                $("#delivery-location-wrapper").removeClass('hidden');
+
+                $("#address-line-one").text(response.addressLineOne);
+                $("#address-line-two").text(response.addressLineTwo);
+                $("#country").text(response.country);
+                $("#city").text(response.city);
+                $("#postal-code").text(response.postalCode);
+                map = new mapboxgl.Map({
+                    container: "map-wrapper-create",
+                    style: 'mapbox://styles/mapbox/streets-v11',
+                    center: [50, 50],
+                    zoom: 13
+                });
+
+                marker = new mapboxgl.Marker({ color: 'red', rotation: 0 })
+                    .setLngLat([50, 50])
+                    .addTo(map);
+                marker.setLngLat([response.longitude, response.latitude]);
+                map.flyTo({
+                    center: [response.longitude, response.latitude]
+                });
+
+                map.on('load', () => {
+                    map.resize();
+                });
+
+            } else {
+                $("#delivery-location-wrapper").addClass('hidden');
+            }
+        }
+    }).catch(e => {
+        console.log(e);
     });
 }

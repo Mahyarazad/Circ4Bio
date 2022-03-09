@@ -26,17 +26,24 @@ namespace ServiceHost.Areas.Dashboard.Pages.Negotiate
         {
             var loggedInUserId = _authenticateHelper.CurrentAccountRole().Id;
             CurrentNegotiate = _negotiateApplication.GetNegotiationViewModel(Id);
-            if (CurrentNegotiate.SellerId == loggedInUserId ||
-                CurrentNegotiate.BuyerId == loggedInUserId)
+            if (!CurrentNegotiate.IsCanceled)
             {
-                Command = new NewMessage();
-                MessageList = new List<MessageViewModel>();
-                MessageList = _negotiateApplication.GetMessages(Id);
-                return null;
+                if (CurrentNegotiate.SellerId == loggedInUserId ||
+                    CurrentNegotiate.BuyerId == loggedInUserId)
+                {
+                    Command = new NewMessage();
+                    MessageList = new List<MessageViewModel>();
+                    MessageList = _negotiateApplication.GetMessages(Id);
+                    return null;
+                }
+                else
+                {
+                    return RedirectToPage("/AccessDenied", new { area = "" });
+                }
             }
             else
             {
-                return RedirectToPage("/AccessDenied", new { area = "" });
+                return Redirect("/dashboard/negotiate/canceled");
             }
         }
 

@@ -254,7 +254,7 @@ namespace AM.Infrastructure.Repository
                 Longitude = x.Longitude,
                 PostalCode = x.PostalCode,
                 UserId = x.UserId
-            }).First();
+            }).FirstOrDefault(x => x.LocationId == locationId);
 
             return Task.FromResult(result);
         }

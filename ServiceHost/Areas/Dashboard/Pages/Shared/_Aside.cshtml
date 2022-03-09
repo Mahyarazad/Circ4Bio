@@ -11,10 +11,10 @@
            @((string)Context.HttpContext.Request.RouteValues.Values.First() == "/Profile" ?"bg-teal-50 border-teal-400 text-teal-500" :"text-gray-900" )
            border-l-4 px-3 py-2 flex items-center text-sm font-medium" aria-current="page">
             <!--
-        Heroicon name: outline/user-circle
+            Heroicon name: outline/user-circle
 
-        Current: "text-teal-500 group-hover:text-teal-500", Default: "text-gray-400 group-hover:text-gray-500"
-        -->
+            Current: "text-teal-500 group-hover:text-teal-500", Default: "text-gray-400 group-hover:text-gray-500"
+            -->
             <svg class="@((string)Context.HttpContext.Request.RouteValues.Values.First() == "/Profile" ?"text-teal-500" :"text-gray-500" ) group-hover:text-teal-500 flex-shrink-0 -ml-1 mr-3 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
@@ -24,67 +24,66 @@
         </a>
         @if (AuthenticateHelper.CurrentAccountRole().RoleId == "1")
         {
-            <a asp-page="/Users/Account/Index" class="border-transparent hover:bg-gray-50 hover:text-teal-500 group
+<a asp-page="/Users/Account/Index" class="border-transparent hover:bg-gray-50 hover:text-teal-500 group
                 @((string)Context.HttpContext.Request.RouteValues.Values.First() == "/Users/Account/Index" ?"bg-teal-50 border-teal-400 text-teal-500" :"text-gray-900" )
                border-l-4 px-3 py-2 flex items-center text-sm font-medium">
-        <!-- Heroicon name: outline/cog -->
-        <svg xmlns="http://www.w3.org/2000/svg"
-             class="@((string)Context.HttpContext.Request.RouteValues.Values.First() == "/Users/Account/Index" ?"text-teal-500" :"text-gray-500" ) group-hover:text-gray-500 flex-shrink-0 -ml-1 mr-3 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-        </svg>
-        <span class="truncate">
-            Account
-        </span>
-    </a>
-            <a asp-page="/Users/Role/Index"
-               class="border-transparent hover:bg-gray-50 hover:text-teal-500 group
+    <!-- Heroicon name: outline/cog -->
+    <svg xmlns="http://www.w3.org/2000/svg"
+         class="@((string)Context.HttpContext.Request.RouteValues.Values.First() == "/Users/Account/Index" ?"text-teal-500" :"text-gray-500" ) group-hover:text-gray-500 flex-shrink-0 -ml-1 mr-3 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+    </svg>
+    <span class="truncate">
+        Account
+    </span>
+</a>
+                <a asp-page="/Users/Role/Index"
+                   class="border-transparent hover:bg-gray-50 hover:text-teal-500 group
                 @((string)Context.HttpContext.Request.RouteValues.Values.First() == "/Users/Role/Index" ?"bg-teal-50 border-teal-400 text-teal-500" :"text-gray-900" )
                border-l-4 px-3 py-2 flex items-center text-sm font-medium">
-                        <!-- Heroicon name: outline/cog -->
-                        <svg class="@((string)Context.HttpContext.Request.RouteValues.Values.First() == "/Users/Role/Index" ?"text-teal-500" :"text-gray-500" ) group-hover:text-gray-500 flex-shrink-0 -ml-1 mr-3 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
-                        <span class="truncate">
-                            Roles
-                        </span>
-                    </a>
-            <a asp-page="/ContactUs/Index"
-               class="border-transparent hover:bg-gray-50 hover:text-teal-500 group
+                    <!-- Heroicon name: outline/cog -->
+                    <svg class="@((string)Context.HttpContext.Request.RouteValues.Values.First() == "/Users/Role/Index" ?"text-teal-500" :"text-gray-500" ) group-hover:text-gray-500 flex-shrink-0 -ml-1 mr-3 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    <span class="truncate">
+                        Roles
+                    </span>
+                </a>
+                                <a asp-page="/ContactUs/Index"
+                                   class="border-transparent hover:bg-gray-50 hover:text-teal-500 group
                 @((string)Context.HttpContext.Request.RouteValues.Values.First() == "/ContactUs/Index" ?"bg-teal-50 border-teal-400 text-teal-500" :"text-gray-900" )
                border-l-4 px-3 py-2 flex items-center text-sm font-medium">
-                                        <!-- Heroicon name: outline/cog -->
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="@((string)Context.HttpContext.Request.RouteValues.Values.First() == "/Users/Role/Index" ?"text-teal-500" :"text-gray-500" ) group-hover:text-gray-500 flex-shrink-0 -ml-1 mr-3 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                                        </svg>
-                                        <span class="truncate">
-                                            Contact Us Messages
-                                        </span>
-                                    </a>}
+                                    <!-- Heroicon name: outline/cog -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="@((string)Context.HttpContext.Request.RouteValues.Values.First() == "/ContactUs/Index" ?"text-teal-500" :"text-gray-500" ) group-hover:text-gray-500 flex-shrink-0 -ml-1 mr-3 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                    </svg>
+                                    <span class="truncate">
+                                        Contact Us Messages
+                                    </span>
+                                </a>}
 
         @if (AuthenticateHelper.CurrentAccountRole().RoleId != "5")
         {
-            <a asp-page="/Listing/Index"
-               class="border-transparent text-gray-900 hover:bg-gray-50 hover:text-teal-500 group
+<a asp-page="/Listing/Index"
+   class="border-transparent text-gray-900 hover:bg-gray-50 hover:text-teal-500 group
            @((string)Context.HttpContext.Request.RouteValues.Values.First() == "/Listing/Index"
              | (string)Context.HttpContext.Request.RouteValues.Values.First() == "/Listing/Edit"
              | (string)Context.HttpContext.Request.RouteValues.Values.First() == "/Listing/Create"
                ?"bg-teal-50 border-teal-400 text-teal-500" :"text-gray-900")
            border-l-4 px-3 py-2 flex items-center text-sm font-medium" aria-current="page">
-                <!-- Heroicon name: outline/key -->
-                <svg xmlns="http://www.w3.org/2000/svg"
-                     class="@((string)Context.HttpContext.Request.RouteValues.Values.First() == "/Listing/Index"
+    <!-- Heroicon name: outline/key -->
+    <svg xmlns="http://www.w3.org/2000/svg"
+         class="@((string)Context.HttpContext.Request.RouteValues.Values.First() == "/Listing/Index"
                               | (string)Context.HttpContext.Request.RouteValues.Values.First() == "/Listing/Edit"
                               | (string)Context.HttpContext.Request.RouteValues.Values.First() == "/Listing/Create"
                                 ?"text-teal-500" :"text-gray-500" ) group-hover:text-teal-500 flex-shrink-0 -ml-1 mr-3 h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M6 6V5a3 3 0 013-3h2a3 3 0 013 3v1h2a2 2 0 012 2v3.57A22.952 22.952 0 0110 13a22.95 22.95 0 01-8-1.43V8a2 2 0 012-2h2zm2-1a1 1 0 011-1h2a1 1 0 011 1v1H8V5zm1 5a1 1 0 011-1h.01a1 1 0 110 2H10a1 1 0 01-1-1z" clip-rule="evenodd" />
-                    <path d="M2 13.692V16a2 2 0 002 2h12a2 2 0 002-2v-2.308A24.974 24.974 0 0110 15c-2.796 0-5.487-.46-8-1.308z" />
-                </svg>
-                <span class="truncate">
-                    Your Listing
-                </span>
-            </a>
-        }
+        <path fill-rule="evenodd" d="M6 6V5a3 3 0 013-3h2a3 3 0 013 3v1h2a2 2 0 012 2v3.57A22.952 22.952 0 0110 13a22.95 22.95 0 01-8-1.43V8a2 2 0 012-2h2zm2-1a1 1 0 011-1h2a1 1 0 011 1v1H8V5zm1 5a1 1 0 011-1h.01a1 1 0 110 2H10a1 1 0 01-1-1z" clip-rule="evenodd" />
+        <path d="M2 13.692V16a2 2 0 002 2h12a2 2 0 002-2v-2.308A24.974 24.974 0 0110 15c-2.796 0-5.487-.46-8-1.308z" />
+    </svg>
+    <span class="truncate">
+        Your Listing
+    </span>
+</a>}
 
 
         <a asp-page="/Negotiate/Index"

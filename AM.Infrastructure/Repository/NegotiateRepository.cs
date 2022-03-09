@@ -133,6 +133,7 @@ namespace AM.Infrastructure.Repository
                     IsCanceled = negotiate.IsCanceled,
                     IsFinished = negotiate.IsFinished,
                     ItemType = x.Type,
+                    QuatationSent = negotiate.QuatationSent,
                     SellerName = sellerInfo.Name,
                     BuyerName = buyerInfo.Name,
                     BuyerImageString = buyerInfo.ImageString,

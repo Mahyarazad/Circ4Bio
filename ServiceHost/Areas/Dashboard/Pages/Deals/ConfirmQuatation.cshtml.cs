@@ -1,13 +1,16 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using _0_Framework.Application;
 using AM.Application.Contracts.Deal;
 using AM.Application.Contracts.Listing;
 using AM.Application.Contracts.Negotiate;
 using AM.Application.Contracts.User;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Routing;
 
 namespace ServiceHost.Areas.Dashboard.Pages.Deals
 {
@@ -20,18 +23,21 @@ namespace ServiceHost.Areas.Dashboard.Pages.Deals
         public AuthViewModel LoggedUser;
         private readonly IUserApplication _userApplication;
         private readonly IDealApplication _dealApplication;
+        private readonly IHttpContextAccessor _contextAccessor;
         private readonly IAuthenticateHelper _authenticateHelper;
         private readonly IListingApplication _listingApplication;
         private readonly INegotiateApplication _negotiateApplication;
 
         public ConfirmQuatationModel(IListingApplication listingApplication
             , IAuthenticateHelper authenticateHelper,
+            IHttpContextAccessor contextAccessor,
             INegotiateApplication negotiateApplication,
             IUserApplication userApplication,
             IDealApplication dealApplication)
         {
             _userApplication = userApplication;
             _dealApplication = dealApplication;
+            _contextAccessor = contextAccessor;
             _authenticateHelper = authenticateHelper;
             _listingApplication = listingApplication;
             _negotiateApplication = negotiateApplication;
@@ -44,7 +50,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Deals
             CurrencyList = new SelectList(GenerateCurrencyList.GetList());
             if (Negotiate.SellerId == LoggedUser.Id | Negotiate.BuyerId == LoggedUser.Id)
             {
-                Command = _dealApplication.GetDealWithDealId(Id);
+                Command = _dealApplication.GetDealWithNegotiateId(Id);
                 DeliveryCharges = new SelectList(new List<string>
                 {
                     new string("Buyer"),
@@ -60,9 +66,12 @@ namespace ServiceHost.Areas.Dashboard.Pages.Deals
             }
         }
 
-        public JsonResult OnPost(EditDeal Command)
+        public JsonResult OnPost(DealViewModel Command)
         {
-            return new JsonResult(_dealApplication.EditDeal(Command));
+
+            return new JsonResult(_dealApplication.AtivateDeal(Command));
         }
+
+        
     }
 }

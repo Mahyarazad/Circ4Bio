@@ -43,8 +43,12 @@
 
         //Deal Title
         public const string DealsCreated = "New deal has issued";
+        public const string ActiveDeal = "Your deal is active now";
 
         //DeliveryLocationAddress
         public const string DuplicateDeliveryLocationName = "This name has been taken, please chose another name.";
+
+        //Welcome Message
+        public const string WelcomeMessage = "Thanks for registration and welcome to Circ4Bio";
     }
 }

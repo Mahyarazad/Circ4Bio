@@ -150,14 +150,13 @@
     --main-bg-color: #0369a1;
 }
 
-.overlay {
-    background: rgba(250, 250, 250, 0.5);
+#overlay {
+    background: rgba(255, 255, 255, 0.3);
     display: none;
-    position: absolute;
+    position: fixed;
     top: 64px;
     right: 0;
     bottom: 0;
-    height: 88rem;
     left: 0;
-    z-index: 999;
+    z-index: 10;
 }

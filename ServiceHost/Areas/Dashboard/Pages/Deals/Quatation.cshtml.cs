@@ -47,14 +47,15 @@ namespace ServiceHost.Areas.Dashboard.Pages.Deals
             CurrencyList = new SelectList(GenerateCurrencyList.GetList());
             if (Negotiate.SellerId == LoggedUser.Id | Negotiate.BuyerId == LoggedUser.Id)
             {
-                Command = _dealApplication.GetDealWithDealId(Id);
+                Command = _dealApplication.GetDealWithNegotiateId(Id);
                 DeliveryCharges = new SelectList(new List<string>
                 {
                     new string("Buyer"),
                     new string("Seller"),
                 });
-                DeliveryLocationSelectList =
-                    new SelectList(await _userApplication.GetDeliveryLocationDropDown(_authenticateHelper.CurrentAccountRole().Id));
+                var ListView =
+                    await _userApplication.GetDeliveryLocationDropDown(_authenticateHelper.CurrentAccountRole().Id);
+                DeliveryLocationSelectList = new SelectList(ListView, "LocationId", "Name");
                 return null;
             }
             else
@@ -63,7 +64,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Deals
             }
         }
 
-        public JsonResult OnPost(EditDeal Command)
+        public JsonResult OnPost(DealViewModel Command)
         {
             return new JsonResult(_dealApplication.EditDeal(Command));
         }

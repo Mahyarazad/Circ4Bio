@@ -43,7 +43,7 @@ namespace AM.Application.Contracts.Deal
 
     public class DealViewModel : EditDeal
     {
-        public bool IsDeleted { get; set; }
+        public bool IsCanceled { get; set; }
         public bool IsActive { get; set; }
         public bool IsFinished { get; set; }
         public bool IsRejected { get; set; }

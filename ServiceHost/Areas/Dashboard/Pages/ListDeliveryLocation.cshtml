@@ -54,7 +54,7 @@
                                             </p>
 
                                         </div>
-                                        <div class="space-y-32 rounded-l-md" id="@item.LocationId"></div>
+                                        <div class="space-y-32 rounded-md" id="@item.LocationId"></div>
                                     </div>
 
                                     <button type="button" onclick="handleRemoveDeliveryAddress(@item.LocationId)"
@@ -111,17 +111,15 @@
     mapboxgl.accessToken = @Html.Raw(Json.Serialize(_Configuration.GetSection("MapBox")["SecretKey"]));
     var ListAddress = @Html.Raw(JsonConvert.SerializeObject(Model));
 
-
-
     ListAddress.forEach(e => {
         var map, marker;
         map = new mapboxgl.Map({
-            container: e.LocationId.toString(), // container ID
-            style: 'mapbox://styles/mapbox/streets-v11', // style URL
-            center: [e.Longitude, e.Latitude], // starting position [lng, lat]
-            zoom: 13 // starting zoom
+            container: e.LocationId.toString(),
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center: [e.Longitude, e.Latitude],
+            zoom: 13
         });
-        // Create a default Marker and add it to the map.
+
         marker = new mapboxgl.Marker({ color: 'red', rotation: 0 })
             .setLngLat([e.Longitude, e.Latitude])
             .addTo(map);
@@ -129,7 +127,5 @@
             map.resize();
         });
     });
-
-
 
 </script>

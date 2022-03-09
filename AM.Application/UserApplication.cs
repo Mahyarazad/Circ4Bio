@@ -63,7 +63,7 @@ namespace AM.Application
         {
             return _userRepository.GetUserListForListing(id);
         }
-        public async Task<OperationResult> Register(RegisterUser command)
+        public OperationResult Register(RegisterUser command)
         {
             var result = new OperationResult();
             if (_userRepository.Exist(x => x.Email == command.Email))
@@ -74,7 +74,7 @@ namespace AM.Application
                 .ToString();
 
             // Check the role for status management
-            var roles = await _roleRepository.GetAll();
+            var roles = _roleRepository.GetAll();
             command.Status = false;
             var check = roles.FirstOrDefault(x => x.Name == "Customer of Raw Material").Id;
             if (command.RoleId == check)
@@ -89,7 +89,7 @@ namespace AM.Application
             {
                 EmailTemplate = 1,
                 Title = ApplicationMessage.AccountVerification,
-                AccountVerificationLink = $"http://{request.Host}/Authentication/ActivateUser/{activationGuid.ToString()}".ToLower(),
+                AccountVerificationLink = $"{request.Scheme}://{request.Host}/Authentication/ActivateUser/{activationGuid.ToString()}".ToLower(),
                 Recipient = command.Email
             };
             var emailServiceResult = _emailService.SendEmail(emailModel);
@@ -107,7 +107,7 @@ namespace AM.Application
                     {
                         SenderId = 1,
                         RedirectUrl = RedirectUrl + $"/dashboard/profile/{user.Id}",
-                        NotificationBody = ApplicationMessage.ListingNewItemListed,
+                        NotificationBody = ApplicationMessage.WelcomeMessage,
                         NotificationTitle = ApplicationMessage.SystemMessage,
                         UserId = user.Id
                     });
@@ -143,10 +143,26 @@ namespace AM.Application
                                     "the provided information within 24 hours." +
                                     "It is just the formal background check of your company to protect other clients." +
                                     "Please follow the link below to update your profile",
-                            Body3 = $"http://{request.Host}/Dashboard/Profile/{user.UserName}".ToLower(),
+                            Body3 = $"{request.Scheme}://{request.Host}/Dashboard/Profile/{user.UserName}".ToLower(),
                             Recipient = user.Email
                         };
                         var emailServiceResult = _emailService.SendEmail(emailModel);
+
+                        var systemNotificationId = _notificationApplication
+                            .PushNotification(new NotificationViewModel
+                            {
+                                SenderId = 1,
+                                RedirectUrl = $"/dashboard/profile/{user.Id}",
+                                NotificationBody = "Please provide your company name and the VAT number and, our team will verify " +
+                                        "the provided information within 24 hours." +
+                                        "It is just the formal background check of your company to protect other clients." +
+                                        "Please follow the link below to update your profile",
+                                NotificationTitle = ApplicationMessage.SystemMessage,
+                                UserId = user.Id
+                            });
+
+                        _recipientRepository.Create(new Recipient(user.Id, user.RoleId, systemNotificationId.Result));
+                        _recipientRepository.SaveChanges();
 
                         if (emailServiceResult.IsSucceeded)
                         {
@@ -199,7 +215,7 @@ namespace AM.Application
             {
                 EmailTemplate = 1,
                 Title = ApplicationMessage.AccountVerification,
-                AccountVerificationLink = $"http://{request.Host}/Authentication/ActivateUser/{activationGuid.ToString()}".ToLower(),
+                AccountVerificationLink = $"{request.Scheme}://{request.Host}/Authentication/ActivateUser/{activationGuid.ToString()}".ToLower(),
                 Recipient = command
             };
             var emailServiceResult = _emailService.SendEmail(emailModel);

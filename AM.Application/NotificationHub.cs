@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using _0_Framework.Application;
+using AM.Application.Contracts.Listing;
 using AM.Application.Contracts.Negotiate;
 using AM.Application.Contracts.Notification;
+using AM.Application.Contracts.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SignalR;
@@ -16,17 +18,24 @@ namespace AM.Application
     {
         public NotificationHub(IHttpContextAccessor contextAccessor
             , IAuthenticateHelper authenticateHelper,
-            INegotiateApplication negotiateApplication
+            INegotiateApplication negotiateApplication,
+            IUserApplication userApplication,
+            IListingApplication listingApplication
             , INotificationApplication notificationApplication)
         {
+            _userApplication = userApplication;
             _contextAccessor = contextAccessor;
+            _listingApplication = listingApplication;
             _authenticateHelper = authenticateHelper;
             _negotiateApplication = negotiateApplication;
             _notificationApplication = notificationApplication;
+
         }
 
+        private readonly IUserApplication _userApplication;
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly IAuthenticateHelper _authenticateHelper;
+        private readonly IListingApplication _listingApplication;
         private readonly INegotiateApplication _negotiateApplication;
         private readonly INotificationApplication _notificationApplication;
         public long UserId { get; set; }
@@ -104,7 +113,7 @@ namespace AM.Application
             await _negotiateApplication.SendMessage(Command);
 
             await Clients.User(CurrentNegotiate.BuyerId.ToString())
-                .SendAsync("ReceiveMessage", $"http://{_contextAccessor.HttpContext.Request.Host}"
+                .SendAsync("ReceiveMessage", $"{_contextAccessor.HttpContext.Request.Scheme}://{_contextAccessor.HttpContext.Request.Host}"
                     , messageBody, negotiateId, CurrentNegotiate.SellerId.ToString(), Command.UserId.ToString()
                     , CurrentNegotiate.BuyerId.ToString()
                     , CurrentNegotiate.BuyerImageString, CurrentNegotiate.SellerImageString
@@ -112,7 +121,7 @@ namespace AM.Application
                     , CurrentNegotiate.SellerEmail.Substring(0, 1));
 
             await Clients.User(CurrentNegotiate.SellerId.ToString())
-                .SendAsync("ReceiveMessage", $"http://{_contextAccessor.HttpContext.Request.Host}"
+                .SendAsync("ReceiveMessage", $"{_contextAccessor.HttpContext.Request.Scheme}://{_contextAccessor.HttpContext.Request.Host}"
                     , messageBody, negotiateId, CurrentNegotiate.BuyerId.ToString(), Command.UserId.ToString()
                     , CurrentNegotiate.BuyerId.ToString()
                     , CurrentNegotiate.BuyerImageString
@@ -125,6 +134,29 @@ namespace AM.Application
         public List<MessageViewModel> GetAllMessages(long NegotiateId)
         {
             return _negotiateApplication.GetMessages(NegotiateId);
+        }
+
+        public async Task<double> CheckAmount(long listingId)
+        {
+
+            if (_contextAccessor.HttpContext.User.Claims.FirstOrDefault() != null)
+            {
+                UserId = Convert.ToInt64(_authenticateHelper.CurrentAccountRole().Id);
+                return _listingApplication.GetDetailListing(listingId).Result.Amount;
+            }
+            return 0;
+        }
+
+        public Task<CreateDeliveryLocation> GetLocation(string locationId)
+        {
+
+            if (_contextAccessor.HttpContext.User.Claims.FirstOrDefault() != null & !string.IsNullOrWhiteSpace(locationId))
+            {
+                UserId = Convert.ToInt64(_authenticateHelper.CurrentAccountRole().Id);
+                return _userApplication.GetDeliveryLocation(UserId, Convert.ToInt64(locationId));
+            }
+
+            return Task.FromResult(new CreateDeliveryLocation());
         }
     }
 }

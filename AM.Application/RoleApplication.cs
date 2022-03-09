@@ -43,7 +43,7 @@ namespace AM.Application
             return Task.FromResult(result.Succeeded());
         }
 
-        public Task<List<RoleViewModel>> GetAll()
+        public List<RoleViewModel> GetAll()
         {
             return _roleRepository.GetAll();
         }

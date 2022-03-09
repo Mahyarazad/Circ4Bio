@@ -84,7 +84,8 @@ function handleAjaxPost(formData, url, action) {
                 $("#modal").hide();
                 var resultDom = $('#operation-result-failed');
                 var resultDomMessage = $('#operation-result-failed-message');
-
+                $("#overlay").addClass('hidden');
+                $("#overlay").hide();
                 resultDomMessage.text(data.result.message);
                 resultDom.css('display', 'block');
             } else {
@@ -128,6 +129,22 @@ function handleAjaxPost(formData, url, action) {
                     setTimeout(() => { window.location.replace(url) }, 3000)
                 }
 
+                else if (splited[splited.length - 2] === "confirmquatation") {
+                    var resultDom = $('#operation-result');
+                    var resultDomMessage = $('#operation-result-message');
+                    resultDomMessage.text(data.result.message);
+                    resultDom.css('display', 'block');
+                    setTimeout(() => { window.location.replace(url) }, 3000)
+                }
+
+                else if (splited[splited.length - 2] === "deals") {
+                    var resultDom = $('#operation-result');
+                    var resultDomMessage = $('#operation-result-message');
+                    resultDomMessage.text(data.result.message);
+                    resultDom.css('display', 'block');
+                    setTimeout(() => { window.location.replace(url) }, 3000)
+                }
+
                 else if (splited[splited.length - 2] !== "messages") {
 
                     if (splited[splited.length - 2] === "profile" | splited[splited.length - 2] === "create") {
@@ -146,7 +163,8 @@ function handleAjaxPost(formData, url, action) {
                         }
                         var resultDom = $('#operation-result');
                         var resultDomMessage = $('#operation-result-message');
-
+                        $("#overlay").addClass('hidden');
+                        $("#overlay").hide();
                         resultDomMessage.text(data.result.message);
                         resultDom.css('display', 'block');
 

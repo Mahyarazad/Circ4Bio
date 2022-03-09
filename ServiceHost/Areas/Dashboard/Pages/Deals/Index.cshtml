@@ -17,7 +17,7 @@
                             <div class="flex-shrink-0">
                                 <!-- Heroicon name: solid/check-circle -->
                                 <svg class="h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                                 </svg>
                             </div>
                             <div class="ml-3">
@@ -32,7 +32,7 @@
                             <div class="flex-shrink-0">
                                 <!-- Heroicon name: solid/check-circle -->
                                 <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
                                 </svg>
                             </div>
                             <div class="ml-3">
@@ -45,111 +45,127 @@
                     <!-- end -->
                     <table class="min-w-full border-collapse block md:table" id="main-table">
                         <thead class="block md:table-header-group">
-                            <tr class="border border-grey-500 md:border-none block md:table-row absolute -top-full md:top-auto -left-full md:left-auto  md:relative ">
-                                <th class="bg-gray-50 p-2 text-gray-600 font-bold md:border md:border-grey-500 text-left block md:table-cell">Quatation Info</th>
-                                <th class="bg-gray-50 p-2 text-gray-600 font-bold md:border md:border-grey-500 text-left block md:table-cell">Trader Info</th>
-                                <th class="bg-gray-50 p-2 text-gray-600 font-bold md:border md:border-grey-500 text-left block md:table-cell">Status</th>
-                                <th class="bg-gray-50 p-2 text-gray-600 font-bold md:border md:border-grey-500 text-left block md:table-cell">Actions</th>
-                            </tr>
+                        <tr class="border border-grey-500 md:border-none block md:table-row absolute -top-full md:top-auto -left-full md:left-auto  md:relative ">
+                            <th class="bg-gray-50 p-2 text-gray-600 font-bold md:border md:border-grey-500 text-left block md:table-cell">Quatation Info</th>
+                            <th class="bg-gray-50 p-2 text-gray-600 font-bold md:border md:border-grey-500 text-left block md:table-cell">Trader Info</th>
+                            <th class="bg-gray-50 p-2 text-gray-600 font-bold md:border md:border-grey-500 text-left block md:table-cell">Status</th>
+                            <th class="bg-gray-50 p-2 text-gray-600 font-bold md:border md:border-grey-500 text-left block md:table-cell">Actions</th>
+                        </tr>
                         </thead>
                         <tbody class="block md:table-row-group">
-                            @foreach (var item in Model.Deals)
+                        @foreach (var item in Model.Deals)
+                        {
+                            if (!item.IsCanceled)
                             {
-                                if (!item.IsDeleted)
-                                {
-                            <tr class="bg-white border border-grey-500 md:border-none block md:table-row">
-                                <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell">
-                                    <span class="inline-block w-1/3 md:hidden font-bold">Item Info</span>
-                                    <div class="text-sm text-gray-900">
+                                <tr class="bg-white border border-grey-500 md:border-none block md:table-row">
+                                    <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell">
+                                        <span class="inline-block w-1/3 md:hidden font-bold">Item Info</span>
                                         <div class="text-sm text-gray-900">
-                                            <span class="text-xs text-gray-600"> Item Name:</span>
-                                            <b class="text-xs">@item.Listing.Name</b>
+                                            <div class="text-sm text-gray-900">
+                                                <span class="text-xs text-gray-600"> Item Name:</span>
+                                                <b class="text-xs">@item.Listing.Name</b>
+                                            </div>
+                                            <span class="text-xs text-gray-600"> Total Amount:</span>
+                                            @item.Amount <b class="text-xs"> @item.Unit</b>
+                                            <div class="text-sm text-gray-900">
+                                                <span class="text-xs text-gray-600"> Total Receipt:</span> @item.TotalCost
+                                                <b class="text-xs">@item.Currency</b>
+                                            </div>
+                                            <div class="text-sm text-gray-900">
+                                                <span class="text-xs text-gray-600"> Delivery Fee:</span>
+                                                <b class="text-xs">@item.DeliveryCost @item.Currency</b>
+                                            </div>
+                                            <div class="text-sm text-gray-900">
+                                                <span class="text-xs text-gray-600"> Delivery Method:</span>
+                                                <b class="text-xs">@item.DeliveryMethod</b>
+                                            </div>
+                                            <div class="text-sm text-gray-900">
+                                                <span class="text-xs text-gray-600"> Creation Time:</span>
+                                                <b class="text-xs">@item.CreationTime</b>
+                                            </div>
                                         </div>
-                                        <span class="text-xs text-gray-600"> Total Amount:</span>
-                                        @item.Amount <b class="text-xs"> @item.Unit</b>
-                                        <div class="text-sm text-gray-900">
-                                            <span class="text-xs text-gray-600"> Total Receipt:</span> @item.TotalCost
-                                            <b class="text-xs">@item.Currency</b>
-                                        </div>
-                                        <div class="text-sm text-gray-900">
-                                            <span class="text-xs text-gray-600"> Delivery Fee:</span>
-                                            <b class="text-xs">@item.DeliveryCost @item.Currency</b>
-                                        </div>
-                                        <div class="text-sm text-gray-900">
-                                            <span class="text-xs text-gray-600"> Delivery Method:</span>
-                                            <b class="text-xs">@item.DeliveryMethod</b>
-                                        </div>
-                                        <div class="text-sm text-gray-900">
-                                            <span class="text-xs text-gray-600"> Creation Time:</span>
-                                            <b class="text-xs">@item.CreationTime</b>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell">
-                                    <span class="inline-block w-1/3 md:hidden font-bold">Trader Info</span>
-                                    @if (AuthenticateHelper.CurrentAccountRole().Id == item.Seller.Id)
-                                    {
-                            <div class="grid grid-cols-4">
-                                <div class="flex flex-col col-span-3">
-                                    <div class="text-sm text-gray-900">
-                                        <span class="text-xs text-red-600"> Buyer Email: </span>
-                                        @item.Buyer.Email
-                                    </div>
-                                    <div class="text-sm text-gray-900">
-                                        <span class="text-xs text-red-600"> Buyer Name: </span>
-                                        @item.Buyer.FullName
-                                    </div>
-                                </div>
-                                <img class="h-10 w-10 rounded-full col-span-1 place-self-end"
-                                     src="~/Site Files/Profile_Images/@(item.Buyer.Avatar == "default-avatar.png" ? "default-avatar.png" : $"{item.Buyer.Avatar}")"
-                                     alt="" />
-                            </div> }
-                                                else
-                                                {
-                            <div class="flex flex-col">
-                                <div class="text-sm text-gray-900">
-                                    <span class="text-xs text-green-600"> Seller Email: </span>
-                                    @item.Seller.Email
-                                </div>
-                                <div class="text-sm text-gray-900">
-                                    <span class="text-xs text-green-600"> Seller Name: </span>
-                                    @item.Seller.FullName
-                                </div>
-                            </div>
-                                                    <img class="h-10 w-10 rounded-full"
-                                                         src="~/Site Files/Profile_Images/@(item.Seller.Avatar == "default-avatar.png" ? "default-avatar.png" : $"{item.Seller.Avatar}")"
-                                                         alt="" />}
-
-                                </td>
-                                <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell">
-                                    @if (item.IsDeleted)
-                                    {
-                                <p> Canceled By Buyer</p>}
-                                    @if (item.IsRejected)
-                                    {
-                                <p> Canceled By Seller</p>}
-                                    @if (item.QuatationSent)
-                                    {
-                                     <p> Quatation Sent </p>}
-                                    else
-                                    {
-                                        <p> Pending </p>
-                                    }
-                                </td>
-                                <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell">
-                                    <span class="inline-block w-1/3 md:hidden font-bold">Actions</span>
-                                    <div class="flex justify-start my-2">
-                                        @if (AuthenticateHelper.CurrentAccountRole().Id != item.Seller.Id)
+                                    </td>
+                                    <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell">
+                                        <span class="inline-block w-1/3 md:hidden font-bold">Trader Info</span>
+                                        @if (AuthenticateHelper.CurrentAccountRole().Id == item.Seller.Id)
                                         {
-                            <a asp-page="Quatation" asp-route-id="@item.DealId"
-                               class="mx-1 inline-flex items-center px-2 py-2 border border-gray-300 shadow-sm text-xs font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
-                                <i class="fa fa-edit"></i> Confirm Quatation
-                            </a>}
-                                    </div>
-                                </td>
-                            </tr>
-                                }
-                            }
+                                            <div class="grid grid-cols-4">
+                                                <div class="flex flex-col col-span-3">
+                                                    <div class="text-sm text-gray-900">
+                                                        <span class="text-xs text-red-600"> Buyer Email: </span>
+                                                        @item.Buyer.Email
+                                                    </div>
+                                                    <div class="text-sm text-gray-900">
+                                                        <span class="text-xs text-red-600"> Buyer Name: </span>
+                                                        @item.Buyer.FullName
+                                                    </div>
+                                                </div>
+                                                <img class="h-10 w-10 rounded-full col-span-1 place-self-end"
+                                                     src="~/Site Files/Profile_Images/@(item.Buyer.Avatar == "default-avatar.png" ? "default-avatar.png" : $"{item.Buyer.Avatar}")"
+                                                     alt=""/>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="flex flex-col">
+                                                <div class="text-sm text-gray-900">
+                                                    <span class="text-xs text-green-600"> Seller Email: </span>
+                                                    @item.Seller.Email
+                                                </div>
+                                                <div class="text-sm text-gray-900">
+                                                    <span class="text-xs text-green-600"> Seller Name: </span>
+                                                    @item.Seller.FullName
+                                                </div>
+                                            </div>
+                                            <img class="h-10 w-10 rounded-full"
+                                                 src="~/Site Files/Profile_Images/@(item.Seller.Avatar == "default-avatar.png" ? "default-avatar.png" : $"{item.Seller.Avatar}")"
+                                                 alt=""/>}
+
+                                    </td>
+                                    <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell">
+                                        @if (item.IsCanceled)
+                                        {
+                                            <p> Canceled By Buyer</p>}
+                                        @if (item.IsRejected)
+                                        {
+                                            <p> Canceled By Seller</p>}
+                                        @if (item.QuatationSent)
+                                        {
+                                            <p> Quatation Sent </p>}
+                                        @if (item.IsActive)
+                                        {
+                                            <p> Waiting for Payment </p>}
+                                        else
+                                        {
+                                            <p> Pending </p>}
+                                    </td>
+                                    <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell">
+                                        <span class="inline-block w-1/3 md:hidden font-bold">Actions</span>
+                                        <div class="flex justify-start my-2">
+                                            @if (AuthenticateHelper.CurrentAccountRole().Id != item.Seller.Id & !item.IsActive)
+                                            {
+
+                                                <form method="post"
+                                                      data-callback="" data-ajax="true" data-action="Refresh">
+                                                    <input type="hidden" value="@item.DealId" name="id"/>
+                                                    <button type="submit"
+                                                            class="mx-1 inline-flex items-center px-2 py-2 border border-sky-700 shadow-sm text-xs font-medium rounded-md text-white bg-sky-700 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+                                                        Confirm Quatation
+                                                    </button>
+                                                </form>
+
+                                            }
+                                            @if (item.IsActive)
+                                            {
+                                                <a asp-page="ConfirmQuatation" asp-route-id="@item.NegotiateId"
+                                                    class="mx-1 inline-flex items-center px-2 py-2 border border-sky-700 shadow-sm text-xs font-medium rounded-md text-white bg-sky-700 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+                                                    View Confiremd Quatation
+                                                </a>
+                                            }
+                                        </div>
+                                    </td>
+                                </tr>}
+                        }
                         </tbody>
                     </table>
                 </div>
@@ -161,5 +177,3 @@
 @section Scripts{
     <script src="~/js/AlterDataTableDesign.js"></script>
 }
-
-

@@ -30,7 +30,7 @@ namespace AM.Infrastructure.Repository
                     Currency = x.Currency,
                     NegotiateId = x.NegotiateId,
                     Amount = x.Amount,
-                    IsDeleted = x.IsDeleted,
+                    IsCanceled = x.IsDeleted,
                     IsActive = x.IsActive,
                     IsFinished = x.IsFinished,
                     IsRejected = x.IsRejected,
@@ -70,13 +70,19 @@ namespace AM.Infrastructure.Repository
                 .ToListAsync();
         }
 
-        public DealViewModel GetDealWithDealId(long DealId)
+        public DealViewModel GetDealWithNegotiateId(long NegotiateId)
         {
             var deal = _amContext.Deals
                 .Include(x => x.Listing)
                 .AsNoTracking()
                 .AsSingleQuery()
-                .FirstOrDefault(x => x.NegotiateId == DealId);
+                .FirstOrDefault(x => x.NegotiateId == NegotiateId);
+
+            var negotiate = _amContext.Negotiates
+                .AsNoTracking()
+                .AsSingleQuery()
+                .FirstOrDefault(x => x.Id == NegotiateId);
+
 
             var deliveryLocation = _amContext.Users
                 .AsNoTracking()
@@ -90,9 +96,10 @@ namespace AM.Infrastructure.Repository
                 Currency = deal.Currency,
                 NegotiateId = deal.NegotiateId,
                 Amount = deal.Amount,
-                IsDeleted = deal.IsDeleted,
-                IsActive = deal.IsActive,
-                IsFinished = deal.IsFinished,
+                IsCanceled = negotiate.IsCanceled,
+                IsActive = negotiate.IsActive,
+                IsFinished = negotiate.IsFinished,
+                IsRejected = negotiate.IsRejected,
                 CreationTime = deal.CreationTime,
                 Location = deal.Location,
                 ListingId = deal.ListingId,
@@ -141,6 +148,18 @@ namespace AM.Infrastructure.Repository
             };
 
             return query;
+        }
+
+        public DealViewModel GetDealWithDealId(long DealId)
+        {
+            return _amContext.Deals
+                .AsNoTracking()
+                .Where(x => x.Id == DealId).Select(x => new DealViewModel
+                {
+                    DealId = x.Id,
+                    NegotiateId = x.NegotiateId,
+                    ListingId = x.ListingId
+                }).First();
         }
     }
 }

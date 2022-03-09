@@ -12,6 +12,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Deals
     public class IndexModel : PageModel
     {
         public List<DealViewModel> Deals;
+        public DealViewModel Command;
         private readonly IDealApplication _dealApplication;
         private readonly IUserApplication _userApplication;
         private readonly IAuthenticateHelper _authenticateHelper;
@@ -39,6 +40,13 @@ namespace ServiceHost.Areas.Dashboard.Pages.Deals
             {
                 return RedirectToPage("/AccessDenied", new { area = "" });
             }
+        }
+
+        public JsonResult OnPost(long id)
+        {
+            Command = _dealApplication.GetDealWithDealId(id);
+            var result = _dealApplication.AtivateDeal(Command).Result;
+            return new JsonResult(Task.FromResult(result));
         }
     }
 }

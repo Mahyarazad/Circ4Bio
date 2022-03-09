@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using _0_Framework;
 using AM.Application.Contracts.User;
@@ -23,11 +24,12 @@ namespace ServiceHost.Pages.Authentication
 
         }
 
-        public async Task<IActionResult> OnPostRegister(RegisterUser command)
+        public IActionResult OnPostRegister(RegisterUser command)
         {
+
             RegisterSuccess = "";
             RegisterMessage = "";
-            var result = await _userApplication.Register(command);
+            var result = _userApplication.Register(command);
             if (result.IsSucceeded)
             {
                 RegisterSuccess = ApplicationMessage.SuccessfulRegister;

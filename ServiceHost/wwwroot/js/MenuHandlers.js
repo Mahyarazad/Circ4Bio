@@ -137,13 +137,17 @@ $('#notification-handler-mobile').on('click', function () {
 })
 
 function loading() {
-    $(".overlay").show();
+    $("#overlay").removeClass('invisible');
+    $("#overlay").removeClass('hidden');
+    $("#overlay").show();
 }
 
 $('#login-button').on('click', function () {
     setInterval(function () {
         if ($('#password-error').length == 1 || $('#user-email-error').length == 1) {
-            $(".overlay").hide();
+            $("#overlay").addClass('invisible');
+            $("#overlay").addClass('hidden');
+            $("#overlay").hide();
         };
     }, 100)
 })
@@ -152,7 +156,9 @@ $('#register-button').on('click', function () {
     setInterval(function () {
         if ($('#password-error').length == 1 || $('#user-email-error').length == 1
             || $('#repassword-error').length == 1 || $('#user-type-error').length == 1) {
-            $(".overlay").hide();
+            $("#overlay").addClass('invisible');
+            $("#overlay").addClass('hidden');
+            $("#overlay").hide();
         };
     }, 100)
 })
@@ -161,7 +167,9 @@ $('#contact-us-button').on('click', function () {
     setInterval(function () {
         if ($('#Command_FullName-error').length == 1 || $('#Command_Email-error').length == 1
             || $('#Command_Subject-error').length == 1 || $('#Command_Body-error').length == 1) {
-            $(".overlay").hide();
+            $("#overlay").addClass('invisible');
+            $("#overlay").addClass('hidden');
+            $("#overlay").hide();
         };
     }, 100)
 })
@@ -210,8 +218,11 @@ $(document).on('keydown', function (e) {
 });
 
 function gototop() {
+    hideModal();
+    loading();
     document.body.scrollTop = 0; // For Safari
-    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    document.documentElement.scrollTop = 0;
+    // For Chrome, Firefox, IE and Opera
 }
 
 function gotoTop() {
@@ -231,12 +242,14 @@ function DashboardSelect() {
 function handleFilter() {
     var stat = $("#filter-section-0").css('visibility');
     if (stat === 'hidden') {
+        $("#shrink-div").removeClass('h-10');
         $("#svg-plus").addClass('invisible');
         $("#svg-minus").removeClass('invisible');
         $("#filter-section-0").removeClass('invisible');
         $('#filter-section-0').removeClass('-translate-y-[5rem]');
         $('#filter-section-0').css('opacity', '1');
     } else {
+        $("#shrink-div").addClass('h-10');
         $("#svg-plus").removeClass('invisible');
         $("#svg-minus").addClass('invisible');
         $("#filter-section-0").addClass('invisible');

@@ -9,6 +9,11 @@ namespace AM.Application.Contracts.ResetPassword
         [Required(ErrorMessage = ValidationMessages.EmailRequired)]
         public string? Email { get; set; }
         [Required(ErrorMessage = ValidationMessages.Password)]
+        [MinLength(8, ErrorMessage = ValidationMessages.StrongerPassword8Character)]
+        [MaxLength(32, ErrorMessage = ValidationMessages.StrongerPassword8Character)]
+        //@"^((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])).*"
+        [RegularExpression(@"^((?=.*\d)(?=.*[a-z])(?=.*[A-Z])).*"
+            , ErrorMessage = ValidationMessages.StrongerPassword)]
         public string? Password { get; set; }
         [Compare("Password", ErrorMessage = ValidationMessages.PasswordNotMatch)]
         [Required(ErrorMessage = ValidationMessages.ConfirmPassword)]

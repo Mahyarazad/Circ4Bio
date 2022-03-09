@@ -7,7 +7,7 @@ namespace AM.Domain.RoleAggregate
 {
     public interface IRoleRepository : IRepository<int, Role>
     {
-        Task<List<RoleViewModel>> GetAll();
+        List<RoleViewModel> GetAll();
         Task<RoleViewModel> GetDetailViewModel(int Id);
         Task<EditRole> GetDetail(int Id);
 

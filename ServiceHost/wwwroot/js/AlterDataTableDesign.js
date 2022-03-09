@@ -1,7 +1,7 @@
 ﻿$(document).ready(function () {
     $('#main-table').DataTable({
         "order": [[0, "desc"]],
-        language: { searchPlaceholder: "Search Everthing ..." }
+        language: { searchPlaceholder: "Search ..." }
     });
     $('input[type="search"]').addClass('mt-1');
     $('input[type="search"]').addClass('w-1/2');

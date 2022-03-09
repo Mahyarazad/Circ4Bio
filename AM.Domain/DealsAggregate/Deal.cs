@@ -89,9 +89,10 @@ namespace AM.Domain
         {
             IsFinished = true;
         }
-        public void ActivateDeal()
+        public void ActivateDeal(string trackingCode)
         {
             IsActive = true;
+            TrackingCode = trackingCode;
         }
         public void PaymentReceived()
         {
@@ -99,7 +100,7 @@ namespace AM.Domain
         }
 
         public void Edit(double deliveryCost, string? deliveryMethod, double totalCost, string? unit
-            , string? curency, double amount, string? location, string? contractFile)
+            , string? curency, double amount, int deliveryLocationId, string? contractFile)
         {
             DeliveryCost = deliveryCost;
             DeliveryMethod = deliveryMethod;
@@ -107,7 +108,7 @@ namespace AM.Domain
             Unit = unit;
             Currency = curency;
             Amount = amount;
-            Location = location;
+            DeliveryLocationId = deliveryLocationId;
             ContractFile = contractFile;
             PaymentStatus = false;
             IsDeleted = false;

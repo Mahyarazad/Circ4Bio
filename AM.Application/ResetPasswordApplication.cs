@@ -3,20 +3,18 @@ using System.Threading.Tasks;
 using _0_Framework;
 using _0_Framework.Application;
 using _0_Framework.Application.Email;
-using _0_Framework.Application.FluentEmail;
 using AM.Application.Contracts.ResetPassword;
 using AM.Domain.ResetPasswordAggregate;
 using AM.Domain.UserAggregate;
 using Microsoft.AspNetCore.Http;
-using Nancy.ViewEngines.SuperSimpleViewEngine;
 
 namespace AM.Application
 {
     public class ResetPasswordApplication : IResetPasswordApplication
     {
-        private readonly IEmailService<EmailModel> _emailService;
         private readonly IUserRepository _userRepository;
         private readonly IHttpContextAccessor _contextAccessor;
+        private readonly IEmailService<EmailModel> _emailService;
         private readonly IResetPasswordRepository _resetPasswordRepository;
 
         public ResetPasswordApplication(IResetPasswordRepository resetPasswordRepository,
@@ -50,7 +48,7 @@ namespace AM.Application
                 Title = ApplicationMessage.ResetPassword,
                 Recipient = email,
                 ResetPasswordLink =
-                    $"http://{request.Host}/Authentication/ResetPassword/{resetUrl.ToString()}".ToLower()
+                    $"{request.Scheme}://{request.Host}/Authentication/ResetPassword/{resetUrl.ToString()}".ToLower()
             };
             var emailServiceResult = _emailService.SendEmail(emailModel);
 

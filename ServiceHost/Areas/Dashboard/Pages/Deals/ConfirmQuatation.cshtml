@@ -47,8 +47,13 @@
     <!-- Profile section -->
     <div class="mt-6 flex flex-col lg:flex-row">
         <div class="flex-grow space-y-6 mx-4">
-            <div class="mt-6 grid grid-cols-12 gap-6">
-                <div class="col-span-12 sm:col-span-6">
+            <div id="finished-quatation" class="mt-2 flex-col lg:flex-row justify-between
+                 flex bg-sky-800 rounded-md text-xl lg:text-2xl px-2 lg:px-10 text-white">
+                <p class="py-1 lg:place-self-center"> Quatation Confirmed </p>
+                <p class="py-1 lg:place-self-center"> Tracking Code: @Model.Command.TrackingCode</p>
+            </div>
+            <div class="mt-6 grid grid-cols-2 gap-2">
+                <div class="col-span-2 sm:col-span-1 space-y-1">
                     <div class="grid grid-cols-4 gap-1">
                         <div class="flex flex-col col-span-3">
                             <label class="block text-sm font-medium text-gray-700"> Seller Info: </label>
@@ -58,41 +63,31 @@
                         </div>
                         <img class="col-span-1 py-3"
                              src="~/Site Files/Profile_Images/@(Model.Command.Seller.Avatar == "default-avatar.png" ? "default-avatar.png" : $"{Model.Command.Seller.Avatar}")"
-                             alt="" />
+                             alt=""/>
 
                     </div>
-                </div>
-                <div class="col-span-12 sm:col-span-6">
-                    <label asp-for="@Model.Command.Listing.Name" class="block text-sm font-medium text-gray-700"></label>
-                    <p class="mt-1 block w-full border bg-gray-100 border-gray-100 rounded-md shadow-sm py-2 px-3 sm:text-sm">
-                        @Model.Command.Listing.Name
-                    </p>
-                </div>
-                <div class="col-span-12 sm:col-span-6">
+
+
+
                     <label class="block text-sm font-medium text-gray-700"> Delivery Charges </label>
                     <div class="mt-1 block w-full bg-gray-100 pl-3 pr-10 py-2 text-base border-gray-100  sm:text-sm rounded-md">
                         <p>by @Model.Command.DeliveryMethod</p>
                     </div>
-                </div>
-                <div class="col-span-12 sm:col-span-6">
-                    <label asp-for="@Model.Command.Listing.Description" class="block text-sm font-medium text-gray-700"></label>
-                    <p class="mt-1 block w-full border bg-gray-100 border-gray-100 rounded-md shadow-sm py-2 px-3 sm:text-sm">
-                        @Model.Command.Listing.Description
-                    </p>
-                </div>
 
-                <div class="col-span-12 sm:col-span-6">
+
                     <label class="block text-sm font-medium text-gray-700 mt-3">Delivery Cost</label>
                     <div class="mt-1 block w-full bg-gray-100 border border-gray-100 rounded-md shadow-sm py-2 px-3 sm:text-sm flex justify-between">
                         <p>@Model.Command.DeliveryCost</p>
                         <span>@Model.Command.Currency</span>
                     </div>
 
+
                     <label asp-for="@Model.Command.Amount" class="block text-sm font-medium text-gray-700"></label>
                     <div class="mt-1 block w-full bg-gray-100 rounded-md shadow-sm py-2 px-3  sm:text-sm flex justify-between">
                         <p>@Model.Command.Amount</p>
                         <span>@Model.Command.Unit</span>
                     </div>
+
 
                     <label class="block text-sm font-medium text-gray-700"> Unit Price </label>
                     <div class="mt-1 block w-full bg-gray-100 rounded-md shadow-sm py-2 px-3 sm:text-sm flex justify-between">
@@ -106,9 +101,21 @@
                         <p>@Model.Command.TotalCost</p>
                         <span>@Model.Command.Currency</span>
                     </div>
-
                 </div>
-                <div class="col-span-12 sm:col-span-6">
+
+                <div class="col-span-2 sm:col-span-1 space-y-1">
+
+                    <label asp-for="@Model.Command.Listing.Name" class="block text-sm font-medium text-gray-700"></label>
+                    <p class="mt-1 block w-full border bg-gray-100 border-gray-100 rounded-md shadow-sm py-2 px-3 sm:text-sm">
+                        @Model.Command.Listing.Name
+                    </p>
+
+                    <label asp-for="@Model.Command.Listing.Description" class="block text-sm font-medium text-gray-700"></label>
+                    <p class="mt-1 block w-full border bg-gray-100 border-gray-100 rounded-md shadow-sm py-2 px-3 sm:text-sm">
+                        @Model.Command.Listing.Description
+                    </p>
+
+
                     <label class="block text-sm font-medium text-gray-700 mt-3">Delivery Location</label>
                     <div class="mt-1 block bg-gray-100 border-gray-100 w-full px-2 py-2 text-base border-gray-300 sm:text-sm rounded-md">
                         <div class="flex justify-between flex-col">
@@ -144,19 +151,24 @@
                     </div>
                 </div>
 
-                <div class="col-span-12 sm:col-span-6">
-                    <label class="block text-sm font-medium text-gray-700">Contract</label>
+                <div class="col-span-2 sm:col-span-1 space-y-1">
+                    <label class="block text-sm font-medium text-gray-700 my-2">Contract</label>
                     @if (Model.Command.ContractFileString != null)
                     {
-        <a href="~/Site Files/Deal Documents/@Model.Command.NegotiateId/@Model.Command.ContractFileString"
-           class="mt-1 w-full border border-gray-100 rounded-md shadow-sm py-2 px-3 sm:text-sm">
-            @(Model.Command.ContractFileString != null ? "Open Contract File" : "No Contract File")
-        </a> }
+                        <div class="my-2">
+                            <a href="~/Site Files/Deal Documents/@Model.Command.NegotiateId/@Model.Command.ContractFileString"
+                               class="mt-1 w-full border border-gray-100 rounded-md shadow-sm py-2 px-3 sm:text-sm">
+                                @(Model.Command.ContractFileString != null ? "Open Contract File" : "No Contract File")
+                            </a>
+                        </div>
+                    }
                     else
                     {
-        <p class="mt-1 w-full border bg-gray-100 border-gray-100 rounded-md shadow-sm py-2 px-3 sm:text-sm">
-            No Contract File
-        </p>}
+                        <div class="my-2">
+                            <p class="w-full border bg-gray-100 border-gray-100 rounded-md shadow-sm py-2 px-2 sm:text-sm">
+                                No Contract File
+                            </p>
+                        </div>}
 
                 </div>
                 <input type="hidden" asp-for="@Model.Command.NegotiateId">
@@ -169,13 +181,18 @@
         <a asp-page="/Negotiate/Index" asp-area="Dashboard" class="bg-white border border-gray-100 rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
             Back
         </a>
-        <button id="save" type="submit" class="ml-5 bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
-            Confirm Quatation
-        </button>
+        @if (!Model.Command.IsFinished)
+        {
+<button id="save" type="submit" class="ml-5 bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+    Confirm Quatation
+</button>}
     </div>
 </form>
 
-
+@section CSS
+{
+    <link rel="stylesheet" href="~/css/mapbox-gl.css" />
+}
 @section Scripts
 {
     <script src="~/js/mapbox-gl.js"></script>
@@ -195,9 +212,4 @@
             .addTo(map);
 
     </script>
-}
-@section CSS
-{
-    <script src="~/js/mapbox-gl.js"></script>
-    <link rel="stylesheet" href="~/css/mapbox-gl.css" />
 }

@@ -19,15 +19,15 @@ namespace AM.Infrastructure.Repository
         }
 
 
-        public async Task<List<RoleViewModel>> GetAll()
+        public List<RoleViewModel> GetAll()
         {
-            return await _amContext.Roles.Select(x => new RoleViewModel
+            return _amContext.Roles.Select(x => new RoleViewModel
             {
                 CreationTime = TruncateDateTime.TruncateToDefault(x.CreationTime).ToString(),
                 Name = x.Name,
                 Id = x.Id
             }).AsNoTracking()
-                .OrderByDescending(x => x.Id).ToListAsync();
+                .OrderByDescending(x => x.Id).ToList();
         }
 
         public async Task<RoleViewModel> GetDetailViewModel(int Id)

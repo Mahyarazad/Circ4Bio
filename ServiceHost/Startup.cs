@@ -19,12 +19,14 @@ namespace ServiceHost
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IHostEnvironment env)
         {
             Configuration = configuration;
+            _Host = env;
         }
 
         public IConfiguration Configuration { get; }
+        public IHostEnvironment _Host { get; }
         private readonly string _corsPolicy = "CorsPolicy";
         public void ConfigureServices(IServiceCollection services)
         {

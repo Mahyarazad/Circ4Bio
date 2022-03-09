@@ -110,7 +110,7 @@
                         </div>
                     </div>
                     <div class="col-span-2">
-                        <div class="flex-grow space-y-96 rounded-l-md hidden" id="map-wrapper"></div>
+                        <div class="flex-grow space-y-96 rounded-md hidden" id="map-wrapper"></div>
 
                     </div>
                     <div class="col-span-1">
@@ -214,6 +214,7 @@
         const _marker = new mapboxgl.Marker({ color: 'red', rotation: 0, draggable: true })
             .setLngLat([e, $("#Latitude").val()])
             .addTo(map);
+
         _marker.on('drag',
             function (e) {
                 $("#Latitude").val(e.target._lngLat.lat.toFixed(6));
