@@ -16,6 +16,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.13" />
     <PackageReference Include="Nancy" Version="2.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="PaypalPayment" Version="1.0.3" />
   </ItemGroup>
 
   <ItemGroup>

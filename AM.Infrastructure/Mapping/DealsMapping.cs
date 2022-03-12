@@ -24,8 +24,16 @@ namespace AM.Infrastructure.Mapping
             builder.Property(x => x.IsActive).IsRequired();
             builder.Property(x => x.IsFinished).IsRequired();
             builder.Property(x => x.DeliveryLocationId).IsRequired();
+            builder.OwnsOne(x => x.PaymentInfo, ModelBuilder =>
+            {
+                ModelBuilder.Property(x => x.PaymentId).HasColumnName(nameof(PaymentInfo.PaymentId)).HasMaxLength(100);
+                ModelBuilder.Property(x => x.PayerEmail).HasColumnName(nameof(PaymentInfo.PayerEmail)).HasMaxLength(100);
+                ModelBuilder.Property(x => x.PayerFirstName).HasColumnName(nameof(PaymentInfo.PayerFirstName)).HasMaxLength(100);
+                ModelBuilder.Property(x => x.PayerLastName).HasColumnName(nameof(PaymentInfo.PayerLastName)).HasMaxLength(100);
+                ModelBuilder.Property(x => x.PaymentId).HasColumnName(nameof(PaymentInfo.PaymentId)).HasMaxLength(100);
+                ModelBuilder.Property(x => x.PaymentTime).HasColumnName(nameof(PaymentInfo.PaymentTime)).HasMaxLength(100);
 
-
+            });
             builder.HasOne(x => x.Listing).WithMany(x => x.DealList).HasForeignKey(x => x.ListingId);
             builder.HasMany(x => x.Negotiates).WithOne(x => x.Deal).HasForeignKey(x => x.DealId);
         }

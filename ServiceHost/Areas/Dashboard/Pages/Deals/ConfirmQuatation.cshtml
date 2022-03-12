@@ -178,20 +178,37 @@
         </div>
     </div>
     <div class="mt-4 py-4 px-4 flex justify-end sm:px-6">
-        <a asp-page="/Negotiate/Index" asp-area="Dashboard" class="bg-white border border-gray-100 rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+        <a asp-page="/Negotiate/Index" asp-area="Dashboard"
+           class="bg-white border border-gray-100 rounded-md shadow-sm py-2 px-4 h-9 place-self-center
+           justify-center text-sm font-medium text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
             Back
-        </a>
-        @if (!Model.Command.IsFinished)
+
+        </a>@if (Model.Command.IsActive && Model.Command.Seller.Id != Model.LoggedUser.Id)
+            {
+                <a asp-page="ConfirmQuatation" asp-route-id="@Model.Command.NegotiateId" asp-page-handler="CheckOut"
+                   onclick="loading()"
+                   class="">
+                    <img  class="h-8 my-2 px-1"
+                          src="~/Site Files/checkout-logo-large.png" alt="Check out with PayPal" />
+                </a>
+            }
+
+        @if (!Model.Command.IsFinished && !Model.Command.IsActive)
         {
-<button id="save" type="submit" class="ml-5 bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
-    Confirm Quatation
-</button>}
+            <button id="save" type="submit"
+                    class="ml-5 bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4 h-9 place-self-center
+                    justify-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+                Confirm Quatation
+            </button>
+
+        }
     </div>
 </form>
 
 @section CSS
 {
     <link rel="stylesheet" href="~/css/mapbox-gl.css" />
+    <link rel="stylesheet" href="~/css/Loader.css" />
 }
 @section Scripts
 {

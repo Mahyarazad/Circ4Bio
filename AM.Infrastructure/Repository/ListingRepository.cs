@@ -41,6 +41,7 @@ namespace AM.Infrastructure.Repository
                     UnitPrice = x.UnitPrice,
                     PublicStatus = x.Status,
                     IsDeleted = x.IsDeleted,
+                    IsService = x.IsService,
                     Currency = x.Currency
                 }).AsNoTracking()
                 .OrderByDescending(x => x.Id).ToListAsync();

@@ -231,7 +231,6 @@ $("#search-input").on("keyup",
             $("#no-result").addClass('hidden');
             element.innerHTML = createPagination(_totalPages, page);
         }
-
     });
 
 function handleGridItem(pageSize) {

@@ -9,12 +9,13 @@ namespace AM.Application.Contracts.Deal
         Task<OperationResult> CreateQuatation(CreateDeal Command);
         Task<OperationResult> EditDeal(DealViewModel Command);
         Task<OperationResult> RejectDeal(long Id);
-        Task<OperationResult> FinishDeal(long Id);
+        Task<OperationResult> FinishDeal(DealViewModel Command);
         Task<OperationResult> AtivateDeal(DealViewModel Command);
         Task<OperationResult> PaymentReceived(long Id);
         Task<List<DealViewModel>> GetAllDeals(long UserId);
         DealViewModel GetDealWithNegotiateId(long NegotiateId);
         DealViewModel GetDealWithDealId(long DealId);
+        DealViewModel ReturnDealIdWithTrackingRef(string TrackingCode);
 
     }
 }

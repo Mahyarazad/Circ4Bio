@@ -40,6 +40,7 @@ namespace AM.Domain
             StartTime = DateTime.Now;
             BuyerId = buyerId;
             SellerId = sellerId;
+            PaymentInfo = null;
         }
 
         public long ListingId { get; private set; }
@@ -59,6 +60,9 @@ namespace AM.Domain
         public double Latitude { get; private set; }
         public double Longitude { get; private set; }
         public string? TrackingCode { get; private set; }
+        public PaymentInfo? PaymentInfo { get; private set; }
+        public string? PaymentDate { get; private set; }
+
         public string? ContractFile { get; private set; }
         //Deal Status(IsFinished[true] = Closed  , IsFinished[false] = Open)
         //Deal Status(IsRejected[true] = Rejected , IsRejected[false] = Pending)
@@ -85,15 +89,21 @@ namespace AM.Domain
         {
             IsDeleted = true;
         }
-        public void FinishDeal()
-        {
-            IsFinished = true;
-        }
+
         public void ActivateDeal(string trackingCode)
         {
             IsActive = true;
             TrackingCode = trackingCode;
         }
+
+        public void PaymentFinished(PaymentInfo paymentInfo)
+        {
+            IsFinished = true;
+            PaymentInfo = new PaymentInfo(paymentInfo.PaymentId, paymentInfo.PaymentTime, paymentInfo.PayerEmail,
+                paymentInfo.PayerFirstName, paymentInfo.PayerLastName);
+
+        }
+
         public void PaymentReceived()
         {
             PaymentStatus = true;

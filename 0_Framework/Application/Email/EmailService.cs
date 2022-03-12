@@ -34,8 +34,8 @@ namespace _0_Framework.Application.Email
                 case 0:
                     {
                         // FilePath = AppDomain.CurrentDomain.BaseDirectory + "\\wwwroot\\Email Templates\\ResetPasswordTemplate.html";
-                        FilePath = "C:\\Users\\mhyri\\OneDrive\\Desktop\\Circ4Bio\\Circ4Bio\\ServiceHost" + "\\wwwroot\\Email Templates\\AccountVerificationTemplate.html";
-                        StreamReader StreamReader = new StreamReader(FilePath);
+                        FilePath = "C:\\Users\\mhyri\\OneDrive\\Desktop\\Circ4Bio\\Circ4Bio\\ServiceHost" + "\\wwwroot\\Email Templates\\ResetPasswordTemplate.html";
+                        StreamReader StreamReader = new(FilePath);
                         MailText = StreamReader.ReadToEnd();
                         StreamReader.Close();
                         MailText = MailText.Replace("[link]", model.ResetPasswordLink);
@@ -57,7 +57,7 @@ namespace _0_Framework.Application.Email
                 case 2:
                     {
                         // FilePath = AppDomain.CurrentDomain.BaseDirectory + "\\wwwroot\\Email Templates\\ProvideInformation.html";
-                        FilePath = "C:\\Users\\mhyri\\OneDrive\\Desktop\\Circ4Bio\\Circ4Bio\\ServiceHost" + "\\wwwroot\\Email Templates\\AccountVerificationTemplate.html";
+                        FilePath = "C:\\Users\\mhyri\\OneDrive\\Desktop\\Circ4Bio\\Circ4Bio\\ServiceHost" + "\\wwwroot\\Email Templates\\ProvideInformation.html";
                         StreamReader StreamReader = new(FilePath);
                         MailText = StreamReader.ReadToEnd();
                         StreamReader.Close();

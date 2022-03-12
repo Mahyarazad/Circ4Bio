@@ -1,42 +1,51 @@
 ﻿<!DOCTYPE html>
 <html lang="en" class="h-full bg-gray-50">
-    <head>
-        <meta charset="utf-8"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <title>@ViewData["Title"] - Circ4Bio </title>
-        <script src="~/js/tailwind.min.js"></script>
-        <link rel="stylesheet" href="~/css/Inter.css"/>
-        <link rel="stylesheet" href="~/dist/output.css"/>
-        <link rel="stylesheet" href="~/css/site.css"/>
-    </head>
-    <body>
-        <partial name="_Header"/>
-            <main role="main">
-                <div class="max-w-max-customized">
-                    <div class="hidden" id="overlay">
-                        <div class="lds-roller">
-                            <div></div>
-                            <div></div>
-                            <div></div>
-                            <div></div>
-                            <div></div>
-                            <div></div>
-                            <div></div>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Circ4Bio </title>
+    <script src="~/js/tailwind.min.js"></script>
+    <link rel="stylesheet" href="~/css/Inter.css" />
+    <link rel="stylesheet" href="~/dist/output.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <partial name="_Header" />
+    <main role="main">
+        <div class="max-w-max-customized">
+            @* <div class="hidden" id="overlay"> *@
+            @*     <div class="lds-roller"> *@
+            @*         <div></div> *@
+            @*         <div></div> *@
+            @*         <div></div> *@
+            @*         <div></div> *@
+            @*         <div></div> *@
+            @*         <div></div> *@
+            @*         <div></div> *@
+            @*         <div></div> *@
+            @*     </div> *@
+            @* </div> *@
+            <div class="hidden" id="overlay">
+                <div class="flex justify-center my-64">
+                    <div class="loadingio-spinner-eclipse-bpb0a9tyqqv">
+                        <div class="ldio-91csn44uaj7">
                             <div></div>
                         </div>
                     </div>
-                    @RenderBody()
                 </div>
-            </main>
-        <partial name="_Footer"/>
+            </div>
+            @RenderBody()
+        </div>
+    </main>
+    <partial name="_Footer" />
 
-        <script src="~/lib/jquery/dist/jquery.min.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
-        <script src="~/js/MenuHandlers.js" asp-append-version="true"></script>
-        <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-        <script src="~/js/jquery.cookie.min.js_1.4.1/cdnjs/jquery.cookie.min.js"></script>
-        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-        @await RenderSectionAsync("Scripts", required: false)
-        @await RenderSectionAsync("CSS", required: false)
-    </body>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/MenuHandlers.js" asp-append-version="true"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/js/jquery.cookie.min.js_1.4.1/cdnjs/jquery.cookie.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+    @await RenderSectionAsync("CSS", required: false)
+</body>
 </html>

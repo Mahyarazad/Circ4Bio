@@ -4,14 +4,16 @@ using AM.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AM.Infrastructure.Migrations
 {
     [DbContext(typeof(AMContext))]
-    partial class AMContextModelSnapshot : ModelSnapshot
+    [Migration("20220312195841_paymentinfoaddedtodeals")]
+    partial class paymentinfoaddedtodeals
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -666,9 +668,9 @@ namespace AM.Infrastructure.Migrations
                                 .HasColumnType("nvarchar(100)")
                                 .HasColumnName("PaymentId");
 
-                            b1.Property<DateTime>("PaymentTime")
+                            b1.Property<string>("PaymentTime")
                                 .HasMaxLength(100)
-                                .HasColumnType("datetime2")
+                                .HasColumnType("nvarchar(100)")
                                 .HasColumnName("PaymentTime");
 
                             b1.HasKey("DealId");

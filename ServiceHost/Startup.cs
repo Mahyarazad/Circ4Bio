@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using System.Collections.Generic;
 using _0_Framework.Application;
 using _0_Framework.Application.Email;
+using _0_Framework.Application.PayPal;
 using AM.Application;
 using AM.Application.Contracts.User;
 using AM.Infrastructure;
@@ -35,6 +36,7 @@ namespace ServiceHost
             AccountConfiguration.Configure(services, connectionString);
             services.AddTransient<IEmailService<EmailModel>, EmailService>();
             services.AddTransient<IFileUploader, FileUploader>();
+            services.AddTransient<IPayPalService, PayPalAPI>();
             services.AddSingleton<IPasswordHasher, PasswordHasher>();
             services.AddTransient<IAuthenticateHelper, AuthenticateHelper>();
             services.AddSignalR(hubOptions =>
@@ -112,9 +114,9 @@ namespace ServiceHost
             else
             {
                 app.UseExceptionHandler("/Error");
-                // app.UseHsts();
+                app.UseHsts();
             }
-            // app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseAuthentication();

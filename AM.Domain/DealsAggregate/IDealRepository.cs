@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using _0_Framework.Application;
 using _0_Framework.Domain;
 using AM.Application.Contracts.Deal;
 using AM.Application.Contracts.Listing;
@@ -11,5 +12,6 @@ namespace AM.Domain
         Task<List<DealViewModel>> GetAllDeals(long UserId);
         DealViewModel GetDealWithNegotiateId(long NegotiateId);
         DealViewModel GetDealWithDealId(long DealId);
+        DealViewModel ReturnDealIdWithTrackingRef(string TrackingCode);
     }
 }

@@ -1,0 +1,28 @@
+﻿@page
+@model ServiceHost.Areas.Dashboard.Pages.Canceled
+
+@{ ViewData["Title"] = "Dashboard | Canceled Payment"; }
+
+<div class="divide-y divide-gray-200 lg:col-span-9">
+    <div class="flex flex-col">
+        <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                    <div class="mt-6 flex flex-col lg:flex-row">
+                        <div class="flex-grow space-y-6 mx-4">
+                            <div id="successful-payment" class="mt-2 my-8 flex-col lg:flex-row justify-between
+                                bg-red-400 rounded-md text-xl lg:text-2xl px-2 lg:px-10 text-white">
+                                <p class="py-1 lg:place-self-center flex justify-center py-8 text-3xl"> Successful Payment </p>
+                                <p class="py-1 lg:place-self-center text-base"> Payment Id: @Model.Command.id</p>
+                                <p class="py-1 lg:place-self-center text-base"> State: @Model.RelatedResource["state"]</p>
+                                <p class="py-1 lg:place-self-center text-base"> Amount: @Model.RelatedResource["amount"]["total"] @Model.RelatedResource["amount"]["currency"]</p>
+                                <p class="py-1 lg:place-self-center text-base"> Transaction Fee: @Model.RelatedResource["transaction_fee"]["value"] @Model.RelatedResource["transaction_fee"]["currency"]</p>
+                                <p class="py-1 lg:place-self-center text-base pb-4"> Creation Time: @Model.RelatedResource["create_time"]</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

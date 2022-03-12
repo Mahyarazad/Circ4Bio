@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using _0_Framework;
+using _0_Framework.Application;
 using _0_Framework.Infrastructure;
 using AM.Application.Contracts.Deal;
 using AM.Application.Contracts.Listing;
@@ -35,6 +37,7 @@ namespace AM.Infrastructure.Repository
                     IsFinished = x.IsFinished,
                     IsRejected = x.IsRejected,
                     QuatationSent = x.QuatationSent,
+                    PaymentId = x.PaymentInfo.PaymentId,
                     Location = x.Location,
                     TotalCost = x.TotalCost,
                     DeliveryCost = x.DeliveryCost,
@@ -97,9 +100,9 @@ namespace AM.Infrastructure.Repository
                 NegotiateId = deal.NegotiateId,
                 Amount = deal.Amount,
                 IsCanceled = negotiate.IsCanceled,
-                IsActive = negotiate.IsActive,
-                IsFinished = negotiate.IsFinished,
-                IsRejected = negotiate.IsRejected,
+                IsActive = deal.IsActive,
+                IsFinished = deal.IsFinished,
+                IsRejected = deal.IsRejected,
                 CreationTime = deal.CreationTime,
                 Location = deal.Location,
                 ListingId = deal.ListingId,
@@ -155,6 +158,18 @@ namespace AM.Infrastructure.Repository
             return _amContext.Deals
                 .AsNoTracking()
                 .Where(x => x.Id == DealId).Select(x => new DealViewModel
+                {
+                    DealId = x.Id,
+                    NegotiateId = x.NegotiateId,
+                    ListingId = x.ListingId
+                }).First();
+        }
+
+        public DealViewModel ReturnDealIdWithTrackingRef(string TrackingCode)
+        {
+            return _amContext.Deals
+                .AsNoTracking()
+                .Where(x => x.TrackingCode == TrackingCode).Select(x => new DealViewModel
                 {
                     DealId = x.Id,
                     NegotiateId = x.NegotiateId,
