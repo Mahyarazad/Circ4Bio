@@ -100,7 +100,7 @@ namespace AM.Domain
         {
             IsFinished = true;
             PaymentInfo = new PaymentInfo(paymentInfo.PaymentId, paymentInfo.PaymentTime, paymentInfo.PayerEmail,
-                paymentInfo.PayerFirstName, paymentInfo.PayerLastName);
+                paymentInfo.PayerFirstName, paymentInfo.PayerLastName, paymentInfo.PaidAmount, paymentInfo.TransactionFee);
 
         }
 

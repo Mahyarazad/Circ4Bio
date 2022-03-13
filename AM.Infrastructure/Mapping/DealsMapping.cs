@@ -24,14 +24,16 @@ namespace AM.Infrastructure.Mapping
             builder.Property(x => x.IsActive).IsRequired();
             builder.Property(x => x.IsFinished).IsRequired();
             builder.Property(x => x.DeliveryLocationId).IsRequired();
-            builder.OwnsOne(x => x.PaymentInfo, ModelBuilder =>
+            builder.OwnsOne(x => x.PaymentInfo, add =>
             {
-                ModelBuilder.Property(x => x.PaymentId).HasColumnName(nameof(PaymentInfo.PaymentId)).HasMaxLength(100);
-                ModelBuilder.Property(x => x.PayerEmail).HasColumnName(nameof(PaymentInfo.PayerEmail)).HasMaxLength(100);
-                ModelBuilder.Property(x => x.PayerFirstName).HasColumnName(nameof(PaymentInfo.PayerFirstName)).HasMaxLength(100);
-                ModelBuilder.Property(x => x.PayerLastName).HasColumnName(nameof(PaymentInfo.PayerLastName)).HasMaxLength(100);
-                ModelBuilder.Property(x => x.PaymentId).HasColumnName(nameof(PaymentInfo.PaymentId)).HasMaxLength(100);
-                ModelBuilder.Property(x => x.PaymentTime).HasColumnName(nameof(PaymentInfo.PaymentTime)).HasMaxLength(100);
+                add.Property(x => x.PaymentId).HasColumnName(nameof(PaymentInfo.PaymentId)).HasMaxLength(100);
+                add.Property(x => x.PayerEmail).HasColumnName(nameof(PaymentInfo.PayerEmail)).HasMaxLength(100);
+                add.Property(x => x.PayerFirstName).HasColumnName(nameof(PaymentInfo.PayerFirstName)).HasMaxLength(100);
+                add.Property(x => x.PayerLastName).HasColumnName(nameof(PaymentInfo.PayerLastName)).HasMaxLength(100);
+                add.Property(x => x.PaymentId).HasColumnName(nameof(PaymentInfo.PaymentId)).HasMaxLength(100);
+                add.Property(x => x.PaymentTime).HasColumnName(nameof(PaymentInfo.PaymentTime)).HasMaxLength(100);
+                add.Property(x => x.PaidAmount).HasColumnName(nameof(PaymentInfo.PaidAmount));
+                add.Property(x => x.TransactionFee).HasColumnName(nameof(PaymentInfo.TransactionFee));
 
             });
             builder.HasOne(x => x.Listing).WithMany(x => x.DealList).HasForeignKey(x => x.ListingId);

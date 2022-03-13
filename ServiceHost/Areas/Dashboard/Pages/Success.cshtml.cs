@@ -37,6 +37,8 @@ namespace ServiceHost.Areas.Dashboard.Pages
                 dealViewModeltobeUpdated.PayerEmail = Command.payer.payer_info.email;
                 dealViewModeltobeUpdated.PayerFirstName = Command.payer.payer_info.first_name;
                 dealViewModeltobeUpdated.PayerLastName = Command.payer.payer_info.last_name;
+                dealViewModeltobeUpdated.PaidAmount = (double)RelatedResource["amount"]["total"];
+                dealViewModeltobeUpdated.TransactionFee = (double)RelatedResource["transaction_fee"]["value"];
                 var result = _dealApplication.FinishDeal(dealViewModeltobeUpdated);
 
 
@@ -46,9 +48,6 @@ namespace ServiceHost.Areas.Dashboard.Pages
                 Command = new PayPalPaymentExecutedResponse();
                 RelatedResource = new JObject();
             }
-
-
         }
-
     }
 }

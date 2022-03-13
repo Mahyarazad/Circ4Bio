@@ -15,7 +15,7 @@
                                 <p class="py-1 lg:place-self-center text-base"> Payment Id: @Model.Command.id</p>
                                 <p class="py-1 lg:place-self-center text-base"> Tracking Code: @Model.Command.transactions[0].custom</p>
                                 <p class="py-1 lg:place-self-center text-base"> State: @Model.RelatedResource["state"]</p>
-                                <p class="py-1 lg:place-self-center text-base"> Amount: @Model.RelatedResource["amount"]["total"] @Model.RelatedResource["amount"]["currency"]</p>
+                                <p class="py-1 lg:place-self-center text-base"> Paid Amount: @Model.RelatedResource["amount"]["total"] @Model.RelatedResource["amount"]["currency"]</p>
                                 <p class="py-1 lg:place-self-center text-base"> Transaction Fee: @Model.RelatedResource["transaction_fee"]["value"] @Model.RelatedResource["transaction_fee"]["currency"]</p>
                                 <p class="py-1 lg:place-self-center text-base pb-4"> Creation Time: @Model.RelatedResource["create_time"]</p>
                             </div>

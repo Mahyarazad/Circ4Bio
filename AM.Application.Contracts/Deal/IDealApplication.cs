@@ -13,6 +13,7 @@ namespace AM.Application.Contracts.Deal
         Task<OperationResult> AtivateDeal(DealViewModel Command);
         Task<OperationResult> PaymentReceived(long Id);
         Task<List<DealViewModel>> GetAllDeals(long UserId);
+        Task<List<DealViewModel>> GetAllFinishedDeals(long UserId);
         DealViewModel GetDealWithNegotiateId(long NegotiateId);
         DealViewModel GetDealWithDealId(long DealId);
         DealViewModel ReturnDealIdWithTrackingRef(string TrackingCode);

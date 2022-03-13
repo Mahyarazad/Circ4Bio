@@ -5,7 +5,7 @@
 @inject IConfiguration _Configuration;
 @model ServiceHost.Areas.Dashboard.Pages.Deals.ConfirmQuatationModel;
 @inject IAuthenticateHelper AuthenticateHelper;
-@{ ViewData["Title"] = $"Dashboard | Deals | {@Model.Command.ItemName} Quatation"; }
+@{ ViewData["Title"] = $"Dashboard | Deals | {@Model.Command.ItemName} Quatation";}
 
 
 <form class="divide-y divide-gray-200 lg:col-span-9"
@@ -18,7 +18,7 @@
             <div class="flex-shrink-0">
                 <!-- Heroicon name: solid/check-circle -->
                 <svg class="h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                 </svg>
             </div>
             <div class="ml-3">
@@ -33,7 +33,7 @@
             <div class="flex-shrink-0">
                 <!-- Heroicon name: solid/check-circle -->
                 <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
                 </svg>
             </div>
             <div class="ml-3">
@@ -48,9 +48,15 @@
     <div class="mt-6 flex flex-col lg:flex-row">
         <div class="flex-grow space-y-6 mx-4">
             <div id="finished-quatation" class="mt-2 flex-col lg:flex-row justify-between
-                 flex bg-sky-800 rounded-md text-xl lg:text-2xl px-2 lg:px-10 text-white">
-                <p class="py-1 lg:place-self-center"> Quatation Confirmed </p>
-                <p class="py-1 lg:place-self-center"> Tracking Code: @Model.Command.TrackingCode</p>
+                 flex @(Model.Command.IsFinished ? "bg-teal-400" : Model.Command.IsActive ?"bg-sky-800" : "bg-gray-700") rounded-md text-xl lg:text-2xl px-2 lg:px-10 text-white">
+                <p class="py-1 lg:place-self-center">
+                    @(Model.Command.IsFinished ? "Finished" : Model.Command.IsActive ? "Quatation Confirmed" : "Draft Quatation")
+                </p>
+                @if (Model.Command.IsFinished || Model.Command.IsActive)
+                {
+                    <p class="py-1 lg:place-self-center"> Tracking Code: @Model.Command.TrackingCode</p>
+                }
+
             </div>
             <div class="mt-6 grid grid-cols-2 gap-2">
                 <div class="col-span-2 sm:col-span-1 space-y-1">
@@ -66,7 +72,6 @@
                              alt=""/>
 
                     </div>
-
 
 
                     <label class="block text-sm font-medium text-gray-700"> Delivery Charges </label>
@@ -178,38 +183,43 @@
         </div>
     </div>
     <div class="mt-4 py-4 px-4 flex justify-end sm:px-6">
-        <a asp-page="/Negotiate/Index" asp-area="Dashboard"
+        <a asp-page="/Deals/Index" asp-route-id="@Model.LoggedUser.Id"
+           asp-area="Dashboard"
            class="bg-white border border-gray-100 rounded-md shadow-sm py-2 px-4 h-9 place-self-center
            justify-center text-sm font-medium text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
             Back
 
-        </a>@if (Model.Command.IsActive && Model.Command.Seller.Id != Model.LoggedUser.Id)
+        </a>
+        @if(!Model.Command.IsFinished) {
+            @if (Model.Command.IsActive && Model.Command.Seller.Id != Model.LoggedUser.Id)
             {
                 <a asp-page="ConfirmQuatation" asp-route-id="@Model.Command.NegotiateId" asp-page-handler="CheckOut"
                    onclick="loading()"
                    class="">
-                    <img  class="h-8 my-2 px-1"
-                          src="~/Site Files/checkout-logo-large.png" alt="Check out with PayPal" />
+                    <img class="h-8 my-2 px-1"
+                         src="~/Site Files/checkout-logo-large.png" alt="Check out with PayPal"/>
                 </a>
             }
 
-        @if (!Model.Command.IsFinished && !Model.Command.IsActive)
-        {
-            <button id="save" type="submit"
-                    class="ml-5 bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4 h-9 place-self-center
+            @if (!Model.Command.IsActive)
+            {
+                <button id="save" type="submit"
+                        class="ml-5 bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4 h-9 place-self-center
                     justify-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
-                Confirm Quatation
-            </button>
-
+                    Confirm Quatation
+                </button>
+            }
         }
+
     </div>
 </form>
 
 @section CSS
 {
-    <link rel="stylesheet" href="~/css/mapbox-gl.css" />
-    <link rel="stylesheet" href="~/css/Loader.css" />
+    <link rel="stylesheet" href="~/css/mapbox-gl.css"/>
+    <link rel="stylesheet" href="~/css/Loader.css"/>
 }
+
 @section Scripts
 {
     <script src="~/js/mapbox-gl.js"></script>

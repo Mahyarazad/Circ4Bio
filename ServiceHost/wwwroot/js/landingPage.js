@@ -36,14 +36,16 @@ $("#search-input-landing").on("keyup",
                     } else {
                         filtered.forEach(e => {
                             $("#landing-page-result-wrapper").append(`
-                        <div class="flex justify-between border-b py-1 mt-1">
-                            <div>
-                                <p class="text-xs font-medium">${e.name[0].toUpperCase()}${e.name.slice(1)}</p>
-                                <p class="text-xs">${e.isService ? "Service Tarriff" : "Available Amount"}: ${e.isService ? "" : '<b>' + e.amount + '</b>'} <b>${e.unit.toUpperCase()
+                        <a href="/marketplace/itemdetail/${e.id}">
+                            <div class="flex justify-between border-b py-1 mt-1">
+                                <div>
+                                    <p class="text-xs font-medium">${e.name[0].toUpperCase()}${e.name.slice(1)}</p>
+                                    <p class="text-xs">${e.isService ? "Service Tarriff" : "Available Amount"}: ${e.isService ? "" : '<b>' + e.amount + '</b>'} <b>${e.unit.toUpperCase()
                                 }</b>  Unit Price: <b>${e.unitPrice} ${e.currency}</b></p>
-                            </div>
-                            <img class="w-10 h-10 place-self-center rounded-md" src="${host}/Site Files/Listing_Images/${e.image === "listing-default.png" ? "listing-default.png" : e.type + "/" + e.image}"/>
-                        </div >`);
+                                </div>
+                                <img class="w-10 h-10 place-self-center rounded-md" src="${host}/Site Files/Listing_Images/${e.image === "listing-default.png" ? "listing-default.png" : e.type + "/" + e.image}"/>
+                            </div >
+                        </a>`);
                         });
                         $("#landing-page-search-overlay").addClass('hidden');
                         $("#landing-page-search-overlay").hide();

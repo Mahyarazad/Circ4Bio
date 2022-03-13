@@ -1,0 +1,173 @@
+﻿@page
+@model ServiceHost.Pages.MarketPlace.IndexModel
+@using Newtonsoft.Json
+@{
+    ViewData["Title"] = "Market Place";
+}
+
+<div class="min-h-full flex flex-col justify-center py-6 sm:px-6 lg:px-8">
+    <div class="lg:flex sm:flex-col lg:flex-row">
+        <div class="">
+            <div class="py-6 lg:col-span-3">
+                <nav class="space-y-1">
+                    <div class="grid grid-cols-1">
+                        <h3 class="px-4 text-gray-800">Availalbe Filters</h3>
+                        <div class="border-gray-200 py-6 px-4 h-10 lg:h-64" id="shrink-div">
+                            <h3 class="-my-3 flow-root">
+                                <!-- Expand/collapse section button -->
+                                <button type="button" onclick="handleFilter()" class="py-3 w-full bg-gray-50 flex items-center justify-between text-sm text-gray-400 hover:text-gray-500" aria-controls="filter-section-0" aria-expanded="false">
+                                    <span class="font-medium text-gray-900 "> Type </span>
+                                    <span class="px-4 mb-5">
+                                        <svg class="h-5 w-5 absolute" id="svg-plus" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                            <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
+                                        </svg>
+
+                                        <svg class="h-5 w-5 invisible absolute" id="svg-minus" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                            <path fill-rule="evenodd" d="M5 10a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1z" clip-rule="evenodd" />
+                                        </svg>
+                                    </span>
+                                </button>
+                            </h3>
+                            <!-- Filter section, show/hide based on section state. -->
+                            <div class="pt-6 invisible opacity-0 trasnform duration-200 -translate-y-[5rem]" id="filter-section-0">
+                                <div class="space-y-4">
+                                    <div class="flex items-center">
+                                        <input id="filter-technology" onchange="handelFilter()" type="checkbox" class="h-4 w-4 border-gray-300 rounded text-sky-800 focus:ring-sky-800">
+                                        <label for="filter-color-0" class="ml-3 text-sm text-gray-600"> Technology Provider </label>
+                                    </div>
+
+                                    <div class="flex items-center">
+                                        <input id="filter-plant" onchange="handelFilter()" type="checkbox" class="h-4 w-4 border-gray-300 rounded text-sky-800 focus:ring-sky-800">
+                                        <label for="filter-color-1" class="ml-3 text-sm text-gray-600"> Recycling Plant </label>
+                                    </div>
+
+                                    <div class="flex items-center">
+                                        <input id="filter-supplier" onchange="handelFilter()" type="checkbox" class="h-4 w-4 border-gray-300 rounded text-sky-800 focus:ring-sky-800">
+                                        <label for="filter-color-2" class="ml-3 text-sm text-gray-600"> Supplier of Raw Material </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+
+        <div class="origin-top-right absolute lg:right-10 lg:top-28 top-56 right-8 mt-2 w-28 rounded-md shadow-2xl invisible opacity-0 transform duration-100 scale-95
+             bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+             id="grid-size-container-unlogged" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+            <div class="py-1" role="none">
+
+                <a class="text-gray-900 block px-4 py-2 text-sm hover:cursor-pointer" onclick="handleGridItem(this.id)" role="menuitem" tabindex="-1" id="8"> 8 </a>
+                <a class="text-gray-900 block px-4 py-2 text-sm hover:cursor-pointer" onclick="handleGridItem(this.id)" role="menuitem" tabindex="-1" id="16"> 16 </a>
+                <a class="text-gray-900 block px-4 py-2 text-sm hover:cursor-pointer" onclick="handleGridItem(this.id)" role="menuitem" tabindex="-1" id="32"> 32 </a>
+            </div>
+        </div>
+
+        <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8 flex-grow">
+            <div class=" inline-block min-w-full sm:px-6 lg:px-8 flex">
+                <div class="flex-grow mx-2 lg:mx-0">
+                    <input class="mt-1 w-1/2 border-gray-300 my-2 border
+                       rounded-md shadow-sm py-2 mb-2 px-3 focus:outline-none focus:border-sky-500
+                       focus:ring-sky-500 sm:text-sm float-left font-medium searchBox form-control"
+                           id="search-input"
+                           placeholder="Search...">
+                </div>
+
+                <div>
+                    <button type="button" id="grid-size-handler-unlogged"
+                            class="mx-2 my-3 group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900" aria-expanded="false" aria-haspopup="true">
+                        <!-- Heroicon name: solid/chevron-down -->
+                        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                    <div class="bg-white" id="listing-pagination">
+
+                        <div class="mx-auto py-4 px-4 overflow-hidden sm:px-6 lg:px-8">
+                            <div class="grid grid-cols-1 gap-y-4 gap-x-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-8" id="content">
+                                <h3 id="no-result" class="hidden"></h3>
+                                @foreach (var item in Model.Command)
+                                {
+                                    <div id="market-place-item"
+                                         class="group text-sm result" data-type="@item.Type" data-item="@item.Id">
+                                        <a class="w-full rounded-lg overflow-hidden bg-gray-100 group-hover:opacity-75"
+                                           href="#showmodal=@Url.Page("./Index", "Load", new {Id = item.Id})"
+                                           onclick="showModal()">
+                                            <img src="~/Site Files/Listing_Images/@(item.Image == "listing-default.png" ? "listing-default.png" : $"{item.Type}/{item.Image}")"
+                                                 alt="@item.Name" class="h-44 object-center object-cover rounded mx-auto">
+                                        </a>
+                                        <div class="grid grid-cols-3 items-center">
+                                            <div class="col-span-2">
+                                                @if (item.PublicStatus)
+                                                {
+                                                    <h3 class="mt-4 font-medium text-gray-900">
+                                                        Private Listing
+                                                    </h3>}
+                                                @if (item.IsService)
+                                                {
+                                                    <h3 class="mt-4 font-medium text-gray-900">
+                                                        Service Listing
+                                                    </h3>}
+                                                <h3 class="mt-4 font-medium text-gray-900">@item.Type</h3>
+                                                <p class="text-gray-500 italic">@item.Name</p>
+                                                <p class="mt-2 font-medium text-gray-900">@item.Currency @item.UnitPrice</p>
+                                            </div>
+                                            <div class="col-span-1 place-self-center">
+                                                <a onclick="gototop()" asp-page="/AvailableListing/Detail" asp-area="Dashboard" asp-route-id="@item.Id"
+                                                   class="bg-sky-700 border border-transparent rounded-md shadow-sm py-1 px-1 inline-flex justify-center text-xs font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+                                                    Start Negotiation
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>}
+
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-center py-4 lg:px-0 sm:px-6 px-4">
+                            <div class="lg:w-3/5 w-full  flex items-center justify-between border-t border-gray-200" id="pagingControls">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section CSS{
+    <link rel="stylesheet" href="~/css/Loader.css" />
+}
+@section Scripts{
+    <script src="~/js/paginate.js"></script>
+    <script>
+        var items = @Html.Raw(JsonConvert.SerializeObject(Model.Command));
+        var filtered = items;
+        var element = document.getElementById("pagingControls");
+        var paginateObject = paginate(filtered.length, 1);
+        var _totalPages = paginateObject.pages.length;
+        var page = 1;
+        var hideItems = function() {
+            items.forEach(e => {
+                $(`div[data-item=${e.Id}]`).css('display', 'none');
+            });
+        };
+        var showItems = function () {
+            filtered.forEach(e => {
+                $(`div[data-item=${e.Id}]`).css('display', 'block');
+            });
+        };
+
+
+        if (_totalPages > 1) {
+            element.innerHTML = createPagination(_totalPages, page);
+        }
+
+
+    </script>
+
+}

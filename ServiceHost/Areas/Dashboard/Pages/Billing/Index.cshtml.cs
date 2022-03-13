@@ -33,7 +33,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Billing
         {
             if (Id == _authenticateHelper.CurrentAccountRole().Id)
             {
-                Deals = await _dealApplication.GetAllDeals(Id);
+                Deals = await _dealApplication.GetAllFinishedDeals(Id);
                 return null;
             }
             else

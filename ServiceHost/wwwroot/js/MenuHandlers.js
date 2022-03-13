@@ -271,4 +271,27 @@ $("#grid-size-handler").on('click', () => {
     }
 })
 
+$(document).on('keydown', function (e) {
+    if (e.keyCode === 27) {
+        // ESC
+        $("#grid-size-container").addClass('invisible');
+        $("#grid-size-container").addClass('scale-95');
+        $('#grid-size-container').css('opacity', '0');
+        $("#grid-size-container-unlogged").addClass('invisible');
+        $("#grid-size-container-unlogged").addClass('scale-95');
+        $('#grid-size-container-unlogged').css('opacity', '0');
+    }
+});
 
+$("#grid-size-handler-unlogged").on('click', () => {
+    var stat = $("#grid-size-container-unlogged").css('visibility');
+    if (stat === 'hidden') {
+        $("#grid-size-container-unlogged").removeClass('invisible');
+        $("#grid-size-container-unlogged").removeClass('scale-95');
+        $('#grid-size-container-unlogged').css('opacity', '1');
+    } else {
+        $("#grid-size-container-unlogged").addClass('invisible');
+        $("#grid-size-container-unlogged").addClass('scale-95');
+        $('#grid-size-container-unlogged').css('opacity', '0');
+    }
+})

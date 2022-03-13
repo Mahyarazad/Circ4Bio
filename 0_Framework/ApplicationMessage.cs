@@ -44,6 +44,7 @@
         //Deal Title
         public const string DealsCreated = "New deal has issued";
         public const string ActiveDeal = "Your deal is active now";
+        public const string PaymentDone = "Payment has been done";
 
         //DeliveryLocationAddress
         public const string DuplicateDeliveryLocationName = "This name has been taken, please chose another name.";

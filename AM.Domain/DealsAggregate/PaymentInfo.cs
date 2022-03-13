@@ -7,13 +7,16 @@ namespace AM.Domain
         protected PaymentInfo() { }
 
         public PaymentInfo(string? paymentId, DateTime paymentTime
-            , string? payerEmail, string? payerFirstName, string? payerLastName)
+            , string? payerEmail, string? payerFirstName
+            , string? payerLastName, double paidAmount, double transactionFee)
         {
             PaymentId = paymentId;
             PaymentTime = paymentTime;
             PayerEmail = payerEmail;
             PayerFirstName = payerFirstName;
             PayerLastName = payerLastName;
+            PaidAmount = paidAmount;
+            TransactionFee = transactionFee;
         }
 
 
@@ -22,5 +25,7 @@ namespace AM.Domain
         public string? PayerEmail { get; private set; }
         public string? PayerFirstName { get; private set; }
         public string? PayerLastName { get; private set; }
+        public double PaidAmount { get; private set; }
+        public double TransactionFee { get; private set; }
     }
 }

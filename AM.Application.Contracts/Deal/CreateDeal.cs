@@ -57,6 +57,8 @@ namespace AM.Application.Contracts.Deal
         public string? PayerEmail { get; set; }
         public string? PayerFirstName { get; set; }
         public string? PayerLastName { get; set; }
+        public double PaidAmount { get; set; }
+        public double TransactionFee { get; set; }
 
     }
 

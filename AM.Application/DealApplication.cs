@@ -333,75 +333,77 @@ namespace AM.Application
         public Task<OperationResult> FinishDeal(DealViewModel Command)
         {
             var result = new OperationResult();
+
+
+
             var deal = _dealRepository.Get(Command.DealId).Result;
             deal.PaymentFinished(new PaymentInfo(Command.PaymentId, Command.PaymentTime, Command.PayerEmail,
-                Command.PayerFirstName, Command.PayerLastName));
+                Command.PayerFirstName, Command.PayerLastName, Command.PaidAmount, Command.TransactionFee));
             _dealRepository.SaveChanges();
-            // var negotiate = _negotiateRepository.Get(Command.NegotiateId).Result;
-            // var sellerRoleId = _userRepository.GetDetail(negotiate.SellerId).Result.RoleId;
-            // var sellerRoleString = _userApplication.GetUsertypes().Result
-            //     .FirstOrDefault(x => x.TypeId == sellerRoleId).TypeName;
-            //
-            // var buyerRoleId = _userRepository.GetDetail(negotiate.BuyerId).Result.RoleId;
-            // var buyerUserId = $"{_userRepository.GetDetail(negotiate.BuyerId).Result.UserId}";
-            // var SellerUserId = $"{_userRepository.GetDetail(negotiate.SellerId).Result.UserId}";
-            // var buyerRoleString = _userApplication.GetUsertypes().Result
-            //     .FirstOrDefault(x => x.TypeId == buyerRoleId).TypeName;
-            //
-            //
-            // var listingInfo = _listingRepository.GetListingDetail(Command.ListingId).Result;
-            //
-            // var buyerRecipientList = new List<RecipientViewModel>();
-            // var sellerRecipientList = new List<RecipientViewModel>();
-            //
-            // buyerRecipientList.Add(new RecipientViewModel
-            // {
-            //     UserId = negotiate.BuyerId,
-            //     IsReed = false,
-            //     RoleId = buyerRoleId
-            // });
-            //
-            // sellerRecipientList.Add(new RecipientViewModel
-            // {
-            //     UserId = negotiate.SellerId,
-            //     IsReed = false,
-            //     RoleId = sellerRoleId
-            // });
-            //
-            // var trackingCode = CodeGenerator.Generate($"#{listingInfo.Type.Substring(0, 3).ToUpper()}");
-            // var deal = _dealRepository.Get(Command.DealId);
-            // deal.Result.ActivateDeal(trackingCode);
-            // _dealRepository.SaveChanges();
-            //
-            // var buyerNotificationId = _notificationApplication
-            //     .PushNotification(new NotificationViewModel
-            //     {
-            //         RecipientList = buyerRecipientList,
-            //         SenderId = negotiate.BuyerId,
-            //         RedirectUrl = "",
-            //         NotificationBody =
-            //             $"You have confirmed the quatation for {listingInfo.Name}, you can track this with {trackingCode}",
-            //         NotificationTitle = ApplicationMessage.ActiveDeal,
-            //         UserId = negotiate.BuyerId
-            //     });
-            //
-            // var sellerNotificationId = _notificationApplication
-            //     .PushNotification(new NotificationViewModel
-            //     {
-            //         RecipientList = sellerRecipientList,
-            //         SenderId = negotiate.SellerId,
-            //         RedirectUrl = "",
-            //         NotificationBody =
-            //             $"{buyerUserId} have confimred the quatation for {listingInfo.Name}, you can track this with {trackingCode}",
-            //         NotificationTitle = ApplicationMessage.ActiveDeal,
-            //         UserId = negotiate.SellerId
-            //     });
-            //
-            // negotiate.Finished();
-            // _negotiateRepository.SaveChanges();
-            // _recipientRepository.Create(new Recipient(negotiate.SellerId, sellerRoleId, sellerNotificationId.Result));
-            // _recipientRepository.Create(new Recipient(negotiate.BuyerId, buyerRoleId, buyerNotificationId.Result));
-            // _recipientRepository.SaveChanges();
+
+            var returnUrl = $"/dashboard/paymentinfo/{deal.Id}";
+
+            var negotiate = _negotiateRepository.Get(Command.NegotiateId).Result;
+            var sellerRoleId = _userRepository.GetDetail(negotiate.SellerId).Result.RoleId;
+            var sellerRoleString = _userApplication.GetUsertypes().Result
+                .FirstOrDefault(x => x.TypeId == sellerRoleId).TypeName;
+
+            var buyerRoleId = _userRepository.GetDetail(negotiate.BuyerId).Result.RoleId;
+            var buyerUserId = $"{_userRepository.GetDetail(negotiate.BuyerId).Result.UserId}";
+            var SellerUserId = $"{_userRepository.GetDetail(negotiate.SellerId).Result.UserId}";
+            var buyerRoleString = _userApplication.GetUsertypes().Result
+                .FirstOrDefault(x => x.TypeId == buyerRoleId).TypeName;
+
+
+            var listingInfo = _listingRepository.GetListingDetail(Command.ListingId).Result;
+
+            var buyerRecipientList = new List<RecipientViewModel>();
+            var sellerRecipientList = new List<RecipientViewModel>();
+
+            buyerRecipientList.Add(new RecipientViewModel
+            {
+                UserId = negotiate.BuyerId,
+                IsReed = false,
+                RoleId = buyerRoleId
+            });
+
+            sellerRecipientList.Add(new RecipientViewModel
+            {
+                UserId = negotiate.SellerId,
+                IsReed = false,
+                RoleId = sellerRoleId
+            });
+
+
+            var buyerNotificationId = _notificationApplication
+                .PushNotification(new NotificationViewModel
+                {
+                    RecipientList = buyerRecipientList,
+                    SenderId = negotiate.BuyerId,
+                    RedirectUrl = returnUrl,
+                    NotificationBody =
+                        $"Payment has been done for {deal.TrackingCode}, Payment Id: {Command.PaymentId}, Total Paid Amount: {deal.TotalCost}",
+                    NotificationTitle = ApplicationMessage.PaymentDone,
+                    UserId = negotiate.BuyerId
+                });
+
+            var sellerNotificationId = _notificationApplication
+                .PushNotification(new NotificationViewModel
+                {
+                    RecipientList = sellerRecipientList,
+                    SenderId = negotiate.SellerId,
+                    RedirectUrl = returnUrl,
+                    NotificationBody =
+                        $"Payment has been done for {deal.TrackingCode}, Payment Id: {Command.PaymentId}, Total Paid Amount: {deal.TotalCost}",
+                    NotificationTitle = ApplicationMessage.PaymentDone,
+                    UserId = negotiate.SellerId
+                });
+
+            negotiate.Finished();
+            _negotiateRepository.SaveChanges();
+            _recipientRepository.Create(new Recipient(negotiate.SellerId, sellerRoleId, sellerNotificationId.Result));
+            _recipientRepository.Create(new Recipient(negotiate.BuyerId, buyerRoleId, buyerNotificationId.Result));
+            _recipientRepository.SaveChanges();
 
             return Task.FromResult(result);
         }
@@ -472,7 +474,7 @@ namespace AM.Application
                     UserId = negotiate.SellerId
                 });
 
-            negotiate.Finished();
+
             _negotiateRepository.SaveChanges();
             _recipientRepository.Create(new Recipient(negotiate.SellerId, sellerRoleId, sellerNotificationId.Result));
             _recipientRepository.Create(new Recipient(negotiate.BuyerId, buyerRoleId, buyerNotificationId.Result));
@@ -492,19 +494,47 @@ namespace AM.Application
             return _dealRepository.GetAllDeals(UserId);
         }
 
+        public Task<List<DealViewModel>> GetAllFinishedDeals(long UserId)
+        {
+            return _dealRepository.GetAllFinishedDeals(UserId);
+        }
+
         public DealViewModel GetDealWithNegotiateId(long NegotiateId)
         {
-            return _dealRepository.GetDealWithNegotiateId(NegotiateId);
+            if (_dealRepository.Exist(x => x.NegotiateId == NegotiateId))
+            {
+                return _dealRepository.GetDealWithNegotiateId(NegotiateId);
+            }
+            else
+            {
+                return new DealViewModel();
+            }
+
         }
 
         public DealViewModel GetDealWithDealId(long DealId)
         {
-            return _dealRepository.GetDealWithDealId(DealId);
+            if (_dealRepository.Exist(x => x.Id == DealId))
+            {
+                return _dealRepository.GetDealWithDealId(DealId);
+            }
+            else
+            {
+                return new DealViewModel();
+            }
+
         }
 
         public DealViewModel ReturnDealIdWithTrackingRef(string TrackingCode)
         {
-            return _dealRepository.ReturnDealIdWithTrackingRef(TrackingCode);
+            if (_dealRepository.Exist(x => x.TrackingCode == TrackingCode))
+            {
+                return _dealRepository.ReturnDealIdWithTrackingRef(TrackingCode);
+            }
+            else
+            {
+                return new DealViewModel();
+            }
         }
     }
 }
