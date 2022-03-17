@@ -72,8 +72,9 @@ namespace AM.Infrastructure.Repository
                     SellerId = Command.SellerId,
                     IsCanceled = Command.IsCanceled,
                     IsFinished = Command.IsFinished,
+                    QuatationSent = Command.QuatationSent,
+                    QuatationConfirm = Command.QuatationConfirm,
                     IsActive = Command.IsActive,
-                    QuatationSent = negotiate.QuatationSent,
                     IsRejected = negotiate.IsRejected,
                     ItemType = x.Type,
                     SellerName = sellerInfo.Name,
@@ -154,6 +155,8 @@ namespace AM.Infrastructure.Repository
                     SellerId = x.SellerId,
                     IsCanceled = x.IsCanceled,
                     IsFinished = x.IsFinished,
+                    QuatationSent = x.QuatationSent,
+                    QuatationConfirm = x.QuatationConfirm,
                     IsActive = x.IsActive,
                 }).AsNoTracking().OrderByDescending(x => x.NegotiateId).ToList();
         }
@@ -169,6 +172,8 @@ namespace AM.Infrastructure.Repository
                     SellerId = x.SellerId,
                     IsCanceled = x.IsCanceled,
                     IsFinished = x.IsFinished,
+                    QuatationSent = x.QuatationSent,
+                    QuatationConfirm = x.QuatationConfirm,
                     IsActive = x.IsActive
                 }).AsNoTracking().OrderByDescending(x => x.NegotiateId).ToList();
         }

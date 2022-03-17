@@ -1,7 +1,7 @@
 ﻿
 "use strict";
-var host = "https://localhost:5001";
-//var host = "http://www.maahyarazad.ir";
+//var host = "https://localhost:5001";
+var host = "http://www.circ4bio.com";
 //?QueryString = ${ window.location.href }
 var connection = new signalR.HubConnectionBuilder()
     .withUrl(`/notificationHub`,
@@ -384,7 +384,6 @@ function checkAmount(amount, listingId) {
     var deliveryCost = parseFloat($("#delivery-cost").val());
     $("#total-cost").val((amount * unitPrice) + deliveryCost);
     $("#show-currency-1").text($("#selected-currency").find(":selected").text());
-    $("#show-currency-2").text($("#selected-currency").find(":selected").text());
     $("#show-currency-3").text($("#selected-currency").find(":selected").text());
     $("#show-currency-4").text($("#selected-currency").find(":selected").text());
 

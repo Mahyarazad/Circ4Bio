@@ -108,7 +108,7 @@
                                                 <p class="mt-2 font-medium text-gray-900">@item.Currency @item.UnitPrice</p>
                                             </div>
                                             <div class="col-span-1 place-self-center">
-                                                <form method="post" id="edit-user-form"
+                                                <form method="post" id="form"
                                                       data-callback="" data-ajax="true" data-action="Refresh">
                                                     <input type="hidden" value="@item.Id" name="Id"/>
                                                     @if (!AuthenticateHelper.CurrentAccountRole().Status)
@@ -152,6 +152,7 @@
         var items = @Html.Raw(JsonConvert.SerializeObject(Model.Listing));
         var filtered = items;
         var element = document.getElementById("pagingControls");
+
         var paginateObject = paginate(filtered.length, 1);
         var _totalPages = paginateObject.pages.length;
         var page = 1;
@@ -167,7 +168,7 @@
         };
 
 
-        if (_totalPages > 1) {
+        if (_totalPages > 1 & items.length > 8) {
             element.innerHTML = createPagination(_totalPages, page);
         }
 

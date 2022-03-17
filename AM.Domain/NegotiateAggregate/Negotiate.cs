@@ -20,6 +20,7 @@ namespace AM.Domain.NegotiateAggregate
             IsCanceled = false;
             IsActive = false;
             IsRejected = false;
+            QuatationConfirm = false;
             QuatationSent = false;
             Messages = new List<Message>();
         }
@@ -40,6 +41,7 @@ namespace AM.Domain.NegotiateAggregate
         public bool IsActive { get; private set; }
         public bool IsCanceled { get; private set; }
         public bool IsRejected { get; private set; }
+        public bool QuatationConfirm { get; private set; }
         public bool QuatationSent { get; private set; }
         public List<Message> Messages { get; private set; }
 
@@ -67,6 +69,10 @@ namespace AM.Domain.NegotiateAggregate
         public void QuatationHasSent()
         {
             QuatationSent = true;
+        }
+        public void QuatationConfirmed()
+        {
+            QuatationConfirm = true;
         }
     }
 }

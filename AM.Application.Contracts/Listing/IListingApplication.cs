@@ -24,5 +24,6 @@ namespace AM.Application.Contracts.Listing
         Task<List<ListingOperationLog>> GetListingOperationLog(long Id);
         Task<List<ActiveListing>> GetActiveListing(long userId);
 
+
     }
 }

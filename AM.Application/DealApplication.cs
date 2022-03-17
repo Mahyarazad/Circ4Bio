@@ -13,6 +13,7 @@ using AM.Domain;
 using AM.Domain.ListingAggregate;
 using AM.Domain.NegotiateAggregate;
 using AM.Domain.NotificationAggregate;
+using AM.Domain.Supplied.PurchasedAggregate;
 using AM.Domain.UserAggregate;
 using Microsoft.AspNetCore.Http;
 using DealViewModel = AM.Application.Contracts.Deal.DealViewModel;
@@ -31,9 +32,12 @@ namespace AM.Application
         private readonly IEmailService<EmailModel> _emailService;
         private readonly INegotiateRepository _negotiateRepository;
         private readonly IRecipientRepository _recipientRepository;
+        private readonly ISuppliedItemRepository _suppliedItemRepository;
+        private readonly IPurchasedItemRepository _purchasedItemRepository;
         private readonly INotificationApplication _notificationApplication;
 
-        public DealApplication(IDealRepository dealRepository, IUserRepository userRepository
+        public DealApplication(IDealRepository dealRepository, ISuppliedItemRepository suppliedItemRepository,
+            IPurchasedItemRepository purchasedItemRepository, IUserRepository userRepository
             , IListingApplication listingApplication, IEmailService<EmailModel> emailService
             , IFileUploader fileUploader, IUserApplication userApplication
             , IAuthenticateHelper authenticateHelper, INegotiateRepository negotiateRepository
@@ -50,6 +54,8 @@ namespace AM.Application
             _authenticateHelper = authenticateHelper;
             _recipientRepository = recipientRepository;
             _negotiateRepository = negotiateRepository;
+            _suppliedItemRepository = suppliedItemRepository;
+            _purchasedItemRepository = purchasedItemRepository;
             _notificationApplication = notificationApplication;
         }
 
@@ -354,7 +360,6 @@ namespace AM.Application
             var buyerRoleString = _userApplication.GetUsertypes().Result
                 .FirstOrDefault(x => x.TypeId == buyerRoleId).TypeName;
 
-
             var listingInfo = _listingRepository.GetListingDetail(Command.ListingId).Result;
 
             var buyerRecipientList = new List<RecipientViewModel>();
@@ -403,8 +408,28 @@ namespace AM.Application
             _negotiateRepository.SaveChanges();
             _recipientRepository.Create(new Recipient(negotiate.SellerId, sellerRoleId, sellerNotificationId.Result));
             _recipientRepository.Create(new Recipient(negotiate.BuyerId, buyerRoleId, buyerNotificationId.Result));
-            _recipientRepository.SaveChanges();
 
+            _recipientRepository.SaveChanges();
+            SuppliedItem(new SuppliedItemModel
+            {
+                UserId = negotiate.SellerId,
+                Amount = negotiate.Deal.Amount,
+                ListingId = negotiate.ListingId,
+                Currency = negotiate.Deal.Currency,
+                TotalPaid = Command.PaidAmount,
+                UnitPrice = listingInfo.UnitPrice,
+
+            });
+
+            PurchasedItem(new PurchasedItemModel
+            {
+                UserId = negotiate.BuyerId,
+                Amount = negotiate.Deal.Amount,
+                ListingId = negotiate.ListingId,
+                Currency = negotiate.Deal.Currency,
+                TotalPaid = Command.PaidAmount,
+                UnitPrice = listingInfo.UnitPrice,
+            });
             return Task.FromResult(result);
         }
 
@@ -474,11 +499,13 @@ namespace AM.Application
                     UserId = negotiate.SellerId
                 });
 
-
+            negotiate.QuatationConfirmed();
             _negotiateRepository.SaveChanges();
             _recipientRepository.Create(new Recipient(negotiate.SellerId, sellerRoleId, sellerNotificationId.Result));
             _recipientRepository.Create(new Recipient(negotiate.BuyerId, buyerRoleId, buyerNotificationId.Result));
             _recipientRepository.SaveChanges();
+
+
 
             return Task.FromResult(result.Succeeded());
         }
@@ -525,6 +552,18 @@ namespace AM.Application
 
         }
 
+        public DealViewModel GetDealWithDealIdforDealIndex(long DealId)
+        {
+            if (_dealRepository.Exist(x => x.Id == DealId))
+            {
+                return _dealRepository.GetDealWithDealIdforDealIndex(DealId);
+            }
+            else
+            {
+                return new DealViewModel();
+            }
+        }
+
         public DealViewModel ReturnDealIdWithTrackingRef(string TrackingCode)
         {
             if (_dealRepository.Exist(x => x.TrackingCode == TrackingCode))
@@ -534,6 +573,41 @@ namespace AM.Application
             else
             {
                 return new DealViewModel();
+            }
+        }
+
+        public Task<OperationResult> SuppliedItem(SuppliedItemModel Command)
+        {
+            var result = new OperationResult();
+            if (_listingRepository.Exist(x => x.Id == Command.ListingId))
+            {
+                _suppliedItemRepository
+                    .Create(new SuppliedItem(Command.ListingId, Command.UserId, Command.Amount
+                        , Command.UnitPrice, Command.TotalPaid, Command.Currency));
+                _suppliedItemRepository.SaveChanges();
+                return Task.FromResult(result.Succeeded());
+            }
+            else
+            {
+                return Task.FromResult(result.Failed(ApplicationMessage.RecordNotFound));
+            }
+
+        }
+
+        public Task<OperationResult> PurchasedItem(PurchasedItemModel Command)
+        {
+            var result = new OperationResult();
+            if (_listingRepository.Exist(x => x.Id == Command.ListingId))
+            {
+                _purchasedItemRepository
+                    .Create(new PurchasedItem(Command.ListingId, Command.UserId, Command.Amount
+                        , Command.UnitPrice, Command.TotalPaid, Command.Currency));
+                _purchasedItemRepository.SaveChanges();
+                return Task.FromResult(result.Succeeded());
+            }
+            else
+            {
+                return Task.FromResult(result.Failed(ApplicationMessage.RecordNotFound));
             }
         }
     }

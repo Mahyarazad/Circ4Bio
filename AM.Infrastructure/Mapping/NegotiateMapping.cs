@@ -13,6 +13,8 @@ namespace AM.Infrastructure.Mapping
             builder.Property(x => x.IsCanceled).IsRequired();
             builder.Property(x => x.IsFinished).IsRequired();
             builder.Property(x => x.IsActive).IsRequired();
+            builder.Property(x => x.QuatationConfirm).IsRequired();
+            builder.Property(x => x.IsRejected).IsRequired();
             builder.HasKey(x => x.Id);
             builder.HasOne(x => x.Listing).WithMany(x => x.NegotiateList).HasForeignKey(x => x.ListingId);
             builder.HasOne(x => x.Deal).WithMany(x => x.Negotiates).HasForeignKey(x => x.DealId);

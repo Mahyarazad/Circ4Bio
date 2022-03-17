@@ -209,18 +209,30 @@ namespace AM.Infrastructure.Repository
         public DealViewModel GetDealWithDealId(long DealId)
         {
             return _amContext.Deals
+                    .AsNoTracking()
+                    .Where(x => x.Id == DealId).Select(x => new DealViewModel
+                    {
+                        DealId = x.Id,
+                        NegotiateId = x.NegotiateId,
+                        ListingId = x.ListingId,
+                        PaymentId = x.PaymentInfo.PaymentId,
+                        PaymentTime = x.PaymentInfo.PaymentTime,
+                        TotalCost = x.PaymentInfo.PaidAmount,
+                        TransactionFee = x.PaymentInfo.TransactionFee,
+                        TrackingCode = x.TrackingCode,
+                        Currency = x.Currency
+
+                    }).First();
+        }
+        public DealViewModel GetDealWithDealIdforDealIndex(long DealId)
+        {
+            return _amContext.Deals
                 .AsNoTracking()
                 .Where(x => x.Id == DealId).Select(x => new DealViewModel
                 {
                     DealId = x.Id,
                     NegotiateId = x.NegotiateId,
                     ListingId = x.ListingId,
-                    PaymentId = x.PaymentInfo.PaymentId,
-                    PaymentTime = x.PaymentInfo.PaymentTime,
-                    TotalCost = x.PaymentInfo.PaidAmount,
-                    TransactionFee = x.PaymentInfo.TransactionFee,
-                    TrackingCode = x.TrackingCode,
-                    Currency = x.Currency
 
                 }).First();
         }

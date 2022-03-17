@@ -16,6 +16,7 @@ using AM.Domain.NegotiateAggregate;
 using AM.Domain.NotificationAggregate;
 using AM.Domain.ResetPasswordAggregate;
 using AM.Domain.RoleAggregate;
+using AM.Domain.Supplied.PurchasedAggregate;
 using AM.Domain.UserAggregate;
 using Microsoft.Extensions.DependencyInjection;
 using AM.Infrastructure.Repository;
@@ -45,6 +46,8 @@ namespace AM.Infrastructure.Core
 
             services.AddTransient<IListingApplication, ListingApplication>();
             services.AddTransient<IListingRepository, ListingRepository>();
+            services.AddTransient<ISuppliedItemRepository, SuppliedItemRepository>();
+            services.AddTransient<IPurchasedItemRepository, PurchasedItemRepository>();
 
             services.AddTransient<INegotiateRepository, NegotiateRepository>();
             services.AddTransient<IUserNegotiateRepository, UserNegotiateRepository>();

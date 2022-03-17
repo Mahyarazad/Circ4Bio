@@ -1,6 +1,6 @@
 ﻿"use strict";
-var host = "https://localhost:5001";
-//var host = "http://www.maahyarazad.ir";
+//var host = "https://localhost:5001";
+var host = "http://www.circ4bio.com";
 
 $('#mobile-home-menu-close').on('click', function () {
     $('#mobile-home-menu').css('visibility', 'hidden');
@@ -136,42 +136,15 @@ $('#notification-handler-mobile').on('click', function () {
     }
 })
 
-function loading() {
-    $("#overlay").removeClass('invisible');
-    $("#overlay").removeClass('hidden');
-    $("#overlay").show();
-}
-
-$('#login-button').on('click', function () {
-    setInterval(function () {
-        if ($('#password-error').length == 1 || $('#user-email-error').length == 1) {
-            $("#overlay").addClass('invisible');
-            $("#overlay").addClass('hidden');
-            $("#overlay").hide();
-        };
-    }, 100)
-})
-
-$('#register-button').on('click', function () {
-    setInterval(function () {
-        if ($('#password-error').length == 1 || $('#user-email-error').length == 1
-            || $('#repassword-error').length == 1 || $('#user-type-error').length == 1) {
-            $("#overlay").addClass('invisible');
-            $("#overlay").addClass('hidden');
-            $("#overlay").hide();
-        };
-    }, 100)
-})
-
-$('#contact-us-button').on('click', function () {
-    setInterval(function () {
-        if ($('#Command_FullName-error').length == 1 || $('#Command_Email-error').length == 1
-            || $('#Command_Subject-error').length == 1 || $('#Command_Body-error').length == 1) {
-            $("#overlay").addClass('invisible');
-            $("#overlay").addClass('hidden');
-            $("#overlay").hide();
-        };
-    }, 100)
+$(document).ready(() => {
+    $('#form').submit(function (e) {
+        if ($(this).valid()) {
+            $("#overlay").removeClass('invisible');
+            $("#overlay").removeClass('hidden');
+            $("#overlay").show();
+        } else {
+        }
+    });
 })
 
 

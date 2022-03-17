@@ -13,7 +13,8 @@
         </svg>
     </button>
     <div class="mt-3 text-center">
-        <form class="divide-y divide-gray-200 lg:col-span-9" asp-page-handler="EditDeliveryLocation" asp-page="/Profile" data-callback=""
+        <form class="divide-y divide-gray-200 lg:col-span-9" id="form"
+              asp-page-handler="EditDeliveryLocation" asp-page="/Profile" data-callback=""
               method="post" data-action="Refresh" data-ajax="true">
             <!-- operation-result -->
             <div class="rounded-md bg-green-50 p-4 transition ease-in-out duration-75" id="operation-result" style="display: none">

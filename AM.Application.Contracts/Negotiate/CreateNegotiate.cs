@@ -14,6 +14,7 @@ namespace AM.Application.Contracts.Negotiate
         public bool IsFinished { get; set; }
         public bool IsActive { get; set; }
         public bool QuatationSent { get; set; }
+        public bool QuatationConfirm { get; set; }
         public bool IsRejected { get; set; }
     }
 

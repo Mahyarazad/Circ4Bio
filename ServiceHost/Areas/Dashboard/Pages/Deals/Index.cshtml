@@ -136,6 +136,7 @@
                                                 <p> Quatation Sent </p>}
                                             @if (item.IsActive)
                                             {
+                                                <p> Quatation Confirmed </p>
                                                 <p> Waiting for Payment </p>}
                                             else
                                             {
@@ -143,8 +144,7 @@
                                         }
                                         else
                                         {
-                                            <p> Finished </p>
-                                        }
+                                            <p> Finished </p>}
 
                                     </td>
                                     <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell">
@@ -155,7 +155,7 @@
                                                 @if (AuthenticateHelper.CurrentAccountRole().Id != item.Seller.Id & !item.IsActive)
                                                 {
                                                     <div clas="flex">
-                                                        <form method="post"
+                                                        <form method="post" id="form"
                                                               data-callback="" data-ajax="true" data-action="Refresh">
                                                             <input type="hidden" value="@item.DealId" name="id"/>
                                                             <button type="submit"

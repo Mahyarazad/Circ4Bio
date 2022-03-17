@@ -16,7 +16,10 @@ namespace AM.Application.Contracts.Deal
         Task<List<DealViewModel>> GetAllFinishedDeals(long UserId);
         DealViewModel GetDealWithNegotiateId(long NegotiateId);
         DealViewModel GetDealWithDealId(long DealId);
+        DealViewModel GetDealWithDealIdforDealIndex(long DealId);
         DealViewModel ReturnDealIdWithTrackingRef(string TrackingCode);
+        Task<OperationResult> SuppliedItem(SuppliedItemModel Command);
+        Task<OperationResult> PurchasedItem(PurchasedItemModel Command);
 
     }
 }

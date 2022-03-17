@@ -24,7 +24,7 @@ namespace _0_Framework.Application.Email
             var result = new OperationResult();
             var message = new MimeMessage();
 
-            message.From.Add(new MailboxAddress("Circ4Bio", "admin@maahyarazad.ir"));
+            message.From.Add(new MailboxAddress("Circ4Bio", "admin@circ4bio.com"));
 
             message.To.Add(new MailboxAddress("Recipient", model.Recipient));
             message.Subject = model.Title;
@@ -101,8 +101,8 @@ namespace _0_Framework.Application.Email
 
             try
             {
-                client.Connect(host: "mail.maahyarazad.ir", port: 587, SecureSocketOptions.None);
-                client.Authenticate("admin@maahyarazad.ir", _configuration.GetSection("EmailPassword")["SecretKey"]);
+                client.Connect(host: "smtp.livemail.co.uk", port: 465, SecureSocketOptions.None);
+                client.Authenticate("admin@circ4bio.com", _configuration.GetSection("EmailPassword")["SecretKey"]);
                 client.Send(message);
                 client.Disconnect(true);
                 client.Dispose();

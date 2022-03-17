@@ -4,14 +4,16 @@ using AM.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AM.Infrastructure.Migrations
 {
     [DbContext(typeof(AMContext))]
-    partial class AMContextModelSnapshot : ModelSnapshot
+    [Migration("20220314084053_quatationConfirmed")]
+    partial class quatationConfirmed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -462,35 +464,15 @@ namespace AM.Infrastructure.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<double>("Amount")
-                        .HasColumnType("float");
-
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Currency")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
                     b.Property<long>("ListingId")
-                        .HasColumnType("bigint");
-
-                    b.Property<double>("TotalPaid")
-                        .HasColumnType("float");
-
-                    b.Property<double>("UnitPrice")
-                        .HasColumnType("float");
-
-                    b.Property<long>("UserId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ListingId");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
 
                     b.ToTable("PurchasedItem", "dbo");
                 });
@@ -502,35 +484,15 @@ namespace AM.Infrastructure.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<double>("Amount")
-                        .HasColumnType("float");
-
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Currency")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
                     b.Property<long>("ListingId")
-                        .HasColumnType("bigint");
-
-                    b.Property<double>("TotalPaid")
-                        .HasColumnType("float");
-
-                    b.Property<double>("UnitPrice")
-                        .HasColumnType("float");
-
-                    b.Property<long>("UserId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ListingId");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
 
                     b.ToTable("SuppliedItem", "dbo");
                 });
@@ -619,11 +581,17 @@ namespace AM.Infrastructure.Migrations
                     b.Property<long>("PostalCode")
                         .HasColumnType("bigint");
 
+                    b.Property<long?>("PurchasedItemId")
+                        .HasColumnType("bigint");
+
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
 
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
+
+                    b.Property<long?>("SuppliedItemId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("TwitterUrl")
                         .HasMaxLength(200)
@@ -648,7 +616,11 @@ namespace AM.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("PurchasedItemId");
+
                     b.HasIndex("RoleId");
+
+                    b.HasIndex("SuppliedItemId");
 
                     b.ToTable("Users", "dbo");
                 });
@@ -923,15 +895,7 @@ namespace AM.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AM.Domain.UserAggregate.User", "Users")
-                        .WithOne("PurchasedItem")
-                        .HasForeignKey("AM.Domain.Supplied.PurchasedAggregate.PurchasedItem", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Listing");
-
-                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("AM.Domain.Supplied.PurchasedAggregate.SuppliedItem", b =>
@@ -942,24 +906,24 @@ namespace AM.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AM.Domain.UserAggregate.User", "Users")
-                        .WithOne("SuppliedItem")
-                        .HasForeignKey("AM.Domain.Supplied.PurchasedAggregate.SuppliedItem", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Listing");
-
-                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("AM.Domain.UserAggregate.User", b =>
                 {
+                    b.HasOne("AM.Domain.Supplied.PurchasedAggregate.PurchasedItem", "PurchasedItem")
+                        .WithMany("Users")
+                        .HasForeignKey("PurchasedItemId");
+
                     b.HasOne("AM.Domain.RoleAggregate.Role", "Role")
                         .WithMany("Users")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("AM.Domain.Supplied.PurchasedAggregate.SuppliedItem", "SuppliedItem")
+                        .WithMany("Users")
+                        .HasForeignKey("SuppliedItemId");
 
                     b.OwnsMany("AM.Domain.UserAggregate.DeliveryLocation", "DeliveryLocations", b1 =>
                         {
@@ -1018,7 +982,11 @@ namespace AM.Infrastructure.Migrations
 
                     b.Navigation("DeliveryLocations");
 
+                    b.Navigation("PurchasedItem");
+
                     b.Navigation("Role");
+
+                    b.Navigation("SuppliedItem");
                 });
 
             modelBuilder.Entity("AM.Domain.Deal", b =>
@@ -1052,6 +1020,16 @@ namespace AM.Infrastructure.Migrations
                     b.Navigation("Users");
                 });
 
+            modelBuilder.Entity("AM.Domain.Supplied.PurchasedAggregate.PurchasedItem", b =>
+                {
+                    b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("AM.Domain.Supplied.PurchasedAggregate.SuppliedItem", b =>
+                {
+                    b.Navigation("Users");
+                });
+
             modelBuilder.Entity("AM.Domain.UserAggregate.User", b =>
                 {
                     b.Navigation("Blogs");
@@ -1059,10 +1037,6 @@ namespace AM.Infrastructure.Migrations
                     b.Navigation("Listings");
 
                     b.Navigation("Notifications");
-
-                    b.Navigation("PurchasedItem");
-
-                    b.Navigation("SuppliedItem");
 
                     b.Navigation("UserNegotiate");
                 });

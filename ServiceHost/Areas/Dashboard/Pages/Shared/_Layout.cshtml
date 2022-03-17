@@ -18,7 +18,15 @@
     <partial name="_DashboardHeader" />
 
 <main role="main">
-
+    <div class="hidden" id="overlay">
+        <div class="flex justify-center my-64">
+            <div class="loadingio-spinner-eclipse-bpb0a9tyqqv">
+                <div class="ldio-91csn44uaj7">
+                    <div></div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="max-w-max-customized">
         <div id="layout-container" class="overflow-hidden">
             <div class="relative bg-sky-700 lg:pb-32 pb-16">
@@ -60,15 +68,7 @@
                             {
                                 <partial name="Shared/_Aside"/>
                             }
-                            <div class="hidden" id="overlay">
-                                <div class="flex justify-center my-64">
-                                    <div class="loadingio-spinner-eclipse-bpb0a9tyqqv">
-                                        <div class="ldio-91csn44uaj7">
-                                            <div></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+
                             @RenderBody()
                         </div>
                     </div>

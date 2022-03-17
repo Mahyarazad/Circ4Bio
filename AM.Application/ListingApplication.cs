@@ -9,6 +9,7 @@ using AM.Domain.ListingAggregate;
 using AM.Application.Contracts.Notification;
 using AM.Application.Contracts.User;
 using AM.Domain.NotificationAggregate;
+using AM.Domain.UserAggregate;
 using Microsoft.AspNetCore.Http;
 
 namespace AM.Application
@@ -16,6 +17,7 @@ namespace AM.Application
     public class ListingApplication : IListingApplication
     {
         private readonly IFileUploader _fileUploader;
+        private readonly IUserRepository _userRepository;
         private readonly IUserApplication _userApplication;
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly IListingRepository _listingRepository;
@@ -27,11 +29,13 @@ namespace AM.Application
             INotificationApplication notificationApplication,
             IHttpContextAccessor contextAccessor,
             IRecipientRepository recipientRepository,
+            IUserRepository userRepository,
             IAuthenticateHelper authenticateHelper,
             IUserApplication userApplication,
             IFileUploader fileUploader)
         {
             _fileUploader = fileUploader;
+            _userRepository = userRepository;
             _contextAccessor = contextAccessor;
             _userApplication = userApplication;
             _listingRepository = listingRepository;

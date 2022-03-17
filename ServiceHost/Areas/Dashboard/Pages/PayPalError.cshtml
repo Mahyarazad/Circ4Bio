@@ -1,7 +1,7 @@
 ﻿@page
-@model ServiceHost.Areas.Dashboard.Pages.Canceled
+@model ServiceHost.Areas.Dashboard.Pages.PayPalError
 
-@{ ViewData["Title"] = "Dashboard | Canceled Payment"; }
+@{ ViewData["Title"] = "Dashboard | Failed to Redirect"; }
 
 <div class="divide-y divide-gray-200 lg:col-span-9">
     <div class="flex flex-col">
@@ -12,7 +12,7 @@
                         <div class="flex-grow space-y-6 mx-4">
                             <div id="successful-payment" class="mt-2 my-8 flex-col lg:flex-row justify-between
                                 bg-red-400 rounded-md text-xl lg:text-2xl px-2 lg:px-10 text-white">
-                                <p class="py-1 lg:place-self-center flex justify-center py-8 text-3xl"> Payment Canceled</p>
+                                <p class="py-1 lg:place-self-center flex justify-center py-8 text-base md:text-2xl"> Failed to redirect to PayPal portal, please try again. </p>
                             </div>
                         </div>
                     </div>

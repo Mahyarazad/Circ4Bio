@@ -87,11 +87,16 @@ namespace ServiceHost.Areas.Dashboard.Pages.Deals
         {
             var deal = _dealApplication.GetDealWithNegotiateId(Id);
             var url = await _payPalService.GetRedirectUrltoPayPal(deal.TotalCost, deal.Currency, deal.TrackingCode);
+            if (url != null)
+            {
+                return Redirect(url);
+            }
+            else
+            {
+                return Redirect("/dashboard/paypalerror");
+            }
 
-            return Redirect(url);
         }
-
-        
 
     }
 }

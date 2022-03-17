@@ -13,6 +13,7 @@ namespace AM.Domain
         Task<List<DealViewModel>> GetAllFinishedDeals(long UserId);
         DealViewModel GetDealWithNegotiateId(long NegotiateId);
         DealViewModel GetDealWithDealId(long DealId);
+        DealViewModel GetDealWithDealIdforDealIndex(long DealId);
         DealViewModel ReturnDealIdWithTrackingRef(string TrackingCode);
     }
 }

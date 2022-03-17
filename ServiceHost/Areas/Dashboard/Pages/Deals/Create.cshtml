@@ -8,7 +8,7 @@
 
 
 <form class="divide-y divide-gray-200 lg:col-span-9"
-      method="post"
+      method="post" id="form"
       enctype="multipart/form-data">
     <!-- operation-result -->
     <div class="rounded-md bg-green-50 p-4 transition ease-in-out duration-75" id="operation-result" style="display: none">
@@ -135,7 +135,7 @@
                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
                     <span asp-validation-for="@Model.Command.DeliveryCost" class="text-red-500 text-sm"></span>
 
-                    <span id="show-currency-2" class="absolute ml-28 lg:ml-40 sm:pt-8 pt-9 md:ml-28 text-sm"></span>
+                    <span id="show-currency-2" class="absolute ml-28 lg:ml-40 sm:pt-8 pt-9 md:ml-28 text-sm">@Model.Command.Listing.Unit</span>
                     <label asp-for="@Model.Command.Amount" class="block text-sm font-medium text-gray-700"></label>
                     <input type="text" asp-for="@Model.Command.Amount"
                            onchange="checkAmount(this.value, @Model.Command.ListingId)" id="deal-amount"
@@ -148,10 +148,6 @@
                         <span id="check-amount" class="text-yellow-600 text-xs font-medium self-center py-1">
                         </span>
                     </div>
-
-                    <label asp-for="@Model.Command.Listing.Unit" class="block text-sm font-medium text-gray-700"></label>
-                    <input type="text" asp-for="@Model.Command.Listing.Unit" disabled="disabled"
-                           class="mt-1 block w-full border border-gray-100 bg-gray-100 rounded-md shadow-sm py-2 px-3 sm:text-sm">
 
                     <span id="show-currency-3" class="absolute ml-28 lg:ml-40 sm:pt-8 pt-9 md:ml-28 text-sm"></span>
                     <label class="block text-sm font-medium text-gray-700"> Unit Price </label>
@@ -179,7 +175,8 @@
         <a asp-page="/Negotiate/Index" asp-area="Dashboard" class="bg-white border border-gray-300 rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
             Back
         </a>
-        <button id="save" type="submit" class="ml-5 bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+        <button id="save" type="submit" onclick="loading()"
+                class="ml-5 bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
             Save
         </button>
     </div>
@@ -189,6 +186,7 @@
 @section CSS
 {
     <link rel="stylesheet" href="~/css/mapbox-gl.css" />
+    <link rel="stylesheet" href="~/css/Loader.css" />
 }
 
 @section Scripts

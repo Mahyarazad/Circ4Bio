@@ -140,9 +140,7 @@ namespace AM.Domain.UserAggregate
         public Role? Role { get; private set; }
         public List<UserNegotiate>? UserNegotiate { get; private set; }
         public List<Listing>? Listings { get; private set; }
-        public long? SuppliedItemId { get; private set; }
         public SuppliedItem? SuppliedItem { get; private set; }
-        public long? PurchasedItemId { get; private set; }
         public PurchasedItem? PurchasedItem { get; private set; }
         public List<Notification>? Notifications { get; private set; }
         public List<Blog>? Blogs { get; private set; }

@@ -66,6 +66,7 @@ function createPagination(totalPages, page) {
     var active;
     var beforePage = page - 1;
     var afterPage = page + 1;
+
     if (page > 1) {
         liTag += `<p class="btn prev text-sm font-medium leading-none cursor-pointer text-gray-600 hover:text-sky-700 border-t border-transparent hover:border-sky-400 pt-3 mr-4 px-2" onclick="createPagination(_totalPages, ${page - 1})"><span><i class="fas fa-angle-left"></i> Previous</span></p>`;
         //show the next button if the page value is greater than 1
@@ -76,7 +77,6 @@ function createPagination(totalPages, page) {
             //if page value is greater than 3 then add this (...) after the first li or page
 
             liTag += `<p class="dots text-sm font-medium leading-none cursor-pointer text-gray-600 hover:text-sky-700 border-t border-transparent hover:border-sky-400 pt-3 mr-4 px-2"><span>...</span></p>`;
-
         }
     }
 
@@ -93,28 +93,29 @@ function createPagination(totalPages, page) {
         afterPage = afterPage + 1;
     }
 
-    for (var plength = beforePage; plength <= afterPage; plength++) {
-        if (plength > totalPages) { //if plength is greater than totalPage length then continue
-            continue;
-        }
-        if (plength == 0) { //if plength is 0 than add +1 in plength value
-            plength = plength + 1;
-        }
-        if (page == plength) {
-            //                    console.log(paginate(totalPages, page))
-            //if page is equal to plength than assign active string in the active variable
-            active = "active";
+    if (totalPages > 1) {
+        for (var plength = beforePage; plength <= afterPage; plength++) {
+            if (plength > totalPages) { //if plength is greater than totalPage length then continue
+                continue;
+            }
+            if (plength == 0) { //if plength is 0 than add +1 in plength value
+                plength = plength + 1;
+            }
+            if (page == plength) {
+                //                    console.log(paginate(totalPages, page))
+                //if page is equal to plength than assign active string in the active variable
+                active = "active";
 
-        } else { //else leave empty to the active variable
-            active = "";
+            } else { //else leave empty to the active variable
+                active = "";
+            }
+            if (plength !== -1) {
+                liTag += `<p class="numb ${active} text-sm font-medium leading-none cursor-pointer ${active == "active" ? 'text-sky-700 border-sky-400' : 'text-gray-600 hover:text-sky-700 over:border-sky-400 border-transparent'}  border-t pt-3 mr-4 px-2" onclick="createPagination(_totalPages, ${plength})"><span>${plength}</span></p>`;
+            }
         }
-        if (plength !== -1) {
-            liTag += `<p class="numb ${active} text-sm font-medium leading-none cursor-pointer ${active == "active" ? 'text-sky-700 border-sky-400' : 'text-gray-600 hover:text-sky-700 over:border-sky-400 border-transparent'}  border-t pt-3 mr-4 px-2" onclick="createPagination(_totalPages, ${plength})"><span>${plength}</span></p>`;
-        }
-
-
-
     }
+
+
     var pageSize = paginateObject.pageSize;
     var maxPages = 100;
     if (totalPages <= maxPages) {
@@ -159,6 +160,7 @@ function createPagination(totalPages, page) {
         liTag += `<p class="btn next text-sm font-medium leading-none cursor-pointer text-gray-600 hover:text-sky-700 border-t border-transparent hover:border-sky-400 pt-3 mr-4 px-2" onclick="createPagination(_totalPages, ${page + 1})"><span>Next <i class="fas fa-angle-right"></i></span></p>`;
         //show the next button if the page value is less than totalPage(20)
     }
+
     element.innerHTML = liTag; //add li tag inside ul tag
 
     return liTag; //reurn the li tag
@@ -199,7 +201,6 @@ function handelFilter() {
     paginateObject = paginate(filtered.length, 1);
     _totalPages = paginateObject.pages.length;
     element.innerHTML = createPagination(_totalPages, page);
-
 };
 
 $("#search-input").on("keyup",

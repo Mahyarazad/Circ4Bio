@@ -48,6 +48,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Negotiate
                     IsFinished = item.IsFinished,
                     IsRejected = item.IsRejected,
                     QuatationSent = item.QuatationSent,
+                    QuatationConfirm = item.QuatationConfirm,
                     IsActive = item.IsActive
                 }));
             }
@@ -63,6 +64,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Negotiate
                     IsFinished = item.IsFinished,
                     IsRejected = item.IsRejected,
                     QuatationSent = item.QuatationSent,
+                    QuatationConfirm = item.QuatationConfirm,
                     IsActive = item.IsActive
                 }));
             }

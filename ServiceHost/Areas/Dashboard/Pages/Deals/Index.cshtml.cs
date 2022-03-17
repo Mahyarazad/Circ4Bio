@@ -44,7 +44,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Deals
 
         public JsonResult OnPost(long id)
         {
-            Command = _dealApplication.GetDealWithDealId(id);
+            Command = _dealApplication.GetDealWithDealIdforDealIndex(id);
             var result = _dealApplication.AtivateDeal(Command).Result;
             return new JsonResult(Task.FromResult(result));
         }

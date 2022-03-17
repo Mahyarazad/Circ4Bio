@@ -121,6 +121,11 @@ namespace ServiceHost
             app.UseCookiePolicy();
             app.UseAuthentication();
 
+            // app.UseDefaultFiles(new DefaultFilesOptions
+            // {
+            //     DefaultFileNames = new
+            //         List<string> { "index.html" }
+            // });
 
             app.Use(async (context, next) =>
             {
