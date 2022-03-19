@@ -17,7 +17,8 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
     {
         public EditUser user;
         public List<ListingViewModel> Listing;
-        public bool ShowDeleted = false;
+        public bool IsFiltered { get; set; }
+        public bool MasterFilter;
         private readonly IUserApplication _userApplication;
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly INotificationApplication _notificationApplication;
@@ -36,8 +37,6 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
 
         public async Task OnGet()
         {
-            ShowDeleted = false;
-
             var userId = long.Parse(_contextAccessor.HttpContext.User.Claims
                 .FirstOrDefault(x => x.Type == "User Id").Value);
 
@@ -48,6 +47,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
             if (AdminCheck == "1")
             {
                 Listing = await _listingApplication.GetAllListing();
+                Listing = Listing.Where(x => !x.IsDeleted).ToList();
             }
             else
             {
@@ -55,27 +55,40 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
             }
 
         }
-        public async Task OnGetDeleted()
+        public async Task OnPostShowDeleted(bool IsFiltered)
         {
-            ShowDeleted = true;
-            user = await _userApplication.GetDetail(
-                long.Parse(_contextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "User Id").Value));
+            var userId = long.Parse(_contextAccessor.HttpContext.User.Claims
+                .FirstOrDefault(x => x.Type == "User Id").Value);
 
-            Listing = await _listingApplication.GetDeletedUserListing(user.Id);
-        }
-        public async Task OnGetHideDeletedForAdmin()
-        {
-            user = await _userApplication.GetDetail(
-                long.Parse(_contextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "User Id").Value));
-            Listing = await _listingApplication.GetAllListing();
-            Listing = Listing.Where(x => !x.IsDeleted).ToList();
-        }
+            user = await _userApplication.GetDetail(userId);
+            var AdminCheck = _contextAccessor.HttpContext.User.Claims
+                .FirstOrDefault(x => x.Type == ClaimTypes.Role).Value;
+            if (IsFiltered)
+            {
+                MasterFilter = true;
+                if (AdminCheck == "1")
+                {
+                    Listing = await _listingApplication.GetAllListing();
+                }
+                else
+                {
+                    Listing = await _listingApplication.GetDeletedUserListing(userId);
+                }
+            }
+            else
+            {
+                MasterFilter = false;
+                if (AdminCheck == "1")
+                {
+                    Listing = await _listingApplication.GetAllListing();
+                    Listing = Listing.Where(x => !x.IsDeleted).ToList();
+                }
+                else
+                {
+                    Listing = await _listingApplication.GetUserListing(user.Id);
+                }
+            }
 
-        public async Task OnGetShowDeletedForAdmin()
-        {
-            user = await _userApplication.GetDetail(
-                long.Parse(_contextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "User Id").Value));
-            Listing = await _listingApplication.GetAllListing();
         }
 
         public Task<JsonResult> OnPostMarkDelete(long id)
@@ -89,12 +102,6 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
         public Task<JsonResult> OnPostMarkPrivate(long id)
         {
             return Task.FromResult(new JsonResult(_listingApplication.MarkPrivate(id)));
-        }
-        public async Task<IActionResult> OnPostMarkRead(long Id)
-        {
-            var result = await _notificationApplication.MarkRead(Id);
-            var reqUrl = _contextAccessor.HttpContext.Request.Headers.FirstOrDefault(x => x.Key == "Referer").Value;
-            return Redirect(reqUrl);
         }
 
         public IActionResult OnGetIncrement(long id)

@@ -268,3 +268,16 @@ $("#grid-size-handler-unlogged").on('click', () => {
         $('#grid-size-container-unlogged').css('opacity', '0');
     }
 })
+
+
+$("#IsFiltered").on("click", function () {
+    $("#filter-deals").submit();
+});
+
+$("#IsFiltered").on("click", function () {
+    $("#filter-paid-negotiation").submit();
+});
+
+$("#IsCanceled").on("click", function () {
+    $("#show-canceled-negotiations").submit();
+});

@@ -30,6 +30,7 @@ namespace ServiceHost.Pages.Authentication
 
         public void OnGet()
         {
+
             if (!string.IsNullOrWhiteSpace(_httpContextAccessor.HttpContext.Request.Cookies["user-token"]))
             {
                 UserToken = new JavaScriptSerializer()
@@ -49,7 +50,6 @@ namespace ServiceHost.Pages.Authentication
 
         public async Task<IActionResult> OnPostLogin(EditUser command)
         {
-
             SuccessMessage = "";
             FailureMessage = "";
             ActivationFailureMessage = "";

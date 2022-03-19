@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using _0_Framework.Application;
 using AM.Application.Contracts.Deal;
@@ -13,6 +14,8 @@ namespace ServiceHost.Areas.Dashboard.Pages.Deals
     {
         public List<DealViewModel> Deals;
         public DealViewModel Command;
+        public bool IsFiltered { get; set; }
+
         private readonly IDealApplication _dealApplication;
         private readonly IUserApplication _userApplication;
         private readonly IAuthenticateHelper _authenticateHelper;
@@ -28,6 +31,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Deals
             _authenticateHelper = authenticateHelper;
             _listingApplication = listingApplication;
         }
+
 
         public async Task<IActionResult> OnGet(long Id)
         {
@@ -47,6 +51,21 @@ namespace ServiceHost.Areas.Dashboard.Pages.Deals
             Command = _dealApplication.GetDealWithDealIdforDealIndex(id);
             var result = _dealApplication.AtivateDeal(Command).Result;
             return new JsonResult(Task.FromResult(result));
+        }
+
+        public async Task OnPostPaidFilter(long id, bool IsFiltered)
+        {
+            if (IsFiltered)
+            {
+                IsFiltered = true;
+                Deals = await _dealApplication.GetAllDeals(id);
+                Deals = Deals.Where(x => !x.IsFinished).ToList();
+            }
+            else
+            {
+                IsFiltered = false;
+                Deals = await _dealApplication.GetAllDeals(id);
+            }
         }
     }
 }

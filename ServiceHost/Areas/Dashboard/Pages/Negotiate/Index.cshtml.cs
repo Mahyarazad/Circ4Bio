@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using _0_Framework.Application;
 using AM.Application.Contracts.Listing;
@@ -14,6 +15,9 @@ namespace ServiceHost.Areas.Dashboard.Pages.Negotiate
         public List<NegotiateViewModel> NegotiateList;
         public List<ActiveListing> ActiveListing;
         public CreateNegotiate NegotiateDTO;
+        public bool IsFiltered { get; set; }
+        public bool IsCanceled { get; set; }
+        public bool MasterFilter;
         private readonly IUserApplication _userApplication;
         private readonly IAuthenticateHelper _authenticateHelper;
         private readonly IListingApplication _listingApplication;
@@ -30,7 +34,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Negotiate
             _negotiateApplication = negotiateApplication;
         }
 
-        public void OnGet()
+        private List<NegotiateViewModel> GetList()
         {
             NegotiateList = new List<NegotiateViewModel>();
             var userId = _authenticateHelper.CurrentAccountRole().Id;
@@ -68,6 +72,13 @@ namespace ServiceHost.Areas.Dashboard.Pages.Negotiate
                     IsActive = item.IsActive
                 }));
             }
+
+            return NegotiateList;
+        }
+
+        public void OnGet()
+        {
+            NegotiateList = GetList();
         }
 
         public JsonResult OnPostCancelNegotiation(CreateNegotiate Command)
@@ -80,6 +91,37 @@ namespace ServiceHost.Areas.Dashboard.Pages.Negotiate
                 ListingId = Command.ListingId
             };
             return new JsonResult(_negotiateApplication.CancelNegotiation(targetNegotiate));
+        }
+
+        public void OnPostPaidFilter(bool IsFiltered)
+        {
+            if (IsFiltered)
+            {
+                IsFiltered = true;
+                NegotiateList = GetList();
+                NegotiateList = NegotiateList.Where(x => !x.IsFinished).ToList();
+            }
+            else
+            {
+                IsFiltered = false;
+                NegotiateList = GetList();
+            }
+        }
+
+        public void OnPostCancelFilter(bool IsCanceled)
+        {
+            if (IsCanceled)
+            {
+                MasterFilter = true;
+                NegotiateList = GetList();
+                NegotiateList = NegotiateList.Where(x => x.IsCanceled).ToList();
+            }
+            else
+            {
+                MasterFilter = false;
+                NegotiateList = GetList();
+            }
+
         }
     }
 }

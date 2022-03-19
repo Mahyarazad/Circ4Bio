@@ -42,6 +42,24 @@
                 </div>
             </div>
             <!-- end -->
+            <div class="form-check px-2 py-1">
+                <form method="post" asp-page-handler="PaidFilter" id="filter-paid-negotiation">
+                    <input class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-sky-600 checked:border-sky-600
+                               focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+                           type="checkbox" asp-for="@Model.IsFiltered">
+                    <label class="form-check-label inline-block text-gray-600">
+                        Filter Paid Negotiation
+                    </label>
+                </form>
+                <form method="post" asp-page-handler="CancelFilter" id="show-canceled-negotiations">
+                    <input class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-sky-600 checked:border-sky-600
+                               focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+                           type="checkbox" asp-for="@Model.IsCanceled">
+                    <label class="form-check-label inline-block text-gray-600">
+                        Show Canceled Negotiations
+                    </label>
+                </form>
+            </div>
             <table class="min-w-full border-collapse block md:table" id="main-table">
                 <thead class="block md:table-header-group">
                 <tr class="border border-grey-500 md:border-none block md:table-row absolute -top-full md:top-auto -left-full md:left-auto  md:relative ">
@@ -51,95 +69,126 @@
                 </tr>
                 </thead>
                 <tbody class="block md:table-row-group">
-                @foreach (var item in Model.NegotiateList)
-                {
-                    if (!item.IsCanceled)
+                    @foreach (var item in Model.NegotiateList)
                     {
-                        <tr class="bg-white border border-grey-500 md:border-none block md:table-row">
-                            <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell">
-                                <span class="inline-block w-1/3 md:hidden font-bold">Item Info</span>
-                                <div class="text-sm text-gray-900">
+                        if (!item.IsCanceled)
+                        {
+                            <tr class="bg-white border border-grey-500 md:border-none block md:table-row">
+                                <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell">
+                                    <span class="inline-block w-1/3 md:hidden font-bold">Item Info</span>
                                     <div class="text-sm text-gray-900">
-                                        <span class="text-xs text-gray-600"> Item Name:</span>
-                                        <b class="text-xs">@item.ListingName</b>
-                                    </div>
-                                    <span class="text-xs text-gray-600"> Unit Price:</span>
-                                    @item.UnitPrice <b class="text-xs">@item.Currency</b>
-                                    <div class="text-sm text-gray-900">
-                                        <span class="text-xs text-gray-600"> Available Amount:</span> @item.Amount
-                                        <b class="text-xs">@item.Unit</b>
-                                    </div>
-                                    <div class="text-sm text-gray-900">
-                                        <span class="text-xs text-gray-600"> Delivery Method:</span> @item.Amount
-                                        <b class="text-xs">@item.DeliveryMethod</b>
-                                    </div>
-                                    <div class="text-sm text-gray-900">
-                                        <span class="text-xs text-gray-600"> Creation Time:</span>
-                                        <b class="text-xs">@item.CreationTime</b>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell">
-                                <span class="inline-block w-1/3 md:hidden font-bold">Trader Info</span>
-                                @if (AuthenticateHelper.CurrentAccountRole().Id == @item.BuyerId)
-                                {
-                                    <div class="flex flex-col">
                                         <div class="text-sm text-gray-900">
-                                            <span class="text-xs text-red-600"> Seller Email: </span>
-                                            @item.SellerEmail
+                                            <span class="text-xs text-gray-600"> Item Name:</span>
+                                            <b class="text-xs">@item.ListingName</b>
+                                        </div>
+                                        <span class="text-xs text-gray-600"> Unit Price:</span>
+                                        @item.UnitPrice <b class="text-xs">@item.Currency</b>
+                                        <div class="text-sm text-gray-900">
+                                            <span class="text-xs text-gray-600"> Available Amount:</span> @item.Amount
+                                            <b class="text-xs">@item.Unit</b>
                                         </div>
                                         <div class="text-sm text-gray-900">
-                                            <span class="text-xs text-red-600"> Seller Name: </span>
-                                            @item.SellerName
-                                        </div>
-                                    </div>
-                                    <img class="h-10 w-10 rounded-full"
-                                         src="~/Site Files/Profile_Images/@(item.SellerImageString == "default-avatar.png" ? "default-avatar.png" : $"{item.SellerImageString}")"
-                                         alt=""/>
-                                }
-                                else
-                                {
-                                    <div class="flex flex-col">
-                                        <div class="text-sm text-gray-900">
-                                            <span class="text-xs text-green-600"> Buyer Email: </span>
-                                            @item.BuyerEmail
+                                            <span class="text-xs text-gray-600"> Delivery Method:</span> @item.Amount
+                                            <b class="text-xs">@item.DeliveryMethod</b>
                                         </div>
                                         <div class="text-sm text-gray-900">
-                                            <span class="text-xs text-green-600"> Buyer Name: </span>
-                                            @item.BuyerName
+                                            <span class="text-xs text-gray-600"> Creation Time:</span>
+                                            <b class="text-xs">@item.CreationTime</b>
                                         </div>
                                     </div>
-                                    <img class="h-10 w-10 rounded-full"
-                                         src="~/Site Files/Profile_Images/@(item.BuyerImageString == "default-avatar.png" ? "default-avatar.png" : $"{item.BuyerImageString}")"
-                                         alt=""/>
-                                }
-
-                            </td>
-                            <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell">
-                                <span class="inline-block w-1/3 md:hidden font-bold">Actions</span>
-                                <div class="flex justify-start my-2">
-                                    <a asp-page="Messages" asp-route-id="@item.NegotiateId"
-                                       class="mx-1 inline-flex items-center px-2 py-2 border border-gray-300 shadow-sm text-xs font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
-                                        <i class="fa fa-edit"></i> Open Messages
-                                    </a>
-                                    @if (AuthenticateHelper.CurrentAccountRole().Id != @item.BuyerId)
+                                </td>
+                                <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell">
+                                    <span class="inline-block w-1/3 md:hidden font-bold">Trader Info</span>
+                                    @if (AuthenticateHelper.CurrentAccountRole().Id == @item.BuyerId)
                                     {
-                                        if (!item.IsActive)
+                                        <div class="flex flex-col">
+                                            <div class="text-sm text-gray-900">
+                                                <span class="text-xs text-red-600"> Seller Email: </span>
+                                                @item.SellerEmail
+                                            </div>
+                                            <div class="text-sm text-gray-900">
+                                                <span class="text-xs text-red-600"> Seller Name: </span>
+                                                @item.SellerName
+                                            </div>
+                                        </div>
+                                        <img class="h-10 w-10 rounded-full"
+                                             src="~/Site Files/Profile_Images/@(item.SellerImageString == "default-avatar.png" ? "default-avatar.png" : $"{item.SellerImageString}")"
+                                             alt="" />
+                                    }
+                                    else
+                                    {
+                                        <div class="flex flex-col">
+                                            <div class="text-sm text-gray-900">
+                                                <span class="text-xs text-green-600"> Buyer Email: </span>
+                                                @item.BuyerEmail
+                                            </div>
+                                            <div class="text-sm text-gray-900">
+                                                <span class="text-xs text-green-600"> Buyer Name: </span>
+                                                @item.BuyerName
+                                            </div>
+                                        </div>
+                                        <img class="h-10 w-10 rounded-full"
+                                             src="~/Site Files/Profile_Images/@(item.BuyerImageString == "default-avatar.png" ? "default-avatar.png" : $"{item.BuyerImageString}")"
+                                             alt="" />
+                                    }
+
+                                </td>
+                                <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell">
+                                    <span class="inline-block w-1/3 md:hidden font-bold">Actions</span>
+                                    <div class="flex justify-start my-2">
+                                        <a asp-page="Messages" asp-route-id="@item.NegotiateId"
+                                           class="mx-1 inline-flex items-center px-2 py-2 border border-gray-300 shadow-sm text-xs font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                                            <i class="fa fa-edit"></i> Open Messages
+                                        </a>
+                                        @if (AuthenticateHelper.CurrentAccountRole().Id != @item.BuyerId)
                                         {
-                                            <a asp-page="../Deals/Create" asp-route-id="@item.NegotiateId"
-                                               class="mx-1 inline-flex items-center px-2 py-2 border border-gray-300 shadow-sm text-xs font-medium rounded-md text-white bg-sky-700 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-800">
-                                                <i class="fa fa-edit"></i> Create a Quotation
-                                            </a>
+                                            if (!item.IsActive)
+                                            {
+                                                <a asp-page="../Deals/Create" asp-route-id="@item.NegotiateId"
+                                                   class="mx-1 inline-flex items-center px-2 py-2 border border-gray-300 shadow-sm text-xs font-medium rounded-md text-white bg-sky-700 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-800">
+                                                    <i class="fa fa-edit"></i> Create a Quotation
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                @if (!item.QuatationConfirm)
+                                                {
+                                                    <p class="mx-1 inline-flex items-center px-2 py-2 border border-gray-100 shadow-sm text-xs font-medium rounded-md text-gray-700 bg-gray-100">
+                                                        <i class="fa fa-edit"></i> Quotation Sent
+                                                    </p>
+                                                }
+                                                else
+                                                {
+                                                    <a a asp-page="../Deals/ConfirmQuatation" asp-route-id="@item.NegotiateId"
+                                                       class="mx-1 inline-flex items-center px-2 py-2 border border-gray-300 shadow-sm text-xs font-medium rounded-md text-white bg-sky-700 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-800">
+                                                        <i class="fa fa-edit"></i> View Final Quatation
+                                                    </a>
+                                                }
+                                            }
+                                            @if (!item.QuatationConfirm && item.QuatationSent)
+                                            {
+                                                <a a asp-page="../Deals/Quatation" asp-route-id="@item.NegotiateId"
+                                                   class="mx-1 inline-flex items-center px-2 py-2 border border-gray-300 shadow-sm text-xs font-medium rounded-md text-white bg-sky-700 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-800">
+                                                    <i class="fa fa-edit"></i> Modify Quatation
+                                                </a>
+                                            }
                                         }
                                         else
                                         {
-                                            @if (!item.QuatationConfirm)
+                                            if (item.QuatationSent & !item.IsFinished)
                                             {
-                                                <p class="mx-1 inline-flex items-center px-2 py-2 border border-gray-100 shadow-sm text-xs font-medium rounded-md text-gray-700 bg-gray-100">
-                                                    <i class="fa fa-edit"></i> Quotation Sent
-                                                </p>
+                                                <a a asp-page="../Deals/ConfirmQuatation" asp-route-id="@item.NegotiateId"
+                                                   class="mx-1 inline-flex items-center px-2 py-2 border border-gray-300 shadow-sm text-xs font-medium rounded-md text-white bg-sky-700 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-800">
+                                                    <i class="fa fa-edit"></i> Open Quatation
+                                                </a>
                                             }
-                                            else
+                                        }
+                                        @if (item.IsFinished)
+                                        {
+                                            <p class="mx-1 inline-flex items-center px-2 py-2 border border-teal-100 shadow-sm text-xs font-medium rounded-md text-white bg-teal-400">
+                                                <i class="fa fa-edit"></i> Paid
+                                            </p>
+                                            @if (AuthenticateHelper.CurrentAccountRole().Id != @item.SellerId)
                                             {
                                                 <a a asp-page="../Deals/ConfirmQuatation" asp-route-id="@item.NegotiateId"
                                                    class="mx-1 inline-flex items-center px-2 py-2 border border-gray-300 shadow-sm text-xs font-medium rounded-md text-white bg-sky-700 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-800">
@@ -147,58 +196,173 @@
                                                 </a>
                                             }
                                         }
-                                        @if (!item.QuatationConfirm && item.QuatationSent)
+                                        @if (!item.IsFinished)
                                         {
-                                            <a a asp-page="../Deals/Quatation" asp-route-id="@item.NegotiateId"
-                                               class="mx-1 inline-flex items-center px-2 py-2 border border-gray-300 shadow-sm text-xs font-medium rounded-md text-white bg-sky-700 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-800">
-                                                <i class="fa fa-edit"></i> Modify Quatation
-                                            </a>
+                                            <form method="post" data-ajax="true" data-action="Refresh"
+                                                  asp-page="./Index" asp-page-handler="CancelNegotiation">
+                                                <input type="hidden" value="@item.NegotiateId" name="NegotiateId" />
+                                                <input type="hidden" value="@item.BuyerId" name="BuyerId" />
+                                                <input type="hidden" value="@item.SellerId" name="SellerId" />
+                                                <input type="hidden" value="@item.ListingId" name="ListingId" />
+                                                <button type="submit"
+                                                        class="mx-1 inline-flex items-center px-2 py-2 border border-gray-300 shadow-sm text-xs font-medium rounded-md text-gray-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+                                                    Cancel this deal
+                                                </button>
+                                            </form>
                                         }
+
+
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                        if (Model.MasterFilter)
+                        {
+                            <tr class="bg-white border border-grey-500 md:border-none block md:table-row">
+                                <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell">
+                                    <span class="inline-block w-1/3 md:hidden font-bold">Item Info</span>
+                                    <div class="text-sm text-gray-900">
+                                        <div class="text-sm text-gray-900">
+                                            <span class="text-xs text-gray-600"> Item Name:</span>
+                                            <b class="text-xs">@item.ListingName</b>
+                                        </div>
+                                        <span class="text-xs text-gray-600"> Unit Price:</span>
+                                        @item.UnitPrice <b class="text-xs">@item.Currency</b>
+                                        <div class="text-sm text-gray-900">
+                                            <span class="text-xs text-gray-600"> Available Amount:</span> @item.Amount
+                                            <b class="text-xs">@item.Unit</b>
+                                        </div>
+                                        <div class="text-sm text-gray-900">
+                                            <span class="text-xs text-gray-600"> Delivery Method:</span> @item.Amount
+                                            <b class="text-xs">@item.DeliveryMethod</b>
+                                        </div>
+                                        <div class="text-sm text-gray-900">
+                                            <span class="text-xs text-gray-600"> Creation Time:</span>
+                                            <b class="text-xs">@item.CreationTime</b>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell">
+                                    <span class="inline-block w-1/3 md:hidden font-bold">Trader Info</span>
+                                    @if (AuthenticateHelper.CurrentAccountRole().Id == @item.BuyerId)
+                                    {
+                                        <div class="flex flex-col">
+                                            <div class="text-sm text-gray-900">
+                                                <span class="text-xs text-red-600"> Seller Email: </span>
+                                                @item.SellerEmail
+                                            </div>
+                                            <div class="text-sm text-gray-900">
+                                                <span class="text-xs text-red-600"> Seller Name: </span>
+                                                @item.SellerName
+                                            </div>
+                                        </div>
+                                        <img class="h-10 w-10 rounded-full"
+                                             src="~/Site Files/Profile_Images/@(item.SellerImageString == "default-avatar.png" ? "default-avatar.png" : $"{item.SellerImageString}")"
+                                             alt="" />
                                     }
                                     else
                                     {
-                                        if (item.QuatationSent & !item.IsFinished)
-                                        {
-                                            <a a asp-page="../Deals/ConfirmQuatation" asp-route-id="@item.NegotiateId"
-                                               class="mx-1 inline-flex items-center px-2 py-2 border border-gray-300 shadow-sm text-xs font-medium rounded-md text-white bg-sky-700 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-800">
-                                                <i class="fa fa-edit"></i> Open Quatation
-                                            </a>
-                                        }
-                                    }
-                                    @if (item.IsFinished)
-                                    {
-                                        <p class="mx-1 inline-flex items-center px-2 py-2 border border-teal-100 shadow-sm text-xs font-medium rounded-md text-white bg-teal-400">
-                                            <i class="fa fa-edit"></i> Paid
-                                        </p>
-                                        @if (AuthenticateHelper.CurrentAccountRole().Id != @item.SellerId)
-                                        {
-                                            <a a asp-page="../Deals/ConfirmQuatation" asp-route-id="@item.NegotiateId"
-                                               class="mx-1 inline-flex items-center px-2 py-2 border border-gray-300 shadow-sm text-xs font-medium rounded-md text-white bg-sky-700 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-800">
-                                                <i class="fa fa-edit"></i> View Final Quatation
-                                            </a>
-                                        }
-                                    }
-                                    @if (!item.IsFinished)
-                                    {
-                                        <form method="post" data-ajax="true" data-action="Refresh"
-                                              asp-page="./Index" asp-page-handler="CancelNegotiation">
-                                            <input type="hidden" value="@item.NegotiateId" name="NegotiateId"/>
-                                            <input type="hidden" value="@item.BuyerId" name="BuyerId"/>
-                                            <input type="hidden" value="@item.SellerId" name="SellerId"/>
-                                            <input type="hidden" value="@item.ListingId" name="ListingId"/>
-                                            <button type="submit"
-                                                    class="mx-1 inline-flex items-center px-2 py-2 border border-gray-300 shadow-sm text-xs font-medium rounded-md text-gray-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
-                                                Cancel this deal
-                                            </button>
-                                        </form>
+                                        <div class="flex flex-col">
+                                            <div class="text-sm text-gray-900">
+                                                <span class="text-xs text-green-600"> Buyer Email: </span>
+                                                @item.BuyerEmail
+                                            </div>
+                                            <div class="text-sm text-gray-900">
+                                                <span class="text-xs text-green-600"> Buyer Name: </span>
+                                                @item.BuyerName
+                                            </div>
+                                        </div>
+                                        <img class="h-10 w-10 rounded-full"
+                                             src="~/Site Files/Profile_Images/@(item.BuyerImageString == "default-avatar.png" ? "default-avatar.png" : $"{item.BuyerImageString}")"
+                                             alt="" />
                                     }
 
+                                </td>
+                                <td class="p-2 md:border md:border-grey-500 text-left block md:table-cell">
+                                    <span class="inline-block w-1/3 md:hidden font-bold">Actions</span>
+                                    <div class="flex justify-start my-2">
+                                        <a asp-page="Messages" asp-route-id="@item.NegotiateId"
+                                           class="mx-1 inline-flex items-center px-2 py-2 border border-gray-300 shadow-sm text-xs font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                                            <i class="fa fa-edit"></i> Open Messages
+                                        </a>
+                                        @if (AuthenticateHelper.CurrentAccountRole().Id != @item.BuyerId)
+                                        {
+                                            if (!item.IsActive)
+                                            {
+                                                <a asp-page="../Deals/Create" asp-route-id="@item.NegotiateId"
+                                                   class="mx-1 inline-flex items-center px-2 py-2 border border-gray-300 shadow-sm text-xs font-medium rounded-md text-white bg-sky-700 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-800">
+                                                    <i class="fa fa-edit"></i> Create a Quotation
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                @if (!item.QuatationConfirm)
+                                                {
+                                                    <p class="mx-1 inline-flex items-center px-2 py-2 border border-gray-100 shadow-sm text-xs font-medium rounded-md text-gray-700 bg-gray-100">
+                                                        <i class="fa fa-edit"></i> Quotation Sent
+                                                    </p>
+                                                }
+                                                else
+                                                {
+                                                    <a a asp-page="../Deals/ConfirmQuatation" asp-route-id="@item.NegotiateId"
+                                                       class="mx-1 inline-flex items-center px-2 py-2 border border-gray-300 shadow-sm text-xs font-medium rounded-md text-white bg-sky-700 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-800">
+                                                        <i class="fa fa-edit"></i> View Final Quatation
+                                                    </a>
+                                                }
+                                            }
+                                            @if (!item.QuatationConfirm && item.QuatationSent)
+                                            {
+                                                <a a asp-page="../Deals/Quatation" asp-route-id="@item.NegotiateId"
+                                                   class="mx-1 inline-flex items-center px-2 py-2 border border-gray-300 shadow-sm text-xs font-medium rounded-md text-white bg-sky-700 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-800">
+                                                    <i class="fa fa-edit"></i> Modify Quatation
+                                                </a>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (item.QuatationSent & !item.IsFinished)
+                                            {
+                                                <a a asp-page="../Deals/ConfirmQuatation" asp-route-id="@item.NegotiateId"
+                                                   class="mx-1 inline-flex items-center px-2 py-2 border border-gray-300 shadow-sm text-xs font-medium rounded-md text-white bg-sky-700 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-800">
+                                                    <i class="fa fa-edit"></i> Open Quatation
+                                                </a>
+                                            }
+                                        }
+                                        @if (item.IsFinished)
+                                        {
+                                            <p class="mx-1 inline-flex items-center px-2 py-2 border border-teal-100 shadow-sm text-xs font-medium rounded-md text-white bg-teal-400">
+                                                <i class="fa fa-edit"></i> Paid
+                                            </p>
+                                            @if (AuthenticateHelper.CurrentAccountRole().Id != @item.SellerId)
+                                            {
+                                                <a a asp-page="../Deals/ConfirmQuatation" asp-route-id="@item.NegotiateId"
+                                                   class="mx-1 inline-flex items-center px-2 py-2 border border-gray-300 shadow-sm text-xs font-medium rounded-md text-white bg-sky-700 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-800">
+                                                    <i class="fa fa-edit"></i> View Final Quatation
+                                                </a>
+                                            }
+                                        }
+                                        @if (!item.IsFinished)
+                                        {
+                                            <form method="post" data-ajax="true" data-action="Refresh"
+                                                  asp-page="./Index" asp-page-handler="CancelNegotiation">
+                                                <input type="hidden" value="@item.NegotiateId" name="NegotiateId" />
+                                                <input type="hidden" value="@item.BuyerId" name="BuyerId" />
+                                                <input type="hidden" value="@item.SellerId" name="SellerId" />
+                                                <input type="hidden" value="@item.ListingId" name="ListingId" />
+                                                <button type="submit"
+                                                        class="mx-1 inline-flex items-center px-2 py-2 border border-gray-300 shadow-sm text-xs font-medium rounded-md text-gray-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-200">
+                                                    Cancel this deal
+                                                </button>
+                                            </form>
+                                        }
 
-                                </div>
-                            </td>
-                        </tr>
+
+                                    </div>
+                                </td>
+                            </tr>
+                        }
                     }
-                }
+
                 </tbody>
             </table>
         </div>
