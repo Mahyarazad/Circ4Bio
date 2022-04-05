@@ -16,12 +16,14 @@ using AM.Domain.NotificationAggregate;
 using AM.Domain.Supplied.PurchasedAggregate;
 using AM.Domain.UserAggregate;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Caching.Memory;
 using DealViewModel = AM.Application.Contracts.Deal.DealViewModel;
 
 namespace AM.Application
 {
     public class DealApplication : IDealApplication
     {
+        private readonly IMemoryCache _memoryCache;
         private readonly IFileUploader _fileUploader;
         private readonly IDealRepository _dealRepository;
         private readonly IUserRepository _userRepository;
@@ -37,13 +39,14 @@ namespace AM.Application
         private readonly INotificationApplication _notificationApplication;
 
         public DealApplication(IDealRepository dealRepository, ISuppliedItemRepository suppliedItemRepository,
-            IPurchasedItemRepository purchasedItemRepository, IUserRepository userRepository
+            IMemoryCache memoryCache, IPurchasedItemRepository purchasedItemRepository, IUserRepository userRepository
             , IListingApplication listingApplication, IEmailService<EmailModel> emailService
             , IFileUploader fileUploader, IUserApplication userApplication
             , IAuthenticateHelper authenticateHelper, INegotiateRepository negotiateRepository
             , IListingRepository listingRepository, IHttpContextAccessor contextAccessor
             , IRecipientRepository recipientRepository, INotificationApplication notificationApplication)
         {
+            _memoryCache = memoryCache;
             _fileUploader = fileUploader;
             _emailService = emailService;
             _dealRepository = dealRepository;
@@ -64,9 +67,9 @@ namespace AM.Application
             var result = new OperationResult();
 
             var RedirectUrlSeller = _contextAccessor.HttpContext.Request.Headers
-                .FirstOrDefault(x => x.Key == "Referer").Value.ToString().Replace("create", "quatation");
+                .FirstOrDefault(x => x.Key == "Referer").Value.ToString().Replace("Create", "Quatation");
             var RedirectUrlBuyer = _contextAccessor.HttpContext.Request.Headers
-                .FirstOrDefault(x => x.Key == "Referer").Value.ToString().Replace("create", "confirmquatation");
+                .FirstOrDefault(x => x.Key == "Referer").Value.ToString().Replace("Create", "ConfirmQuatation");
 
 
             var negotiate = await _negotiateRepository.Get(Command.NegotiateId);
@@ -608,6 +611,48 @@ namespace AM.Application
             else
             {
                 return Task.FromResult(result.Failed(ApplicationMessage.RecordNotFound));
+            }
+        }
+
+        public Task<List<PurchasedItemModel>> GetPurchasedList(long UserId)
+        {
+            var CacheKey = "PurchasedList";
+            if (!_memoryCache.TryGetValue(CacheKey, out List<PurchasedItemModel> Items))
+            {
+                Items = _purchasedItemRepository.GetPurchasedList(UserId);
+                var CacheExpirayOption = new MemoryCacheEntryOptions
+                {
+                    AbsoluteExpiration = DateTime.Now.AddSeconds(50),
+                    SlidingExpiration = TimeSpan.FromSeconds(20),
+                    Priority = CacheItemPriority.Normal
+                };
+                _memoryCache.Set(CacheKey, Items, CacheExpirayOption);
+                return Task.FromResult(Items);
+            }
+            else
+            {
+                return Task.FromResult(_memoryCache.Get<List<PurchasedItemModel>>(CacheKey));
+            }
+        }
+
+        public Task<List<SuppliedItemModel>> GetSuppliedList(long UserId)
+        {
+            var CacheKey = "SuppliedList";
+            if (!_memoryCache.TryGetValue(CacheKey, out List<SuppliedItemModel> Items))
+            {
+                Items = _suppliedItemRepository.GetSuppliedList(UserId);
+                var CacheExpirayOption = new MemoryCacheEntryOptions
+                {
+                    AbsoluteExpiration = DateTime.Now.AddSeconds(50),
+                    SlidingExpiration = TimeSpan.FromSeconds(20),
+                    Priority = CacheItemPriority.Normal
+                };
+                _memoryCache.Set(CacheKey, Items, CacheExpirayOption);
+                return Task.FromResult(Items);
+            }
+            else
+            {
+                return Task.FromResult(_memoryCache.Get<List<SuppliedItemModel>>(CacheKey));
             }
         }
     }

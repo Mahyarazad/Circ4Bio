@@ -14,6 +14,7 @@ namespace AM.Domain.UserAggregate
     public interface IUserRepository : IRepository<long, User>
     {
         Task<List<UserViewModel>> Search(UserSearchModel searchModel);
+        Task<List<UserViewModel>> GetFullList();
         Task<List<RecipientViewModel>> GetUserListForListing(long id);
         Task<EditUser> GetDetail(long Id);
         Task<EditUser> GetDetailByUser(string username);

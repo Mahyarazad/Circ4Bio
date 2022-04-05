@@ -2,3 +2,174 @@
 @model ServiceHost.Areas.Dashboard.Pages.IndexModel
 @{ ViewData["Title"] = "Dashboard"; }
 
+
+<div class="divide-y divide-gray-200 lg:col-span-9">
+    <div class="flex flex-col">
+        <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                    <div class="mt-6 flex flex-col lg:flex-row">
+                        <div class="flex-grow space-y-6 mx-4 mb-4">
+                            <div class="grid-cols-1 md:grid-cols-2 grid gap-x-4 gap-y-4">
+
+                                @if (Model.UserId == 1)
+                                {
+                                    <div class="shadow-lg rounded-md py-2 px-4 flex flex-col">
+                                        <canvas id="AdminChart"></canvas>
+                                        </div>
+                                    <div class="shadow-lg rounded-md py-2 px-4 flex flex-col">
+                                        <canvas id="UserActive"></canvas>
+                                    </div>
+                                        }
+                                        else
+                                        {
+                                        <div class="shadow-lg rounded-md py-2 px-4 flex flex-col">
+                                            <h6 class="self-center lg:text-xl text-base text-gray-700">Active Listing Items</h6>
+                                            <span class="self-center text-gray-800 text-2xl py-4 font-medium">@Model.ActiveListingCount</span>
+                                        </div>
+                                        <div class="shadow-lg rounded-md py-2 px-4 flex flex-col">
+                                            <h6 class="self-center lg:text-xl text-base text-gray-700">Active Sales Negotiations</h6>
+                                            <span class="self-center text-gray-800 text-2xl py-4 font-medium">@Model.ActiveNegotiationsBuyingItems</span>
+                                        </div>
+                                        <div class="shadow-lg rounded-md py-2 px-4 flex flex-col">
+                                            <h6 class="self-center lg:text-xl text-base text-gray-700">Active Buying Negotiations</h6>
+                                            <span class="self-center text-gray-800 text-2xl py-4 font-medium">@Model.ActiveNegotiationsSalesItems</span>
+                                        </div>
+                                        <div class="shadow-lg rounded-md py-2 px-4 flex flex-col">
+                                            <h6 class="self-center lg:text-xl text-base text-gray-700">Supplied Items</h6>
+                                            <span class="self-center text-gray-800 text-2xl py-4 font-medium">@Model.SuppliedItems</span>
+                                        </div>
+                                        <div class="shadow-lg rounded-md py-2 px-4 flex flex-col">
+                                            <h6 class="self-center lg:text-xl text-base text-gray-700">Purchased Items</h6>
+                                            <span class="self-center text-gray-800 text-2xl py-4 font-medium">@Model.PurchasedItems</span>
+                                        </div>
+                                        }
+                                    </div>
+                                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0/dist/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <script>
+
+        const userStatus = document.getElementById('AdminChart').getContext('2d');
+        const userActive = document.getElementById('UserActive').getContext('2d');
+        const UserData = @Html.Raw(Json.Serialize(Model.UserStat));
+
+        const UserOverviewData = [];
+        const UserOverviewDataLabel = [];
+        for (var [_, value] of Object.entries(UserData)) {
+            UserOverviewData.push(value.count);
+            UserOverviewDataLabel.push(value.roleType);
+
+        }
+        Chart.register(ChartDataLabels);
+        const myChart = new Chart(userStatus,
+            {
+                type: 'doughnut',
+                data: {
+                    labels: UserOverviewDataLabel,
+                    datasets: [
+                        {
+                            data: UserOverviewData,
+                            datalabels: {
+                                color: '#171616',
+                            },
+                            hoverOffset: 4,
+                            backgroundColor: [
+                                'rgb(255, 99, 132)',
+                                'rgb(54, 162, 235)',
+                                'rgb(255, 205, 86)',
+                                'rgb(153, 255, 151)'
+                            ],
+                        }
+                    ]
+                },
+                options: {
+                    plugins: {
+                        datalabels: {
+                            color: '#171616',
+                            display: true,
+                            formatter: function (value, ctx) {
+                                return ((value * 100) / @Html.Raw(Model.TotalUsers)).toFixed(2) + '%';
+                            },
+                        },
+                        title: {
+                            display: true,
+                            text: 'Users Distribution Stat',
+                            font: {
+                                size: 17,
+                                color: '#171616',
+                                family: 'Inter'
+                            }
+                        },
+                        legend: {
+                            position: 'bottom',
+                            display: true,
+                            font: {
+                                size: 13,
+                                color: '#171616',
+                                family: 'Inter'
+                            }
+                        },
+                    },
+                },
+            });
+        const myChart2 = new Chart(userActive,
+            {
+                type: 'bar',
+                data: {
+                    labels: ["Users Overview"],
+                    datasets: [
+                        {
+                            label: "Total Users",
+                            datalabels: {
+                                color: '#e6e3e3',
+                            },
+                            backgroundColor: "#3e95cd",
+                            data: [@Html.Raw(Model.TotalUsers)]
+                        },
+                        {
+                            label: "Vat Not Registered",
+                            datalabels: {
+                                color: '#e6e3e3',
+                            },
+                            backgroundColor: "#8e5ea2",
+                            data: [@Html.Raw(Model.StatusFalseTotalUsers)]
+                        }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Users Overview',
+                            font: {
+                                size: 17,
+                                color: '#171616',
+                                family: 'Inter'
+                            }
+                        },
+                        legend: {
+                            position: 'bottom',
+                            display: true,
+                            font: {
+                                size: 13,
+                                color: '#171616',
+                                family: 'Inter'
+                            }
+                        },
+                    },
+                }
+            });
+
+
+    </script>
+}

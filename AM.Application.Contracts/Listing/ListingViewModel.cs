@@ -26,16 +26,18 @@ namespace AM.Application.Contracts.Listing
         public bool IsService { get; set; }
 
         public List<DealViewModel>? DealList { get; set; }
-        public List<PurchasedItemViewModel>? PurchaseList { get; set; }
-        public List<SuppliedItemViewModel>? SupplyList { get; set; }
+        public long PurchaseCount { get; set; }
+        public long SupplyCount { get; set; }
     }
 
 
     public class PurchasedItemViewModel
     {
+        public long UserId { get; set; }
     }
 
     public class SuppliedItemViewModel
     {
+        public long UserId { get; set; }
     }
 }

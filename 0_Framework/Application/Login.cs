@@ -28,6 +28,7 @@ namespace _0_Framework.Application
         public string? Password { get; set; }
         public string? Fullname { get; set; }
         public string? RoleId { get; set; }
+        public string? UserId { get; set; }
         public bool RememberMe { get; set; }
         public bool IsActive { get; set; }
         public bool Status { get; set; }

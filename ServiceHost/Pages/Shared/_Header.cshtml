@@ -37,9 +37,12 @@
                        class="text-base font-medium text-white rounded-md hover:text-gray-300 hover:bg-sky-800 px-3 py-2">
                         Logout
                     </a>
-                    <a asp-area="Dashboard" asp-page="./Index"
-                       class="text-base font-medium text-white rounded-md hover:text-gray-300 hover:bg-sky-800 py-2">
-                        @AuthenticateHelper.CurrentAccountRole().Email.ToString()
+                    <a asp-area="Dashboard" asp-page="/Index"
+                       class="text-base font-medium text-white rounded-full bg-gray-900 w-10 h-10 hover:text-gray-300 hover:bg-sky-900
+                       flex place-content-center">
+                        <p class="self-center">
+                            @AuthenticateHelper.CurrentAccountRole().UserId.Substring(0, 1).ToUpper()
+                        </p>
                     </a>
                 }
                 else
@@ -92,14 +95,16 @@
 
                     <a asp-page="/ContactUs" class="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50">About Us</a>
                 </div>
-                <div class="mt-6 px-5 space-y-3 flex flex-col">
+                <div class="mt-6 px-5 space-y-3 flex flex-col place-content-center">
                     @if (AuthenticateHelper.IsAuthenticated())
                     {
-                        <a asp-page="/Index" asp-area="Dashboard" class="text-center text-base font-medium text-sky-800">@AuthenticateHelper.CurrentAccountRole().Email.ToString()</a>
-                        <a asp-page="/Authentication/Login" asp-page-handler="Logout" asp-area=""
-                           class="text-center text-base font-medium text-gray-700">
-                            Logout
-                        </a>
+                    <a asp-page="/Index" asp-area="Dashboard" class="text-center text-base bg-sky-800 font-medium text-white flex place-content-center w-10 h-10 rounded-full"><p class="self-center">
+                        @AuthenticateHelper.CurrentAccountRole().UserId.Substring(0, 1).ToUpper()
+                    </p></a>
+                    <a asp-page="/Authentication/Login" asp-page-handler="Logout" asp-area=""
+                       class="text-center text-base font-medium text-gray-700">
+                        Logout
+                    </a>
                     }
                     else
                     {

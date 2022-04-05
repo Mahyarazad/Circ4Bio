@@ -48,6 +48,22 @@ namespace AM.Infrastructure.Repository
             //     query = query.Where(x => x.Role == searchModel.Role);
             return query.OrderByDescending(x => x.Id).ToListAsync();
         }
+
+        public Task<List<UserViewModel>> GetFullList()
+        {
+            return _amContext.Users
+                .Include(x => x.Role)
+                .Select(x => new UserViewModel
+                {
+                    Id = x.Id,
+                    Role = x.Role.Name,
+                    RoleId = x.Role.Id,
+                    Status = x.Status,
+                    UserId = x.UserName,
+                }).Where(x => x.RoleId != 1)
+                .AsNoTracking().ToListAsync();
+
+        }
         public async Task<List<RecipientViewModel>> GetUserListForListing(long id)
         {
             return await _amContext.Users

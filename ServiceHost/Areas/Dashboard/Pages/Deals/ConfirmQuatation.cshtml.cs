@@ -62,6 +62,8 @@ namespace ServiceHost.Areas.Dashboard.Pages.Deals
             if (Negotiate.SellerId == LoggedUser.Id | Negotiate.BuyerId == LoggedUser.Id)
             {
                 Command = _dealApplication.GetDealWithNegotiateId(Id);
+                if (Command.Buyer == null)
+                    return RedirectToPage("/Deals/NotExists", new { area = "Dashboard" });
                 DeliveryCharges = new SelectList(new List<string>
                 {
                     new string("Buyer"),

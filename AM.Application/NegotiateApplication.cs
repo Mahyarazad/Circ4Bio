@@ -19,11 +19,13 @@ using AM.Domain.UserAggregate;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace AM.Application
 {
     public class NegotiateApplication : INegotiateApplication
     {
+        private readonly IMemoryCache _memoryCache;
         private readonly IFileUploader _fileUploader;
         private readonly IUserRepository _userRepository;
         private readonly IDealRepository _dealRepository;
@@ -38,6 +40,7 @@ namespace AM.Application
         private readonly INotificationApplication _notificationApplication;
         public NegotiateApplication(INegotiateRepository negotiateRepository,
             IAuthenticateHelper authenticateHelper,
+            IMemoryCache memoryCache,
             IRecipientRepository recipientRepository,
             INotificationApplication notificationApplication,
             IHttpContextAccessor contextAccessor,
@@ -49,6 +52,7 @@ namespace AM.Application
             IFileUploader fileUploader,
             IUserRepository userRepository)
         {
+            _memoryCache = memoryCache;
             _fileUploader = fileUploader;
             _emailService = emailService;
             _userRepository = userRepository;
@@ -327,7 +331,15 @@ namespace AM.Application
 
             var target = _negotiateRepository.Get(Command.NegotiateId).Result;
             target.Canceled();
+            if (target.QuatationSent)
+            {
+                var deal = _dealRepository.Get((long)target.DealId).Result;
+                deal.CancelDeal();
+                _dealRepository.SaveChanges();
+            }
+
             _negotiateRepository.SaveChanges();
+
 
             if (target.QuatationSent)
             {

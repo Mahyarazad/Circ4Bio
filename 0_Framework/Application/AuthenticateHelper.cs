@@ -65,6 +65,8 @@ namespace _0_Framework.Application
             result.Fullname = claims.FirstOrDefault(x => x.Type == "FullName").Value;
             result.RoleId = claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
             result.Email = claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
+            var splited = result.Email.Split("@");
+            result.UserId = splited[0];
             result.IsActive = Convert.ToBoolean(claims.FirstOrDefault(x => x.Type == "IsActive")?.Value);
             result.Status = Convert.ToBoolean(claims.FirstOrDefault(x => x.Type == "Status")?.Value);
             return result;

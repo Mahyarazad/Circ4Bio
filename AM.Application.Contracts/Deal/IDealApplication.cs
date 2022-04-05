@@ -20,6 +20,7 @@ namespace AM.Application.Contracts.Deal
         DealViewModel ReturnDealIdWithTrackingRef(string TrackingCode);
         Task<OperationResult> SuppliedItem(SuppliedItemModel Command);
         Task<OperationResult> PurchasedItem(PurchasedItemModel Command);
-
+        Task<List<PurchasedItemModel>> GetPurchasedList(long UserId);
+        Task<List<SuppliedItemModel>> GetSuppliedList(long UserId);
     }
 }

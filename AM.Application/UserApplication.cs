@@ -59,6 +59,12 @@ namespace AM.Application
         {
             return _userRepository.Search(searchModel);
         }
+
+        public Task<List<UserViewModel>> GetFullList()
+        {
+            return _userRepository.GetFullList();
+        }
+
         public Task<List<RecipientViewModel>> GetUserListForListing(long id)
         {
             return _userRepository.GetUserListForListing(id);

@@ -9,6 +9,7 @@
         public string? PhoneNumber { get; set; }
         public string? Avatar { get; set; }
         public string? Role { get; set; }
+        public int RoleId { get; set; }
         public string? CreationTime { get; set; }
         public bool IsActive { get; set; }
         public bool Status { get; set; }

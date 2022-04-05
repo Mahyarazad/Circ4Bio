@@ -30,6 +30,6 @@ namespace AM.Domain.Supplied.PurchasedAggregate
         public double TotalPaid { get; private set; }
         public string Currency { get; private set; }
         public Listing? Listing { get; private set; }
-        public User? Users { get; private set; }
+        // public User? Users { get; private set; }
     }
 }

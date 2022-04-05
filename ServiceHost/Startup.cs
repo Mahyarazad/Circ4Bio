@@ -100,7 +100,8 @@ namespace ServiceHost
                 options.Cookie.IsEssential = true;
             });
 
-            services.AddRouting(options => options.LowercaseUrls = true);
+            // services.AddRouting(options => options.LowercaseUrls = true);
+            services.AddMemoryCache();
 
         }
 

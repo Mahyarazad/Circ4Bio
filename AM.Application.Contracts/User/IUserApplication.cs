@@ -10,6 +10,7 @@ namespace AM.Application.Contracts.User
     public interface IUserApplication
     {
         Task<List<UserViewModel>> Search(UserSearchModel searchModel);
+        Task<List<UserViewModel>> GetFullList();
         Task<List<RecipientViewModel>> GetUserListForListing(long id);
         OperationResult Register(RegisterUser command);
         Task<OperationResult> ChangePassword(ResetPasswordModel command);

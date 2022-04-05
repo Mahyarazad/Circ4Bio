@@ -1,0 +1,24 @@
+﻿@page
+@using _0_Framework.Application
+@inject IAuthenticateHelper AuthenticateHelper;
+@{ ViewData["Title"] = $"Dashboard | Deals ";}
+
+<div class="divide-y divide-gray-200 lg:col-span-9">
+    <div class="flex flex-col">
+        <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                    <div class="flex flex-col">
+                        <h3 class="text-red-600 text-base lg:text-xl place-self-center my-4 py-8 lg:py-32"> Record Not Exists</h3>
+                        <a asp-page="/Deals/Index" asp-area="Dashboard" asp-route-id="@AuthenticateHelper.CurrentAccountRole().Id"
+                           class="mx-1 inline-flex items-center px-2 place-self-center mb-4
+                           py-2 border border-sky-700 shadow-sm text-xs font-medium rounded-md text-white bg-sky-700 hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+                            Back to Deals
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -36,8 +36,8 @@ namespace AM.Infrastructure.Mapping
             builder.Property(x => x.PhoneNumber).HasMaxLength(20).IsRequired(false);
 
             builder.HasOne(x => x.Role).WithMany(x => x.Users).HasForeignKey(x => x.RoleId);
-            builder.HasOne(x => x.PurchasedItem).WithOne(x => x.Users).HasForeignKey<PurchasedItem>(x => x.UserId);
-            builder.HasOne(x => x.SuppliedItem).WithOne(x => x.Users).HasForeignKey<SuppliedItem>(x => x.UserId);
+            // builder.HasOne(x => x.PurchasedItem).WithOne(x => x.Users).HasForeignKey<PurchasedItem>(x => x.UserId);
+            // builder.HasOne(x => x.SuppliedItem).WithOne(x => x.Users).HasForeignKey<SuppliedItem>(x => x.UserId);
             builder.HasMany(x => x.Notifications).WithOne(x => x.User).HasForeignKey(x => x.UserId);
             builder.HasMany(x => x.Listings).WithOne(x => x.User).HasForeignKey(x => x.UserId);
             builder.HasMany(x => x.Blogs).WithOne(x => x.User).HasForeignKey(x => x.UserId);

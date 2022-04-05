@@ -11,11 +11,13 @@ using AM.Application.Contracts.User;
 using AM.Domain.NotificationAggregate;
 using AM.Domain.UserAggregate;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace AM.Application
 {
     public class ListingApplication : IListingApplication
     {
+        private readonly IMemoryCache _memoryCache;
         private readonly IFileUploader _fileUploader;
         private readonly IUserRepository _userRepository;
         private readonly IUserApplication _userApplication;
@@ -28,12 +30,14 @@ namespace AM.Application
         public ListingApplication(IListingRepository listingRepository,
             INotificationApplication notificationApplication,
             IHttpContextAccessor contextAccessor,
+            IMemoryCache memoryCache,
             IRecipientRepository recipientRepository,
             IUserRepository userRepository,
             IAuthenticateHelper authenticateHelper,
             IUserApplication userApplication,
             IFileUploader fileUploader)
         {
+            _memoryCache = memoryCache;
             _fileUploader = fileUploader;
             _userRepository = userRepository;
             _contextAccessor = contextAccessor;
@@ -152,11 +156,47 @@ namespace AM.Application
         }
         public Task<List<ListingViewModel>> GetAllListing()
         {
-            return _listingRepository.GetAllListing();
+            var CacheKey = "MarketListing";
+            if (!_memoryCache.TryGetValue(CacheKey, out List<ListingViewModel> marketListing))
+            {
+                marketListing = _listingRepository.GetAllListing().Result;
+
+                var CacheExpirayOptions = new MemoryCacheEntryOptions
+                {
+                    AbsoluteExpiration = DateTime.Now.AddSeconds(50),
+                    Priority = CacheItemPriority.High,
+                    SlidingExpiration = TimeSpan.FromSeconds(20)
+                };
+
+                _memoryCache.Set(CacheKey, marketListing, CacheExpirayOptions);
+                return Task.FromResult(marketListing);
+            }
+            else
+            {
+                return Task.FromResult(_memoryCache.Get<List<ListingViewModel>>("MarketListing"));
+            }
         }
         public Task<List<ListingViewModel>> GetAllPublicListing()
         {
-            return _listingRepository.GetAllPublicListing();
+            var CacheKey = "MarketListing";
+            if (!_memoryCache.TryGetValue(CacheKey, out List<ListingViewModel> marketListing))
+            {
+                marketListing = _listingRepository.GetAllPublicListing().Result;
+
+                var CacheExpirayOptions = new MemoryCacheEntryOptions
+                {
+                    AbsoluteExpiration = DateTime.Now.AddSeconds(50),
+                    Priority = CacheItemPriority.High,
+                    SlidingExpiration = TimeSpan.FromSeconds(20)
+                };
+
+                _memoryCache.Set(CacheKey, marketListing, CacheExpirayOptions);
+                return Task.FromResult(marketListing);
+            }
+            else
+            {
+                return Task.FromResult(_memoryCache.Get<List<ListingViewModel>>("MarketListing"));
+            }
         }
         public Task<long> GetOwnerUserID(long id)
         {

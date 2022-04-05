@@ -113,11 +113,15 @@ namespace AM.Infrastructure.Repository
         }
         public Task<ListingViewModel> GetDetailListing(long Id)
         {
+            var purchasedQuery =
+                _amContext.PurchasedItems
+                .Where(x => x.ListingId == Id)
+                .AsSingleQuery()
+                .AsNoTracking();
+
             var query = _amContext.Listing
                 .Include(x => x.User)
                 .Include(x => x.DealList)
-                .Include(x => x.SupplyList)
-                .Include(x => x.PurchaseList)
                 .Where(x => x.Id == Id)
                 .Select(x => new ListingViewModel
                 {
@@ -137,7 +141,8 @@ namespace AM.Infrastructure.Repository
                     UnitPrice = x.UnitPrice,
                     PublicStatus = x.Status,
                     IsService = x.IsService,
-                    Currency = x.Currency
+                    Currency = x.Currency,
+                    PurchaseCount = purchasedQuery.Count()
                 }).AsNoTracking().ToList().Last();
 
             return Task.FromResult(query);
