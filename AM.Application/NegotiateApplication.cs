@@ -373,6 +373,12 @@ namespace AM.Application
         {
             return _negotiateRepository.AllListingItemsSeller(SellerId);
         }
+
+        public List<CreateNegotiate> GetAllListingNegotiation()
+        {
+            return _negotiateRepository.GetAllListingNegotiation();
+        }
+
         public List<MessageViewModel> GetMessages(long NegotiateId)
         {
             return _negotiateRepository.GetMessages(NegotiateId);

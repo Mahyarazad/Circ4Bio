@@ -10,6 +10,7 @@ namespace AM.Domain
     public interface IDealRepository : IRepository<long, Deal>
     {
         Task<List<DealViewModel>> GetAllDeals(long UserId);
+        Task<List<DealViewModel>> GetAllDeals();
         Task<List<DealViewModel>> GetAllFinishedDeals(long UserId);
         DealViewModel GetDealWithNegotiateId(long NegotiateId);
         DealViewModel GetDealWithDealId(long DealId);

@@ -35,8 +35,17 @@ namespace ServiceHost.Areas.Dashboard.Pages
         public long SuppliedItems { get; set; }
         public long PurchasedItems { get; set; }
         public long TotalUsers { get; set; }
+        public long CanceledNegotation { get; set; }
+        public long FinishedNegotation { get; set; }
+        public long QuatationSentButNotFinishedNegotation { get; set; }
+        public long ActiveNegotations { get; set; }
+        public long AllNegotations { get; set; }
         public long StatusFalseTotalUsers { get; set; }
+        public long PaymentsDone { get; set; }
+        public long PaymentsPending { get; set; }
         public List<UserStat> UserStat = new List<UserStat>();
+        public List<CreateNegotiate> NegotationStat { get; set; }
+        public List<ListingViewModel> ListingStat { get; set; }
         public void OnGet()
         {
 
@@ -45,8 +54,21 @@ namespace ServiceHost.Areas.Dashboard.Pages
 
             if (UserId == 1)
             {
+                ListingStat = _listingApplication.GetAllPublicListing().Result;
                 TotalUsers = _userApplication.GetFullList().Result.Count;
                 StatusFalseTotalUsers = _userApplication.GetFullList().Result.Where(x => !x.Status).Count();
+                NegotationStat = _negotiateApplication.GetAllListingNegotiation();
+                QuatationSentButNotFinishedNegotation =
+                    NegotationStat.Where(x => x.QuatationSent && !x.IsFinished).Count();
+                FinishedNegotation = NegotationStat.Where(x => x.IsFinished).Count();
+                CanceledNegotation = NegotationStat.Where(x => x.IsCanceled).Count();
+                ActiveNegotations = NegotationStat.Where(x => !x.QuatationSent && !x.IsFinished && !x.IsCanceled).Count();
+                AllNegotations = NegotationStat.Count;
+
+                PaymentsDone = _dealApplication.GetAllDeals().Result.Where(x => x.PaymentId != null).Count();
+                PaymentsPending = _dealApplication.GetAllDeals().Result.Where(x => x.PaymentId == null).Count();
+
+
                 foreach (var type in _userApplication.GetUsertypes().Result)
                 {
                     UserStat.Add(new UserStat

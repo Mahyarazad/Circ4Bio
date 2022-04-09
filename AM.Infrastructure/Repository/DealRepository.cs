@@ -73,6 +73,38 @@ namespace AM.Infrastructure.Repository
                 .ToListAsync();
         }
 
+        public Task<List<DealViewModel>> GetAllDeals()
+        {
+            return _amContext.Deals
+                .AsNoTracking()
+                .Select(x => new DealViewModel
+                {
+                    DealId = x.Id,
+                    Currency = x.Currency,
+                    NegotiateId = x.NegotiateId,
+                    Amount = x.Amount,
+                    IsCanceled = x.IsDeleted,
+                    IsActive = x.IsActive,
+                    IsFinished = x.IsFinished,
+                    IsRejected = x.IsRejected,
+                    QuatationSent = x.QuatationSent,
+                    PaymentId = x.PaymentInfo.PaymentId,
+                    Location = x.Location,
+                    TotalCost = x.TotalCost,
+                    DeliveryCost = x.DeliveryCost,
+                    DeliveryMethod = x.DeliveryMethod,
+                    ContractFileString = x.ContractFile,
+                    ListingId = x.ListingId,
+                    Unit = x.Unit,
+                    TrackingCode = x.TrackingCode,
+                    CreationTime = x.CreationTime,
+                    DueTime = x.DueTime
+
+                })
+                .OrderByDescending(x => x.DealId)
+                .ToListAsync();
+        }
+
         public Task<List<DealViewModel>> GetAllFinishedDeals(long UserId)
         {
             return _amContext.Deals

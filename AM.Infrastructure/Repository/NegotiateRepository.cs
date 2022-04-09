@@ -177,6 +177,22 @@ namespace AM.Infrastructure.Repository
                     IsActive = x.IsActive
                 }).AsNoTracking().OrderByDescending(x => x.NegotiateId).ToList();
         }
+
+        public List<CreateNegotiate> GetAllListingNegotiation()
+        {
+            return _amContext.Negotiates
+                .Select(x => new CreateNegotiate
+                {
+                    NegotiateId = x.Id,
+                    ListingId = x.ListingId,
+                    IsCanceled = x.IsCanceled,
+                    IsFinished = x.IsFinished,
+                    QuatationSent = x.QuatationSent,
+                    QuatationConfirm = x.QuatationConfirm,
+                    IsActive = x.IsActive,
+                }).AsNoTracking().OrderByDescending(x => x.NegotiateId).ToList();
+        }
+
         public List<MessageViewModel> GetMessages(long NegotiateId)
         {
             var query = _amContext.Negotiates

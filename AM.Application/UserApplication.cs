@@ -193,6 +193,22 @@ namespace AM.Application
             return result.Failed(ApplicationMessage.SomethingWentWrong);
 
         }
+
+        public async Task<OperationResult> DeactivateUser(long Id)
+        {
+            var result = new OperationResult();
+
+            var user = await _userRepository.Get(Id);
+            if (user != null)
+            {
+                user.DeactivateUser();
+                _userRepository.SaveChanges();
+                return result.Succeeded();
+            }
+
+            return result.Failed(ApplicationMessage.RecordNotFound);
+        }
+
         public async Task<OperationResult> AdminActivateUser(long Id)
         {
             var result = new OperationResult();

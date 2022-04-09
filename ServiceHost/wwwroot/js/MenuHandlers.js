@@ -204,6 +204,9 @@ function gotoTop() {
     element.scrollIntoView({ behavior: "smooth" });
 }
 
+function scrolltotop() {
+    $(window).scrollTop(0);
+}
 
 function MarketSelect() {
     $('#market').addClass("bg-black");

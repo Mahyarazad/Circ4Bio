@@ -14,38 +14,59 @@
 
                                 @if (Model.UserId == 1)
                                 {
-                                    <div class="shadow-lg rounded-md py-2 px-4 flex flex-col">
-                                        <canvas id="AdminChart"></canvas>
-                                        </div>
-                                    <div class="shadow-lg rounded-md py-2 px-4 flex flex-col">
-                                        <canvas id="UserActive"></canvas>
+                                    <div
+                                         class="shadow-lg rounded-md py-2 px-4 flex flex-col col-span-1">
+                                        <canvas class="h-96" id="AdminChart"></canvas>
                                     </div>
-                                        }
-                                        else
-                                        {
-                                        <div class="shadow-lg rounded-md py-2 px-4 flex flex-col">
-                                            <h6 class="self-center lg:text-xl text-base text-gray-700">Active Listing Items</h6>
-                                            <span class="self-center text-gray-800 text-2xl py-4 font-medium">@Model.ActiveListingCount</span>
-                                        </div>
-                                        <div class="shadow-lg rounded-md py-2 px-4 flex flex-col">
-                                            <h6 class="self-center lg:text-xl text-base text-gray-700">Active Sales Negotiations</h6>
-                                            <span class="self-center text-gray-800 text-2xl py-4 font-medium">@Model.ActiveNegotiationsBuyingItems</span>
-                                        </div>
-                                        <div class="shadow-lg rounded-md py-2 px-4 flex flex-col">
-                                            <h6 class="self-center lg:text-xl text-base text-gray-700">Active Buying Negotiations</h6>
-                                            <span class="self-center text-gray-800 text-2xl py-4 font-medium">@Model.ActiveNegotiationsSalesItems</span>
-                                        </div>
-                                        <div class="shadow-lg rounded-md py-2 px-4 flex flex-col">
-                                            <h6 class="self-center lg:text-xl text-base text-gray-700">Supplied Items</h6>
-                                            <span class="self-center text-gray-800 text-2xl py-4 font-medium">@Model.SuppliedItems</span>
-                                        </div>
-                                        <div class="shadow-lg rounded-md py-2 px-4 flex flex-col">
-                                            <h6 class="self-center lg:text-xl text-base text-gray-700">Purchased Items</h6>
-                                            <span class="self-center text-gray-800 text-2xl py-4 font-medium">@Model.PurchasedItems</span>
-                                        </div>
-                                        }
+                                    <div
+                                         class="shadow-lg rounded-md py-2 px-4 flex flex-col col-span-1">
+                                        <canvas class="h-96" id="UserActive"></canvas>
                                     </div>
-                                        </div>
+                                    <div
+                                         class="shadow-lg rounded-md py-2 px-4 flex flex-col col-span-1">
+                                        <canvas class="h-96" id="ListingStatPie"></canvas>
+                                    </div>
+                                    <div
+                                         class="shadow-lg rounded-md py-2 px-4 flex flex-col col-span-1">
+                                        <canvas class="h-96" id="ListingStat"></canvas>
+                                    </div>
+                                    <div
+                                         class="shadow-lg rounded-md py-2 px-4 flex flex-col col-span-1">
+                                        <canvas class="h-96" id="NegotationStatPie"></canvas>
+                                    </div>
+                                    <div
+                                        class="shadow-lg rounded-md py-2 px-4 flex flex-col col-span-1">
+                                        <canvas class="h-96" id="NegotationStat"></canvas>
+                                    </div>
+                                    <div
+                                        class="shadow-lg rounded-md py-2 px-4 flex flex-col col-span-1">
+                                        <canvas class="h-96" id="PaymentsStatPie"></canvas>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="shadow-lg rounded-md py-2 px-4 flex flex-col">
+                                        <h6 class="self-center lg:text-xl text-base text-gray-700">Active Listing Items</h6>
+                                        <span class="self-center text-gray-800 text-2xl py-4 font-medium">@Model.ActiveListingCount</span>
+                                    </div>
+                                    <div class="shadow-lg rounded-md py-2 px-4 flex flex-col">
+                                        <h6 class="self-center lg:text-xl text-base text-gray-700">Active Sales Negotiations</h6>
+                                        <span class="self-center text-gray-800 text-2xl py-4 font-medium">@Model.ActiveNegotiationsBuyingItems</span>
+                                    </div>
+                                    <div class="shadow-lg rounded-md py-2 px-4 flex flex-col">
+                                        <h6 class="self-center lg:text-xl text-base text-gray-700">Active Buying Negotiations</h6>
+                                        <span class="self-center text-gray-800 text-2xl py-4 font-medium">@Model.ActiveNegotiationsSalesItems</span>
+                                    </div>
+                                    <div class="shadow-lg rounded-md py-2 px-4 flex flex-col">
+                                        <h6 class="self-center lg:text-xl text-base text-gray-700">Supplied Items</h6>
+                                        <span class="self-center text-gray-800 text-2xl py-4 font-medium">@Model.SuppliedItems</span>
+                                    </div>
+                                    <div class="shadow-lg rounded-md py-2 px-4 flex flex-col">
+                                        <h6 class="self-center lg:text-xl text-base text-gray-700">Purchased Items</h6>
+                                        <span class="self-center text-gray-800 text-2xl py-4 font-medium">@Model.PurchasedItems</span>
+                                    </div>}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -59,19 +80,98 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
     <script>
 
-        const userStatus = document.getElementById('AdminChart').getContext('2d');
-        const userActive = document.getElementById('UserActive').getContext('2d');
-        const UserData = @Html.Raw(Json.Serialize(Model.UserStat));
+        if (@Model.UserId === 1) {
 
+            const userStatus = document.getElementById('AdminChart').getContext('2d');
+        const userActive = document.getElementById('UserActive').getContext('2d');
+        const listingStatPie = document.getElementById('ListingStatPie').getContext('2d');
+        const listingStat = document.getElementById('ListingStat').getContext('2d');
+        const negotationStatPie = document.getElementById('NegotationStatPie').getContext('2d');
+        const paymentsStatPie = document.getElementById('PaymentsStatPie').getContext('2d');
+        const negotationStat = document.getElementById('NegotationStat').getContext('2d');
+
+        const UserData = @Html.Raw(Json.Serialize(Model.UserStat));
+        const ListingStat = @Html.Raw(Json.Serialize(Model.ListingStat));
+
+        const ListingStatData = [];
         const UserOverviewData = [];
         const UserOverviewDataLabel = [];
+        const ListingMakerDataObject = {
+            Technology: 0,
+            Plant: 0,
+            Raw: 0
+        };
+        const NegotationStatData = [];
+        const NegotationDataLabel = [];
+        const NegotationStatPieData = [];
+        const NegotationDataPieLabel = [];
+
+        const labelFont = {
+            font: {
+                size: 13,
+                color: '#374151',
+                weight: 'bold',
+                family: 'Inter'
+            }
+        };
+        const legendFont = {
+            font: {
+                size: 13,
+                color: '#374151',
+                family: 'Inter'
+            }
+        };
+        const titleFont = {
+            font: {
+                size: 17,
+                color:
+                    '#171616',
+                family:
+                    'Inter'
+            }
+        };
+
+
+        NegotationStatData.push(@Html.Raw(Model.AllNegotations),
+            @Html.Raw(Model.ActiveNegotations),
+            @Html.Raw(Model.FinishedNegotation),
+            @Html.Raw(Model.QuatationSentButNotFinishedNegotation),
+            @Html.Raw(Model.CanceledNegotation));
+
+        NegotationDataLabel.push("All", "Active", "Finished", "Quatation Sent", "Canceled");
+
+        NegotationStatPieData.push(
+            @Html.Raw(Model.ActiveNegotations),
+            @Html.Raw(Model.FinishedNegotation),
+            @Html.Raw(Model.QuatationSentButNotFinishedNegotation),
+            @Html.Raw(Model.CanceledNegotation));
+
+        NegotationDataPieLabel.push("Active", "Finished", "Quatation Sent", "Canceled");
+
         for (var [_, value] of Object.entries(UserData)) {
             UserOverviewData.push(value.count);
             UserOverviewDataLabel.push(value.roleType);
-
         }
+
+        for (var [key, value] of Object.entries(ListingStat)) {
+
+            if (value.type == UserOverviewDataLabel[0]) {
+                ListingMakerDataObject.Technology += 1;
+            };
+            if (value.type == UserOverviewDataLabel[1]) {
+                ListingMakerDataObject.Plant += 1;
+            };
+            if (value.type == UserOverviewDataLabel[2]) {
+                ListingMakerDataObject.Raw += 1;
+            };
+        }
+
+        for (var [key, value] of Object.entries(ListingMakerDataObject)) {
+            ListingStatData.push(value);
+        }
+
         Chart.register(ChartDataLabels);
-        const myChart = new Chart(userStatus,
+        const userStatusChart = new Chart(userStatus,
             {
                 type: 'doughnut',
                 data: {
@@ -80,7 +180,24 @@
                         {
                             data: UserOverviewData,
                             datalabels: {
-                                color: '#171616',
+                                labels: {
+                                    value: {
+                                        ...labelFont,
+                                        display: true,
+                                        align: 'bottom',
+                                        formatter: function(value, ctx) {
+                                            return ((value * 100) / @Html.Raw(Model.TotalUsers)).toFixed(2) + '%';
+                                        },
+                                    },
+                                    name: {
+                                        ...labelFont,
+                                        display: true,
+                                        align: 'top',
+                                        formatter: function(value, ctx) {
+                                            return ctx.chart.data.labels[ctx.dataIndex];
+                                        },
+                                    }
+                                }
                             },
                             hoverOffset: 4,
                             backgroundColor: [
@@ -94,35 +211,20 @@
                 },
                 options: {
                     plugins: {
-                        datalabels: {
-                            color: '#171616',
-                            display: true,
-                            formatter: function (value, ctx) {
-                                return ((value * 100) / @Html.Raw(Model.TotalUsers)).toFixed(2) + '%';
-                            },
-                        },
                         title: {
                             display: true,
                             text: 'Users Distribution Stat',
-                            font: {
-                                size: 17,
-                                color: '#171616',
-                                family: 'Inter'
-                            }
+                            ...titleFont
                         },
                         legend: {
                             position: 'bottom',
                             display: true,
-                            font: {
-                                size: 13,
-                                color: '#171616',
-                                family: 'Inter'
-                            }
+                            ...legendFont
                         },
                     },
                 },
             });
-        const myChart2 = new Chart(userActive,
+        const userActiveChart = new Chart(userActive,
             {
                 type: 'bar',
                 data: {
@@ -131,7 +233,7 @@
                         {
                             label: "Total Users",
                             datalabels: {
-                                color: '#e6e3e3',
+                                ...labelFont
                             },
                             backgroundColor: "#3e95cd",
                             data: [@Html.Raw(Model.TotalUsers)]
@@ -139,11 +241,12 @@
                         {
                             label: "Vat Not Registered",
                             datalabels: {
-                                color: '#e6e3e3',
+                                ...labelFont
                             },
                             backgroundColor: "#8e5ea2",
                             data: [@Html.Raw(Model.StatusFalseTotalUsers)]
-                        }]
+                        }
+                    ]
                 },
                 options: {
                     maintainAspectRatio: false,
@@ -151,25 +254,298 @@
                         title: {
                             display: true,
                             text: 'Users Overview',
-                            font: {
-                                size: 17,
-                                color: '#171616',
-                                family: 'Inter'
-                            }
+                            ...titleFont
                         },
                         legend: {
                             position: 'bottom',
                             display: true,
-                            font: {
-                                size: 13,
-                                color: '#171616',
-                                family: 'Inter'
-                            }
+                            ...legendFont
                         },
                     },
                 }
             });
+        const listingStatPieChart = new Chart(listingStatPie,
+            {
+                type: 'doughnut',
+                data: {
+                    labels: UserOverviewDataLabel.slice(0, 3),
+                    datasets: [
+                        {
+                            data: ListingStatData,
+                            datalabels: {
+                                labels: {
+                                    value: {
+                                        ...labelFont,
+                                        display: true,
+                                        align: 'bottom',
+                                        formatter: function(value, ctx) {
+                                            const sum = ListingStatData.reduce((partialSum, a) => partialSum + a, 0);
+                                            return ((value * 100) / sum).toFixed(2) + '%';
+                                        },
+                                    },
+                                    name: {
+                                        ...labelFont,
+                                        display: true,
+                                        align: 'top',
+                                        formatter: function(value, ctx) {
+                                            return ctx.chart.data.labels[ctx.dataIndex];
+                                        },
+                                    }
+                                }
+                            },
+                            hoverOffset: 4,
+                            backgroundColor: [
+                                'rgb(255, 99, 132)',
+                                'rgb(54, 162, 235)',
+                                'rgb(255, 205, 86)',
+                            ],
+                        }
+                    ]
+                },
+                options: {
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Listing Distribution Stat',
+                            ...titleFont
+                        },
+                        legend: {
+                            position: 'bottom',
+                            display: true,
+                            ...legendFont
+                        },
+                    },
+                },
+            });
+        const listingStatChart = new Chart(listingStat,
+            {
+                type: 'bar',
+                data: {
+                    labels: ["# Registered Listing"],
+                    datasets: [
+                        {
+                            label: ["Total"],
+                            datalabels: {
+                                ...labelFont
+                            },
+                            backgroundColor: "#b0afa9",
+                            data: [ListingStatData.reduce((partialSum, a) => partialSum + a, 0)]
+                        },
+                        {
+                            label: UserOverviewDataLabel.slice(0, 1),
+                            datalabels: {
+                                ...labelFont
+                            },
+                            backgroundColor: "rgb(255, 99, 132)",
+                            data: [ListingStatData[0]]
+                        },
+                        {
+                            label: UserOverviewDataLabel.slice(1, 2),
+                            datalabels: {
+                                ...labelFont
+                            },
+                            backgroundColor: "rgb(54, 162, 235)",
+                            data: [ListingStatData[1]]
+                        },
+                        {
+                            label: UserOverviewDataLabel.slice(2, 3),
+                            datalabels: {
+                                ...labelFont
+                            },
+                            backgroundColor: "rgb(255, 205, 86)",
+                            data: [ListingStatData[2]]
+                        },
+                    ]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Listing Status',
+                            ...titleFont
+                        },
+                        legend: {
+                            position: 'bottom',
+                            display: true,
+                            ...legendFont
+                        },
+                    },
+                }
+            });
+        const NegotationStatPieChart = new Chart(negotationStatPie,
+            {
+                type: 'doughnut',
+                data: {
+                    labels: NegotationDataPieLabel,
+                    datasets: [
+                        {
+                            data: NegotationStatPieData,
+                            datalabels: {
+                                labels: {
+                                    value: {
+                                        ...labelFont,
+                                        display: true,
+                                        align: 'bottom',
+                                        formatter: function(value, ctx) {
+                                            const sum = NegotationStatPieData.reduce((partialSum, a) => partialSum + a, 0);
+                                            return ((value * 100) / sum).toFixed(2) + '%';
+                                        },
+                                    },
+                                    name: {
+                                        ...labelFont,
+                                        display: true,
+                                        align: 'top',
+                                        formatter: function(value, ctx) {
+                                            return ctx.chart.data.labels[ctx.dataIndex];
+                                        },
+                                    }
+                                }
+                            },
+                            hoverOffset: 4,
+                            backgroundColor: [
+                                "#3e95cd",
+                                "#99ff97",
+                                "#d428ba",
+                                '#ff6384',
+                            ],
+                        }
+                    ]
+                },
+                options: {
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Negotation Distribution Stat',
+                            ...titleFont
+                        },
+                        legend: {
+                            position: 'bottom',
+                            display: true,
+                            ...legendFont
+                        },
+                    },
+                },
+            });
+        const negotationStatChart = new Chart(negotationStat,
+            {
+                type: 'bar',
+                data: {
+                    labels: ["# Negotation Stat"],
+                    datasets: [
+                        {
+                            label: NegotationDataLabel.slice(0, 1),
+                            datalabels: {
+                                ...labelFont
+                            },
+                            backgroundColor: '#b0afa9',
+                            data: [NegotationStatData[0]]
+                        },
+                        {
+                            label: NegotationDataLabel.slice(1, 2),
+                            datalabels: {
+                                ...labelFont
+                            },
+                            backgroundColor: "#3e95cd",
+                            data: [NegotationStatData[1]]
+                        },
+                        {
+                            label: NegotationDataLabel.slice(2, 3),
+                            datalabels: {
+                                ...labelFont
+                            },
+                            backgroundColor: "#99ff97",
+                            data: [NegotationStatData[2]]
+                        },
+                        {
+                            label: NegotationDataLabel.slice(3, 4),
+                            datalabels: {
+                                ...labelFont
+                            },
+                            backgroundColor: "#d428ba",
+                            data: [NegotationStatData[3]]
+                        },
+                        {
+                            label: NegotationDataLabel.slice(4, 5),
+                            datalabels: {
+                                ...labelFont
+                            },
+                            backgroundColor: '#ff6384',
+                            data: [NegotationStatData[4]]
+                        },
+                    ]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Negotation Status',
+                            ...titleFont
+                        },
+                        legend: {
+                            position: 'bottom',
+                            display: true,
+                            ...legendFont
+                        },
+                    },
+                }
+            });
+        const paymentsStatPieChart = new Chart(paymentsStatPie,
+            {
+                type: 'doughnut',
+                data: {
+                    labels: ["Done", "Pending"],
+                    datasets: [
+                        {
+                            data: [@Model.PaymentsDone, @Model.PaymentsPending],
+                            datalabels: {
+                                labels: {
+                                    value: {
+                                        ...labelFont,
+                                        display: true,
+                                        align: 'bottom',
+                                        formatter: function (value, ctx) {
+                                            const sum = @Model.PaymentsDone + @Model.PaymentsPending;
+                                            return ((value * 100) / sum).toFixed(2) + '%';
+                                        },
+                                    },
+                                    name: {
+                                        ...labelFont,
+                                        display: true,
+                                        align: 'top',
+                                        formatter: function (value, ctx) {
+                                            return ctx.chart.data.labels[ctx.dataIndex];
+                                        },
+                                    }
+                                }
+                            },
+                            hoverOffset: 4,
+                            backgroundColor: [
+                                "#99ff97",
+                                "#3e95cd",
 
+                            ],
+                        }
+                    ]
+                },
+                options: {
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Deal Payments Stat',
+                            ...titleFont
+                        },
+                        legend: {
+                            position: 'bottom',
+                            display: true,
+                            ...legendFont
+                        },
+                    },
+                },
+            });
+
+        }
 
     </script>
 }

@@ -17,6 +17,7 @@ namespace AM.Application.Contracts.User
         Task<OperationResult> ResetPassword(ResetPasswordModel command);
         Task<OperationResult> ActivateUser(string command);
         Task<OperationResult> SendActivationEmail(string command);
+        Task<OperationResult> DeactivateUser(long Id);
         Task<OperationResult> AdminActivateUser(long Id);
         Task<OperationResult> AdminDectivateUser(long Id);
         Task<OperationResult> AdminActivateUserStatus(long Id);

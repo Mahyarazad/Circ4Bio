@@ -2,6 +2,9 @@
 {
     public class ApplicationMessage
     {
+        //Accounts Messages
+        public const string AccountDeactivated = "Your account has been deactivated.";
+        public const string AccountDeactivatedFailed = "You have an active deal! You can deactivate your account after finishing active deals.";
         public const string RecordNotFound = "Cannot find the current item";
         public const string RecordExists = "Another record with the same value exists in database";
         public const string PasswordsAreNotMatched = "Passwords are not macth, Please try again";

@@ -54,20 +54,23 @@
 
                 <div class="mt-6 flex-grow lg:mt-0 lg:ml-6 lg:flex-grow-0 lg:flex-shrink-0">
                     <p class="text-sm font-medium text-gray-700" aria-hidden="true">
-                        Photo
+                        Listing Photo
                     </p>
                     <div class="mt-1 lg:hidden">
                         <div class="flex items-center">
                             <div class="flex-shrink-0 inline-block rounded-full overflow-hidden h-12 w-12" aria-hidden="true">
-                                <img class="rounded-full h-full w-full" src="~/Site Files/Listing_Images/@(Model.Command.ImageString == "listing-default.png" ? "listing-default.png" : $"{Model.Command.Type}/{Model.Command.ImageString}")" alt="">
+                                <img class="rounded-full h-full w-full"
+                                     src="~/Site Files/Listing_Images/@(Model.Command.ImageString == "listing-default.png" ? "listing-default.png" : $"{Model.Command.Type}/{Model.Command.ImageString}")"
+                                     id="item-image-photo-mobile"
+                                     alt="">
                             </div>
                             <div class="ml-5 rounded-md shadow-sm">
                                 <div class="group relative border border-gray-300 rounded-md py-2 px-3 flex items-center justify-center hover:bg-gray-50 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-sky-500">
                                     <label for="mobile-user-photo" class="relative text-sm leading-4 font-medium text-gray-700 pointer-events-none">
                                         <span>Change</span>
-                                        <span class="sr-only"> user photo</span>
+                                        <span class="sr-only"> Listing Photo</span>
                                     </label>
-                                    <input id="mobile-user-photo" asp-for="@Model.Command.Image" type="file" class="absolute w-full h-full opacity-0 cursor-pointer border-gray-300 rounded-md">
+                                    <input id="item-image-mobile" asp-for="@Model.Command.Image" type="file" class="absolute w-full h-full opacity-0 cursor-pointer border-gray-300 rounded-md">
                                     <span class="text-red-500 sm:text-sm" asp-validation-for="@Model.Command.Image"></span>
                                 </div>
                             </div>
@@ -75,11 +78,14 @@
                     </div>
 
                     <div class="hidden relative rounded-full overflow-hidden lg:block">
-                        <img class="relative rounded-full w-40 h-40" src="~/Site Files/Listing_Images/@(Model.Command.ImageString == "listing-default.png" ? "listing-default.png" : $"{Model.Command.Type}/{Model.Command.ImageString}")" alt="">
+                        <img class="relative rounded-full w-40 h-40"
+                             src="~/Site Files/Listing_Images/@(Model.Command.ImageString == "listing-default.png" ? "listing-default.png" : $"{Model.Command.Type}/{Model.Command.ImageString}")"
+                             id="item-image-photo"
+                             alt="">
                         <label for="desktop-user-photo" class="absolute inset-0 w-full h-full bg-black bg-opacity-75 flex items-center justify-center text-sm font-medium text-white opacity-0 hover:opacity-100 focus-within:opacity-100">
                             <span>Change</span>
                             <span class="sr-only"> user photo</span>
-                            <input type="file" id="desktop-user-photo" asp-for="@Model.Command.Image" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer border-gray-300 rounded-md">
+                            <input type="file" id="item-image" asp-for="@Model.Command.Image" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer border-gray-300 rounded-md">
                             <span class="text-red-500 sm:text-sm" asp-validation-for="@Model.Command.Image"></span>
                         </label>
                     </div>
@@ -134,4 +140,39 @@
 
 @section CSS{
     <link rel="stylesheet" href="~/css/Loader.css" />
+}
+
+@section Scripts
+{
+    <script>
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#item-image-photo').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#item-image").change(function () {
+            readURL(this);
+        });
+
+        function readURLMobile(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#item-image-photo-mobile').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#item-image-mobile").change(function () {
+            readURLMobile(this);
+        });
+    </script>
 }

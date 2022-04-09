@@ -12,6 +12,7 @@ namespace AM.Domain.NegotiateAggregate
         NegotiateViewModel GetNegotiationViewModel(long NegotiateId);
         List<CreateNegotiate> AllListingItemsBuyyer(long BuyerId);
         List<CreateNegotiate> AllListingItemsSeller(long SellerId);
+        List<CreateNegotiate> GetAllListingNegotiation();
         List<MessageViewModel> GetMessages(long NegotiateId);
         Task<OperationResult> ActiveNegotiation(long NegotiateId);
 

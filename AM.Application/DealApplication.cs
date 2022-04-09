@@ -524,6 +524,11 @@ namespace AM.Application
             return _dealRepository.GetAllDeals(UserId);
         }
 
+        public Task<List<DealViewModel>> GetAllDeals()
+        {
+            return _dealRepository.GetAllDeals();
+        }
+
         public Task<List<DealViewModel>> GetAllFinishedDeals(long UserId)
         {
             return _dealRepository.GetAllFinishedDeals(UserId);

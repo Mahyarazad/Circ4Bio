@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
+using _0_Framework;
 using _0_Framework.Application;
+using AM.Application.Contracts.Deal;
 using AM.Application.Contracts.User;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -13,14 +16,17 @@ namespace ServiceHost.Areas.Dashboard.Pages
         public EditUser user;
         public SelectList CountryList;
         public string Role;
+        private readonly IDealApplication _dealApplication;
         private readonly IUserApplication _userApplication;
         private readonly IAuthenticateHelper _authenticateHelper;
-        public ProfileModel(IUserApplication userApplication,
-            IAuthenticateHelper authenticateHelper)
+
+        public ProfileModel(IDealApplication dealApplication, IUserApplication userApplication, IAuthenticateHelper authenticateHelper)
         {
+            _dealApplication = dealApplication;
             _userApplication = userApplication;
             _authenticateHelper = authenticateHelper;
         }
+
 
         public async Task<IActionResult> OnGet(string Id)
         {
@@ -83,6 +89,35 @@ namespace ServiceHost.Areas.Dashboard.Pages
         {
             var result = await _userApplication.EditDeliveryLocation(Command);
             return new JsonResult(Task.FromResult(result));
+        }
+
+        public async Task<JsonResult> OnPostDeactivateUser(long Id)
+        {
+            var operationResult = new OperationResult();
+
+            var deals = await _dealApplication.GetAllDeals(Id);
+            if (deals.Any(x => x.IsActive))
+            {
+                operationResult.Failed(ApplicationMessage.AccountDeactivatedFailed);
+                return new JsonResult(Task.FromResult(operationResult));
+            }
+            else
+            {
+                var result = _userApplication.DeactivateUser(Id).Result;
+                if (result.IsSucceeded)
+                {
+                    operationResult.Succeeded(ApplicationMessage.AccountDeactivated);
+
+                    _userApplication.Logout();
+                    return new JsonResult(Task.FromResult(operationResult));
+                }
+                else
+                {
+                    return new JsonResult(Task.FromResult(result));
+                }
+
+            }
+
         }
     }
 }
