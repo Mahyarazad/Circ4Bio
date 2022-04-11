@@ -24,7 +24,7 @@ namespace _0_Framework.Application.Email
             var result = new OperationResult();
             var message = new MimeMessage();
 
-            message.From.Add(new MailboxAddress("Circ4Bio", "admin@circ4bio.com"));
+            message.From.Add(new MailboxAddress("Circ4Bio", _configuration.GetSection("EmailService")["AdminEmail"]));
 
             message.To.Add(new MailboxAddress("Recipient", model.Recipient));
             message.Subject = model.Title;
@@ -33,8 +33,8 @@ namespace _0_Framework.Application.Email
             {
                 case 0:
                     {
-                        // FilePath = AppDomain.CurrentDomain.BaseDirectory + "\\wwwroot\\Email Templates\\ResetPasswordTemplate.html";
-                        FilePath = "C:\\Users\\mhyri\\OneDrive\\Desktop\\Circ4Bio\\Circ4Bio\\ServiceHost" + "\\wwwroot\\Email Templates\\ResetPasswordTemplate.html";
+                        FilePath = AppDomain.CurrentDomain.BaseDirectory + "\\wwwroot\\Email Templates\\ResetPasswordTemplate.html";
+                        // FilePath = "C:\\Users\\mhyri\\OneDrive\\Desktop\\Circ4Bio\\Circ4Bio\\ServiceHost" + "\\wwwroot\\Email Templates\\ResetPasswordTemplate.html";
                         StreamReader StreamReader = new(FilePath);
                         MailText = StreamReader.ReadToEnd();
                         StreamReader.Close();
@@ -45,8 +45,8 @@ namespace _0_Framework.Application.Email
                 case 1:
                     {
 
-                        // FilePath = AppDomain.CurrentDomain.BaseDirectory + "\\wwwroot\\Email Templates\\AccountVerificationTemplate.html";
-                        FilePath = "C:\\Users\\mhyri\\OneDrive\\Desktop\\Circ4Bio\\Circ4Bio\\ServiceHost" + "\\wwwroot\\Email Templates\\AccountVerificationTemplate.html";
+                        FilePath = AppDomain.CurrentDomain.BaseDirectory + "\\wwwroot\\Email Templates\\AccountVerificationTemplate.html";
+                        // FilePath = "C:\\Users\\mhyri\\OneDrive\\Desktop\\Circ4Bio\\Circ4Bio\\ServiceHost" + "\\wwwroot\\Email Templates\\AccountVerificationTemplate.html";
                         StreamReader StreamReader = new(FilePath);
                         MailText = StreamReader.ReadToEnd();
                         StreamReader.Close();
@@ -56,8 +56,8 @@ namespace _0_Framework.Application.Email
 
                 case 2:
                     {
-                        // FilePath = AppDomain.CurrentDomain.BaseDirectory + "\\wwwroot\\Email Templates\\ProvideInformation.html";
-                        FilePath = "C:\\Users\\mhyri\\OneDrive\\Desktop\\Circ4Bio\\Circ4Bio\\ServiceHost" + "\\wwwroot\\Email Templates\\ProvideInformation.html";
+                        FilePath = AppDomain.CurrentDomain.BaseDirectory + "\\wwwroot\\Email Templates\\ProvideInformation.html";
+                        // FilePath = "C:\\Users\\mhyri\\OneDrive\\Desktop\\Circ4Bio\\Circ4Bio\\ServiceHost" + "\\wwwroot\\Email Templates\\ProvideInformation.html";
                         StreamReader StreamReader = new(FilePath);
                         MailText = StreamReader.ReadToEnd();
                         StreamReader.Close();
@@ -70,8 +70,8 @@ namespace _0_Framework.Application.Email
                     }
                 case 3:
                     {
-                        // FilePath = AppDomain.CurrentDomain.BaseDirectory + "\\wwwroot\\Email Templates\\ProvideInformation.html";
-                        FilePath = "C:\\Users\\mhyri\\OneDrive\\Desktop\\Circ4Bio\\Circ4Bio\\ServiceHost" + "\\wwwroot\\Email Templates\\QuatationCreated.html";
+                        FilePath = AppDomain.CurrentDomain.BaseDirectory + "\\wwwroot\\Email Templates\\QuatationCreated.html";
+                        // FilePath = "C:\\Users\\mhyri\\OneDrive\\Desktop\\Circ4Bio\\Circ4Bio\\ServiceHost" + "\\wwwroot\\Email Templates\\QuatationCreated.html";
                         StreamReader StreamReader = new(FilePath);
                         MailText = StreamReader.ReadToEnd();
                         StreamReader.Close();
@@ -101,8 +101,11 @@ namespace _0_Framework.Application.Email
 
             try
             {
-                client.Connect(host: "smtp.livemail.co.uk", port: 465, SecureSocketOptions.None);
-                client.Authenticate("admin@circ4bio.com", _configuration.GetSection("EmailPassword")["SecretKey"]);
+                client.Connect(host: _configuration.GetSection("EmailService")["Host"]
+                    , port: Convert.ToInt32(_configuration.GetSection("EmailService")["Port"])
+                    , SecureSocketOptions.SslOnConnect);
+                client.Authenticate(_configuration.GetSection("EmailService")["User"]
+                    , _configuration.GetSection("EmailService")["Password"]);
                 client.Send(message);
                 client.Disconnect(true);
                 client.Dispose();

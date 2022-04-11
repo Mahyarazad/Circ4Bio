@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using AM.Application.Contracts.ContactUs;
 using AM.Application.Contracts.User;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -22,22 +21,22 @@ namespace ServiceHost.Areas.Dashboard.Pages.ContactUs
             _contactUsApplication = contactUsApplication;
         }
 
-        public async void OnGet()
+        public void OnGet()
         {
-            ContactUsMessagList = await _contactUsApplication.GetContactUsMessages();
+            ContactUsMessagList = _contactUsApplication.GetContactUsMessages().Result;
         }
 
         public JsonResult OnPostIsReed(long id)
         {
             return new JsonResult(_contactUsApplication.MarkAsRead(id));
         }
-        public async void OnPostGetAll(ContactUsViewModel Command)
+        public void OnPostGetAll(ContactUsViewModel Command)
         {
-            ContactUsMessagList = await _contactUsApplication.GetAllContactUsMessages();
+            ContactUsMessagList = _contactUsApplication.GetAllContactUsMessages().Result;
         }
-        public async void OnPostGetReadMessages(ContactUsViewModel Command)
+        public void OnPostGetReadMessages(ContactUsViewModel Command)
         {
-            ContactUsMessagList = await _contactUsApplication.GetReadContactUsMessages();
+            ContactUsMessagList = _contactUsApplication.GetReadContactUsMessages().Result;
         }
     }
 }

@@ -7,21 +7,24 @@ using _0_Framework.Application.Email;
 using AM.Application.Contracts.ContactUs;
 using AM.Domain.ContactUsAggregate;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 
 namespace AM.Application
 {
     public class ContactUsApplication : IContactUsApplication
     {
+        private readonly IConfiguration _configuration;
         private readonly IContactUsRepository _contactUsRepository;
         private readonly IEmailService<EmailModel> _emailService;
         private readonly IHttpContextAccessor _contextAccessor;
 
-        public ContactUsApplication(IContactUsRepository contactUsRepository,
+        public ContactUsApplication(IContactUsRepository contactUsRepository, IConfiguration configuration,
             IEmailService<EmailModel> emailService, IHttpContextAccessor contextAccessor)
         {
-            _contactUsRepository = contactUsRepository;
             _emailService = emailService;
+            _configuration = configuration;
             _contextAccessor = contextAccessor;
+            _contactUsRepository = contactUsRepository;
         }
 
         public Task<OperationResult> CreateMessage(CreateMessage command)
@@ -41,7 +44,7 @@ namespace AM.Application
                     Email = command.Email,
                     Phone = command.Phone,
                     Body = command.Body,
-                    Recipient = "admin@maahyarazad.ir",
+                    Recipient = _configuration.GetSection("EmailService")["AdminEmail"],
                     Title = command.Subject,
                 };
                 var emailServiceResult = _emailService.SendEmail(emailModel);

@@ -214,24 +214,29 @@ $("#search-input").on("keyup",
                 || data.FullName.toLowerCase().includes(value.toLowerCase())
         });
 
+        if (value.length === 0) {
+            handelFilter()
+        } else {
+            element.innerHTML = '';
+            paginateObject = paginate(filtered.length, 1);
+            _totalPages = paginateObject.pages.length;
 
-        element.innerHTML = '';
-        paginateObject = paginate(filtered.length, 1);
-        _totalPages = paginateObject.pages.length;
+            if (_totalPages === 1) {
+                element.innerHTML = ''
+                $("#no-result").addClass('hidden');
+            }
+            else if (filtered.length === 0) {
+                hideItems();
+                $("#no-result").removeClass('hidden');
+                $("#no-result").html("No Result");
+            }
+            else {
+                $("#no-result").addClass('hidden');
+                element.innerHTML = createPagination(_totalPages, page);
+            }
+        }
 
-        if (_totalPages === 1) {
-            element.innerHTML = ''
-            $("#no-result").addClass('hidden');
-        }
-        else if (filtered.length === 0) {
-            hideItems();
-            $("#no-result").removeClass('hidden');
-            $("#no-result").html("No Result");
-        }
-        else {
-            $("#no-result").addClass('hidden');
-            element.innerHTML = createPagination(_totalPages, page);
-        }
+
     });
 
 function handleGridItem(pageSize) {
