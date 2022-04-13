@@ -31,10 +31,12 @@ namespace _0_Framework.Application.Email
 
             switch (model.EmailTemplate)
             {
-                case 0:
+                case EmailType.ResetPassword:
                     {
-                        FilePath = AppDomain.CurrentDomain.BaseDirectory + "\\wwwroot\\Email Templates\\ResetPasswordTemplate.html";
-                        // FilePath = "C:\\Users\\mhyri\\OneDrive\\Desktop\\Circ4Bio\\Circ4Bio\\ServiceHost" + "\\wwwroot\\Email Templates\\ResetPasswordTemplate.html";
+                        FilePath = AppDomain.CurrentDomain.BaseDirectory
+                                   + "\\wwwroot\\Email Templates\\ResetPasswordTemplate.html";
+                        // FilePath = "C:\\Users\\mhyri\\OneDrive\\Desktop\\Circ4Bio\\Circ4Bio\\ServiceHost"
+                        // + "\\wwwroot\\Email Templates\\ResetPasswordTemplate.html";
                         StreamReader StreamReader = new(FilePath);
                         MailText = StreamReader.ReadToEnd();
                         StreamReader.Close();
@@ -42,11 +44,13 @@ namespace _0_Framework.Application.Email
                         break;
                     }
 
-                case 1:
+                case EmailType.AccountVerificationLink:
                     {
 
-                        FilePath = AppDomain.CurrentDomain.BaseDirectory + "\\wwwroot\\Email Templates\\AccountVerificationTemplate.html";
-                        // FilePath = "C:\\Users\\mhyri\\OneDrive\\Desktop\\Circ4Bio\\Circ4Bio\\ServiceHost" + "\\wwwroot\\Email Templates\\AccountVerificationTemplate.html";
+                        FilePath = AppDomain.CurrentDomain.BaseDirectory
+                                   + "\\wwwroot\\Email Templates\\AccountVerificationTemplate.html";
+                        // FilePath = "C:\\Users\\mhyri\\OneDrive\\Desktop\\Circ4Bio\\Circ4Bio\\ServiceHost"
+                        // + "\\wwwroot\\Email Templates\\AccountVerificationTemplate.html";
                         StreamReader StreamReader = new(FilePath);
                         MailText = StreamReader.ReadToEnd();
                         StreamReader.Close();
@@ -54,10 +58,12 @@ namespace _0_Framework.Application.Email
                         break;
                     }
 
-                case 2:
+                case EmailType.ProvideInformation:
                     {
-                        FilePath = AppDomain.CurrentDomain.BaseDirectory + "\\wwwroot\\Email Templates\\ProvideInformation.html";
-                        // FilePath = "C:\\Users\\mhyri\\OneDrive\\Desktop\\Circ4Bio\\Circ4Bio\\ServiceHost" + "\\wwwroot\\Email Templates\\ProvideInformation.html";
+                        FilePath = AppDomain.CurrentDomain.BaseDirectory
+                                   + "\\wwwroot\\Email Templates\\ProvideInformation.html";
+                        // FilePath = "C:\\Users\\mhyri\\OneDrive\\Desktop\\Circ4Bio\\Circ4Bio\\ServiceHost"
+                        // + "\\wwwroot\\Email Templates\\ProvideInformation.html";
                         StreamReader StreamReader = new(FilePath);
                         MailText = StreamReader.ReadToEnd();
                         StreamReader.Close();
@@ -68,10 +74,12 @@ namespace _0_Framework.Application.Email
                             .Replace("[body3]", model.Body3);
                         break;
                     }
-                case 3:
+                case EmailType.QuatationCreated:
                     {
-                        FilePath = AppDomain.CurrentDomain.BaseDirectory + "\\wwwroot\\Email Templates\\QuatationCreated.html";
-                        // FilePath = "C:\\Users\\mhyri\\OneDrive\\Desktop\\Circ4Bio\\Circ4Bio\\ServiceHost" + "\\wwwroot\\Email Templates\\QuatationCreated.html";
+                        FilePath = AppDomain.CurrentDomain.BaseDirectory
+                                   + "\\wwwroot\\Email Templates\\QuatationCreated.html";
+                        // FilePath = "C:\\Users\\mhyri\\OneDrive\\Desktop\\Circ4Bio\\Circ4Bio\\ServiceHost"
+                        // + "\\wwwroot\\Email Templates\\QuatationCreated.html";
                         StreamReader StreamReader = new(FilePath);
                         MailText = StreamReader.ReadToEnd();
                         StreamReader.Close();

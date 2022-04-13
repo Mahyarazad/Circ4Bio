@@ -16,6 +16,7 @@ using AM.Domain.NegotiateAggregate;
 using AM.Domain.NotificationAggregate;
 using AM.Domain.RoleAggregate;
 using AM.Domain.UserAggregate;
+using FluentEmail.Core;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.SignalR;
@@ -157,7 +158,7 @@ namespace AM.Application
 
             var emailBuyer = new EmailModel
             {
-                EmailTemplate = 3,
+                EmailTemplate = EmailType.QuatationCreated,
                 Title = ApplicationMessage.SubmitNegotiationRequest,
                 Body3 = RedirectUrl + $"/dashboard/negotiate/messages/{negotiate.Id}",
                 Recipient = buyerInfo.Email,
@@ -168,7 +169,7 @@ namespace AM.Application
             };
             var emailSeller = new EmailModel
             {
-                EmailTemplate = 3,
+                EmailTemplate = EmailType.QuatationCreated,
                 Title = ApplicationMessage.ReceivedNegotiation,
                 Body3 = RedirectUrl + $"/dashboard/negotiate/messages/{negotiate.Id}",
                 Recipient = sellerInfo.Email,

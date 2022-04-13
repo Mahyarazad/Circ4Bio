@@ -38,12 +38,12 @@ namespace AM.Application
                 var request = _contextAccessor.HttpContext.Request;
                 var emailModel = new EmailModel
                 {
-                    EmailTemplate = 2,
+                    EmailTemplate = EmailType.ProvideInformation,
                     Subject = command.Subject,
                     Fullname = command.FullName,
                     Email = command.Email,
                     Phone = command.Phone,
-                    Body = command.Body,
+                    Body1 = command.Body,
                     Recipient = _configuration.GetSection("EmailService")["AdminEmail"],
                     Title = command.Subject,
                 };

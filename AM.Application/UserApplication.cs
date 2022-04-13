@@ -93,7 +93,7 @@ namespace AM.Application
 
             var emailModel = new EmailModel
             {
-                EmailTemplate = 1,
+                EmailTemplate = EmailType.AccountVerificationLink,
                 Title = ApplicationMessage.AccountVerification,
                 AccountVerificationLink = $"{request.Scheme}://{request.Host}/Authentication/ActivateUser/{activationGuid.ToString()}".ToLower(),
                 Recipient = command.Email
@@ -141,7 +141,7 @@ namespace AM.Application
                     {
                         var emailModel = new EmailModel
                         {
-                            EmailTemplate = 2,
+                            EmailTemplate = EmailType.ProvideInformation,
                             Title = ApplicationMessage.AccountActivated,
                             Body = "Welcome to Circ4Bio",
                             Body1 = "Your account has successfully registered.",
@@ -235,7 +235,7 @@ namespace AM.Application
 
             var emailModel = new EmailModel
             {
-                EmailTemplate = 1,
+                EmailTemplate = EmailType.AccountVerificationLink,
                 Title = ApplicationMessage.AccountVerification,
                 AccountVerificationLink = $"{request.Scheme}://{request.Host}/Authentication/ActivateUser/{activationGuid.ToString()}".ToLower(),
                 Recipient = command

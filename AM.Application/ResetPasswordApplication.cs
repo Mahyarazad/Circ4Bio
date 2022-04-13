@@ -44,7 +44,7 @@ namespace AM.Application
             var request = _contextAccessor.HttpContext.Request;
             var emailModel = new EmailModel
             {
-                EmailTemplate = 0,
+                EmailTemplate = EmailType.ResetPassword,
                 Title = ApplicationMessage.ResetPassword,
                 Recipient = email,
                 ResetPasswordLink =
