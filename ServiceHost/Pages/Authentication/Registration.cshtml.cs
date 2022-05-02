@@ -21,14 +21,13 @@ namespace ServiceHost.Pages.Authentication
         private readonly IUserApplication _userApplication;
         public void OnGet()
         {
-
+            TempData.Clear();
         }
 
         public IActionResult OnPostRegister(RegisterUser command)
         {
 
-            RegisterSuccess = "";
-            RegisterMessage = "";
+            TempData.Clear();
             var result = _userApplication.Register(command);
             if (result.IsSucceeded)
             {

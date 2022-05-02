@@ -14,18 +14,15 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
 {
     public class EditModel : PageModel
     {
-        public List<NotificationViewModel> Notifications;
         public EditListing Command;
         public SelectList CurrencyList;
-        private readonly IUserApplication _userApplication;
         private readonly IAuthenticateHelper _authenticateHelper;
         private readonly IListingApplication _listingApplication;
-        public EditModel(IUserApplication userApplication,
+        public EditModel(
             IAuthenticateHelper authenticateHelper,
             IListingApplication listingApplication
         )
         {
-            _userApplication = userApplication;
             _authenticateHelper = authenticateHelper;
             _listingApplication = listingApplication;
         }

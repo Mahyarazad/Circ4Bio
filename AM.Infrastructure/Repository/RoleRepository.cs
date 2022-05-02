@@ -41,14 +41,14 @@ namespace AM.Infrastructure.Repository
                 .OrderByDescending(x => x.Id).FirstAsync();
         }
 
-        public async Task<EditRole> GetDetail(int Id)
+        public Task<EditRole> GetDetail(int Id)
         {
-            return await _amContext.Roles.Select(x => new EditRole
+            return Task.FromResult(_amContext.Roles.Select(x => new EditRole
             {
                 Id = x.Id,
                 Name = x.Name,
                 MappedPermissions = MapPermissions(x.Permissions)
-            }).AsNoTracking().FirstOrDefaultAsync(x => x.Id == Id);
+            }).AsNoTracking().FirstOrDefault(x => x.Id == Id));
         }
 
         private static List<PermissionDTO> MapPermissions(List<Permission> permissions)

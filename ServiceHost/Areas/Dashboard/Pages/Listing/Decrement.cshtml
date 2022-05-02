@@ -1,8 +1,9 @@
 ﻿@model AM.Application.Contracts.Listing.InputAmount
 
-<div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+<div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white flex flex-col">
     <button type="button" onclick="hideModal()"
-            class="bg-white rounded-md inline-flex text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            class="bg-white rounded-md inline-flex text-gray-400 hover:text-gray-500 self-end
+            focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-700">
         <span class="sr-only">Close</span>
         <!-- Heroicon name: solid/x -->
         <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -35,10 +36,13 @@
             @* <div class="mt-6 flex flex-col lg:flex-row"> *@
                 <div class="flex-grow space-y-6">
                     <div>
-                        <label asp-for="Count" class="float-left py-2 block text-sm font-medium text-gray-700">
+                        <label asp-for="Count"
+                               class="float-left py-2 block text-sm font-medium text-gray-700">
                         </label>
                         <div class="mt-1 rounded-md shadow-sm">
-                            <input type="number" asp-for="Count" class="focus:ring-sky-500 focus:border-sky-500 flex-grow block w-full min-w-0 rounded sm:text-sm border-gray-300">
+                            <input type="number" asp-for="Count" value=""
+                                   class="focus:ring-sky-700
+                                   focus:border-sky-500 flex-grow block w-full min-w-0 rounded sm:text-sm border-gray-300">
                             <span class="text-red-500 sm:text-sm" asp-validation-for="Count"></span>
                         </div>
                     </div>
@@ -46,22 +50,22 @@
                         <label class="float-left py-2 block text-sm font-medium text-gray-700"> Description
                         </label>
                         <div class="mt-1">
-                            <input type="text" asp-for="Description" class="shadow-sm focus:ring-sky-500 focus:border-sky-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"></input>
+                            <input type="text" asp-for="Description" placeholder="Brief description of this change."
+                                   class="shadow-sm focus:ring-sky-700 focus:border-sky-500 mt-1 block w-full
+                                   sm:text-sm border border-gray-300 rounded-md">
                         </div>
-                        <p class="mt-2 text-sm text-gray-500">
-                            Brief description of this change.
-                        </p>
                     </div>
                 </div>
-                <input asp-for="ListingId" type="hidden"/>
-            <div class="mt-4 py-4 px-4 flex justify-end sm:px-6">
-                <button type="button" onclick="hideModal()" class="bg-white border border-gray-300 rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
-                    Back
-                </button>
-                <button id="save" type="submit" class="ml-5 bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
-                    Save
-                </button>
+            <input asp-for="ListingId" type="hidden"/>
+            <div class="flex justify-end mt-4 py-4">
+                    <button type="button" onclick="hideModal()" class="bg-white border border-gray-300 rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-700">
+                        Back
+                    </button>
+                    <button id="save" type="submit" class="ml-2 bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-700">
+                        Save
+                    </button>
             </div>
+
 
         </form>
     </div>

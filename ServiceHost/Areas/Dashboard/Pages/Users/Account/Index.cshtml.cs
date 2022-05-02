@@ -40,25 +40,25 @@ namespace ServiceHost.Areas.Dashboard.Pages.Users.Account
             user = await _userApplication.GetDetail(long.Parse(userId));
         }
 
-        [RequirePermission(UserPermission.ActivateUser)]
+        [RequirePermission(UserPermission.VerifyUserEmail)]
         public JsonResult OnPostActivateUser(long id)
         {
             return new JsonResult(_userApplication.AdminActivateUser(id));
         }
 
-        [RequirePermission(UserPermission.DeactivateUser)]
+        [RequirePermission(UserPermission.DisableUserEmail)]
         public JsonResult OnPostDeactivateUser(long id)
         {
             return new JsonResult(_userApplication.AdminDectivateUser(id));
         }
 
-        [RequirePermission(UserPermission.ActivateUser)]
+        [RequirePermission(UserPermission.ActivateUserStatus)]
         public JsonResult OnPostActivateUserStatus(long id)
         {
             return new JsonResult(_userApplication.AdminActivateUserStatus(id));
         }
 
-        [RequirePermission(UserPermission.DeactivateUser)]
+        [RequirePermission(UserPermission.DisableUserEmail)]
         public JsonResult OnPostDeactivateUserStatus(long id)
         {
             return new JsonResult(_userApplication.AdminDectivateUserStatus(id));

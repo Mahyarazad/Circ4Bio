@@ -6,11 +6,15 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Circ4Bio </title>
-    <link rel="stylesheet" href="~/dist/output.css" />
-    <link rel="stylesheet" href="~/css/Inter.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/js/signalr/dist/browser/signalr.min.js"></script>
+    <script src="~/js/notification.js"></script>
+    <script src="~/js/site.js"></script>
+    <link rel="stylesheet" href="~/dist/output.css" type="text/css" />
+    <link rel="stylesheet" href="~/css/site.css" type="text/css" />
+    <link rel="stylesheet" href="~/css/loader.css" type="text/css" />
     <link href="~/js/datatables/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
-    <script src="~/js/tailwind.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     @await Html.PartialAsync("_Favicons")
 </head>
 <body>
@@ -32,7 +36,8 @@
             <div class="relative bg-sky-700 lg:pb-32 pb-16">
                 <!-- Menu open: "bg-sky-900", Menu closed: "bg-transparent" -->
                 <!-- Menu open: "bottom-0", Menu closed: "inset-y-0" -->
-                <div aria-hidden="true" class="inset-y-0 absolute inset-x-0 left-1/2 transform -translate-x-1/2 w-full overflow-hidden lg:inset-y-0">
+                <div aria-hidden="true" class="inset-y-0 absolute inset-x-0 left-1/2 transform
+                     -translate-x-1/2 w-full lg:overflow-hidden overflow-visible lg:inset-y-0">
                     <div class="absolute inset-0 flex">
                         <div class="h-full w-1/2" style="background-color: #0a527b;"></div>
                         <div class="h-full w-1/2" style="background-color: #065d8c;"></div>
@@ -46,9 +51,9 @@
                         </svg>
                     </div>
                 </div>
-                <header class="relative py-8 invisible lg:visible">
+                <header class="relative py-4 lg:py-8 pb-10 mb-8 lg:pb-0 lg:mb-8">
                     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <h1 class="text-2xl font-bold text-white">
+                        <h1 class="text-xl lg:text-2xl font-bold text-white">
                             @ViewData["Title"]
                         </h1>
                     </div>
@@ -60,22 +65,25 @@
                     <div class="bg-white rounded-lg shadow overflow-hidden">
                         <div class="divide-y divide-gray-200 lg:grid lg:grid-cols-12 lg:divide-y-0 lg:divide-x" id="scroll-into-top">
 
-                            @if ((string) Context.HttpContext.Request.RouteValues.Values.First() == "/AvailableListing/Index")
+                            @if ((string)Context.HttpContext.Request.RouteValues.Values.First() == "/AvailableListing/Index")
                             {
-                                <partial name="Shared/_AsideMarket"/>
+                                <partial name="Shared/_AsideMarket" />
+
                             }
                             else
                             {
-                                <partial name="Shared/_Aside"/>
+                                <partial name="Shared/_Aside" />
                             }
 
                             @RenderBody()
                         </div>
                     </div>
                 </div>
+                <div class="text-xs lg:ml-10 ml-6 text-sky-800 my-10"> Designed by: <a class="font-bold" href="https://t.me/mhyrinc">Mhyrinc</a></div>
             </main>
         </div>
     </div>
+
 </main>
 
     <partial name="_Footer" />
@@ -83,22 +91,19 @@
     <!--Overlay Effect-->
     <div class="fixed inset-0 overflow-y-auto h-full w-full translate-y-full invisible transform duration-300 opacity-0"
          id="modal">
-        <div class="modal-content" id="ModalConetnt">
+        <div class="modal-content" id="ModalContent">
 
         </div>
     </div>
-    <script src="~/lib/jquery/dist/jquery.js"></script>
-    <script src="~/js/jquery.cookie.min.js_1.4.1/cdnjs/jquery.cookie.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js" integrity="sha512-3j3VU6WC5rPQB4Ld1jnLV7Kd5xr+cq9avvhwqzbH/taCRNURoeEpoPBK9pDyeukwSxwRPJ8fDgvYXd6SkaZ2TA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="~/js/MenuHandlers.js"></script>
-    <script src="~/js/datatables/jquery.dataTables.js"></script>
-    <script src="~/js/datatables/jquery.dataTables.min.js"></script>
-    <script src="~/js//datatables/datatables.js"></script>
-    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-    <script src="~/js/site.js"></script>
-    <script src="~/js/signalr/dist/browser/signalr.js"></script>
-    <script src="~/js/signalr/dist/browser/jquery.signalR.min.js"></script>
-    <script src="~/js/notification.js"></script>
+<script src="~/js/datatables/jquery.dataTables.js"></script>
+<script src="~/js/datatables/datatables.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js" integrity="sha512-37T7leoNS06R80c8Ulq7cdCDU5MNQBwlYoy1TX/WUsLFC2eYNqtKlV0QjH7r8JpG/S0GUMZwebnVFLPd6SU5yg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js" integrity="sha512-o6XqxgrUsKmchwy9G5VRNWSSxTS4Urr4loO6/0hYdpWmFUfHqGzawGxeQGMDqYzxjY9sbktPbNlkIQJWagVZQg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
 
     <script>
         tailwind.config = {

@@ -48,7 +48,7 @@ namespace _0_Framework.Application.Email
                     {
 
                         FilePath = AppDomain.CurrentDomain.BaseDirectory
-                                   + "\\wwwroot\\Email Templates\\AccountVerificationTemplate.html";
+                        + "\\wwwroot\\Email Templates\\AccountVerificationTemplate.html";
                         // FilePath = "C:\\Users\\mhyri\\OneDrive\\Desktop\\Circ4Bio\\Circ4Bio\\ServiceHost"
                         // + "\\wwwroot\\Email Templates\\AccountVerificationTemplate.html";
                         StreamReader StreamReader = new(FilePath);

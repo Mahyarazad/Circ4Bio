@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
@@ -22,8 +23,11 @@ namespace _0_Framework.Application
 
         public void AddValidation(ClientModelValidationContext context)
         {
-            context.Attributes.Add("data-val", "true");
+            // context.Attributes.Add("data-val", "true");
             context.Attributes.Add("data-val-maxFileSize", ErrorMessage);
         }
+
     }
+
+
 }

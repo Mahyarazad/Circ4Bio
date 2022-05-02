@@ -12,6 +12,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.ContactUs
 
         private readonly IContactUsApplication _contactUsApplication;
         public ContactUsViewModel Command;
+        public bool IsReed { get; set; }
         public List<ContactUsViewModel> ContactUsMessagList;
         [TempData]
         public string Message { get; set; }
@@ -26,17 +27,22 @@ namespace ServiceHost.Areas.Dashboard.Pages.ContactUs
             ContactUsMessagList = _contactUsApplication.GetContactUsMessages().Result;
         }
 
+        public void OnPostGetReedMessages(bool IsReed)
+        {
+            if (IsReed)
+            {
+
+                ContactUsMessagList = _contactUsApplication.GetReadContactUsMessages().Result;
+            }
+            else
+            {
+                ContactUsMessagList = _contactUsApplication.GetContactUsMessages().Result;
+            }
+        }
+
         public JsonResult OnPostIsReed(long id)
         {
             return new JsonResult(_contactUsApplication.MarkAsRead(id));
-        }
-        public void OnPostGetAll(ContactUsViewModel Command)
-        {
-            ContactUsMessagList = _contactUsApplication.GetAllContactUsMessages().Result;
-        }
-        public void OnPostGetReadMessages(ContactUsViewModel Command)
-        {
-            ContactUsMessagList = _contactUsApplication.GetReadContactUsMessages().Result;
         }
     }
 }

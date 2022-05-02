@@ -40,7 +40,7 @@
                     <label asp-for="@Model.Command.Name" class="block text-sm font-medium text-gray-700">
                     </label>
                     <div class="mt-1 rounded-md shadow-sm flex">
-                        <input type="text" asp-for="@Model.Command.Name" class="focus:ring-sky-500 focus:border-sky-500 flex-grow block w-full min-w-0 rounded sm:text-sm border-gray-300">
+                        <input type="text" asp-for="@Model.Command.Name" class="focus:ring-sky-700 focus:border-sky-500 flex-grow block w-full min-w-0 rounded sm:text-sm border-gray-300">
                         <span class="text-red-500 sm:text-sm" asp-validation-for="@Model.Command.Name"></span>
                     </div>
                 </div>
@@ -50,7 +50,7 @@
                         Description
                     </label>
                     <div class="mt-1">
-                        <textarea asp-for="@Model.Command.Description" rows="3" class="shadow-sm focus:ring-sky-500 focus:border-sky-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"></textarea>
+                        <textarea asp-for="@Model.Command.Description" rows="3" class="shadow-sm focus:ring-sky-700 focus:border-sky-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"></textarea>
                     </div>
                     <p class="mt-2 text-sm text-gray-500">
                         Brief description for your listing.
@@ -70,7 +70,7 @@
                                  alt="">
                         </div>
                         <div class="ml-5 rounded-md shadow-sm">
-                            <div class="group relative border border-gray-300 rounded-md py-2 px-3 flex items-center justify-center hover:bg-gray-50 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-sky-500">
+                            <div class="group relative border border-gray-300 rounded-md py-2 px-3 flex items-center justify-center hover:bg-gray-50 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-sky-700">
                                 <label for="mobile-user-photo" class="relative text-sm leading-4 font-medium text-gray-700 pointer-events-none">
                                     <span>Change</span>
                                     <span class="sr-only"> Photo</span>
@@ -104,7 +104,7 @@
             <div class="col-span-12 sm:col-span-6">
                 <label asp-for="@Model.Command.DeliveryMethod" class="block text-sm font-medium text-gray-700"></label>
                 <select asp-items="@Model.DeliveryCharges" asp-for="@Model.Command.DeliveryMethod"
-                        class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                        class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-sky-700 focus:border-sky-700 sm:text-sm rounded-md">
                     <option value="">
                         Who Pays The Delivery Cost
                     </option>
@@ -115,20 +115,20 @@
             <div class="col-span-12 sm:col-span-6" id="listing-unit">
                 <label asp-for="@Model.Command.Unit" class="block text-sm font-medium text-gray-700"></label>
                 <input type="text" asp-for="@Model.Command.Unit"
-                       class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
+                       class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-700 focus:border-sky-500 sm:text-sm">
                 <span class="text-red-500 sm:text-sm" asp-validation-for="@Model.Command.Unit"></span>
             </div>
             <div class="col-span-12 sm:col-span-6">
                 <label asp-for="@Model.Command.UnitPrice" class="block text-sm font-medium text-gray-700"></label>
                 <input type="text" asp-for="@Model.Command.UnitPrice"
-                       class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
+                       class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-700 focus:border-sky-500 sm:text-sm">
                 <span class="text-red-500 sm:text-sm" asp-validation-for="@Model.Command.UnitPrice"></span>
             </div>
             <div class="col-span-12 sm:col-span-6">
                 <label asp-for="@Model.Command.Currency" class="block text-sm font-medium text-gray-700"></label>
                 <select asp-for="@Model.Command.Currency"
                         asp-items="@Model.CurrencyList"
-                        class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                        class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-sky-700 focus:border-sky-700 sm:text-sm rounded-md">
                     <option value="">
                         Please select your currency
                     </option>
@@ -138,7 +138,7 @@
             <div class="col-span-12 sm:col-span-6" id="listing-amount">
                 <label asp-for="@Model.Command.Amount" class="block text-sm font-medium text-gray-700"></label>
                 <input type="text" asp-for="@Model.Command.Amount"
-                       class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm">
+                       class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-700 focus:border-sky-500 sm:text-sm">
                 <span class="text-red-500 sm:text-sm" asp-validation-for="@Model.Command.Amount"></span>
             </div>
             <div class="col-span-12 sm:col-span-6 flex justify-start">
@@ -153,11 +153,11 @@
 
         <div class="mt-4 py-4 px-4 flex justify-end sm:px-6">
 
-            <a asp-page="/Listing/Index" asp-area="Dashboard" class="bg-white border border-gray-300 rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+            <a asp-page="/Listing/Index" asp-area="Dashboard" class="bg-white border border-gray-300 rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-700">
                 Back
             </a>
             <button id="save" onclick="loading()"
-                    type="submit" class="ml-5 bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+                    type="submit" class="ml-5 bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-700">
                 Save
             </button>
         </div>

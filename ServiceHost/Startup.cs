@@ -8,13 +8,12 @@ using _0_Framework.Application;
 using _0_Framework.Application.Email;
 using _0_Framework.Application.PayPal;
 using AM.Application;
-using AM.Application.Contracts.User;
-using AM.Infrastructure;
 using AM.Infrastructure.Core;
 using AM.Management.API;
+using Microsoft.AspNet.SignalR;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Owin;
 
 namespace ServiceHost
 {
@@ -37,6 +36,7 @@ namespace ServiceHost
             services.AddTransient<IEmailService<EmailModel>, EmailService>();
             services.AddTransient<IFileUploader, FileUploader>();
             services.AddTransient<IPayPalService, PayPalAPI>();
+
             services.AddSingleton<IPasswordHasher, PasswordHasher>();
             services.AddTransient<IAuthenticateHelper, AuthenticateHelper>();
             services.AddSignalR(hubOptions =>
@@ -67,6 +67,7 @@ namespace ServiceHost
                         }));
                 options.AddPolicy("AdminArea", builder =>
                     builder.RequireRole(AuthorizationRoles.Admin));
+
             });
 
             // services.AddRazorPages().WithRazorPagesRoot("/Index");
@@ -74,8 +75,10 @@ namespace ServiceHost
             {
                 options.AddPolicy(name: _corsPolicy, builder =>
                 {
-                    builder.AllowAnyOrigin()
+                    builder
+                        // .AllowAnyOrigin()
                         .AllowAnyHeader()
+                        .AllowCredentials()
                         .AllowAnyMethod();
                 });
             });
@@ -84,6 +87,7 @@ namespace ServiceHost
             {
                 options.Conventions.AuthorizeAreaFolder("Dashboard", "/", "DashboardArea");
                 options.Conventions.AuthorizeAreaFolder("Dashboard", "/Users", "AdminArea");
+                options.Conventions.AuthorizeAreaFolder("Dashboard", "/Blog", "AdminArea");
                 options.Conventions.AuthorizeAreaFolder("Dashboard", "/ContactUs", "AdminArea");
             })
             .AddApplicationPart(typeof(NotificationController).Assembly);
@@ -103,6 +107,10 @@ namespace ServiceHost
             // services.AddRouting(options => options.LowercaseUrls = true);
             services.AddMemoryCache();
 
+            services.AddAntiforgery(options =>
+            {
+                options.Cookie.Name = "__AntiForgery";
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -117,30 +125,26 @@ namespace ServiceHost
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseAuthentication();
 
-            // app.UseDefaultFiles(new DefaultFilesOptions
-            // {
-            //     DefaultFileNames = new
-            //         List<string> { "index.html" }
-            // });
-
             app.Use(async (context, next) =>
-            {
-                await next();
-                if (context.Response.StatusCode == 404)
-                {
-                    context.Request.Path = "/Shared/_PageNotFound";
-                    await next();
-                }
-            });
+             {
+                 await next();
+                 if (context.Response.StatusCode == 404)
+                 {
+                     context.Request.Path = "/Shared/_PageNotFound";
+                     await next();
+                 }
+             });
             app.UseRouting();
             app.UseCors(_corsPolicy);
             app.UseWebSockets();
             app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();

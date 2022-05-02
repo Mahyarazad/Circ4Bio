@@ -95,7 +95,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Deals
             }
             else
             {
-                return Redirect("/dashboard/paypalerror");
+                return Redirect("/Dashboard/PayPalError");
             }
 
         }

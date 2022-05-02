@@ -265,3 +265,74 @@
     .landing-page-spinner div {
         box-sizing: content-box;
     }
+
+@keyframes ldio-button {
+    0% {
+        transform: rotate(0deg)
+    }
+
+    50% {
+        transform: rotate(180deg)
+    }
+
+    100% {
+        transform: rotate(360deg)
+    }
+}
+
+.ldio-button div {
+    position: absolute;
+    animation: ldio-button 1s linear infinite;
+    width: 21.299999999999997px;
+    height: 21.299999999999997px;
+    border-radius: 50%;
+    box-shadow: 0 1.4909999999999999px 0 0 #f4f4f4;
+    transform-origin: 10.649999999999999px 11.395499999999998px;
+}
+
+.ldio-button-sky-700 div {
+    position: absolute;
+    animation: ldio-button 1s linear infinite;
+    width: 21.299999999999997px;
+    height: 21.299999999999997px;
+    border-radius: 50%;
+    box-shadow: 0 1.4909999999999999px 0 0 #036aa1;
+    transform-origin: 10.649999999999999px 11.395499999999998px;
+}
+
+.loadingio-spinner-eclipse-button {
+    display: inline-block;
+    overflow: hidden;
+    background: #ffffff;
+}
+
+.ldio-button {
+    position: absolute;
+    transform: translateZ(0) scale(1);
+    backface-visibility: hidden;
+    transform-origin: 0 0; /* see note above */
+}
+
+    .ldio-button div {
+        box-sizing: content-box;
+    }
+
+[data-placeholder]::after {
+    content: " ";
+    box-shadow: 0 0 50px 9px rgba(254,254,254);
+    position: absolute;
+    top: 0;
+    left: -100%;
+    height: 100%;
+    animation: load 1s infinite;
+}
+
+@keyframes load {
+    0% {
+        left: -100%
+    }
+
+    100% {
+        left: 150%
+    }
+}

@@ -5,7 +5,7 @@
         <nav class="relative max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6" aria-label="Global">
             <div class="flex items-center flex-1 truncate">
                 <div class="flex items-center justify-between w-full md:w-auto">
-                    <a asp-page="/Index" class="pr-4">
+                    <a asp-page="/Index" class="pr-4" title="Circ4Bio">
                         <span class="sr-only">Workflow</span>
                         <img class="h-8 w-auto sm:h-10" src="~/Site Files/Circ4Bio.png" alt="">
                     </a>
@@ -23,10 +23,12 @@
                     <!---->
                 </div>
                 <div class="hidden space-x-4 lg:flex">
-                    <a asp-page="/MarketPlace/Index" class="text-base font-medium text-white rounded-md hover:text-gray-300 hover:bg-sky-800 px-1 py-2">Market Place</a>
+                    <a asp-page="/MarketPlace/Index" title="Market Place"
+                       class="text-base font-medium text-white rounded-md hover:text-gray-300 hover:bg-sky-800 px-1 py-2">Market Place</a>
 
 
-                    <a asp-page="/ContactUs" class="text-base font-medium rounded-md text-white hover:text-gray-300 hover:bg-sky-800 px-3 py-2">Contact Us</a>
+                    <a asp-page="/ContactUs" title="Contact Us"
+                       class="text-base font-medium rounded-md text-white hover:text-gray-300 hover:bg-sky-800 px-3 py-2">Contact Us</a>
 
                 </div>
             </div>
@@ -47,7 +49,8 @@
                 }
                 else
                 {
-                    <a asp-page="/Authentication/Login" class="text-base font-medium text-white rounded-md px-3 py-2 hover:text-gray-300 hover:bg-sky-800">
+                    <a asp-page="/Authentication/Login" title="Log in"
+                       class="text-base font-medium text-white rounded-md px-3 py-2 hover:text-gray-300 hover:bg-sky-800">
                         Log in
                     </a>
                 }

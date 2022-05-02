@@ -95,7 +95,7 @@ namespace AM.Application
             {
                 EmailTemplate = EmailType.AccountVerificationLink,
                 Title = ApplicationMessage.AccountVerification,
-                AccountVerificationLink = $"{request.Scheme}://{request.Host}/Authentication/ActivateUser/{activationGuid.ToString()}".ToLower(),
+                AccountVerificationLink = $"{request.Scheme}://{request.Host}/Authentication/ActivateUser/{activationGuid.ToString()}",
                 Recipient = command.Email
             };
             var emailServiceResult = _emailService.SendEmail(emailModel);
@@ -112,7 +112,7 @@ namespace AM.Application
                     .PushNotification(new NotificationViewModel
                     {
                         SenderId = 1,
-                        RedirectUrl = RedirectUrl + $"/dashboard/profile/{user.Id}",
+                        RedirectUrl = RedirectUrl + $"/Dashboard/profile/{user.Id}",
                         NotificationBody = ApplicationMessage.WelcomeMessage,
                         NotificationTitle = ApplicationMessage.SystemMessage,
                         UserId = user.Id
@@ -128,13 +128,13 @@ namespace AM.Application
                 return emailServiceResult;
             }
         }
-        public async Task<OperationResult> ActivateUser(string command)
+        public Task<OperationResult> ActivateUser(string command)
         {
             var request = _contextAccessor.HttpContext.Request;
             var result = new OperationResult();
             if (!string.IsNullOrWhiteSpace(command))
             {
-                var user = await _userRepository.Get(_userRepository.GetDetailByActivationUrl(command).Id);
+                var user = _userRepository.Get(_userRepository.GetDetailByActivationUrl(command).Result.Id).Result;
                 if (user != null)
                 {
                     if (user.RoleId != 5)
@@ -149,7 +149,7 @@ namespace AM.Application
                                     "the provided information within 24 hours." +
                                     "It is just the formal background check of your company to protect other clients." +
                                     "Please follow the link below to update your profile",
-                            Body3 = $"{request.Scheme}://{request.Host}/Dashboard/Profile/{user.UserName}".ToLower(),
+                            Body3 = $"{request.Scheme}://{request.Host}/Dashboard/Profile/{user.UserName}",
                             Recipient = user.Email
                         };
                         var emailServiceResult = _emailService.SendEmail(emailModel);
@@ -158,7 +158,7 @@ namespace AM.Application
                             .PushNotification(new NotificationViewModel
                             {
                                 SenderId = 1,
-                                RedirectUrl = $"/dashboard/profile/{user.Id}",
+                                RedirectUrl = $"/Dashboard/profile/{user.Id}",
                                 NotificationBody = "Please provide your company name and the VAT number and, our team will verify " +
                                         "the provided information within 24 hours." +
                                         "It is just the formal background check of your company to protect other clients." +
@@ -172,25 +172,26 @@ namespace AM.Application
 
                         if (emailServiceResult.IsSucceeded)
                         {
-                            user.ActivateUserStatus();
+                            user.ActivateUser();
                             _userRepository.SaveChanges();
                         }
                         else
                         {
-                            return emailServiceResult;
+                            return Task.FromResult(emailServiceResult);
                         }
                     }
                     else
                     {
                         user.ActivateUserStatus();
                         user.ActivateUser();
+                        _userRepository.SaveChanges();
                     }
 
-                    return result.Succeeded();
+                    return Task.FromResult(result.Succeeded());
                 }
-                return result.Failed(ApplicationMessage.ActivationUrlError);
+                return Task.FromResult(result.Failed(ApplicationMessage.ActivationUrlError));
             }
-            return result.Failed(ApplicationMessage.SomethingWentWrong);
+            return Task.FromResult(result.Failed(ApplicationMessage.SomethingWentWrong));
 
         }
 
@@ -237,7 +238,7 @@ namespace AM.Application
             {
                 EmailTemplate = EmailType.AccountVerificationLink,
                 Title = ApplicationMessage.AccountVerification,
-                AccountVerificationLink = $"{request.Scheme}://{request.Host}/Authentication/ActivateUser/{activationGuid.ToString()}".ToLower(),
+                AccountVerificationLink = $"{request.Scheme}://{request.Host}/Authentication/ActivateUser/{activationGuid.ToString()}",
                 Recipient = command
             };
             var emailServiceResult = _emailService.SendEmail(emailModel);
@@ -465,6 +466,8 @@ namespace AM.Application
 
 
             var (verified, needsUpgrade) = _passwordHasher.Check(user.Password, command.Password);
+            Console.WriteLine(needsUpgrade);
+
             if (!verified)
                 return result.Failed(ApplicationMessage.WrongPassword);
 
@@ -476,18 +479,33 @@ namespace AM.Application
             var authModel = new AuthViewModel(user.Id, user.Email, $"{user.FirstName} {user.LastName}",
                 user.RoleId.ToString(), command.RememberMe, user.PictureString, permissions
                 , command.Password, user.IsActive, user.Status);
+
             _authenticateHelper.Login(authModel);
             return result.Succeeded();
         }
+
         public void Logout()
         {
             _authenticateHelper.Logout();
         }
+
         public Task<List<Usertype>> GetUsertypes()
+        {
+            var userTypes = _roleRepository.GetAll();
+            var userTypeList = new List<Usertype>();
+            foreach (var item in userTypes)
+            {
+                userTypeList.Add(new Usertype(item.Id, item.Name));
+            }
+            return Task.FromResult(userTypeList);
+        }
+
+        public Task<List<Usertype>> UsertypesforRegistration()
         {
             var type = new Usertype(0, "Default");
             return Task.FromResult(type.GetUserTypeList());
         }
+
         public async Task<OperationResult> AddDeliveryLocation(CreateDeliveryLocation Command)
         {
             var result = new OperationResult();

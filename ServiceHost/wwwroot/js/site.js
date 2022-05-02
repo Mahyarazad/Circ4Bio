@@ -4,7 +4,7 @@
 function getHtml(val) {
     $.get(val,
         function (htmlPage) {
-            $("#ModalConetnt").html(htmlPage);
+            $("#ModalContent").html(htmlPage);
             // We need to parse the ajax form
 
             const form = $("form");
@@ -30,20 +30,28 @@ function showModal() {
     $('#modal').css('z-index', '10');
     $('#modal').removeClass('translate-y-full');
     $('#modal').addClass('top-0');
+    setTimeout(() => {
+        $('#modal').css('background', 'rgba(0, 0, 0, 0.5)');
+    }, 180)
+
+
     window.location.hash = "##";
 }
 
 function hideModal() {
-    $("#modal").css("visibility", "hidden");
-    $('#modal').css('opacity', '0');
-    $('#modal').css('z-index', '-1');
-    $('#modal').addClass('translate-y-full');
-    $('#modal').removeClass('top-0');
+    $('#modal').css('background', 'rgba(0, 0, 0, 0)');
+    setTimeout(() => {
+        $('#modal').addClass('translate-y-full');
+        $('#modal').removeClass('top-0');
+    }, 150);
+    setTimeout(() => {
+        $("#modal").css("visibility", "hidden");
+        $('#modal').css('opacity', '0');
+        $('#modal').css('z-index', '-1');
+        $("#ModalContent").empty();
+    }, 220)
+
     window.location.hash = "##";
-    //    $("#modal").on("hidden.bs.modal",
-    //        function () {
-    //            window.location.hash = "##";
-    //        });
 }
 
 //We listen to any hashChange to open the modal
@@ -69,6 +77,14 @@ function handleAjaxGet(formData, url, action, data) {
         });
 }
 
+function redirect(url, message) {
+    var resultDom = $('#operation-result');
+    var resultDomMessage = $('#operation-result-message');
+    resultDomMessage.text(message);
+    resultDom.css('display', 'block');
+    setTimeout(() => { window.location.replace(url) }, 3000);
+}
+
 function handleAjaxPost(formData, url, action) {
     $.ajax({
         url: url,
@@ -82,10 +98,10 @@ function handleAjaxPost(formData, url, action) {
             // Notify the user about the proccess detail
             if (!data.result.isSucceeded) {
                 $("#modal").hide();
-                var resultDom = $('#operation-result-failed');
-                var resultDomMessage = $('#operation-result-failed-message');
                 $("#overlay").addClass('hidden');
                 $("#overlay").hide();
+                var resultDom = $('#operation-result-failed');
+                var resultDomMessage = $('#operation-result-failed-message');
                 resultDomMessage.text(data.result.message);
                 resultDom.css('display', 'block');
             } else {
@@ -94,84 +110,57 @@ function handleAjaxPost(formData, url, action) {
                 var url = window.location.href;
                 var splited = url.split('/');
 
-                if (splited[splited.length - 2] === "notification") {
-                    var updatedUrl = splited.slice(0, splited.length);
-                    url = updatedUrl.join('/', updatedUrl);
-                    var resultDom = $('#operation-result');
-                    var resultDomMessage = $('#operation-result-message');
-                    resultDomMessage.text(data.result.message);
-                    resultDom.css('display', 'block');
-                    setTimeout(() => { window.location.replace(url) }, 3000)
+                if (splited[splited.length - 1] === "AvailableListing" || splited[splited.length - 1] === "AvailableListing##") {
+                    var updatedUrl = splited.slice(0, splited.length - 1);
+                    url = updatedUrl.join('/', updatedUrl) + "/Negotiate";
+                    redirect(url, data.result.message);
                 }
 
-                else if (splited[splited.length - 2] === "quatation") {
+                if (splited[splited.length - 2] === "Notification") {
+                    var updatedUrl = splited.slice(0, splited.length);
+                    url = updatedUrl.join('/', updatedUrl);
+                    redirect(url, data.result.message);
+                }
+
+                else if (splited[splited.length - 2] === "Quatation") {
                     if (splited[splited.length - 1].includes('##')) {
-                        var resultDom = $('#operation-result');
-                        var resultDomMessage = $('#operation-result-message');
-                        resultDomMessage.text(data.result.message);
-                        resultDom.css('display', 'block');
-                        setTimeout(() => { window.location.replace(url) }, 3000)
+                        redirect(url, data.result.message);
                     }
-                    var resultDom = $('#operation-result');
-                    var resultDomMessage = $('#operation-result-message');
-                    resultDomMessage.text(data.result.message);
-                    resultDom.css('display', 'block');
-                    setTimeout(() => { window.location.replace(url) }, 3000)
+                    redirect(url, data.result.message);
                 }
 
                 else if (action === "CancelNegotiation") {
                     var updatedUrl = splited.slice(0, splited.length - 2);
                     url = updatedUrl.join('/', updatedUrl);
-                    var resultDom = $('#operation-result');
-                    var resultDomMessage = $('#operation-result-message');
-                    resultDomMessage.text(data.result.message);
-                    resultDom.css('display', 'block');
-                    setTimeout(() => { window.location.replace(url) }, 3000)
+                    redirect(url, data.result.message);
                 }
 
-                else if (splited[splited.length - 2] === "confirmquatation") {
-                    var resultDom = $('#operation-result');
-                    var resultDomMessage = $('#operation-result-message');
-                    resultDomMessage.text(data.result.message);
-                    resultDom.css('display', 'block');
-                    setTimeout(() => { window.location.replace(url) }, 3000)
+                else if (splited[splited.length - 2] === "ConfirmQuatation") {
+                    redirect(url, data.result.message);
                 }
 
-                else if (splited[splited.length - 2] === "deals") {
-                    var resultDom = $('#operation-result');
-                    var resultDomMessage = $('#operation-result-message');
-                    resultDomMessage.text(data.result.message);
-                    resultDom.css('display', 'block');
-                    setTimeout(() => { window.location.replace(url) }, 3000)
+                else if (splited[splited.length - 2] === "Deals") {
+                    redirect(url, data.result.message);
                 }
 
-                else if (splited[splited.length - 2] !== "messages") {
+                else if (splited[splited.length - 2] !== "Messages") {
 
-                    if (splited[splited.length - 2] === "profile" | splited[splited.length - 2] === "create") {
-                        var resultDom = $('#operation-result');
-                        var resultDomMessage = $('#operation-result-message');
-                        resultDomMessage.text(data.result.message);
-                        resultDom.css('display', 'block');
-                        setTimeout(() => { window.location.replace(url) }, 3000)
+                    if (splited[splited.length - 2] === "Profile" | splited[splited.length - 2] === "Create") {
+                        $("#overlay").addClass('hidden');
+                        $("#overlay").hide();
+                        redirect(url, data.result.message);
                     } else {
                         if (parseInt(splited[splited.length - 1]) > 0) {
                             var updatedUrl = splited.slice(0, splited.length - 2);
                             url = updatedUrl.join('/', updatedUrl);
-                        } else if (splited[splited.length - 1] === "create") {
+                        } else if (splited[splited.length - 1] === "Create") {
                             var updatedUrl = splited.slice(0, splited.length - 1);
                             url = updatedUrl.join('/', updatedUrl);
                         }
-                        var resultDom = $('#operation-result');
-                        var resultDomMessage = $('#operation-result-message');
                         $("#overlay").addClass('hidden');
                         $("#overlay").hide();
-                        resultDomMessage.text(data.result.message);
-                        resultDom.css('display', 'block');
-
-                        setTimeout(() => {
-                            window.location.replace(url);
-                        },
-                            1000)
+                        //Timeout was 1000 ms, the current function is 3000
+                        redirect(url, data.result.message);
                     }
                 }
             }
@@ -278,12 +267,6 @@ function CallBackHandler(data, action, form) {
             {
                 var currentLocation = window.location.href;
                 window.location.href = currentLocation;
-                //                window.location.href += `?${data.Id}`
-                //                window.location.replace(currentLocation + `?id=${data}`)
-                //                hideModal();
-                //                const refereshUrl = form.attr("data-refereshurl");
-                //                const refereshDiv = form.attr("data-refereshdiv");
-                //                get(refereshUrl, refereshDiv);
             }
             break;
         case "setValue":
@@ -395,41 +378,32 @@ function handleAjaxCall(method, url, data) {
     }
 }
 
-//jQuery.validator.addMethod("maxFileSize",
-//    function (value, element, params) {
-//        var size = element.files[0].size;
-//        var maxSize = 3 * 1024 * 1024;
-//        if (size > maxSize)
-//            return false;
-//        else {
-//            return true;
-//        }
-//    });
-//jQuery.validator.unobtrusive.adapters.addBool("maxFileSize");
+$(document).ready(function () {
+    jQuery.validator.addMethod("maxFileSize",
+        function (value, element, params) {
 
-jQuery.validator.addMethod("maxFileSize",
-    function (value, element, params) {
-        var validFormat = [".jpeg", ".jpg", ".png"];
-        if (element.files.length > 0) {
-            var size = element.files[0].size;
+            if (element.files.length > 0) {
+                var size = element.files[0].size;
 
-            var maxSize = 1 * 1024 * 1024;
-            if (size > maxSize)
-                return false;
-            else
-                return true;
-        }
-        return true;
-    });
+                var maxSize = 1 * 1024 * 1024;
+                if (size > maxSize)
+                    return false;
+                else
+                    return true;
+            }
+            return true;
+        });
+    jQuery.validator.unobtrusive.adapters.addBool("maxFileSize");
+    jQuery.validator.addMethod("fileExtensionLimit",
+        function (value, element, params) {
+            var validFormat = ["application/pdf"];
+            var fileExtension = element.files[0].type;
+            return validFormat.indexOf(fileExtension) > -1;
+        });
+    jQuery.validator.unobtrusive.adapters.addBool("fileExtensionLimit");
 
-jQuery.validator.unobtrusive.adapters.addBool("maxFileSize");
+});
 
-jQuery.validator.addMethod("fileExtensionLimit",
-    function (value, element, params) {
-        var validFormat = ["image/jpeg", "image/jpg", "image/png"];
-        var fileExtension = element.files[0].type;
-        return validFormat.indexOf(fileExtension) > -1;
-    });
-jQuery.validator.unobtrusive.adapters.addBool("fileExtensionLimit");
+
 
 

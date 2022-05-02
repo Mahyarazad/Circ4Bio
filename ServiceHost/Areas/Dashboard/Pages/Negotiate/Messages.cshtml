@@ -4,6 +4,10 @@
 @model ServiceHost.Areas.Dashboard.Pages.Negotiate.MessagesModel
 @inject IAuthenticateHelper AuthenticateHelper;
 @{ ViewData["Title"] = $"Dashboard | Negotiations ";}
+@section Scripts
+{
+    <script type="text/javascript" defer src="~/js/MessagingScripts.js"></script>
+}
 
 <div class="divide-y divide-gray-200 lg:col-span-9">
     <div class="flex flex-col">
@@ -47,8 +51,7 @@
                         <div class="flex flex-row items-center py-4 px-6 rounded-2xl shadow">
 
                             <a class="flex items-center justify-center h-10 w-10 rounded-full text-pink-100"
-                               href="@($"/dashboard/availablelisting/detail/{Model.CurrentNegotiate.ListingId}")"
-                               >
+                               href="@($"/dashboard/availablelisting/detail/{Model.CurrentNegotiate.ListingId}")">
                                 <img class="h-10 w-10 rounded-full"
                                      src="~/Site Files/Listing_Images/@(Model.CurrentNegotiate.ImageString == "listing-default.png"
                                                                           ? "listing-default.png" : $"{Model.CurrentNegotiate.ItemType}/{Model.CurrentNegotiate.ImageString}")"
@@ -158,7 +161,7 @@
                         <!--End of Messaging Container-->
                         <!--Start of input section-->
                         <form method="post"
-                              data-ajax="true" data-action="Refresh" enctype="multipart/form-data" id="messaging-form">
+                              enctype="multipart/form-data" id="messaging-form">
                             <input type="hidden" asp-for="@Model.Command.NegotiateId" value="@Model.CurrentNegotiate.NegotiateId" />
                             <div class="flex flex-row items-center">
                                 <div class="flex flex-row items-center w-full border rounded-3xl h-12">
@@ -170,10 +173,11 @@
                                     <span asp-validation-for="@Model.Command.File" class="text-xs text-red-500 absolute mb-32 ml-2"></span>
                                 </div>
 
-                                <span id="filename-input" class="flex text-xs text-gray-900 bg-gray-100 rounded-2xl p-3 ml-3 hidden absolute">
+                                <span id="filename-input" class="flex text-xs text-gray-900 bg-gray-100 rounded-2xl p-3 ml-1 mb-4 hidden absolute">
                                 </span>
                                 <div class="ml-3">
-                                    <input type="file" asp-for="@Model.Command.File" id="file-input" accept="application/pdf"
+                                    <input type="file" asp-for="@Model.Command.File" id="file-input"
+                                           accept="application/pdf" onchange="attachmentHandler(this)"
                                            class="absolute block opacity-0 hover:cursor-pointer w-10 file-input" />
 
                                     <div class="flex items-center justify-center h-10 w-10 rounded-full bg-gray-200 hover:bg-gray-300 text-sky-700 text-white overflow-hidden">
@@ -185,7 +189,7 @@
                                 </div>
 
                                 <div class="ml-3">
-                                    <button type="submit" id="message-send-button" title="Send"
+                                    <button type="button" id="message-send-button" title="Send" onclick="sendMessage()"
                                             class="flex items-center justify-center h-10 w-10 rounded-full bg-gray-200 hover:bg-gray-300 text-sky-700 text-white">
                                         <svg class="w-5 h-5 transform rotate-90 -mr-px" id="arrow-button"
                                              fill="none"
@@ -211,3 +215,4 @@
         </div>
     </div>
 </div>
+

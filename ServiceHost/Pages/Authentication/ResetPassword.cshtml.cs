@@ -25,12 +25,11 @@ namespace ServiceHost.Pages.Authentication
 
         [TempData] public string Message { get; set; }
         [TempData] public string SuccessMessage { get; set; }
-
-        public async void OnGet(string guid)
+        public long UserId { get; set; }
+        public void OnGet(string guid)
         {
-            Message = "";
-            SuccessMessage = "";
-            Command = await _resetPasswordApplication.GetResetPasswordGuid(guid);
+            TempData.Clear();
+            Command = _resetPasswordApplication.GetResetPasswordGuid(guid).Result;
             if (Command.Guid == new Guid())
             {
                 Message = ApplicationMessage.ResetPasswordLinkIsInvalid;
@@ -41,20 +40,21 @@ namespace ServiceHost.Pages.Authentication
         }
 
 
-        public async void OnPostUpdate(ResetPasswordModel command)
+        public IActionResult OnPostUpdate(ResetPasswordModel command)
         {
-            Message = "";
-            SuccessMessage = "";
-            var result = await _userApplication.ResetPassword(command);
+            TempData.Clear();
+            var guid = HttpContext.Request.Path.Value.ToString().Split("/");
+            command.UserId = _resetPasswordApplication.GetResetPasswordGuid(guid[3]).Result.UserId;
+            var result = _userApplication.ResetPassword(command).Result;
 
             if (result.IsSucceeded)
             {
                 SuccessMessage = result.Message;
-                Command = new ResetPasswordModel();
+                return RedirectToPage("/Authentication/Login");
             }
             else
             {
-                Message = result.Message;
+                return RedirectToPage($"/Authentication/ResetPassword/{guid}");
             }
 
         }

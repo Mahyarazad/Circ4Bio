@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using _0_Framework.Application;
 using AM.Application.Contracts.Deal;
@@ -33,7 +34,9 @@ namespace ServiceHost.Areas.Dashboard.Pages.Billing
         {
             if (Id == _authenticateHelper.CurrentAccountRole().Id)
             {
-                Deals = await _dealApplication.GetAllFinishedDeals(Id);
+                Deals = await _dealApplication
+                    .GetAllFinishedDeals(Id);
+
                 return null;
             }
             else

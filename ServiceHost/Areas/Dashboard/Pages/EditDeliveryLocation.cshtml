@@ -3,17 +3,18 @@
 @inject IConfiguration _Configuration;
 @model AM.Application.Contracts.User.CreateDeliveryLocation
 
-<div class="relative top-20 sm:mx-auto p-5 border md:w-1/2 shadow-lg rounded-md bg-white">
+<div class="relative top-20 sm:mx-auto p-5 border md:w-1/2 shadow-lg rounded-md bg-white flex flex-col">
     <button type="button" onclick="hideModal()"
-            class="bg-white rounded-md inline-flex text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+            class="bg-white rounded-md text-gray-400 hover:text-gray-500 focus:outline-none self-end w-5
+            focus:ring-2 focus:ring-offset-2 focus:ring-sky-700 float-right">
         <span class="sr-only">Close</span>
         <!-- Heroicon name: solid/x -->
         <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
         </svg>
     </button>
-    <div class="mt-3 text-center">
-        <form class="divide-y divide-gray-200 lg:col-span-9" id="form"
+    <div class="text-center">
+        <form class="" id="form"
               asp-page-handler="EditDeliveryLocation" asp-page="/Profile" data-callback=""
               method="post" data-action="Refresh" data-ajax="true">
             <!-- operation-result -->
@@ -22,7 +23,7 @@
                     <div class="flex-shrink-0">
                         <!-- Heroicon name: solid/check-circle -->
                         <svg class="h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                         </svg>
                     </div>
                     <div class="ml-3">
@@ -39,7 +40,7 @@
                     </label>
                     <div class="mt-1">
                         <input type="text" asp-for="Name" placeholder="Choose a name for this address"
-                               class="shadow-sm focus:ring-sky-500 focus:border-sky-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md" />
+                               class="shadow-sm focus:ring-sky-700 focus:border-sky-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"/>
                         <span asp-validation-for="Name" class="float-left text-red-500 text-sm"></span>
                     </div>
                 </div>
@@ -49,7 +50,7 @@
                     </label>
                     <div class="mt-1">
                         <input type="text" asp-for="AddressLineOne" placeholder="Address Line 1"
-                               class="shadow-sm focus:ring-sky-500 focus:border-sky-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md" />
+                               class="shadow-sm focus:ring-sky-700 focus:border-sky-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"/>
                         <span asp-validation-for="AddressLineOne" class="float-left text-red-500 text-sm"></span>
                     </div>
                 </div>
@@ -59,7 +60,7 @@
                     </label>
                     <div class="mt-1">
                         <input type="text" asp-for="AddressLineTwo" placeholder="Address Line 2"
-                               class="shadow-sm focus:ring-sky-500 focus:border-sky-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md" />
+                               class="shadow-sm focus:ring-sky-700 focus:border-sky-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"/>
                     </div>
                 </div>
                 <div class="col-span-1">
@@ -67,7 +68,7 @@
                     <div class="mt-1">
                         <select asp-for="Country"
                                 asp-items="new SelectList(GenerateCountryList.GetList())"
-                                class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm rounded-md">
+                                class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-sky-700 focus:border-sky-500 sm:text-sm rounded-md">
                             <option value="">
                                 Please select a country
                             </option>
@@ -80,7 +81,7 @@
                     </label>
                     <div class="mt-1">
                         <input type="text" asp-for="City" placeholder="City"
-                               class="shadow-sm focus:ring-sky-500 focus:border-sky-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md" />
+                               class="shadow-sm focus:ring-sky-700 focus:border-sky-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"/>
                         <span asp-validation-for="City" class="float-left text-red-500 text-sm"></span>
                     </div>
                 </div>
@@ -90,7 +91,7 @@
                     </label>
                     <div class="mt-1">
                         <input type="number" asp-for="PostalCode" placeholder="Postal Code"
-                               class="shadow-sm focus:ring-sky-500 focus:border-sky-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md" />
+                               class="shadow-sm focus:ring-sky-700 focus:border-sky-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"/>
                     </div>
                 </div>
                 <div class="col-span-1">
@@ -99,7 +100,7 @@
                     </label>
                     <div class="mt-1">
                         <input type="number" asp-for="Latitude" placeholder="Latitude" onchange="updateMapLat(this.value)"
-                               class="shadow-sm focus:ring-sky-500 focus:border-sky-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md" />
+                               class="shadow-sm focus:ring-sky-700 focus:border-sky-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"/>
                     </div>
                 </div>
                 <div class="col-span-1">
@@ -108,48 +109,60 @@
                     <div class="mt-1">
                         <input type="number" asp-for="Longitude" onchange="updateMapLng(this.value)"
                                placeholder="Longitude"
-                               class="shadow-sm focus:ring-sky-500 focus:border-sky-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md" />
+                               class="shadow-sm focus:ring-sky-700 focus:border-sky-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"/>
                     </div>
                 </div>
                 <div class="col-span-2">
                     <div class="flex-grow space-y-96 rounded-md hidden" id="map-wrapper"></div>
 
                 </div>
-                <div class="col-span-1">
-                    <button type="button" onclick="getDeliveryLocation()"
-                            class="bg-sky-800 float-left
-                                border border-gray-300 rounded-md shadow-sm py-2 px-2
-                                inline-flex justify-center text-sm font-medium text-white focus:outline-none
-                                focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
-                        Get Current Location
-                    </button>
+                <div class="col-span-2 flex">
+                    <span class="bg-gray-100 border border-gray-300 float-left hidden transform duration-300
+                              font-bold px-2 rounded-full text-gray-700 text-xs" id="get-location-hint">Drag the pin to get your accurate location</span>
                 </div>
 
 
-                <input asp-for="UserId" type="hidden" />
-                <input asp-for="LocationId" type="hidden" />
-                <div class="mt-4 py-4 px-4 flex justify-end sm:px-6">
-                    <a href="#showmodal=@Url.Page("./Profile", "ListDeliveryLocation", new {Id = Model.UserId})"
-                       class="bg-white border border-gray-300 rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
-                        Back
-                    </a>
-                    <button id="save" type="submit" class="ml-5 bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
-                        Save
-                    </button>
+                <div class="col-span-2">
+                    <input asp-for="UserId" type="hidden"/>
+                    <input asp-for="LocationId" type="hidden"/>
+                    <div class="col-span-1">
+                        <div class="flex justify-between my-2">
+
+                            <button type="button" onclick="getDeliveryLocation()"
+                                    class="bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-700">
+                                Get Current Location
+                            </button>
+                            <div class="flex float-right">
+                                <a href="#showmodal=@Url.Page("./Profile", "ListDeliveryLocation", new {Id = Model.UserId})"
+                                   class="bg-white border border-gray-300 rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-700">
+                                    Back
+                                </a>
+                                <button id="save" type="submit" class="ml-2 bg-sky-700 border border-transparent rounded-md shadow-sm py-2
+                                            px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-sky-800
+                                            focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-700">
+                                    Save
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
             </div>
         </form>
     </div>
 </div>
+
 @section CSS
 {
-    <link rel="stylesheet" href="~/css/mapbox-gl.css" />
+    <link rel="stylesheet" href="~/css/mapbox-gl.css"/>
 }
 
 <script defer>
     mapboxgl.accessToken = @Html.Raw(Json.Serialize(_Configuration.GetSection("MapBox")["SecretKey"]));
+
     function getDeliveryLocation() {
         if (window.navigator.geolocation) {
+            $("#get-location-hint").removeClass("hidden");
             window.navigator.geolocation.getCurrentPosition(showDeliveryPosition, error);
 
         } else {
@@ -173,12 +186,13 @@
             zoom: 13
         });
 
-        map.on('load', () => {
-            map.resize();
-        });
+        map.on('load',
+            () => {
+                map.resize();
+            });
 
         map.getCanvas().style.cursor = 'crosshair';
-        const _marker = new mapboxgl.Marker({ color: 'red', rotation: 0, draggable: true})
+        const _marker = new mapboxgl.Marker({ color: 'red', rotation: 0, draggable: true })
             .setLngLat([position.coords.longitude, position.coords.latitude])
             .addTo(map);
 
@@ -201,7 +215,7 @@
             .setLngLat([position.coords.longitude, position.coords.latitude])
             .addTo(map);
         _marker.on('drag',
-            function (e) {
+            function(e) {
                 $("#Latitude").val(e.target._lngLat.lat.toFixed(6));
                 $("#Longitude").val(e.target._lngLat.lng.toFixed(6));
             });
@@ -219,10 +233,9 @@
             .setLngLat([e, $("#Latitude").val()])
             .addTo(map);
         _marker.on('drag',
-            function (e) {
+            function(e) {
                 $("#Latitude").val(e.target._lngLat.lat.toFixed(6));
                 $("#Longitude").val(e.target._lngLat.lng.toFixed(6));
             });
     }
 </script>
-

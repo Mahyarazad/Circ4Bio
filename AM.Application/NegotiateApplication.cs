@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 using _0_Framework;
 using _0_Framework.Application;
 using _0_Framework.Application.Email;
-using AM.Application.Contracts.Deal;
-using AM.Application.Contracts.Listing;
 using AM.Application.Contracts.Negotiate;
 using AM.Application.Contracts.Notification;
 using AM.Application.Contracts.User;
@@ -14,12 +12,8 @@ using AM.Domain;
 using AM.Domain.ListingAggregate;
 using AM.Domain.NegotiateAggregate;
 using AM.Domain.NotificationAggregate;
-using AM.Domain.RoleAggregate;
 using AM.Domain.UserAggregate;
-using FluentEmail.Core;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Features;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace AM.Application
@@ -73,22 +67,17 @@ namespace AM.Application
         {
             var result = new OperationResult();
 
-            var RedirectUrl = _contextAccessor.HttpContext.Request.Headers
-                .FirstOrDefault(x => x.Key == "Origin").Value
-                .ToString();
+            var Request = _contextAccessor.HttpContext.Request;
 
 
             if (!_listingRepository.Exist(x => x.Id == Command.ListingId))
                 return result.Failed(ApplicationMessage.RecordNotFound);
+
             if (_negotiateRepository.Exist(x => x.SellerId == Command.SellerId &
                                                 x.BuyerId == Command.BuyerId &
-                                                x.ListingId == Command.ListingId & !x.IsFinished))
+                                                x.ListingId == Command.ListingId & !x.IsFinished & !x.IsCanceled))
             {
-                if (_negotiateRepository.Exist(x => x.SellerId == Command.SellerId &
-                                                    x.BuyerId == Command.BuyerId &
-                                                    x.ListingId == Command.ListingId &
-                                                    !x.IsCanceled))
-                    return result.Failed(ApplicationMessage.DuplicateNegotiation);
+                return result.Failed(ApplicationMessage.DuplicateNegotiation);
             }
 
 
@@ -128,7 +117,7 @@ namespace AM.Application
                 {
                     RecipientList = buyyerRecipientList,
                     SenderId = Command.BuyerId,
-                    RedirectUrl = RedirectUrl + $"/dashboard/negotiate/messages/{negotiate.Id}",
+                    RedirectUrl = $"{Request.Headers.FirstOrDefault(x => x.Key == "Origin").Value}/Dashboard/Negotiate/Messages/{negotiate.Id}",
                     NotificationBody = $"Negotiation opened for {listingInfo.Name} at {listingInfo.UnitPrice} {listingInfo.Currency}",
                     NotificationTitle = ApplicationMessage.SubmitNegotiationRequest,
                     UserId = Command.BuyerId
@@ -139,7 +128,7 @@ namespace AM.Application
                 {
                     RecipientList = sellerRecipientList,
                     SenderId = Command.SellerId,
-                    RedirectUrl = RedirectUrl + $"/dashboard/negotiate/messages/{negotiate.Id}",
+                    RedirectUrl = $"{Request.Headers.FirstOrDefault(x => x.Key == "Origin").Value}/Dashboard/Negotiate/Messages/{negotiate.Id}",
                     NotificationBody = $"{buyerInfo.UserId.ToUpper()} opened a negotiation for {listingInfo.Name} at {listingInfo.UnitPrice} {listingInfo.Currency}",
                     NotificationTitle = ApplicationMessage.ReceivedNegotiation,
                     UserId = Command.SellerId
@@ -160,7 +149,7 @@ namespace AM.Application
             {
                 EmailTemplate = EmailType.QuatationCreated,
                 Title = ApplicationMessage.SubmitNegotiationRequest,
-                Body3 = RedirectUrl + $"/dashboard/negotiate/messages/{negotiate.Id}",
+                Body3 = $"{Request.Scheme}://{Request.Host}/Dashboard/Negotiate/Messages/{negotiate.Id}",
                 Recipient = buyerInfo.Email,
                 Body = ApplicationMessage.SubmitNegotiationRequest,
                 Body1 = $"Negotiation opened for {listingInfo.Name} at {listingInfo.UnitPrice} {listingInfo.Currency}",
@@ -171,7 +160,7 @@ namespace AM.Application
             {
                 EmailTemplate = EmailType.QuatationCreated,
                 Title = ApplicationMessage.ReceivedNegotiation,
-                Body3 = RedirectUrl + $"/dashboard/negotiate/messages/{negotiate.Id}",
+                Body3 = $"{Request.Scheme}://{Request.Host}/Dashboard/Negotiate/Messages/{negotiate.Id}",
                 Recipient = sellerInfo.Email,
                 Body = ApplicationMessage.ReceivedNegotiation,
                 Body1 = $"{buyerInfo.UserId.ToUpper()} opened a negotiation for {listingInfo.Name} at {listingInfo.UnitPrice} {listingInfo.Currency}",
@@ -195,7 +184,7 @@ namespace AM.Application
             var whoIsTheSender = _authenticateHelper.CurrentAccountRole().Id;
 
             var RedirectUrl =
-                $"/dashboard/negotiate/messages/{Command.NegotiateId}";
+                $"/Dashboard/Negotiate/Messages/{Command.NegotiateId}";
 
             var sellerInfo = _userRepository.GetDetail(negotiate.SellerId).Result;
             var buyerInfo = _userApplication.GetDetail(negotiate.BuyerId).Result;
@@ -256,7 +245,7 @@ namespace AM.Application
             if (Command.File != null)
                 filePathString = _fileUploader
                     .Uploader(Command.File, $"Deal Documents/{Command.NegotiateId}",
-                    Guid.NewGuid().ToString());
+                    Guid.NewGuid().ToString() + ".pdf");
 
             targetNegotiation.AddMessage(Command.MessageBody, Command.UserId, Command.UserEntity, filePathString);
             _negotiateRepository.SaveChanges();
@@ -268,7 +257,7 @@ namespace AM.Application
             if (!_negotiateRepository.Exist(x => x.Id == Command.NegotiateId))
                 return result.Failed(ApplicationMessage.RecordNotFound);
 
-            var RedirectUrl = $"/dashboard/negotiate/messages/{Command.NegotiateId}";
+            var RedirectUrl = $"/Dashboard/Negotiate/Messages/{Command.NegotiateId}";
 
             var sellerRoleId = _userRepository.GetDetail(Command.SellerId).Result.RoleId;
             var sellerUserId = $"{_userRepository.GetDetail(Command.SellerId).Result.UserId}";

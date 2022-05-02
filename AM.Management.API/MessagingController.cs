@@ -2,11 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using _0_Framework;
+using _0_Framework.Application;
 using AM.Application;
 using AM.Application.Contracts.Negotiate;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using Nancy.Json;
+using Nancy.Json.Simple;
+using Nancy.Responses;
 
 namespace AM.Management.API
 {
@@ -14,13 +19,17 @@ namespace AM.Management.API
     [ApiController]
     public class MessagingController : ControllerBase
     {
+        private readonly IAuthenticateHelper _authenticateHelper;
         private readonly INegotiateApplication _negotiateApplication;
-        public long UserId { get; set; }
 
-        public MessagingController(INegotiateApplication negotiateApplication)
+        public MessagingController(IAuthenticateHelper authenticateHelper, INegotiateApplication negotiateApplication)
         {
+            _authenticateHelper = authenticateHelper;
             _negotiateApplication = negotiateApplication;
         }
+
+        public long UserId { get; set; }
+
 
         //NegotiateId
         [Route("[action]")]
@@ -63,14 +72,26 @@ namespace AM.Management.API
 
         }
 
+
         [Route("[action]")]
         [HttpPost]
-        public async Task<IActionResult> PostFile(IFormFile fileForm)
+        public Task<OperationResult> FileUpload(IFormFile file)
         {
 
-            // _hubContext.Groups.AddToGroupAsync(model)
-            return new NoContentResult();
+            var UserId = _authenticateHelper.CurrentAccountRole().Id;
+            var CurrentNegotiate = _negotiateApplication.GetNegotiationViewModel(Convert.ToInt64(file.FileName));
+            dynamic FileName = HttpContext.Request.Headers.Values;
+            var res = _negotiateApplication.SendMessage(new NewMessage
+            {
+                NegotiateId = Convert.ToInt64(file.FileName),
+                UserEntity = UserId == CurrentNegotiate.BuyerId ? true : false,
+                File = file,
+                UserId = UserId,
+                MessageBody = "Document -->"
 
+            });
+
+            return Task.FromResult(new OperationResult().Failed(ApplicationMessage.SomethingWentWrong));
         }
     }
 

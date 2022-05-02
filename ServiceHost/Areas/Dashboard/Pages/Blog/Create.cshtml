@@ -1,0 +1,231 @@
+﻿@page
+@using _0_Framework
+@using Microsoft.AspNetCore.Http
+@model ServiceHost.Areas.Dashboard.Pages.Blog.CreateModel;
+@inject IHttpContextAccessor _ContextAccessor;
+@{ ViewData["Title"] = "Dashboard | Blog | Add a New Article"; }
+
+
+<form class="divide-y divide-gray-200 lg:col-span-9" id="form"
+      data-callback="" data-ajax="true" method="post" data-action="Refresh"
+      enctype="multipart/form-data">
+    <!-- operation-result -->
+    <div class="rounded-md bg-green-50 p-4 transition ease-in-out duration-75" id="operation-result" style="display: none">
+        <div class="flex">
+            <div class="flex-shrink-0">
+                <!-- Heroicon name: solid/check-circle -->
+                <svg class="h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                </svg>
+            </div>
+            <div class="ml-3">
+                <p class="text-sm font-medium text-green-800" id="operation-result-message">
+
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="rounded-md bg-red-50 p-4 transition ease-in-out duration-75" id="operation-result-failed" style="display: none">
+        <div class="flex">
+            <div class="flex-shrink-0">
+                <!-- Heroicon name: solid/check-circle -->
+                <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                </svg>
+            </div>
+            <div class="ml-3">
+                <p class="text-sm font-medium text-red-800" id="operation-result-failed-message">
+
+                </p>
+            </div>
+        </div>
+    </div>
+    <!-- end -->
+    <div class="py-6 px-4 sm:p-6 lg:pb-8">
+        <div class="mt-6 flex flex-col lg:flex-row">
+            <div class="flex-grow space-y-2 lg:mr-16">
+                <div>
+                    <label asp-for="@Model.Command.Title" class="block text-sm font-medium text-gray-700">
+                    </label>
+                    <div class="mt-1 rounded-md flex flex-col">
+                        <input type="text" asp-for="@Model.Command.Title" class="focus:ring-sky-700 focus:border-sky-500 flex-grow block w-full min-w-0 rounded sm:text-sm border-gray-300">
+                        <span class="text-red-500 sm:text-sm" asp-validation-for="@Model.Command.Title"></span>
+                    </div>
+                </div>
+
+                <div>
+                    <label asp-for="@Model.Command.Auther" class="block text-sm font-medium text-gray-700">
+                    </label>
+                    <div class="mt-1 rounded-md flex flex-col">
+                        <input type="text" asp-for="@Model.Command.Auther" class="focus:ring-sky-700 focus:border-sky-500 flex-grow block w-full min-w-0 rounded sm:text-sm border-gray-300">
+                        <span class="text-red-500 sm:text-sm" asp-validation-for="@Model.Command.Auther"></span>
+                    </div>
+                </div>
+
+                <div>
+                    <label asp-for="@Model.Command.Category" class="block text-sm font-medium text-gray-700">
+                    </label>
+                    <div class="mt-1 rounded-md flex flex-col">
+                        <input type="text" asp-for="@Model.Command.Category" class="focus:ring-sky-700 focus:border-sky-500 flex-grow block w-full min-w-0 rounded sm:text-sm border-gray-300">
+                        <span class="text-red-500 sm:text-sm" asp-validation-for="@Model.Command.Category"></span>
+                    </div>
+                </div>
+
+                <div>
+                    <label asp-for="@Model.Command.ReadDuration" class="block text-sm font-medium text-gray-700">
+                        Read Duration
+                    </label>
+                    <div class="mt-1 rounded-md flex flex-col">
+                        <input type="number" value=""
+                               asp-for="@Model.Command.ReadDuration" class="focus:ring-sky-700 focus:border-sky-500 flex-grow block w-full min-w-0 rounded sm:text-sm border-gray-300">
+                        <span class="text-red-500 sm:text-sm" asp-validation-for="@Model.Command.ReadDuration"></span>
+                    </div>
+                </div>
+
+                <div>
+                    <label asp-for="@Model.Command.ShortDescription" class="block text-sm font-medium text-gray-700">
+                        Short Description
+                    </label>
+                    <div class="mt-1 rounded-md flex flex-col">
+                        <input type="text" asp-for="@Model.Command.ShortDescription" class="focus:ring-sky-700 focus:border-sky-500 flex-grow block w-full min-w-0 rounded sm:text-sm border-gray-300">
+                        <span class="text-red-500 sm:text-sm" asp-validation-for="@Model.Command.ShortDescription"></span>
+                    </div>
+
+                </div>
+
+
+                <div>
+
+                    <label asp-for="@Model.Command.Body" class="block text-sm font-medium text-gray-700">
+                    </label>
+                    <div class="mt-1">
+                        <textarea asp-for="@Model.Command.Body" rows="15"
+                                  class="shadow-sm focus:ring-sky-700 focus:border-sky-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"></textarea>
+                        <span class="text-red-500 sm:text-sm" asp-validation-for="@Model.Command.Body"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-6 flex-grow lg:ml-6 lg:mr-16 lg:flex-grow-0 lg:flex-shrink-0">
+                <p class="text-sm font-medium text-gray-700" aria-hidden="true">
+                    Photo
+                </p>
+                <div class="mt-1 lg:hidden">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 inline-block rounded-full overflow-hidden h-12 w-12" aria-hidden="true">
+                            <img class="rounded-full h-full w-full" src="~/Site Files/Blog_Images/blog-default.png"
+                                 id="item-image-photo-mobile"
+                                 alt="">
+                        </div>
+                        <div class="ml-5 rounded-md">
+                            <div class="group relative border border-gray-300 rounded-md py-2 px-3 flex items-center justify-center hover:bg-gray-50 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-sky-700">
+                                <label for="mobile-user-photo" class="relative text-sm leading-4 font-medium text-gray-700 pointer-events-none">
+                                    <span>Change</span>
+                                    <span class="sr-only"> Photo</span>
+                                </label>
+                                <input id="item-image-mobile" asp-for="@Model.Command.Image" type="file" accept="image/*"
+                                       class="absolute w-full h-full opacity-0 cursor-pointer border-gray-300 rounded-md">
+                                <span class="text-red-500 sm:text-sm" asp-validation-for="@Model.Command.Image"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hidden relative rounded-full overflow-hidden lg:block">
+                    <img class="relative rounded-full w-40 h-40 lg:w-52 lg:h-52" id="item-image-photo"
+                         src="~/Site Files/Blog_Images/blog-default.png" alt="">
+                    <label class="absolute inset-0 w-full h-full bg-black bg-opacity-75 flex items-center
+                           justify-center text-sm font-medium text-white opacity-0 hover:opacity-100
+                           focus-within:opacity-100">
+                        <span>Change</span>
+                        <span class="sr-only"> Listing Photo </span>
+                        <input type="file" id="item-image" asp-for="@Model.Command.Image" accept="image/*"
+                               class="absolute inset-0 w-full h-full opacity-0 cursor-pointer border-gray-300 rounded-md">
+                        <span class="text-red-500 sm:text-sm" asp-validation-for="@Model.Command.Image"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-4 py-4 px-4 flex justify-end sm:px-6">
+
+            <a asp-page="/Blog/Index" asp-area="Dashboard" class="bg-white border border-gray-300 rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-700">
+                Back
+            </a>
+            <button id="save" onclick="loading()"
+                    type="submit" class="ml-5 bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-700">
+                Save
+            </button>
+        </div>
+    </div>
+</form>
+
+@section CSS{
+    <link rel="stylesheet" href="~/css/Loader.css" />
+}
+
+@section Scripts
+{
+    <script>
+
+        document.getElementById('Command_Body').addEventListener('keydown', function (e) {
+
+            if (e.key == 'Tab') {
+                e.preventDefault();
+                var start = this.selectionStart;
+                var end = this.selectionEnd;
+
+                // set textarea value to: text before caret + tab + text after caret
+                this.value = this.value.substring(0, start) +
+                    "\t" + this.value.substring(end);
+
+                // put caret at right position again
+                this.selectionStart =
+                    this.selectionEnd = start + 1;
+            }
+        });
+
+        document.getElementById('Command_Body').addEventListener('keydown', function (event) {
+            const cursor = textarea.selectionStart;
+            if(event.key == "Tab"){
+                event.preventDefault();
+                document.execCommand("insertText", false, '\t');//appends a tab and makes the browser's default undo/redo aware and automatically moves cursor
+            } else if (event.key == "Enter") {
+                event.preventDefault();
+                document.execCommand("insertText", false, '\n');
+            }
+
+        });
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#item-image-photo').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#item-image").change(function () {
+            readURL(this);
+        });
+
+        function readURLMobile(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#item-image-photo-mobile').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#item-image-mobile").change(function () {
+            readURLMobile(this);
+        });
+
+    </script>
+}

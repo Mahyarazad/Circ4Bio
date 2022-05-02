@@ -165,6 +165,7 @@ function createPagination(totalPages, page) {
 
     return liTag; //reurn the li tag
 }
+
 function handelFilter() {
 
     var _filter1 = $("#filter-technology").prop('checked');
@@ -203,46 +204,16 @@ function handelFilter() {
     element.innerHTML = createPagination(_totalPages, page);
 };
 
-$("#search-input").on("keyup",
-    function () {
-        var value = $(this).val();
 
-        filtered = items.filter(function (data) {
-            return data.Name.toLowerCase().includes(value.toLowerCase())
-                || data.Description.toLowerCase().includes(value.toLowerCase())
-                || data.Email.toLowerCase().includes(value.toLowerCase())
-                || data.FullName.toLowerCase().includes(value.toLowerCase())
-        });
-
-        if (value.length === 0) {
-            handelFilter()
-        } else {
-            element.innerHTML = '';
-            paginateObject = paginate(filtered.length, 1);
-            _totalPages = paginateObject.pages.length;
-
-            if (_totalPages === 1) {
-                element.innerHTML = ''
-                $("#no-result").addClass('hidden');
-            }
-            else if (filtered.length === 0) {
-                hideItems();
-                $("#no-result").removeClass('hidden');
-                $("#no-result").html("No Result");
-            }
-            else {
-                $("#no-result").addClass('hidden');
-                element.innerHTML = createPagination(_totalPages, page);
-            }
-        }
-
-
-    });
 
 function handleGridItem(pageSize) {
     $("#grid-size-container").addClass('invisible');
     $("#grid-size-container").addClass('scale-95');
     $('#grid-size-container').css('opacity', '0');
+
+    $("#grid-size-container-unlogged").addClass('invisible');
+    $("#grid-size-container-unlogged").addClass('scale-95');
+    $('#grid-size-container-unlogged').css('opacity', '0');
 
     element.innerHTML = '';
     paginateObject = paginate(filtered.length, 1, pageSize);
@@ -251,5 +222,41 @@ function handleGridItem(pageSize) {
         element.innerHTML = createPagination(_totalPages, page);
     } else {
         showItems();
+    }
+}
+
+function search(input) {
+
+    filtered = items.filter(function (data) {
+        return data.Name.toLowerCase().includes(input.value.toLowerCase()) ||
+            data.Description.toLowerCase().includes(input.value.toLowerCase()) ||
+            data.Email.toLowerCase().includes(input.value.toLowerCase()) ||
+            data.FullName.toLowerCase().includes(input.value.toLowerCase())
+    });
+
+
+    if (input.value.length === 0) {
+        handelFilter();
+    } else {
+
+        element.innerHTML = '';
+        paginateObject = paginate(filtered.length, 1);
+        _totalPages = paginateObject.pages.length;
+
+        if (_totalPages === 1) {
+            hideItems();
+            showItems();
+            element.innerHTML = ''
+            $("#no-result").addClass('hidden');
+        } else if (filtered.length === 0) {
+            hideItems();
+            $("#no-result").removeClass('hidden');
+            $("#no-result").html("No Result");
+        } else {
+            hideItems();
+            showItems();
+            $("#no-result").addClass('hidden');
+            element.innerHTML = createPagination(_totalPages, page);
+        }
     }
 }

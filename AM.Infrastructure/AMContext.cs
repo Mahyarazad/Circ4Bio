@@ -1,4 +1,5 @@
 ﻿using AM.Domain;
+using AM.Domain.BlogAggregate;
 using AM.Domain.ContactUsAggregate;
 using AM.Domain.ListingAggregate;
 using AM.Domain.NegotiateAggregate;
@@ -26,6 +27,7 @@ namespace AM.Infrastructure
         public DbSet<PurchasedItem> PurchasedItems { get; set; }
         public DbSet<Negotiate> Negotiates { get; set; }
         public DbSet<UserNegotiate> UserNegotiates { get; set; }
+        public DbSet<Blog> Blog { get; set; }
         public AMContext(DbContextOptions<AMContext> options) : base(options)
         {
         }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using _0_Framework.Infrastructure;
 using AM.Application.Contracts.User;
 using AM.Domain.UserAggregate;
@@ -168,15 +169,17 @@ namespace AM.Infrastructure.Repository
         }
         public Task<EditUser> GetDetailByActivationUrl(string guid)
         {
-            var query = _amContext.Users.Select(x => new EditUser
-            {
-                Id = x.Id,
-                ActivationGuid = x.ActivationGuid.ToString()
-            }).AsNoTracking();
+            var query = _amContext.Users.Where(x => x.ActivationGuid == Guid.Parse(guid))
+                .Select(x => new EditUser
+                {
+                    Id = x.Id,
+                    ActivationGuid = x.ActivationGuid.ToString()
 
-            if (query.FirstOrDefaultAsync(x => x.ActivationGuid == guid) != null)
+                }).AsNoTracking();
+
+            if (query.First() != null)
             {
-                return query.FirstOrDefaultAsync(x => x.ActivationGuid == guid);
+                return Task.FromResult(query.First());
             }
             else
             {

@@ -5,7 +5,6 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
-using Nancy.Json;
 using Newtonsoft.Json;
 
 namespace _0_Framework.Application

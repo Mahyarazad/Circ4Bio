@@ -21,18 +21,16 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
         public bool MasterFilter;
         private readonly IUserApplication _userApplication;
         private readonly IHttpContextAccessor _contextAccessor;
-        private readonly INotificationApplication _notificationApplication;
         private readonly IListingApplication _listingApplication;
+
         public IndexModel(IUserApplication userApplication,
             IHttpContextAccessor contextAccessor,
-            INotificationApplication notificationApplication,
             IListingApplication listingApplication
         )
         {
             _userApplication = userApplication;
             _contextAccessor = contextAccessor;
             _listingApplication = listingApplication;
-            _notificationApplication = notificationApplication;
         }
 
         public async Task OnGet()

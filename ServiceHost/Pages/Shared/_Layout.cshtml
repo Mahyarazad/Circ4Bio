@@ -7,8 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Circ4Bio </title>
-    <script src="~/js/tailwind.min.js"></script>
-    <link rel="stylesheet" href="~/css/Inter.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="~/dist/output.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     @await Html.PartialAsync("_Favicons")
@@ -16,37 +15,39 @@
 </head>
 <body>
     <partial name="_Header" />
-<main role="main">
-    <div class="max-w-max-customized">
-        @if ((string)Context.HttpContext.Request.RouteValues.Values.First() == "/MarketPlace/Index")
-        {
-            <partial name="Shared/_AsideMarket" />
-        }
-        <div class="hidden" id="overlay">
-            <div class="flex justify-center my-64">
-                <div class="loadingio-spinner-eclipse-bpb0a9tyqqv">
-                    <div class="ldio-91csn44uaj7">
-                        <div></div>
+    <main role="main">
+        <div class="max-w-max-customized">
+            @if ((string)Context.HttpContext.Request.RouteValues.Values.First() == "/MarketPlace/Index")
+            {
+                <partial name="Shared/_AsideMarket" />
+            }
+            <div class="hidden" id="overlay">
+                <div class="flex justify-center my-64">
+                    <div class="loadingio-spinner-eclipse-bpb0a9tyqqv">
+                        <div class="ldio-91csn44uaj7">
+                            <div></div>
+                        </div>
                     </div>
                 </div>
             </div>
+            @RenderBody()
         </div>
-        @RenderBody()
-    </div>
-</main>
+    </main>
 
     <partial name="_Footer" />
     <div class="fixed inset-0 overflow-y-auto h-full w-full translate-y-full invisible transform duration-300 opacity-0"
          id="modal">
-        <div class="modal-content" id="ModalConetnt">
+        <div class="modal-content" id="ModalContent">
 
         </div>
     </div>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
     <script src="~/js/MenuHandlers.js" asp-append-version="true"></script>
-    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script src="~/js/jquery.cookie.min.js_1.4.1/cdnjs/jquery.cookie.min.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js" integrity="sha512-37T7leoNS06R80c8Ulq7cdCDU5MNQBwlYoy1TX/WUsLFC2eYNqtKlV0QjH7r8JpG/S0GUMZwebnVFLPd6SU5yg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js" integrity="sha512-3j3VU6WC5rPQB4Ld1jnLV7Kd5xr+cq9avvhwqzbH/taCRNURoeEpoPBK9pDyeukwSxwRPJ8fDgvYXd6SkaZ2TA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js" integrity="sha512-o6XqxgrUsKmchwy9G5VRNWSSxTS4Urr4loO6/0hYdpWmFUfHqGzawGxeQGMDqYzxjY9sbktPbNlkIQJWagVZQg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
     @await RenderSectionAsync("CSS", required: false)

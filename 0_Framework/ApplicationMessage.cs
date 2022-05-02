@@ -22,7 +22,7 @@
         public const string ResetPasswordSuccess = "Your password has been changed successfully.";
         public const string ResetPasswordLinkIsInvalid = "Reset password link is not valid.";
         public const string ContactUsSuccess = "Your message has been successfully sent, thanks for your inquery.";
-        public const string SubmitRequiredInfo = "Please provide the required information to post requests and messages to other clients.";
+        public const string SubmitRequiredInfo = "Please provide the required information to register, post requests and exchange messages with other users. Your application is completed upon approval of your application you will be able to add your listing.";
         public const string SystemMessage = "System Message";
 
         //Listing Messages
@@ -54,5 +54,6 @@
 
         //Welcome Message
         public const string WelcomeMessage = "Thanks for registration and welcome to Circ4Bio";
+
     }
 }

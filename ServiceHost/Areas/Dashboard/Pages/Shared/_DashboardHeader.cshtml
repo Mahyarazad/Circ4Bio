@@ -11,18 +11,21 @@
         <div class="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
             <div class="relative h-16 flex items-center justify-between lg:border-b lg:border-sky-800">
                 <div class="px-2 flex items-center lg:px-0">
-                    <a asp-page="/Index" asp-area="" class="flex-shrink-0">
+                    <div id="dashboard-menu" class="flex-shrink-0 visible lg:hidden" title="Home Page">
+                        <img class="block h-8 w-auto" src="~/Site Files/Circ4Bio.png" alt="Workflow">
+                    </div>
+                    <a asp-page="/Index" asp-area="" class="flex-shrink-0 hidden lg:block" title="Home Page">
                         <img class="block h-8 w-auto" src="~/Site Files/Circ4Bio.png" alt="Workflow">
                     </a>
                     <div class="hidden lg:block lg:ml-6 lg:space-x-4">
                         <div class="flex">
                             <!-- Current: "bg-black bg-opacity-25", Default: "hover:bg-sky-800" -->
-                            <a asp-area="Dashboard" asp-page="/Index" id="dashboard"
+                            <a asp-area="Dashboard" asp-page="/Index" id="dashboard" title="Dashboard"
                                class="bg-opacity-25
                                 @((string)Context.HttpContext.Request.RouteValues.Values.First() != "/AvailableListing/Index" ?"bg-black" :"" )
                                rounded-md py-2 px-3 mx-3 text-sm font-medium text-white">Dashboard</a>
 
-                            <a asp-page="/AvailableListing/Index" id="market"
+                            <a asp-page="/AvailableListing/Index" id="market" title="Market Place"
                                class="bg-opacity-25
                                 @((string)Context.HttpContext.Request.RouteValues.Values.First() == "/AvailableListing/Index" ?"bg-black" :"" )
                                rounded-md py-2 px-3 mx-3 text-sm font-medium text-white">Market</a>
@@ -82,10 +85,10 @@
                     </button>
                     <!--End on Mobile menu handler-->
                 </div>
-                <div class="hidden lg:block lg:ml-4">
+                <div class="hidden lg:block lg:ml-4" title="Notifications">
                     <div class="flex items-center">
                         <span id="notification-counter" class="absolute text-red-500 sm:text-sm font-bold z-50 ml-6 mb-6"></span>
-                        <!--Mobile Notification handler -->
+                        <!--Notification handler -->
                         <button type="button" id="notification-handler"
                                 class="flex-shrink-0 rounded-full p-1 text-white transition ease-in-out delay-150 bg-sky-900 hover:scale-125 focus:bg-sky-900 focus:ring-2 focus:ring-offset-2 focus:ring-offset-sky-900 focus:ring-white">
                             <span class="sr-only">View notifications</span>
@@ -94,7 +97,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                             </svg>
                         </button>
-                        <!--End of mobile notification handler-->
+                        <!--End of notification handler-->
                         <!-- Desktop profile dropdown -->
                         <div class="relative flex-shrink-0 ml-4" id="profile-handler">
                             <div>

@@ -32,13 +32,12 @@ namespace ServiceHost.Pages.Authentication
 
         public void OnGet()
         {
-
+            TempData.Clear();
         }
 
         public async void OnPost(ResendActivationEmail command)
         {
-            Message = "";
-            SuccessMessage = "";
+            TempData.Clear();
 
             var result = await _userApplication.SendActivationEmail(command.Email);
             if (result.IsSucceeded)

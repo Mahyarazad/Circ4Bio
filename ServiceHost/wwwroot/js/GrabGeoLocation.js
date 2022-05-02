@@ -25,10 +25,6 @@ function showPosition(position) {
     const marker = new mapboxgl.Marker({ color: 'red', rotation: 0 })
         .setLngLat([position.coords.longitude, position.coords.latitude])
         .addTo(map);
-
-    //var img_url = "http://maps.googleapis.com/maps/api/staticmap?center="
-    //    + latlondata + "&zoom=14&size=400x300&sensor=false";
-    //document.getElementById("mapholder").innerHTML = "<img src='" + img_url + "' />";
 }
 
 function hideMap() {

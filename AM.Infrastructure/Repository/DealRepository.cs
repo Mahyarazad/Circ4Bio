@@ -69,7 +69,7 @@ namespace AM.Infrastructure.Repository
                     DueTime = x.DueTime
 
                 })
-                .OrderByDescending(x => x.DealId)
+                .OrderByDescending(x => x.CreationTime)
                 .ToListAsync();
         }
 
@@ -154,7 +154,7 @@ namespace AM.Infrastructure.Repository
                     DueTime = x.DueTime
 
                 })
-                .OrderByDescending(x => x.DealId)
+                .OrderByDescending(x => x.PaymentTime)
                 .ToListAsync();
         }
 

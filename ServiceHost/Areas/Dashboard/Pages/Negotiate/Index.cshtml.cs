@@ -73,7 +73,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Negotiate
                 }));
             }
 
-            return NegotiateList;
+            return NegotiateList.OrderByDescending(x => x.CreationTime).ToList();
         }
 
         public void OnGet()

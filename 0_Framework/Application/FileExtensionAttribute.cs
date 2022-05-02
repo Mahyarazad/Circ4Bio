@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
@@ -28,5 +29,7 @@ namespace _0_Framework.Application
             context.Attributes.Add("data-val", "true");
             context.Attributes.Add("data-val-fileExtensionLimit", ErrorMessage);
         }
+
     }
+
 }

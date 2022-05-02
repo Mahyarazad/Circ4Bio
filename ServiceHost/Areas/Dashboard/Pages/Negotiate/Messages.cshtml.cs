@@ -47,15 +47,15 @@ namespace ServiceHost.Areas.Dashboard.Pages.Negotiate
             }
         }
 
-        public async Task<JsonResult> OnPost(NewMessage Command)
-        {
-            Command.UserEntity = false;
-            CurrentNegotiate = _negotiateApplication.GetNegotiationViewModel(Command.NegotiateId);
-            Command.UserId = _authenticateHelper.CurrentAccountRole().Id;
-            if (Command.UserId == CurrentNegotiate.BuyerId)
-                Command.UserEntity = true;
-            var res = _negotiateApplication.SendMessage(Command);
-            return new JsonResult(res);
-        }
+        // public async Task<JsonResult> OnPost(NewMessage Command)
+        // {
+        //     Command.UserEntity = false;
+        //     CurrentNegotiate = _negotiateApplication.GetNegotiationViewModel(Command.NegotiateId);
+        //     Command.UserId = _authenticateHelper.CurrentAccountRole().Id;
+        //     if (Command.UserId == CurrentNegotiate.BuyerId)
+        //         Command.UserEntity = true;
+        //     var res = _negotiateApplication.SendMessage(Command);
+        //     return new JsonResult(res);
+        // }
     }
 }

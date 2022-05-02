@@ -8,9 +8,13 @@
         <!-- This element is to trick the browser into centering the modal contents. -->
         <span class="hidden md:inline-block md:align-middle md:h-screen" aria-hidden="true">&#8203;</span>
 
-        <div class="flex text-base text-left transform transition w-full md:inline-block md:max-w-2xl md:px-4 md:my-8 md:align-middle lg:max-w-4xl">
-            <div class="w-full relative flex items-center bg-white px-4 pt-14 pb-8 overflow-hidden shadow-2xl sm:px-6 sm:pt-8 md:p-6 lg:p-8">
-                <button type="button" onclick="hideModal()" class="absolute top-20 right-4 text-gray-400 hover:text-gray-500 sm:top-24 sm:right-6 md:top-6 md:right-6 lg:top-8 lg:right-8">
+        <div class="flex text-base text-left transform transition w-full md:inline-block md:max-w-2xl
+             md:px-4 md:my-8 md:align-middle lg:max-w-4xl">
+            <div class="rounded w-full relative flex items-center bg-white px-4 pt-4 pb-4
+                 overflow-hidden shadow-2xl sm:px-6 sm:pt-8 md:p-6 lg:p-8">
+                <button type="button" onclick="hideModal()"
+                        class="h-6 absolute top-20 right-4 text-gray-400 hover:text-gray-500 sm:top-24
+                        sm:right-6 md:top-6 md:right-6 lg:top-8 lg:right-8">
                     <span class="sr-only">Close</span>
                     <!-- Heroicon name: outline/x -->
                     <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -18,9 +22,9 @@
                     </svg>
                 </button>
 
-                <div class="w-full grid grid-cols-1 gap-y-8 gap-x-6 items-start sm:grid-cols-12 lg:gap-x-8">
+                <div class="w-full mt-7 grid grid-cols-1 gap-y-8 gap-x-6 items-start sm:grid-cols-12 lg:gap-x-8">
                     <div class="sm:col-span-4 lg:col-span-5 place-self-center">
-                        <div class="rounded-lg bg-gray-100 overflow-hidden">
+                        <div class="rounded-lg bg-gray-100 overflow-hidden mt-16 sm:mt-0">
                             <img src="~/Site Files/Listing_Images/@(Model.Image == "listing-default.png" ? "listing-default.png" : $"{Model.Type}/{Model.Image}")"
                                  alt=Model.Image class="object-center object-cover">
                         </div>
@@ -130,7 +134,10 @@
                                         <input type="hidden" value="@Model.Id" name="Id"/>
                                         <button type="submit" onclick="gototop()"
                                                 @(Model.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "disabled" : "")
-                                                class="w-full @(Model.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "bg-gray-100" : "bg-sky-800") border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-sky-800">
+                                                class="w-full @(Model.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "bg-gray-100" : "bg-sky-700")
+                                                border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium
+                                                text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50
+                                                focus:ring-sky-800">
                                             @(Model.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "Owend Item" : "Start Negotiation")
                                         </button>
 

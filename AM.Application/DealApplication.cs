@@ -350,7 +350,7 @@ namespace AM.Application
                 Command.PayerFirstName, Command.PayerLastName, Command.PaidAmount, Command.TransactionFee));
             _dealRepository.SaveChanges();
 
-            var returnUrl = $"/dashboard/paymentinfo/{deal.Id}";
+            var returnUrl = $"/Dashboard/PaymentInfo/{deal.Id}";
 
             var negotiate = _negotiateRepository.Get(Command.NegotiateId).Result;
             var sellerRoleId = _userRepository.GetDetail(negotiate.SellerId).Result.RoleId;
@@ -440,7 +440,7 @@ namespace AM.Application
         {
             var result = new OperationResult();
 
-            var RedirectUrl = $"/dashboard/deals/confirmquatation/{Command.NegotiateId}";
+            var RedirectUrl = $"/Dashboard/Deals/ConfirmQuatation/{Command.NegotiateId}";
 
             var negotiate = _negotiateRepository.Get(Command.NegotiateId).Result;
             var sellerRoleId = _userRepository.GetDetail(negotiate.SellerId).Result.RoleId;

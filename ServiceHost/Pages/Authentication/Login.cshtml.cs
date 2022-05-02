@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using _0_Framework;
 using AM.Application.Contracts.User;
 using Microsoft.AspNetCore.Http;
@@ -30,7 +31,7 @@ namespace ServiceHost.Pages.Authentication
 
         public void OnGet()
         {
-
+            TempData.Clear();
             if (!string.IsNullOrWhiteSpace(_httpContextAccessor.HttpContext.Request.Cookies["user-token"]))
             {
                 UserToken = new JavaScriptSerializer()
@@ -41,18 +42,16 @@ namespace ServiceHost.Pages.Authentication
 
         public IActionResult OnGetLogout()
         {
-            SuccessMessage = "";
-            FailureMessage = "";
-            ActivationFailureMessage = "";
+            TempData.Clear();
+
             _userApplication.Logout();
             return RedirectToPage("./Index");
         }
 
         public async Task<IActionResult> OnPostLogin(EditUser command)
         {
-            SuccessMessage = "";
-            FailureMessage = "";
-            ActivationFailureMessage = "";
+            TempData.Clear();
+
             var result = await _userApplication.Login(command);
 
             var uri = new Uri(_httpContextAccessor.HttpContext.Request.Headers

@@ -13,7 +13,6 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
 {
     public class CreateModel : PageModel
     {
-        public List<NotificationViewModel> Notifications;
         public CreateListing Command;
         public SelectList CurrencyList;
         public SelectList DeliveryCharges;

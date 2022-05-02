@@ -6,25 +6,6 @@ using Microsoft.AspNetCore.Http;
 
 namespace AM.Application.Contracts.Negotiate
 {
-    public class NewMessage
-    {
-        public long NegotiateId { get; set; }
-        public long UserId { get; set; }
-        [Required(ErrorMessage = ApplicationMessage.EmptyMessage)]
-        public string? MessageBody { get; set; }
-        [MaxFileSize(1 * 1024 * 1024, ErrorMessage = ValidationMessages.SizeError1M)]
-        public IFormFile? File { get; set; }
-        public bool UserEntity { get; set; }
-        public bool Receiver
-        {
-            get
-            {
-                return !UserEntity;
-            }
-
-        }
-    }
-
     public class MessageViewModel : NewMessage
     {
         public long MessageId { get; set; }
@@ -36,5 +17,28 @@ namespace AM.Application.Contracts.Negotiate
         public string? BuyyerImageString { get; set; }
         public string? SellerImageString { get; set; }
         public DateTime CreationTime { get; set; }
+    }
+
+    public class NewMessage
+    {
+        public long NegotiateId { get; set; }
+        public long UserId { get; set; }
+
+        [Required(ErrorMessage = ApplicationMessage.EmptyMessage)]
+        public string MessageBody { get; set; }
+
+        [MaxFileSize(1 * 1024 * 1024, ErrorMessage = ValidationMessages.SizeError1M)]
+        // [RegularExpression(@"([a-zA-Z0-9\s_\\.\-:])+(.pdf)$", ErrorMessage = ValidationMessages.InvalidUploadFileFormat)]
+        [FileExtensionLimit(new string[] { ".pdf" }, ErrorMessage = ValidationMessages.InvalidUploadFileFormat)]
+        public IFormFile? File { get; set; }
+        public bool UserEntity { get; set; }
+        public bool Receiver
+        {
+            get
+            {
+                return !UserEntity;
+            }
+
+        }
     }
 }

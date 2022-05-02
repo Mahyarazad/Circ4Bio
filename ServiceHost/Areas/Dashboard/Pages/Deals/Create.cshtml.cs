@@ -1,14 +1,10 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net.Mime;
 using System.Threading.Tasks;
 using _0_Framework.Application;
 using AM.Application.Contracts.Deal;
 using AM.Application.Contracts.Listing;
 using AM.Application.Contracts.Negotiate;
 using AM.Application.Contracts.User;
-using AM.Domain.NegotiateAggregate;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;

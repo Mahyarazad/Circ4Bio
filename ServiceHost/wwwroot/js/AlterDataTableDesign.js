@@ -1,8 +1,5 @@
 ﻿$(document).ready(function () {
-    $('#main-table').DataTable({
-        "order": [[0, "desc"]],
-        language: { searchPlaceholder: "Search ..." }
-    });
+
     $('input[type="search"]').addClass('mt-1');
     $('input[type="search"]').addClass('w-1/2');
     $('input[type="search"]').addClass('border-gray-300');
@@ -13,7 +10,7 @@
     $('input[type="search"]').addClass('px-3');
     $('input[type="search"]').addClass('focus:outline-none');
     $('input[type="search"]').addClass('focus:border-sky-500');
-    $('input[type="search"]').addClass('focus:ring-sky-500');
+    $('input[type="search"]').addClass('focus:ring-sky-700');
     $('input[type="search"]').addClass('sm:text-sm');
     $('input[type="search"]').addClass('float-left');
     $('input[type="search"]').addClass('font-medium');
@@ -27,7 +24,7 @@
     $('select[name="main-table_length"]').addClass('px-3');
     $('select[name="main-table_length"]').addClass('focus:outline-none');
     $('select[name="main-table_length"]').addClass('focus:border-sky-500');
-    $('select[name="main-table_length"]').addClass('focus:ring-sky-500');
+    $('select[name="main-table_length"]').addClass('focus:ring-sky-700');
     $('select[name="main-table_length"]').addClass('sm:text-sm');
     $('select[name="main-table_length"]').addClass('font-medium');
 
@@ -65,6 +62,4 @@
     $("th:contains('Actions')").addClass('no-after');
 
     $('ul[class="pagination"]').addClass('flex');
-    //    $('li[class="active"]').addClass('mx-1');
-    //    $('li[class="next"]').addClass('mx-1');
 });

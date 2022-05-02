@@ -1,6 +1,7 @@
 ﻿using System.Security.Cryptography.Xml;
 using _0_Framework.Infrastructure;
 using AM.Application;
+using AM.Application.Contracts.Blog;
 using AM.Application.Contracts.ContactUs;
 using AM.Application.Contracts.Deal;
 using AM.Application.Contracts.Listing;
@@ -10,6 +11,7 @@ using AM.Application.Contracts.ResetPassword;
 using AM.Application.Contracts.Role;
 using AM.Application.Contracts.User;
 using AM.Domain;
+using AM.Domain.BlogAggregate;
 using AM.Domain.ContactUsAggregate;
 using AM.Domain.ListingAggregate;
 using AM.Domain.NegotiateAggregate;
@@ -53,6 +55,8 @@ namespace AM.Infrastructure.Core
             services.AddTransient<IUserNegotiateRepository, UserNegotiateRepository>();
             services.AddTransient<INegotiateApplication, NegotiateApplication>();
 
+            services.AddTransient<IBlogRepository, BlogRepository>();
+            services.AddTransient<IBlogApplication, BlogApplication>();
 
             services.AddTransient<IDealApplication, DealApplication>();
             services.AddTransient<IDealRepository, DealRepository>();

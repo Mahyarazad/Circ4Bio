@@ -102,14 +102,14 @@ namespace ServiceHost.Areas.Dashboard.Pages
             else
             {
                 ActiveListingCount = _listingApplication.GetActiveListing(UserId).Result.Count;
-                ActiveNegotiationsBuyingItems =
-                    _negotiateApplication
-                        .AllListingItemsBuyyer(UserId)
-                        .Where(x => x.IsActive & !x.IsFinished & !x.IsCanceled).ToList().Count;
                 ActiveNegotiationsSalesItems =
                     _negotiateApplication
+                        .AllListingItemsBuyyer(UserId)
+                        .Where(x => !x.IsFinished & !x.IsCanceled).Count();
+                ActiveNegotiationsBuyingItems =
+                    _negotiateApplication
                         .AllListingItemsSeller(UserId)
-                        .Where(x => x.IsActive & !x.IsFinished & !x.IsCanceled).ToList().Count;
+                         .Where(x => !x.IsFinished & !x.IsCanceled).Count();
                 SuppliedItems = _dealApplication.GetSuppliedList(UserId).Result.Count;
                 PurchasedItems = _dealApplication.GetPurchasedList(UserId).Result.Count;
             }

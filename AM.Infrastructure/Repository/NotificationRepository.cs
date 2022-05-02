@@ -83,7 +83,7 @@ namespace AM.Infrastructure.Repository
                     NotificationTitle = x.Notification.NotificationTitle,
                     CreationTime = x.CreationTime
                 })
-                .OrderByDescending(z => z.Id)
+                .OrderByDescending(z => z.CreationTime)
                 .ToListAsync();
             return result;
         }

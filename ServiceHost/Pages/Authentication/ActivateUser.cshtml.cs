@@ -20,11 +20,10 @@ namespace ServiceHost.Pages.Authentication
             _userApplication = userApplication;
         }
 
-        public async void OnGet(string id)
+        public void OnGet(string id)
         {
-            RegisterSuccess = "";
-            RegisterMessage = "";
-            var result = await _userApplication.ActivateUser(id);
+            TempData.Clear();
+            var result = _userApplication.ActivateUser(id).Result;
             if (result.IsSucceeded)
             {
                 RegisterSuccess = ApplicationMessage.SuccessfulActivation;

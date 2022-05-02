@@ -29,6 +29,7 @@ namespace AM.Application.Contracts.User
         Task<OperationResult> Login(EditUser command);
         void Logout();
         Task<List<Usertype>> GetUsertypes();
+        Task<List<Usertype>> UsertypesforRegistration();
         Task<OperationResult> AddDeliveryLocation(CreateDeliveryLocation Command);
         Task<OperationResult> EditDeliveryLocation(CreateDeliveryLocation Command);
         Task<bool> RemoveDeliveryLocation(CreateDeliveryLocation Command);

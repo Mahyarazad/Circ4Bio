@@ -26,10 +26,24 @@ namespace AM.Infrastructure.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Auther")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("AvatarImage")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
                     b.Property<string>("Body")
                         .IsRequired()
                         .HasMaxLength(3000)
                         .HasColumnType("nvarchar(3000)");
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("datetime2");
@@ -38,10 +52,20 @@ namespace AM.Infrastructure.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("ReadDuration")
+                        .HasColumnType("int");
+
                     b.Property<string>("ShortDescription")
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Slug")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -489,9 +513,6 @@ namespace AM.Infrastructure.Migrations
 
                     b.HasIndex("ListingId");
 
-                    b.HasIndex("UserId")
-                        .IsUnique();
-
                     b.ToTable("PurchasedItem", "dbo");
                 });
 
@@ -528,9 +549,6 @@ namespace AM.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ListingId");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
 
                     b.ToTable("SuppliedItem", "dbo");
                 });
@@ -923,15 +941,7 @@ namespace AM.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AM.Domain.UserAggregate.User", "Users")
-                        .WithOne("PurchasedItem")
-                        .HasForeignKey("AM.Domain.Supplied.PurchasedAggregate.PurchasedItem", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Listing");
-
-                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("AM.Domain.Supplied.PurchasedAggregate.SuppliedItem", b =>
@@ -942,15 +952,7 @@ namespace AM.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AM.Domain.UserAggregate.User", "Users")
-                        .WithOne("SuppliedItem")
-                        .HasForeignKey("AM.Domain.Supplied.PurchasedAggregate.SuppliedItem", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Listing");
-
-                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("AM.Domain.UserAggregate.User", b =>
@@ -1059,10 +1061,6 @@ namespace AM.Infrastructure.Migrations
                     b.Navigation("Listings");
 
                     b.Navigation("Notifications");
-
-                    b.Navigation("PurchasedItem");
-
-                    b.Navigation("SuppliedItem");
 
                     b.Navigation("UserNegotiate");
                 });

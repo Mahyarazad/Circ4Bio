@@ -1,4 +1,5 @@
 ﻿@page
+@using AM.Infrastructure.Core
 @model ServiceHost.Areas.Dashboard.Pages.Users.Account.IndexModel;
 @inject _0_Framework.Application.IAuthenticateHelper AuthenticateHelper;
 @{ ViewData["Title"] = "Dashboard | Account"; }
@@ -28,7 +29,7 @@
                     </div>
                     <!-- end -->
                     @* <div class="mx-3 my-3 mr-96"> *@
-                    @*     <input type='text' id="main-search" class='mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 mb-2 px-3 focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm' autocomplete='off' placeholder='Search everything...'> *@
+                    @*     <input type='text' id="main-search" class='mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 mb-2 px-3 focus:outline-none focus:ring-sky-700 focus:border-sky-500 sm:text-sm' autocomplete='off' placeholder='Search everything...'> *@
                     @* </div> *@
 
                 <table class="min-w-full border-collapse block md:table" id="main-table">
@@ -74,25 +75,25 @@
                                     <div>
                                         @if (item.IsActive)
                                         {
-                                            <span class="px-1 bg-green-200 inline-flex text-xs leading-5 font-semibold rounded-full text-gray-800">
+                                            <span class="px-1 bg-green-200 inline-flex text-xs leading-5 font-semibold rounded text-gray-800">
                                                 Email Active
                                             </span>
                                         }
                                         else
                                         {
-                                            <span class="px-1 bg-red-200 inline-flex text-xs leading-5 font-semibold rounded-full text-gray-800">
+                                            <span class="px-1 bg-red-200 inline-flex text-xs leading-5 font-semibold rounded text-gray-800">
                                                 Email Not Active
                                             </span>}
                                         <div>
                                             @if (item.Status)
                                             {
-                                                <span class="px-1 bg-green-200 inline-flex text-xs leading-5 font-semibold rounded-full text-gray-800">
+                                                <span class="px-1 bg-green-200 inline-flex text-xs leading-5 font-semibold rounded text-gray-800">
                                                     Vat Registered
                                                 </span>
                                             }
                                             else
                                             {
-                                                <span class="px-1 bg-red-200 inline-flex text-xs leading-5 font-semibold rounded-full text-gray-800">
+                                                <span class="px-1 bg-red-200 inline-flex text-xs leading-5 font-semibold rounded text-gray-800">
                                                     Vat Not Registered
                                                 </span>
                                             }
@@ -108,7 +109,7 @@
                                         </a>
                                         @if (item.IsActive)
                                         {
-                                            <form asp-page="./Index" asp-page-handler="DeactivateUser"
+                                            <form asp-page="./Index" asp-page-handler="DeactivateUser" permission="@UserPermission.DisableUserEmail"
                                                   data-callback="" data-ajax="true" method="post" data-action="Refresh" class="mx-2">
                                                 <input type="hidden" name="Id" id="Id" value="@item.Id"/>
                                                 <button type="submit"
@@ -124,7 +125,7 @@
                                         }
                                         else
                                         {
-                                            <form asp-page="./Index" asp-page-handler="ActivateUser"
+                                            <form asp-page="./Index" asp-page-handler="ActivateUser" permission="@UserPermission.VerifyUserEmail"
                                                   data-callback="" data-ajax="true" method="post" data-action="Refresh" class="mx-2">
                                                 <input type="hidden" name="Id" id="Id" value="@item.Id"/>
                                                 <button type="submit"
@@ -140,7 +141,7 @@
                                         }
                                         @if (item.Status)
                                         {
-                                            <form asp-page="./Index" asp-page-handler="DeactivateUserStatus"
+                                            <form asp-page="./Index" asp-page-handler="DeactivateUserStatus" permission="@UserPermission.DisableUserStatus"
                                                   data-callback="" data-ajax="true" method="post" data-action="Refresh" class="mx-2">
                                                 <input type="hidden" name="Id" id="Id" value="@item.Id"/>
                                                 <button type="submit"
@@ -156,7 +157,7 @@
                                         }
                                         else
                                         {
-                                            <form asp-page="./Index" asp-page-handler="ActivateUserStatus"
+                                            <form asp-page="./Index" asp-page-handler="ActivateUserStatus" permission="@UserPermission.ActivateUserStatus"
                                                   data-callback="" data-ajax="true" method="post" data-action="Refresh" class="mx-2">
                                                 <input type="hidden" name="Id" id="Id" value="@item.Id"/>
                                                 <button type="submit"
