@@ -14,22 +14,31 @@ $("#operation-result-failed-message").change(function () {
     $("#overlay").addClass('hidden');
 });
 
-$('#mobile-home-menu-close').on('click', function () {
+function closeLandingMobileMenu() {
     $('#mobile-home-menu').css('visibility', 'hidden');
     $('#mobile-home-menu').css('opacity', '0');
     $('#mobile-home-menu').css('z-index', '-1');
     $('#mobile-home-menu').addClass('top-0');
     $('#mobile-home-menu').removeClass("top-16");
-})
+}
 
-$('#mobile-home-menu-open').on('click', function () {
+function openLandingMobileMenu() {
     $('#mobile-home-menu').css('visibility', 'visible');
     $('#mobile-home-menu').removeClass('top-0');
     $('#mobile-home-menu').addClass("top-16");
     $('#mobile-home-menu').css('opacity', '1');
     $('#mobile-home-menu').css('z-index', '10');
-})
+}
 
+
+//$('#mobile-home-menu-open').on('click', function () {
+//    openLandingMobileMenu();
+//});
+//
+//
+//$('#mobile-home-menu-close').on('click', function () {
+//    closeLandingMobileMenu();
+//});
 
 $("#desktop-user-menu-trigger").on('mouseover', function (e) {
     e.preventDefault;
@@ -307,13 +316,50 @@ $('#notification-handler-mobile').on('click',
         }
     });
 
-$('#mobile-menu-trigger').on('click', function () {
-    var status = $('#mobile-menu').css("visibility");
-    if (status === 'hidden') {
-        openProfileMenu();
-        closeNotificationPanel();
-        closeSideMenu();
+$('#mobile-menu-trigger').on('click',
+    function () {
+        var status = $('#mobile-menu').css("visibility");
+        if (status === 'hidden') {
+            openProfileMenu();
+            closeNotificationPanel();
+            closeSideMenu();
+        } else {
+            closeProfileMenu();
+        }
+    });
+
+$("#mobile-home-menu-close").on('click', function () {
+    closeLandingMobileMenu();
+});
+
+$('html').click(function (e) {
+    if (window.screen.width < 1024) {
+        var element = $(e.target)[0]
+        if (element.id === "mobile-home-menu-open") {
+            openLandingMobileMenu();
+        }
+
+        if (element.id !== "mobile-menu-trigger" &&
+            element.id !== "notification-handler-mobile" &&
+            element.id !== "dashboard-menu" &&
+            element.id !== "mobile-home-menu-open") {
+            closeProfileMenu();
+            closeNotificationPanel();
+            closeSideMenu();
+            closeLandingMobileMenu();
+        }
+
+
     } else {
-        closeProfileMenu();
+        var element = $(e.target)[0]
+        if (element.id !== "notification-handler") {
+            var status = $('#notification-panel').css('visibility');
+            if (status !== 'hidden') {
+                $('#notification-panel').css('visibility', 'hidden');
+                $('#notification-panel').addClass('-translate-y-[20rem]');
+                $('#notification-panel').css('opacity', '0');
+                $('#notification-panel').css('z-index', '-1');
+            }
+        }
     }
-})
+});

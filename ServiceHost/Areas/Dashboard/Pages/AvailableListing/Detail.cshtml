@@ -49,8 +49,9 @@
                         {
                             <span class="text-red-500 pb-3 mx-5 mt-4"> @ApplicationMessage.SubmitRequiredInfo</span>}
                     </div>
-                    <div class="m-4 w-full grid grid-cols-1 gap-y-8 gap-x-6 items-start sm:grid-cols-12 lg:gap-x-8">
-                        <div class="sm:col-span-4 lg:col-span-5 place-self-center">
+                <div class="lg:m-4 m-0 w-full grid grid-cols-1 gap-y-8 gap-x-6 px-2 py-2
+                     items-start sm:grid-cols-12 lg:gap-x-8">
+                        <div class="sm:col-span-4 lg:col-span-5 place-self-center lg:mx-0">
                             <div class="rounded-lg bg-gray-100 overflow-hidden">
                                 <img src="~/Site Files/Listing_Images/@(Model.Listing.Image == "listing-default.png" ? "listing-default.png" : $"{Model.Listing.Type}/{Model.Listing.Image}")"
                                      alt=Model.Listing.Image class="object-center object-cover">
@@ -106,7 +107,7 @@
                                 @* </div> *@
 
                                 <div class="mt-6">
-                                    <h4 class="sr-only">Description</h4>
+                                    <h4 class="">Description:</h4>
                                     <p class="text-sm text-gray-700">@Model.Listing.Description</p>
                                 </div>
                             </section>
@@ -156,21 +157,30 @@
                                     @*     </fieldset> *@
                                     @* </div> *@
 
-                                    <div class="mt-6 flex">
-                                        <a asp-page="/AvailableListing/Index" asp-area="Dashboard" class="bg-white border border-gray-300 rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-700">
-                                            Back
-                                        </a>
-                                        <input type="hidden" value="@Model.Listing.Id" name="Id" />
-                                        <button type="submit" onclick="gototop()"
-                                                @(Model.Listing.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "disabled" : "")
-                                                class="@(Model.Listing.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "bg-gray-100" : "bg-sky-800") ml-2 border border-transparent rounded-md py-2 px-4 flex items-center justify-center text-base font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-sky-800">
-                                            @(Model.Listing.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "Owend Item" : "Start Negotiation")
-                                        </button>
+                                    <div class="mt-6 flex flex-col">
+                                        <div class="self-end flex mr-0 lg:mr-6">
+                                            <a asp-page="/AvailableListing/Index" asp-area="Dashboard"
+                                               class="bg-white border border-gray-300 rounded-md shadow-sm py-2 px-4 place-self-center
+                                           inline-flex justify-center text-sm font-medium text-gray-700 hover:bg-gray-50
+                                           focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700">
+                                                Back
+                                            </a>
+                                            <input type="hidden" value="@Model.Listing.Id" name="Id"/>
+                                            <button type="submit" onclick="gototop()"
+                                                    @(Model.Listing.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "disabled" : "")
+                                                    class="@(Model.Listing.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "bg-gray-100" : "bg-sky-700")
+                                                ml-2 border border-transparent rounded-md py-2 px-4 flex items-center justify-center text-sm font-medium
+                                                text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50
+                                                focus:ring-sky-800">
+                                                @(Model.Listing.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "Owend Item" : "Start Negotiation")
+                                            </button>
+
+                                        </div>
 
                                     </div>
                                     @* *@
                                     @* <p class="absolute top-4 left-4 text-center sm:static sm:mt-6"> *@
-                                    @*     <a href="#" class="font-medium text-sky-600 hover:text-sky-500">View full details</a> *@
+                                    @*     <a href="#" class="font-medium text-sky-700 hover:text-sky-500">View full details</a> *@
                                     @* </p> *@
                                 </form>
                             </section>

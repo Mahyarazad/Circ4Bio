@@ -43,6 +43,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Billing
             {
                 return RedirectToPage("/AccessDenied", new { area = "" });
             }
+
         }
 
         public JsonResult OnPost(long id)

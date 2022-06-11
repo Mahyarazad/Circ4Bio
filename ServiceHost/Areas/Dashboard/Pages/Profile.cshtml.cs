@@ -63,6 +63,7 @@ namespace ServiceHost.Areas.Dashboard.Pages
             var result = await _userApplication.EditByUser(user);
             return new JsonResult(Task.FromResult(result));
         }
+
         public IActionResult OnGetAddDeliveryLocation(long id)
         {
             var user = new CreateDeliveryLocation
@@ -71,10 +72,12 @@ namespace ServiceHost.Areas.Dashboard.Pages
             };
             return Partial("./AddDeliveryLocation", user);
         }
+
         public async Task<IActionResult> OnGetListDeliveryLocation(long id)
         {
             return Partial("./ListDeliveryLocation", await _userApplication.GetDeliveryLocationList(id));
         }
+
         public async Task<JsonResult> OnPostAddDeliveryLocation(CreateDeliveryLocation Command)
         {
             var result = await _userApplication.AddDeliveryLocation(Command);
@@ -85,6 +88,7 @@ namespace ServiceHost.Areas.Dashboard.Pages
         {
             return Partial("./EditDeliveryLocation", await _userApplication.GetDeliveryLocation(userId, locationId));
         }
+
         public async Task<JsonResult> OnPostEditDeliveryLocation(CreateDeliveryLocation Command)
         {
             var result = await _userApplication.EditDeliveryLocation(Command);

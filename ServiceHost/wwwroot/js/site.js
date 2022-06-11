@@ -80,6 +80,7 @@ function handleAjaxGet(formData, url, action, data) {
 function redirect(url, message) {
     var resultDom = $('#operation-result');
     var resultDomMessage = $('#operation-result-message');
+    $("#overlay").hide();
     resultDomMessage.text(message);
     resultDom.css('display', 'block');
     setTimeout(() => { window.location.replace(url) }, 3000);
@@ -114,41 +115,70 @@ function handleAjaxPost(formData, url, action) {
                     var updatedUrl = splited.slice(0, splited.length - 1);
                     url = updatedUrl.join('/', updatedUrl) + "/Negotiate";
                     redirect(url, data.result.message);
+                    return;
+                }
+
+                if (splited[splited.length - 2] === "Detail") {
+                    var updatedUrl = splited.slice(0, splited.length - 3);
+                    url = updatedUrl.join('/', updatedUrl) + "/Negotiate";
+                    redirect(url, data.result.message);
+                    return;
+                }
+
+                if (splited[splited.length - 2] === "Edit") {
+                    var updatedUrl = splited.slice(0, splited.length - 2);
+                    url = updatedUrl.join('/', updatedUrl);
+                    redirect(url, data.result.message);
+                    return;
                 }
 
                 if (splited[splited.length - 2] === "Notification") {
                     var updatedUrl = splited.slice(0, splited.length);
                     url = updatedUrl.join('/', updatedUrl);
                     redirect(url, data.result.message);
+                    return;
                 }
 
-                else if (splited[splited.length - 2] === "Quatation") {
+                if (splited[splited.length - 2] === "Quatation") {
                     if (splited[splited.length - 1].includes('##')) {
                         redirect(url, data.result.message);
+                        return;
                     }
                     redirect(url, data.result.message);
+                    return;
                 }
 
-                else if (action === "CancelNegotiation") {
+                if (action === "CancelNegotiation") {
                     var updatedUrl = splited.slice(0, splited.length - 2);
                     url = updatedUrl.join('/', updatedUrl);
                     redirect(url, data.result.message);
+                    return;
                 }
 
-                else if (splited[splited.length - 2] === "ConfirmQuatation") {
+                if (splited[splited.length - 2] === "ConfirmQuatation") {
                     redirect(url, data.result.message);
+                    return;
                 }
 
-                else if (splited[splited.length - 2] === "Deals") {
+                if (splited[splited.length - 2] === "Deals") {
                     redirect(url, data.result.message);
+                    return;
                 }
 
-                else if (splited[splited.length - 2] !== "Messages") {
+                if (splited[splited.length - 1] === "Create") {
+                    var updatedUrl = splited.slice(0, splited.length - 1);
+                    url = updatedUrl.join('/', updatedUrl);
+                    redirect(url, data.result.message);
+                    return;
+                }
+
+                if (splited[splited.length - 2] !== "Messages") {
 
                     if (splited[splited.length - 2] === "Profile" | splited[splited.length - 2] === "Create") {
                         $("#overlay").addClass('hidden');
                         $("#overlay").hide();
                         redirect(url, data.result.message);
+                        //return;
                     } else {
                         if (parseInt(splited[splited.length - 1]) > 0) {
                             var updatedUrl = splited.slice(0, splited.length - 2);

@@ -166,7 +166,7 @@
                     </a>
                 </div>
             </div>
-
+        <!--
             <div class="mt-6 grid grid-cols-12 gap-4">
                 <div class="col-span-12 sm:col-span-6">
                     <label asp-for="@Model.user.Latitude" class="block text-sm font-medium text-gray-700"></label>
@@ -212,8 +212,8 @@
             </div>
 
             <div class="flex-grow space-y-6 rounded-l-md mb-2" id="mapholder" style="height: 300px; display: none"></div>
-
-            <div class="grid grid-cols-12 gap-4">
+            -->
+            <div class="grid grid-cols-12 gap-4 mt-4">
                 <div class="col-span-12 sm:col-span-6">
                     <label asp-for="@Model.user.Country" class="block text-sm font-medium text-gray-700"></label>
                     <select asp-for="@Model.user.Country"
@@ -262,17 +262,19 @@
                 </div>
             </div>
             <input type="hidden" asp-for="@Model.user.Id" value="@Model.user.Id" />
-            <div class="mt-4 py-4 px-4 flex justify-end sm:px-6">
+            <div class="flex flex-col mt-4">
+                <div class="self-end">
+                    <a asp-page="/Index" asp-area="Dashboard" class="bg-white border border-gray-300 rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-700">
+                        Back
+                    </a>
+                    <button type="submit" id="save" class="ml-2 bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-700">
+                        Save
+                    </button>
 
-                <a asp-page="/Index" asp-area="Dashboard" class="bg-white border border-gray-300 rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-700">
-                    Back
-                </a>
-                <button type="submit" id="save" class="ml-5 bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-700">
-                    Save
-                </button>
+                </div>
 
+                </div>
             </div>
-        </div>
     </form>
     <form asp-page-handler="DeactivateUser" class="py-2 mx-3 divide-y divide-gray-200 lg:col-span-9 col-span-12 sm:col-span-6 flex justify-start"
           data-callback="" data-ajax="true" method="post" data-action="Refresh">

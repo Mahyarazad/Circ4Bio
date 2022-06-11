@@ -46,11 +46,11 @@
 <!-- end -->
 <div class="flex justify-start flex-col">
 
-    <a @(Model.user.Status ? "href=/dashboard/listing/create" : "")
+    <a @(Model.user.Status ? "href=/Dashboard/Listing/Create" : "")
         class="text-center mx-2 my-2 @(Model.user.Status ? "bg-sky-700" : "bg-gray-100") md:w-1/3
        border border-transparent rounded-md shadow-sm py-2 px-2 inline-flex justify-center text-sm font-medium
        text-white @(Model.user.Status ? "hover:bg-sky-800" : "hover:bg-gray-100") focus:outline-none focus:ring-2
-       focus:ring-offset-2 focus:ring-sky-600">
+       focus:ring-offset-2 focus:ring-sky-700">
         <i class="fa fa-plus-circle"></i>
         Register a new listing
     </a>
@@ -58,7 +58,7 @@
     {
             <div class="form-check px-2 py-2">
                 <form method="post" asp-page-handler="ShowDeleted" id="filter-deals">
-                    <input class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-sky-600 checked:border-sky-600
+                    <input class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-sky-700 checked:border-sky-700
                                focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
                            type="checkbox" asp-for="@Model.IsFiltered">
                     <label class="form-check-label inline-block text-gray-600">
@@ -143,7 +143,9 @@
 
                     @if (!item.IsDeleted)
                     {
-                        <a asp-page="Edit" asp-route-id="@item.Id" class="mx-2 inline-flex items-center px-2 py-2 border border-gray-300 shadow-sm text-xs font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                        <a asp-page="Edit" asp-route-id="@item.Id" class="mx-2 inline-flex items-center px-2 py-2 border
+                           border-gray-300 shadow-sm text-xs font-medium rounded-md text-gray-700 bg-white
+                           hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
                             Edit
                         </a>
                         <form asp-page="./Index" asp-page-handler="MarkDelete"
@@ -208,7 +210,9 @@
                     {
                         <a href="#showmodal=@Url.Page("./Index", "Log", new {Id = item.Id})" id="showModal"
                            onclick="showModal()"
-                           class="mx-2 inline-flex items-center px-2 py-2 border border-gray-300 shadow-sm text-xs font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                           class="mx-2 inline-flex items-center px-2 py-2 border border-gray-300 shadow-sm text-xs
+                           font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none
+                           focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
                             Log
                         </a>}
                     @if (!item.IsDeleted)
@@ -292,7 +296,9 @@
 
                         @if (!item.IsDeleted)
                         {
-                            <a asp-page="Edit" asp-route-id="@item.Id" class="mx-2 inline-flex items-center px-2 py-2 border border-gray-300 shadow-sm text-xs font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                            <a asp-page="Edit" asp-route-id="@item.Id" class="mx-2 inline-flex items-center px-2 py-2
+                               border border-gray-300 shadow-sm text-xs font-medium rounded-md text-gray-700 bg-white
+                               hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
                                 Edit
                             </a>
                             <form asp-page="./Index" asp-page-handler="MarkDelete"
@@ -353,7 +359,9 @@
                         {
                             <a href="#showmodal=@Url.Page("./Index", "Log", new {Id = item.Id})" id="showModal"
                                onclick="showModal()"
-                               class="mx-2 inline-flex items-center px-2 py-2 border border-gray-300 shadow-sm text-xs font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                               class="mx-2 inline-flex items-center px-2 py-2 border border-gray-300 shadow-sm text-xs
+                               font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none
+                               focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
                                 Log
                             </a>}
                         @if (!item.IsDeleted)

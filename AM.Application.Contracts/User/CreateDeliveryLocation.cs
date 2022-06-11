@@ -18,9 +18,13 @@ namespace AM.Application.Contracts.User
         public string? City { get; set; }
         [Required(ErrorMessage = ValidationMessages.DeliveryLocationCountry)]
         public string? Country { get; set; }
+
         public long PostalCode { get; set; }
+
         public double Latitude { get; set; }
+
         public double Longitude { get; set; }
+
         public int LocationId { get; set; }
     }
 }

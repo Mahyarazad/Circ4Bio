@@ -14,4 +14,8 @@
     <ProjectReference Include="..\0_Framework\0_Framework.csproj" />
     <ProjectReference Include="..\AM.Application.Contracts\AM.Application.Contracts.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="NaceAggregate\" />
+  </ItemGroup>
 </Project>

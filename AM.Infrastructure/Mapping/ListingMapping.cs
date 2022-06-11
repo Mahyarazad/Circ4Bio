@@ -1,5 +1,6 @@
 ﻿using System.Security.Cryptography.Xml;
 using AM.Domain.ListingAggregate;
+using AM.Domain.NaceAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -22,6 +23,7 @@ namespace AM.Infrastructure.Mapping
             builder.Property(x => x.Currency).IsRequired().HasMaxLength(10);
 
             builder.HasOne(x => x.User).WithMany(x => x.Listings).HasForeignKey(x => x.UserId);
+            builder.HasOne(x => x.Nace).WithOne(x => x.Listing).HasForeignKey<Nace>(x => x.ListingId);
             builder.HasMany(x => x.PurchaseList).WithOne(x => x.Listing).HasForeignKey(x => x.ListingId);
             builder.HasMany(x => x.NegotiateList).WithOne(x => x.Listing).HasForeignKey(x => x.ListingId);
             builder.HasMany(x => x.SupplyList).WithOne(x => x.Listing).HasForeignKey(x => x.ListingId);

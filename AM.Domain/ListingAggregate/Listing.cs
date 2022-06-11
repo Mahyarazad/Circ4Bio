@@ -2,6 +2,7 @@
 using System.ComponentModel.Design;
 using System.Linq;
 using _0_Framework.Domain;
+using AM.Domain.NaceAggregate;
 using AM.Domain.NegotiateAggregate;
 using AM.Domain.Supplied.PurchasedAggregate;
 using AM.Domain.UserAggregate;
@@ -98,6 +99,7 @@ namespace AM.Domain.ListingAggregate
         public bool IsDeleted { get; private set; }
         public long UserId { get; private set; }
         public User? User { get; private set; }
+        public Nace? Nace { get; private set; }
         public List<Deal>? DealList { get; private set; }
         public List<Negotiate>? NegotiateList { get; private set; }
         public List<PurchasedItem>? PurchaseList { get; private set; }

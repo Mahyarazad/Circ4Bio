@@ -32,6 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\Dashboard\Pages\Nace\" />
     <Folder Include="Areas\Dashboard\Pages\Shared\Components\Notification\" />
     <Folder Include="wwwroot\Images\" />
     <Folder Include="wwwroot\Terms\" />

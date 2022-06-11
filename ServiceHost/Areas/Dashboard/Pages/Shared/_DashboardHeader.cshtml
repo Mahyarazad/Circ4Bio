@@ -12,7 +12,7 @@
             <div class="relative h-16 flex items-center justify-between lg:border-b lg:border-sky-800">
                 <div class="px-2 flex items-center lg:px-0">
                     <div id="dashboard-menu" class="flex-shrink-0 visible lg:hidden" title="Home Page">
-                        <img class="block h-8 w-auto" src="~/Site Files/Circ4Bio.png" alt="Workflow">
+                        <img class="block h-8 w-auto" src="~/Site Files/Circ4Bio.png" alt="Workflow" id="dashboard-menu">
                     </div>
                     <a asp-page="/Index" asp-area="" class="flex-shrink-0 hidden lg:block" title="Home Page">
                         <img class="block h-8 w-auto" src="~/Site Files/Circ4Bio.png" alt="Workflow">
@@ -39,10 +39,11 @@
                         <span id="notification-counter-mobile" class="absolute text-red-500 sm:text-sm font-bold z-50 ml-auto flex-shrink-0 ml-6"></span>
                         <button type="button" id="notification-handler-mobile"
                                 class="transition ease-in-out delay-150 ml-auto flex-shrink-0 rounded-full p-1 text-sky-200 hover:-translate-y-1 hover:scale-110 focus:outline-none focus:bg-sky-900 focus:ring-2 focus:ring-offset-2 focus:ring-offset-sky-900 focus:ring-white">
-                            <span class="sr-only">View notifications</span>
                             <!-- Heroicon name: outline/bell -->
-                            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                            <svg class="h-6 w-6" id="notification-handler-mobile"
+                                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" id="notification-handler-mobile"
+                                      stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                             </svg>
                         </button>
                         @* <label for="search" class="sr-only">Search</label> *@
@@ -61,7 +62,6 @@
                 <div class="flex lg:hidden">
                     <!-- Mobile menu button -->
                     <button type="button" id="mobile-menu-trigger" class="p-2 rounded-md inline-flex items-center justify-center text-sky-200 hover:text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" aria-controls="mobile-menu" aria-expanded="false">
-                        <span class="sr-only">Open main menu</span>
                         <!--
                         Icon when menu is closed.
 
@@ -69,8 +69,10 @@
 
                         Menu open: "hidden", Menu closed: "block"
                         -->
-                        <svg class="block flex-shrink-0 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        <svg class="block flex-shrink-0 h-6 w-6" id="mobile-menu-trigger"
+                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" id="mobile-menu-trigger"
+                                  stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
                         <!--
                         Icon when menu is open.
@@ -107,18 +109,23 @@
                                 </button>
                             </div>
                             <div id="desktop-user-menu"
-                                 class="origin-top-right right-0 mt-3 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none invisible opacity-0 transform duration-300 absolute top-0"
+                                 class="origin-top-right right-0 mt-3 w-48 rounded-md shadow-2xl py-1 bg-gray-50 ring-1
+                                 ring-black ring-opacity-5 focus:outline-none invisible opacity-0 transform duration-300
+                                 absolute top-0"
                                  role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="0">
                                 <!-- Active: "bg-gray-100", Not Active: "" -->
                                 <p class="block py-2 px-4 text-sm font-medium text-gray-900" role="menuitem" tabindex="0">
                                     @AuthenticateHelper.CurrentAccountRole().Fullname
                                 </p>
-                                <p class="block py-2 px-4 text-sm font-medium text-gray-900" role="menuitem" tabindex="0">
+                                <p class="block py-2 px-2 mx-2 text-sm font-medium text-gray-900
+                                   border border-gray-100 bg-gray-200 rounded"
+                                   role="menuitem" tabindex="0">
                                     @AuthenticateHelper.CurrentAccountRole().Email
                                 </p>
                                 <a asp-page="/Profile"
                                    asp-route-id="@AuthenticateHelper.CurrentAccountRole().Id"
-                                   class="block py-2 px-4 text-sm font-medium text-gray-700 hover:scale-105 transition duration-300 hover:text-sky-900" role="menuitem" tabindex="0" id="user-menu-item-0">Your Profile</a>
+                                   class="block py-2 px-4 text-sm font-medium text-gray-700 hover:scale-105
+                                   transition duration-300 hover:text-sky-900" role="menuitem" tabindex="0" id="user-menu-item-0">Your Profile</a>
 
                                 <a asp-page="/Profile"
                                    asp-route-id="@AuthenticateHelper.CurrentAccountRole().Id"

@@ -124,15 +124,17 @@
                 </div>
             </div>
             <input type="hidden" value="@Model.Command.Id" asp-for="@Model.Command.Id" />
-            <div class="mt-4 py-4 px-4 flex justify-end sm:px-6">
-
-                <a asp-page="/Listing/Index" asp-area="Dashboard" class="bg-white border border-gray-300 rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-700">
+            <div class="flex flex-col mt-4">
+                <div class="self-end">
+                <a asp-page="/Listing/Index" asp-area="Dashboard" class="bg-white border border-gray-300 rounded-md
+                   shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-gray-700 hover:bg-gray-50
+                   focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700">
                     Back
                 </a>
-                <button type="submit" id="save" class="ml-5 bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-700">
+                <button type="submit" id="save" class="ml-2 bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-700">
                     Save
                 </button>
-
+                </div>
             </div>
         </div>
     </div>

@@ -2,6 +2,7 @@
 using AM.Domain.BlogAggregate;
 using AM.Domain.ContactUsAggregate;
 using AM.Domain.ListingAggregate;
+using AM.Domain.NaceAggregate;
 using AM.Domain.NegotiateAggregate;
 using AM.Domain.NotificationAggregate;
 using AM.Domain.ResetPasswordAggregate;
@@ -28,6 +29,9 @@ namespace AM.Infrastructure
         public DbSet<Negotiate> Negotiates { get; set; }
         public DbSet<UserNegotiate> UserNegotiates { get; set; }
         public DbSet<Blog> Blog { get; set; }
+        public DbSet<Nace> Naces { get; set; }
+        public DbSet<Detail> NaceDetails { get; set; }
+        public DbSet<ListItems> NaceListItemsDetail { get; set; }
         public AMContext(DbContextOptions<AMContext> options) : base(options)
         {
         }
