@@ -1,0 +1,209 @@
+﻿@page
+@using _0_Framework
+@using Microsoft.AspNetCore.Http
+@model ServiceHost.Areas.Dashboard.Pages.Nace.CreateModel;
+@inject IHttpContextAccessor _ContextAccessor;
+@{ ViewData["Title"] = "Dashboard | Nace | Register a new Nace"; }
+
+
+<form class="divide-y divide-gray-200 lg:col-span-9" id="form"
+      data-callback="" data-ajax="true" method="post" data-action="Refresh"
+      enctype="multipart/form-data">
+    <!-- operation-result -->
+    <div class="rounded-md bg-green-50 p-4 transition ease-in-out duration-75" id="operation-result" style="display: none">
+        <div class="flex">
+            <div class="flex-shrink-0">
+                <!-- Heroicon name: solid/check-circle -->
+                <svg class="h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                </svg>
+            </div>
+            <div class="ml-3">
+                <p class="text-sm font-medium text-green-800" id="operation-result-message">
+
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="rounded-md bg-red-50 p-4 transition ease-in-out duration-75" id="operation-result-failed" style="display: none">
+        <div class="flex">
+            <div class="flex-shrink-0">
+                <!-- Heroicon name: solid/check-circle -->
+                <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                </svg>
+            </div>
+            <div class="ml-3">
+                <p class="text-sm font-medium text-red-800" id="operation-result-failed-message">
+
+                </p>
+            </div>
+        </div>
+    </div>
+    <!-- end -->
+    <div class="py-6 px-4 sm:p-6 lg:pb-8">
+        <div>
+            <div class="grid grid-cols-2 w-full" id="append-param">
+                <div class="col-span-2">
+                    <label asp-for="@Model.Command.Title" class="block text-sm font-medium text-gray-700">
+                    </label>
+                    <div class="mt-1 rounded-md shadow-sm flex">
+                        <input type="text" asp-for="@Model.Command.Title" class="focus:ring-sky-700 focus:border-sky-500 flex-grow block w-full min-w-0 rounded sm:text-sm border-gray-300">
+                        @*<span class="text-red-500 sm:text-sm" asp-validation-for="@Model.Command.Title"></span>*@
+                    </div>
+                </div>
+                <div class="col-span-2 grid grid-cols-2 space-y-0.5">
+                    <div class="col-span-1">
+                        <label class="block text-sm font-medium text-gray-700">
+                            Index Title
+                        </label>
+                        <div class="mt-1 rounded-md shadow-sm flex">
+                            <input type="text" asp-for="@Model.CreateCommand.DetailBody"
+                                   class="mr-2 focus:ring-sky-700 focus:border-sky-500 flex-grow block w-full min-w-0 rounded sm:text-sm border-gray-300">
+                        </div>
+                    </div>
+                    <div class="col-span-1">
+                        <label class="block text-sm font-medium text-gray-700">
+                            Value
+                        </label>
+                        <div class="mt-1 rounded-md shadow-sm flex">
+                            <input type="text" asp-for="@Model.CreateCommand.ItemDetailList" class="focus:ring-sky-700 focus:border-sky-500 flex-grow block w-full min-w-0 rounded sm:text-sm border-gray-300">
+                        </div>
+                    </div>
+                    <div class="col-span-1"></div>
+                    <div class="col-span-1" id="field-param-1" data-val="1">
+                        <div id="extra-field-1">
+
+                        </div>
+
+                        <input type="hidden" asp-for="@Model.CreateCommand.GroupSize" value="1" id="field-counter" data-val="1" />
+
+                        <button id="1" onclick="AddField(this.id)"
+                                type="button"
+                                class="mt-1 mb-1 bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-700">
+
+                            Field
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="mt-1 mb-1 border-b-2 border-gray-500 rounded-2xl col-span-2"></div>
+                </div>
+            </div>
+            <button onclick="AddParameter(this.id)" id="1"
+                    type="button"
+                    class="col-span-2 justify-self-end mt-2 bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-700">
+                Parameter
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            </button>
+        </div>
+
+        <div class="flex flex-col mt-4">
+            <div class="self-end">
+                <a asp-page="/Nace/Index" asp-area="Dashboard" class="bg-white border border-gray-300 rounded-md shadow-sm
+               py-2 px-4 inline-flex justify-center text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none
+               focus:ring-2 focus:ring-offset-2 focus:ring-gray-700">
+                    Back
+                </a>
+                <button id="save" onclick="loading()"
+                        type="submit" class="ml-2 bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-700">
+                    Save
+                </button>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section CSS{
+    <link rel="stylesheet" href="~/css/Loader.css"/>
+}
+
+@section Scripts
+{
+    <script>
+        function AddField(val) {
+            var target = $(`#extra-field-${val}`);
+            var fieldParam = $(`#field-param-${val}`).attr('data-val');
+            var dataValue = $(`#field-param-${val}`).children()[1];
+
+            var addedFieldValue = parseInt($(dataValue).val()) + 1;
+            $(dataValue).val(addedFieldValue);
+            target.append(
+                `<div class="mt-1 rounded-md shadow-sm flex" id="field-${fieldParam}-${addedFieldValue}">
+                    <input type="text" name="CreateCommand.ItemDetailList" id="CreateCommand_ItemDetailList"
+                        class="focus:ring-sky-700 focus:border-sky-500 flex-grow block w-full min-w-0 rounded sm:text-sm border-gray-300">
+                    <svg id="field-${fieldParam}-${addedFieldValue}" onclick="RemoveField(this.id)" xmlns="http://www.w3.org/2000/svg" class="h-6 mt-1 mx-2 cursor-pointer text-red-600 self-center" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 000 2h6a1 1 0 100-2H7z" clip-rule="evenodd" />
+                        </svg>
+            </div>`
+            );
+        }
+
+        function RemoveField(val) {
+
+            var dataValue = $(`#field-param-${val[6]}`).children()[1];
+            var addedFieldValue = parseInt($(dataValue).val()) - 1;
+            $(dataValue).val(addedFieldValue);
+            $(`#${val}`).remove();
+        }
+
+        function AddParameter(val) {
+
+            var paramValue = parseInt(val) + 1;
+            $('button:contains("Parameter")').attr("id", paramValue);
+            var target = $('#append-param');
+            target.append(
+                `<div class="col-span-2 grid grid-cols-2 space-y-0.5" id="parameter-row-${val}">
+                        <svg id="${val}" onclick="RemoveParameter(this.id)"
+                                xmlns="http://www.w3.org/2000/svg"
+                                class="h-6 mt-2 justify-self-end col-span-2 cursor-pointer text-red-600 self-center" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 000 2h6a1 1 0 100-2H7z" clip-rule="evenodd" />
+                        </svg>
+                    <div class="col-span-1">
+                        <label class="block text-sm font-medium text-gray-700">
+                            Index Title
+                        </label>
+                        <div class="mt-1 rounded-md shadow-sm flex">
+                            <input type="text" name="CreateCommand.DetailBody" id="CreateCommand_DetailBody"
+                                   class="mr-2 focus:ring-sky-700 focus:border-sky-500 flex-grow block w-full min-w-0 rounded sm:text-sm border-gray-300">
+                        </div>
+                    </div>
+                    <div class="col-span-1">
+                        <label class="block text-sm font-medium text-gray-700">
+                            Value
+                        </label>
+                        <div class="mt-1 rounded-md shadow-sm flex">
+                            <input type="text" name="CreateCommand.ItemDetailList" id="CreateCommand_ItemDetailList" class="focus:ring-sky-700 focus:border-sky-500 flex-grow block w-full min-w-0 rounded sm:text-sm border-gray-300">
+                        </div>
+                    </div>
+                    <div class="col-span-1"></div>
+                    <div class="col-span-1" id="field-param-${paramValue}" data-val="${paramValue}">
+                        <div id="extra-field-${paramValue}">
+
+                        </div>
+
+                        <input type="hidden" name="CreateCommand.GroupSize" id="CreateCommand_GroupSize" value="1" id="field-counter" data-val="${paramValue}"/>
+
+                        <button id="${paramValue}" onclick="AddField(this.id)"
+                                type="button"
+                                class="mt-1 mb-1 bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-700">
+
+                            Field
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="mt-1 mb-1 border-b-2 border-gray-500 rounded-2xl col-span-2"></div>
+                </div>`
+            );
+        }
+
+        function RemoveParameter(val) {
+            $(`#parameter-row-${val}`).remove();
+        }
+    </script>
+}

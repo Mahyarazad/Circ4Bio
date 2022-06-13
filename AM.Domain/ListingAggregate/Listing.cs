@@ -100,6 +100,7 @@ namespace AM.Domain.ListingAggregate
         public long UserId { get; private set; }
         public User? User { get; private set; }
         public Nace? Nace { get; private set; }
+        public NaceData? NaceData { get; private set; }
         public List<Deal>? DealList { get; private set; }
         public List<Negotiate>? NegotiateList { get; private set; }
         public List<PurchasedItem>? PurchaseList { get; private set; }

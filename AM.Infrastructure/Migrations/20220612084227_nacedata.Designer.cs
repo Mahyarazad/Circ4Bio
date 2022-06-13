@@ -4,14 +4,16 @@ using AM.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AM.Infrastructure.Migrations
 {
     [DbContext(typeof(AMContext))]
-    partial class AMContextModelSnapshot : ModelSnapshot
+    [Migration("20220612084227_nacedata")]
+    partial class nacedata
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -310,9 +312,6 @@ namespace AM.Infrastructure.Migrations
                     b.Property<string>("Title")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
-
-                    b.Property<bool>("isDeleted")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 

@@ -17,4 +17,12 @@ namespace AM.Infrastructure.Repository
             amContext = _amContext;
         }
     }
+    public class NaceDataRepository : RepositoryBase<long, NaceData>, INaceDataRepository
+    {
+        private readonly AMContext _amContext;
+        public NaceDataRepository(AMContext amContext) : base(amContext)
+        {
+            amContext = _amContext;
+        }
+    }
 }

@@ -12,6 +12,7 @@ namespace AM.Infrastructure.Mapping
 
             builder.ToTable("Nace", schema: "dbo");
             builder.HasKey(x => x.Id);
+            builder.Property(x => x.isDeleted);
             builder.Property(x => x.Title).HasMaxLength(50);
             builder.OwnsMany(x => x.Items, ModelBuilder =>
             {

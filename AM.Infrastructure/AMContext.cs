@@ -32,6 +32,7 @@ namespace AM.Infrastructure
         public DbSet<Nace> Naces { get; set; }
         public DbSet<Detail> NaceDetails { get; set; }
         public DbSet<ListItems> NaceListItemsDetail { get; set; }
+        public DbSet<NaceData> NaceDatas { get; set; }
         public AMContext(DbContextOptions<AMContext> options) : base(options)
         {
         }
