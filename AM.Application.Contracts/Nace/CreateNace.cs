@@ -6,7 +6,7 @@ namespace AM.Application.Contracts.Nace
 {
     public class CreateNace
     {
-        [Required(ErrorMessage = ApplicationMessage.SubmitRequiredInfo)]
+        [Required(ErrorMessage = ValidationMessages.FieldRequired)]
         public string? Title { get; set; }
         public List<CreateDetail>? Items { get; set; }
     }

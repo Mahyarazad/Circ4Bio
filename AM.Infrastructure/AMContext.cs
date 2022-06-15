@@ -30,7 +30,7 @@ namespace AM.Infrastructure
         public DbSet<UserNegotiate> UserNegotiates { get; set; }
         public DbSet<Blog> Blog { get; set; }
         public DbSet<Nace> Naces { get; set; }
-        public DbSet<Detail> NaceDetails { get; set; }
+        public DbSet<Detail> NaceItems { get; set; }
         public DbSet<ListItems> NaceListItemsDetail { get; set; }
         public DbSet<NaceData> NaceDatas { get; set; }
         public AMContext(DbContextOptions<AMContext> options) : base(options)

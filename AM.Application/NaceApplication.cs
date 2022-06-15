@@ -41,7 +41,8 @@ namespace AM.Application
 
         public Task<OperationResult> EditNace(EditNace Command)
         {
-            throw new System.NotImplementedException();
+            var result = new OperationResult();
+            return Task.FromResult(result.Succeeded());
         }
 
         public Task<OperationResult> DeleteNace(long Id)
@@ -51,12 +52,17 @@ namespace AM.Application
 
         public Task<List<NaceViewModel>> GetAllNaces()
         {
-            throw new System.NotImplementedException();
+            return Task.FromResult(_naceRepository.GetAllNaces());
         }
 
-        public Task<NaceViewModel> GetSingleNaces(long Id)
+        public Task<NaceViewModel> GetSingleNace(long Id)
         {
-            throw new System.NotImplementedException();
+            return Task.FromResult(_naceRepository.GetSingleNace(Id));
+        }
+
+        public Task<EditNace> EditSingleNace(long Id)
+        {
+            return Task.FromResult(_naceRepository.EditSingleNace(Id));
         }
     }
 }

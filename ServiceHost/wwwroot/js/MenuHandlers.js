@@ -244,6 +244,9 @@ $("#IsDeleted").on("click", function () {
     $("#show-deleted-blogs").submit();
 });
 
+$("#IsDeleted").on("click", function () {
+    $("#show-deleted-naces").submit();
+});
 
 var openSideMenu = function () {
     $('#side-menu').removeClass("invisible");
@@ -363,3 +366,4 @@ $('html').click(function (e) {
         }
     }
 });
+

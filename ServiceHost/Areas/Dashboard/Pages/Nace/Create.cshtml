@@ -43,31 +43,33 @@
     <!-- end -->
     <div class="py-6 px-4 sm:p-6 lg:pb-8">
         <div>
-            <div class="grid grid-cols-2 w-full" id="append-param">
+            <div class="grid grid-cols-2 w-full space-y-1" id="append-param">
                 <div class="col-span-2">
                     <label asp-for="@Model.Command.Title" class="block text-sm font-medium text-gray-700">
                     </label>
-                    <div class="mt-1 rounded-md shadow-sm flex">
+                    <div class="mt-1 rounded-md">
                         <input type="text" asp-for="@Model.Command.Title" class="focus:ring-sky-700 focus:border-sky-500 flex-grow block w-full min-w-0 rounded sm:text-sm border-gray-300">
-                        @*<span class="text-red-500 sm:text-sm" asp-validation-for="@Model.Command.Title"></span>*@
+                        <span class="text-red-500 sm:text-sm" asp-validation-for="@Model.Command.Title"></span>
                     </div>
                 </div>
-                <div class="col-span-2 grid grid-cols-2 space-y-0.5">
+                <div class="col-span-2 grid grid-cols-2">
                     <div class="col-span-1">
                         <label class="block text-sm font-medium text-gray-700">
                             Index Title
                         </label>
-                        <div class="mt-1 rounded-md shadow-sm flex">
+                        <div class="mt-1 rounded-md">
                             <input type="text" asp-for="@Model.CreateCommand.DetailBody"
                                    class="mr-2 focus:ring-sky-700 focus:border-sky-500 flex-grow block w-full min-w-0 rounded sm:text-sm border-gray-300">
+                            <span class="text-red-500 sm:text-sm" asp-validation-for="@Model.CreateCommand.DetailBody"></span>
                         </div>
                     </div>
                     <div class="col-span-1">
                         <label class="block text-sm font-medium text-gray-700">
                             Value
                         </label>
-                        <div class="mt-1 rounded-md shadow-sm flex">
+                        <div class="mt-1 rounded-md">
                             <input type="text" asp-for="@Model.CreateCommand.ItemDetailList" class="focus:ring-sky-700 focus:border-sky-500 flex-grow block w-full min-w-0 rounded sm:text-sm border-gray-300">
+                            <span class="text-red-500 sm:text-sm" asp-validation-for="@Model.CreateCommand.ItemDetailList"></span>
                         </div>
                     </div>
                     <div class="col-span-1"></div>
@@ -123,8 +125,7 @@
 
 @section Scripts
 {
-    <script>
-        function AddField(val) {
+    <script>function AddField(val) {
             var target = $(`#extra-field-${val}`);
             var fieldParam = $(`#field-param-${val}`).attr('data-val');
             var dataValue = $(`#field-param-${val}`).children()[1];
@@ -132,12 +133,14 @@
             var addedFieldValue = parseInt($(dataValue).val()) + 1;
             $(dataValue).val(addedFieldValue);
             target.append(
-                `<div class="mt-1 rounded-md shadow-sm flex" id="field-${fieldParam}-${addedFieldValue}">
+                `<div class="mt-1 rounded-md" id="field-${fieldParam}-${addedFieldValue}">
+                    <svg id="field-${fieldParam}-${addedFieldValue}" onclick="RemoveField(this.id)" xmlns="http://www.w3.org/2000/svg"
+                    class="h-6 mt-1 mx-2 cursor-pointer text-red-600 absolute right-6 sm:right-12" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 000 2h6a1 1 0 100-2H7z" clip-rule="evenodd" />
+                                            </svg>
                     <input type="text" name="CreateCommand.ItemDetailList" id="CreateCommand_ItemDetailList"
                         class="focus:ring-sky-700 focus:border-sky-500 flex-grow block w-full min-w-0 rounded sm:text-sm border-gray-300">
-                    <svg id="field-${fieldParam}-${addedFieldValue}" onclick="RemoveField(this.id)" xmlns="http://www.w3.org/2000/svg" class="h-6 mt-1 mx-2 cursor-pointer text-red-600 self-center" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 000 2h6a1 1 0 100-2H7z" clip-rule="evenodd" />
-                        </svg>
+                    <span class="text-red-500 sm:text-sm" data-valmsg-for="CreateCommand.ItemDetailList" data-valmsg-replace="true"></span>
             </div>`
             );
         }
@@ -166,17 +169,19 @@
                         <label class="block text-sm font-medium text-gray-700">
                             Index Title
                         </label>
-                        <div class="mt-1 rounded-md shadow-sm flex">
+                        <div class="mt-1 rounded-md">
                             <input type="text" name="CreateCommand.DetailBody" id="CreateCommand_DetailBody"
                                    class="mr-2 focus:ring-sky-700 focus:border-sky-500 flex-grow block w-full min-w-0 rounded sm:text-sm border-gray-300">
+                            <span class="text-red-500 sm:text-sm" data-valmsg-for="CreateCommand.DetailBody" data-valmsg-replace="true"></span>
                         </div>
                     </div>
                     <div class="col-span-1">
                         <label class="block text-sm font-medium text-gray-700">
                             Value
                         </label>
-                        <div class="mt-1 rounded-md shadow-sm flex">
+                        <div class="mt-1 rounded-md">
                             <input type="text" name="CreateCommand.ItemDetailList" id="CreateCommand_ItemDetailList" class="focus:ring-sky-700 focus:border-sky-500 flex-grow block w-full min-w-0 rounded sm:text-sm border-gray-300">
+                            <span class="text-red-500 sm:text-sm" data-valmsg-for="CreateCommand.ItemDetailList" data-valmsg-replace="true"></span>
                         </div>
                     </div>
                     <div class="col-span-1"></div>
@@ -204,6 +209,5 @@
 
         function RemoveParameter(val) {
             $(`#parameter-row-${val}`).remove();
-        }
-    </script>
+        }</script>
 }

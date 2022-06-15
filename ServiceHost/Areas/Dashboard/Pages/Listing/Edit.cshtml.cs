@@ -31,7 +31,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
         {
             var loggedInUserId = _authenticateHelper.CurrentAccountRole().Id;
             Command = await _listingApplication.GetEditListing(Id);
-            if (Command.OwnerUserId == loggedInUserId)
+            if (Command.OwnerUserId == loggedInUserId | loggedInUserId == 1)
             {
                 CurrencyList = new SelectList(GenerateCurrencyList.GetList());
                 return null;

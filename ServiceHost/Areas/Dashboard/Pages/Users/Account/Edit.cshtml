@@ -3,7 +3,7 @@
 @using Microsoft.Extensions.Configuration
 @inject IConfiguration _Configuration;
 @model ServiceHost.Areas.Dashboard.Pages.Users.Account.EditModel;
-@{ ViewData["Title"] = "Dashboard | Account | Modify"; }
+@{ ViewData["Title"] = $"Dashboard | Account | Edit - {Model.user.Email}"; }
 
 <form class="lg:col-span-9" method="post" id="form"
       data-ajax="true" data-action="Refresh" enctype="multipart/form-data">

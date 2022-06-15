@@ -3,11 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using _0_Framework.Application;
 using AM.Application.Contracts.Nace;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using Newtonsoft.Json.Linq;
 
 namespace ServiceHost.Areas.Dashboard.Pages.Nace
 {
@@ -18,8 +15,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Nace
 
         public string Name;
         public string Value;
-        public string Name2;
-        public string Value2;
+
         private readonly IAuthenticateHelper _authenticateHelper;
         private readonly INaceApplication _naceApplication;
 
@@ -30,10 +26,15 @@ namespace ServiceHost.Areas.Dashboard.Pages.Nace
             _naceApplication = naceApplication;
         }
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
-            Command = new CreateNace();
-            CreateCommand = new GetDetailList();
+            if (_authenticateHelper.CurrentAccountRole().RoleId == "1")
+            {
+                Command = new CreateNace();
+                CreateCommand = new GetDetailList();
+                return null;
+            }
+            return RedirectToPage("/AccessDenied", new { area = "" });
         }
 
         public JsonResult OnPost(CreateNace Command, GetDetailList createCommand)

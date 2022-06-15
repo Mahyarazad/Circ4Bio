@@ -434,6 +434,3 @@ $(document).ready(function () {
 
 });
 
-
-
-

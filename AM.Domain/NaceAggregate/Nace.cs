@@ -12,19 +12,19 @@ namespace AM.Domain.NaceAggregate
         {
             Title = title;
             Items = items;
-            ListingId = 0;
-            isDeleted = false;
+            ListingId = null;
+            IsDeleted = false;
         }
 
         public string? Title { get; private set; }
-        public bool isDeleted { get; private set; }
+        public bool IsDeleted { get; private set; }
         public List<Detail>? Items { get; private set; }
         public long? ListingId { get; private set; }
         public Listing? Listing { get; private set; }
 
         public void DeleteNace()
         {
-            isDeleted = true;
+            IsDeleted = true;
         }
     }
 }

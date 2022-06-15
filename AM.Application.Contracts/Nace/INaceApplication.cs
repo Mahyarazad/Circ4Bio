@@ -10,6 +10,7 @@ namespace AM.Application.Contracts.Nace
         Task<OperationResult> EditNace(EditNace Command);
         Task<OperationResult> DeleteNace(long Id);
         Task<List<NaceViewModel>> GetAllNaces();
-        Task<NaceViewModel> GetSingleNaces(long Id);
+        Task<NaceViewModel> GetSingleNace(long Id);
+        Task<EditNace> EditSingleNace(long Id);
     }
 }

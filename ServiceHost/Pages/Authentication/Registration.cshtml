@@ -5,7 +5,10 @@
 
 <div class="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
     <div class="sm:mx-auto sm:w-full sm:max-w-md">
-        <img class="mx-auto h-12 w-auto" src="~/Site Files/Circ4Bio.png" alt="Workflow">
+        <div class="flex space-x-12 justify-center my-8">
+            <img class="h-12 scale-150" src="https://circforbio.eu/wp-content/uploads/2020/01/logo.png" alt="Circ4bio">
+            <img class="h-12 scale-150" src="https://circforbio.eu/wp-content/uploads/2020/07/lfie-logo.jpg" alt="Circ4bio">
+        </div>
         <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
             Register your account
         </h2>
@@ -101,7 +104,6 @@
                     </a>
                 </div>
             </form>
-            <div class="g-signin2" data-onsuccess="onSignIn"></div>
             @* <div class="mt-6"> *@
             @*     <div class="relative"> *@
             @*         <div class="absolute inset-0 flex items-center"> *@
@@ -155,5 +157,4 @@
 
 @section Scripts{
     <script src="~/js/password.strength.js"></script>
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
 }

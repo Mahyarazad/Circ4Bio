@@ -145,9 +145,12 @@
 
         NegotationDataPieLabel.push("Active", "Finished", "Quatation Sent", "Canceled");
 
-        for (var [_, value] of Object.entries(UserData)) {
-            UserOverviewData.push(value.count);
-            UserOverviewDataLabel.push(value.roleType);
+            for (var [_, value] of Object.entries(UserData)) {
+                if (value.id !== 1 ) {
+                    UserOverviewData.push(value.count);
+                    UserOverviewDataLabel.push(value.roleType);
+                }
+
         }
 
         for (var [key, value] of Object.entries(ListingStat)) {

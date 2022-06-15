@@ -24,7 +24,7 @@ namespace AM.Application.Contracts.Listing
         [Required(ErrorMessage = ValidationMessages.IsRequired)]
         [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = ValidationMessages.UnitError)]
         public string? Unit { get; set; }
-        [Range(1, 9999999999)]
+        [Range(0, 9999999999)]
         [Required(ErrorMessage = ValidationMessages.IsRequired)]
         public double UnitPrice { get; set; }
         [Range(1, 9999999999)]

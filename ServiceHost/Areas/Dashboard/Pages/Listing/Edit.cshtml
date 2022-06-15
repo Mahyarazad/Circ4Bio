@@ -3,7 +3,7 @@
 @using Microsoft.AspNetCore.Http
 @model ServiceHost.Areas.Dashboard.Pages.Listing.EditModel;
 @inject IHttpContextAccessor _ContextAccessor;
-@{ ViewData["Title"] = "Dashboard | Listing | Edit"; }
+@{ ViewData["Title"] = $"Dashboard | Listing | Edit - {Model.Command.Name}"; }
 
 
 
@@ -94,7 +94,9 @@
 
             <div class="mt-6 grid grid-cols-12 gap-6">
                 <div class="col-span-12 sm:col-span-6">
-                    <label asp-for="@Model.Command.DeliveryMethod" class="block text-sm font-medium text-gray-700"></label>
+                    <label asp-for="@Model.Command.DeliveryMethod" class="block text-sm font-medium text-gray-700">
+                        Delivery Method
+                    </label>
                     <input type="text" asp-for="@Model.Command.DeliveryMethod"
                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-700 focus:border-sky-500 sm:text-sm">
                 </div>
@@ -106,7 +108,9 @@
                     <span class="text-red-500 sm:text-sm" asp-validation-for="@Model.Command.Unit"></span>
                 </div>
                 <div class="col-span-12 sm:col-span-6">
-                    <label asp-for="@Model.Command.UnitPrice" class="block text-sm font-medium text-gray-700"></label>
+                    <label asp-for="@Model.Command.UnitPrice" class="block text-sm font-medium text-gray-700">
+                        Unit Price
+                    </label>
                     <input type="text" asp-for="@Model.Command.UnitPrice"
                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-700 focus:border-sky-500 sm:text-sm">
                     <span class="text-red-500 sm:text-sm" asp-validation-for="@Model.Command.UnitPrice"></span>

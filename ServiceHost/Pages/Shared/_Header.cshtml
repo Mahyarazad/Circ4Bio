@@ -1,13 +1,15 @@
 ﻿@inject _0_Framework.Application.IAuthenticateHelper AuthenticateHelper;
 
 <header class="relative sticky top-0 z-50">
-    <div class="bg-sky-800 pt-3 pb-3">
+    <div class="bg-sky-800">
         <nav class="relative max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6" aria-label="Global">
-            <div class="flex items-center flex-1 truncate">
+            <div class="flex items-center flex-1 truncate py-3">
                 <div class="flex items-center justify-between w-full md:w-auto">
-                    <a asp-page="/Index" class="pr-4" title="Circ4Bio">
-                        <span class="sr-only">Workflow</span>
-                        <img class="h-8 w-auto sm:h-10" src="~/Site Files/Circ4Bio.png" alt="">
+                    <a asp-page="/Index" class="mr-8" title="Circ4Bio">
+                        <div class="flex space-x-4 scale-125">
+                            <img class="ml-4 h-8 w-auto sm:h-10" src="https://circforbio.eu/wp-content/uploads/2020/01/logo.png" alt="Circ4Bio">
+                            <img class="h-8 w-auto sm:h-10" src="https://circforbio.eu/wp-content/uploads/2020/07/lfie-logo.jpg" alt="Circ4Bio">
+                        </div>
                     </a>
                     <!-- Mobile Menu Trigger-->
                     <div class="flex items-center lg:hidden" id="mobile-home-menu-open">
@@ -77,8 +79,9 @@
          class="absolute top-0 inset-x-0 origin-top lg:hidden m-3 invisible opacity-0 transform duration-300 fixed" >
         <div class="rounded-lg shadow-md bg-white ring-1 ring-black ring-opacity-5 overflow-hidden">
             <div class="px-5 pt-4 flex items-center justify-between">
-                <div>
-                    <img class="h-8 w-auto" src="~/Site Files/Circ4Bio.png" alt="">
+                <div class="flex space-x-4 scale-125">
+                    <img class="ml-3 h-8 w-auto" src="https://circforbio.eu/wp-content/uploads/2020/01/logo.png" alt="Circ4Bio">
+                    <img class="h-8 w-auto" src="https://circforbio.eu/wp-content/uploads/2020/07/lfie-logo.jpg" alt="Circ4Bio">
                 </div>
                 <div class="-mr-2">
                     <button type="button" id="mobile-home-menu-close"

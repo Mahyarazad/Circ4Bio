@@ -10,11 +10,17 @@ namespace AM.Domain.NaceAggregate
         {
             DetailBody = detailBody;
             ListItems = listItems;
+            IsDeleted = false;
         }
 
         public int NaceDetailId { get; private set; }
         public string? DetailBody { get; private set; }
         public List<ListItems> ListItems { get; private set; }
+        public bool IsDeleted { get; private set; }
+        public void DeleteNaceDetail()
+        {
+            IsDeleted = true;
+        }
     }
 
     public class ListItems
@@ -22,9 +28,15 @@ namespace AM.Domain.NaceAggregate
         public ListItems(string? listItemDetail)
         {
             ListItemDetail = listItemDetail;
+            IsDeleted = false;
         }
 
         public int ListItemDetailId { get; private set; }
         public string? ListItemDetail { get; private set; }
+        public bool IsDeleted { get; private set; }
+        public void DeleteNaceListDetail()
+        {
+            IsDeleted = true;
+        }
     }
 }
