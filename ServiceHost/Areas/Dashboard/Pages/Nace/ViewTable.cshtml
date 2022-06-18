@@ -1,0 +1,89 @@
+﻿@page "{id}"
+@using AM.Infrastructure.Core
+@using PayPal.Api
+@model ServiceHost.Areas.Dashboard.Pages.Nace.ViewTableModel
+@{ ViewData["title"] = $"Dashboard | Nace | {Model.NaceViewModel.Title}"; }
+
+<div class="divide-y divide-gray-200 lg:col-span-9">
+    <div class="py-6 px-4 sm:p-6 lg:pb-8">
+        <div class="text-gray-800 text-2xl mb-4"> @Model.NaceViewModel.Title </div>
+        <div class="flex flex-col">
+            <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                    <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+
+
+                        <table class="min-w-full border-collapse block md:table" id="main-table">
+                            <thead class="block md:table-header-group">
+                            @*<tr class="border border-grey-500 md:border-none block md:table-row absolute -top-full md:top-auto -left-full md:left-auto  md:relative ">
+                            <th class="bg-gray-50 p-2 text-gray-600 font-bold md:border md:border-grey-200 text-left block md:table-cell">Title</th>
+                            <th class="bg-gray-50 p-2 text-gray-600 font-bold md:border md:border-grey-200 text-left block md:table-cell">Indices</th>
+                        </tr>*@
+                            </thead>
+                            <tbody class="block md:table-row-group">
+                            @foreach (var item in Model.NaceViewModel.Items)
+                            {
+                                if (!item.IsDeleted)
+                                {
+                                    <div class="hidden">@(Model.Counter = 1)</div>
+                                    <tr class="bg-white border border-grey-500 md:border-none block md:table-row">
+                                        <td class="p-2 md:border md:border-grey-200 text-left block md:table-cell">
+                                            <span class="inline-block w-1/3 md:hidden font-bold">Index Title</span>
+                                            <div>
+                                                <div class="text-sm text-gray-800">
+                                                    @item.DetailBody
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="p-2 md:border md:border-grey-200 text-left block md:table-cell">
+                                            <span class="inline-block w-1/3 md:hidden font-bold">Value</span>
+                                            <div>
+                                                <div class="text-sm text-gray-800 flex-col">
+                                                    @foreach (var detailItem in item.ListItems)
+                                                    {
+                                                        @if (!@detailItem.IsDeleted)
+                                                        {
+                                                            <div>
+                                                                @(detailItem.ListItemDetail)
+                                                            </div>
+                                                        }
+                                                    }
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            </tbody>
+                        </table>
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="flex flex-col mt-4">
+            <div class="self-end">
+                <a asp-page="/Nace/Index" asp-area="Dashboard" class="bg-white border border-gray-300 rounded-md shadow-sm
+               py-2 px-4 inline-flex justify-center text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none
+               focus:ring-2 focus:ring-offset-2 focus:ring-gray-700">
+                    Back
+                </a>
+                <a asp-page="/Nace/Edit" asp-area="Dashboard" asp-route-id="@Model.NaceViewModel.NaceId" class="bg-white border border-gray-300 rounded-md shadow-sm
+               py-2 px-4 inline-flex justify-center text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none
+               focus:ring-2 focus:ring-offset-2 focus:ring-gray-700">
+                    Edit
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/AlterDataTableDesign.js"></script>
+}
+
+@section CSS{
+    <link rel="stylesheet" href="~/css/Loader.css"/>
+}

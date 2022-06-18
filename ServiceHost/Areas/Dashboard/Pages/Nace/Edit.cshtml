@@ -16,7 +16,7 @@
             <div class="flex-shrink-0">
                 <!-- Heroicon name: solid/check-circle -->
                 <svg class="h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                 </svg>
             </div>
             <div class="ml-3">
@@ -31,7 +31,7 @@
             <div class="flex-shrink-0">
                 <!-- Heroicon name: solid/check-circle -->
                 <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
                 </svg>
             </div>
             <div class="ml-3">
@@ -50,74 +50,76 @@
                     </label>
                     <div class="mt-1 rounded-md shadow-sm flex">
                         <input type="text" asp-for="@Model.Command.Title" class="focus:ring-sky-700 focus:border-sky-500 flex-grow block w-full min-w-0 rounded sm:text-sm border-gray-300">
-                        <span class="text-red-500 sm:text-sm" asp-validation-for="@Model.Command.Title"></span>
                     </div>
+                    <input type="hidden" asp-for="@Model.Command.NaceId">
                 </div>
                 @foreach (var index in Model.Command.EditIndices)
                 {
-                    <div class="col-span-2 grid grid-cols-2 space-y-0.5" Id="@index.IndexId">
-                        <svg id="@index.IndexId" onclick="DeleteIndex(this.id)"
-                             xmlns="http://www.w3.org/2000/svg"
-                             class="h-6 mt-2 justify-self-end col-span-2 cursor-pointer text-red-600 self-center" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 000 2h6a1 1 0 100-2H7z" clip-rule="evenodd"/>
-                        </svg>
-                        <div class="col-span-1">
-                            <label class="block text-sm font-medium text-gray-700">
-                                Index Title
-                            </label>
-                            <div class="mt-1 rounded-md">
-                                <input type="text" asp-for="@Model.IndexDetail.DetailBody" value="@index.DetailBody" data-replace="@index.IndexId"
-                                       class="mr-2 focus:ring-sky-700 focus:border-sky-500 flex-grow block w-full min-w-0 rounded sm:text-sm border-gray-300">
-                                <span class="text-red-500 sm:text-sm" asp-validation-for="@Model.IndexDetail.DetailBody"></span>
-                                <input type="hidden" name="IndexDetail.IndexId" value="@index.IndexId"/>
-                                <input type="hidden" name="IndexDetail.IsDeleted" value="@index.IsDeleted.ToString()" data-id="@index.IndexId"/>
+                    if (!index.IsDeleted)
+                    {
+    <div class="col-span-2 grid grid-cols-2 space-y-0.5" Id="@index.IndexId">
+        <svg id="@index.IndexId" onclick="DeleteIndex(this.id)"
+             xmlns="http://www.w3.org/2000/svg"
+             class="h-6 mt-2 justify-self-end col-span-2 cursor-pointer text-red-600 self-center" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 000 2h6a1 1 0 100-2H7z" clip-rule="evenodd" />
+        </svg>
+        <div class="col-span-1">
+            <label class="block text-sm font-medium text-gray-700">
+                Index Title
+            </label>
+            <div class="mt-1 rounded-md">
+                <input type="text" asp-for="@Model.IndexDetail.DetailBody" value="@index.DetailBody" data-replace="@index.IndexId"
+                       class="mr-2 focus:ring-sky-700 focus:border-sky-500 flex-grow block w-full min-w-0 rounded sm:text-sm border-gray-300">
+                <input type="hidden" name="IndexDetail.IndexId" value="@index.IndexId" />
+                <input type="hidden" name="IndexDetail.IsDeleted" value="@index.IsDeleted.ToString()" data-id="@index.IndexId" />
 
-                            </div>
-                        </div>
-                        <div class="col-span-1">
-                            <label class="block text-sm font-medium text-gray-700">
-                                Value
-                            </label>
-                            @foreach (var detailValue in index.ItemDetailList.Select((value, index) => new {value, index}))
-                            {
-                                <div class="mt-1 rounded-md" id="@index.IndexId-@detailValue.value.IndexDetailId">
-                                    @if (detailValue.index != 0)
-                                    {
-                                        <svg id="@index.IndexId-@detailValue.value.IndexDetailId" onclick="DeleteIndexDetail(this.id)" xmlns="http://www.w3.org/2000/svg"
-                                             class="h-6 mt-1 mx-2 cursor-pointer text-red-600 absolute right-6 sm:right-12" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 000 2h6a1 1 0 100-2H7z" clip-rule="evenodd"/>
-                                        </svg>}
+            </div>
+        </div>
+        <div class="col-span-1">
+            <label class="block text-sm font-medium text-gray-700">
+                Value
+            </label>
+            @foreach (var detailValue in index.ItemDetailList.Select((value, index) => new { value, index }))
+            {
+                if (!detailValue.value.IsDeleted)
+                {
+<div class="mt-1 rounded-md flex" id="@index.IndexId-@detailValue.value.IndexDetailId">
+    @if (detailValue.index != 0)
+    {
+<svg id="@index.IndexId-@detailValue.value.IndexDetailId" onclick="DeleteIndexDetail(this.id)" xmlns="http://www.w3.org/2000/svg"
+     class="h-6 my-2 mx-2 cursor-pointer text-red-600 absolute right-6 sm:right-12" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 000 2h6a1 1 0 100-2H7z" clip-rule="evenodd" />
+</svg>}
 
-                                    <input type="text" value="@detailValue.value.DetailString" asp-for="@detailValue.value.DetailString"
-                                           data-replace="@index.IndexId-@detailValue.value.IndexDetailId"
-                                           class="focus:ring-sky-700 focus:border-sky-500 flex-grow block w-full min-w-0 rounded sm:text-sm border-gray-300">
-                                    <span class="text-red-500 sm:text-sm" asp-validation-for="@detailValue.value.DetailString"></span>
+    <input type="text" asp-for="@Model.IndexItemDetail.DetailString" value="@detailValue.value.DetailString"
+           data-replace="@index.IndexId-@detailValue.value.IndexDetailId"
+           class="focus:ring-sky-700 focus:border-sky-500 flex-grow block w-full min-w-0 rounded sm:text-sm border-gray-300">
 
-                                    <input type="hidden" name="IndexItemDetail.IndexDetailId" value="@detailValue.value.IndexDetailId"/>
-                                    <input type="hidden" name="IndexItemDetail.RefId" value="@detailValue.value.RefId"/>
-                                    <input type="hidden" name="IndexItemDetail.IsDeleted" value="@detailValue.value.IsDeleted.ToString()" data-id="@index.IndexId-@detailValue.value.IndexDetailId"/>
-                                </div>}
-                        </div>
-                        <div class="col-span-1"></div>
-                        <div class="col-span-1" id="field-param-1" data-val="1">
-                            <div id="extra-field-1">
+    <input type="hidden" name="IndexItemDetail.IndexDetailId" value="@detailValue.value.IndexDetailId" />
+    <input type="hidden" name="IndexItemDetail.RefId" value="@detailValue.value.RefId" />
+    <input type="hidden" name="IndexItemDetail.IsDeleted" value="@detailValue.value.IsDeleted.ToString()" data-id="@index.IndexId-@detailValue.value.IndexDetailId" />
+</div>}
+}
+        </div>
+        <div class="col-span-1"></div>
+        <div class="col-span-1" id="field-param-1" data-val="1">
+            <div id="extra-field-@index.IndexId">
 
-                            </div>
+            </div>
 
-                            <input type="hidden" asp-for="@Model.CreateCommand.GroupSize" value="1" id="field-counter" data-val="1"/>
+            <button onclick="AddField(@index.IndexId)"
+                    type="button"
+                    class="mt-1 mb-1 bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-700">
 
-                            <button id="1" onclick="AddField(this.id)"
-                                    type="button"
-                                    class="mt-1 mb-1 bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-700">
-
-                                Field
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                </svg>
-                            </button>
-                        </div>
-                        <div class="mt-1 mb-1 border-b-2 border-gray-500 rounded-2xl col-span-2"></div>
-                    </div>}
+                Field
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            </button>
+        </div>
+        <div class="mt-1 mb-1 border-b-2 border-gray-500 rounded-2xl col-span-2"></div>
+    </div>}
+}
 
             </div>
             <button onclick="AddParameter(this.id)" id="1"
@@ -125,7 +127,7 @@
                     class="col-span-2 justify-self-end mt-2 bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-700">
                 Parameter
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
             </button>
         </div>
@@ -137,7 +139,7 @@
                focus:ring-2 focus:ring-offset-2 focus:ring-gray-700">
                     Back
                 </a>
-                <button id="save"
+                <button id="save-nace"
                         type="button" class="ml-2 bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-700">
                     Save
                 </button>
@@ -147,88 +149,109 @@
 </form>
 
 @section CSS{
-    <link rel="stylesheet" href="~/css/Loader.css"/>
+    <link rel="stylesheet" href="~/css/Loader.css" />
 }
 
 @section Scripts
 {
     <script>
+
+        var IndexRef = -1;
+        var IndexItemRef = -1;
+
         function AddField(val) {
             var target = $(`#extra-field-${val}`);
-            var fieldParam = $(`#field-param-${val}`).attr('data-val');
-            var dataValue = $(`#field-param-${val}`).children()[1];
-
-            var addedFieldValue = parseInt($(dataValue).val()) + 1;
-            $(dataValue).val(addedFieldValue);
             target.append(
-                `<div class="mt-1 rounded-md shadow-sm flex" id="field-${fieldParam}-${addedFieldValue}">
-                                                    <input type="text" name="CreateCommand.ItemDetailList" id="CreateCommand_ItemDetailList"
-                                                        class="focus:ring-sky-700 focus:border-sky-500 flex-grow block w-full min-w-0 rounded sm:text-sm border-gray-300">
-                                                    <svg id="field-${fieldParam}-${addedFieldValue}" onclick="RemoveField(this.id)" xmlns="http://www.w3.org/2000/svg" class="h-6 mt-1 mx-2 cursor-pointer text-red-600 self-center" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 000 2h6a1 1 0 100-2H7z" clip-rule="evenodd" />
-                                                        </svg>
-                                            </div>`
+                `<div class="mt-1 rounded-md flex" id="field-${val}-${Date.now()}" >
+                                <input type="hidden" name="IndexItemDetail.RefId" value="${val}">
+                                <input type="hidden" name="IndexItemDetail.IsDeleted" value="False">
+                                <input type="hidden" name="IndexItemDetail.IndexDetailId" value="0">
+                                <input type="text" name="IndexItemDetail.DetailString"
+                                    class="focus:ring-sky-700 focus:border-sky-500 flex-grow block w-full min-w-0 rounded sm:text-sm border-gray-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" onclick="RemoveField(this.id)" id="field-${val}-${Date.now()}"
+                                    class="h-6 my-2 mx-2 cursor-pointer text-red-600 absolute right-6 sm:right-12" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 000 2h6a1 1 0 100-2H7z" clip-rule="evenodd" />
+                                </svg>
+                            </div>`
             );
+        }
+
+        function AddFieldExtra(val) {
+            var target = $(`#extra-field-${val}`);
+            target.append(
+                `<div class="mt-1 rounded-md flex" id="field-${IndexItemRef}" >
+                                <input type="hidden" name="IndexItemDetail.RefId" value="${val}">
+                                <input type="hidden" name="IndexItemDetail.IsDeleted" value="False">
+                                <input type="hidden" name="IndexItemDetail.IndexDetailId" value="0">
+                                <input type="text" name="IndexItemDetail.DetailString"
+                                    class="focus:ring-sky-700 focus:border-sky-500 flex-grow block w-full min-w-0 rounded sm:text-sm border-gray-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" onclick="RemoveField(this.id)" id="field-${IndexItemRef}"
+                                    class="h-6 my-2 mx-2 cursor-pointer text-red-600 absolute right-6 sm:right-12" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 000 2h6a1 1 0 100-2H7z" clip-rule="evenodd" />
+                                </svg>
+                            </div>`
+            );
+            IndexItemRef--;
         }
 
         function RemoveField(val) {
 
-            var dataValue = $(`#field-param-${val[6]}`).children()[1];
-            var addedFieldValue = parseInt($(dataValue).val()) - 1;
-            $(dataValue).val(addedFieldValue);
-            $(`#${val}`).remove();
+            $(`div[id='${val}']`).remove();
         }
 
-        function AddParameter(val) {
-
-            var paramValue = parseInt(val) + 1;
+        function AddParameter() {
+            var paramValue = Date.now();
             $('button:contains("Parameter")').attr("id", paramValue);
             var target = $('#append-param');
             target.append(
-                `<div class="col-span-2 grid grid-cols-2 space-y-0.5" id="parameter-row-${val}">
-                                                        <svg id="${val}" onclick="RemoveParameter(this.id)"
-                                                                xmlns="http://www.w3.org/2000/svg"
-                                                                class="h-6 mt-2 justify-self-end col-span-2 cursor-pointer text-red-600 self-center" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 000 2h6a1 1 0 100-2H7z" clip-rule="evenodd" />
-                                                        </svg>
-                                                    <div class="col-span-1">
-                                                        <label class="block text-sm font-medium text-gray-700">
-                                                            Index Title
-                                                        </label>
-                                                        <div class="mt-1 rounded-md shadow-sm flex">
-                                                            <input type="text" name="CreateCommand.DetailBody" id="CreateCommand_DetailBody"
-                                                                   class="mr-2 focus:ring-sky-700 focus:border-sky-500 flex-grow block w-full min-w-0 rounded sm:text-sm border-gray-300">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-span-1">
-                                                        <label class="block text-sm font-medium text-gray-700">
-                                                            Value
-                                                        </label>
-                                                        <div class="mt-1 rounded-md shadow-sm flex">
-                                                            <input type="text" name="CreateCommand.ItemDetailList" id="CreateCommand_ItemDetailList" class="focus:ring-sky-700 focus:border-sky-500 flex-grow block w-full min-w-0 rounded sm:text-sm border-gray-300">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-span-1"></div>
-                                                    <div class="col-span-1" id="field-param-${paramValue}" data-val="${paramValue}">
-                                                        <div id="extra-field-${paramValue}">
+                `<div class="col-span-2 grid grid-cols-2 space-y-0.5" id="parameter-row-${IndexRef}">
+                                    <svg id="${IndexRef}" onclick="RemoveParameter(this.id)"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            class="h-6 mt-2 justify-self-end col-span-2 cursor-pointer text-red-600 self-center" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 000 2h6a1 1 0 100-2H7z" clip-rule="evenodd" />
+                                    </svg>
+                                <div class="col-span-1">
+                                    <label class="block text-sm font-medium text-gray-700">
+                                        Index Title
+                                    </label>
+                                    <div class="mt-1 rounded-md shadow-sm flex">
+                                        <input type="text" name="IndexDetail.DetailBody"
+                                               class="mr-2 focus:ring-sky-700 focus:border-sky-500 flex-grow block w-full min-w-0 rounded sm:text-sm border-gray-300">
+                                        <input type="hidden" name="IndexDetail.IndexId" value="${IndexRef}"/>
+                                        <input type="hidden" name="IndexDetail.IsDeleted" value="false"/>
+                                    </div>
+                                </div>
+                                <div class="col-span-1">
+                                    <label class="block text-sm font-medium text-gray-700">
+                                        Value
+                                    </label>
+                                    <div class="mt-1 rounded-md shadow-sm flex">
+                                        <input type="text" name="IndexItemDetail.DetailString" class="focus:ring-sky-700 focus:border-sky-500 flex-grow block w-full min-w-0 rounded sm:text-sm border-gray-300">
+                                        <input type="hidden" name="IndexItemDetail.IsDeleted" value="False">
+                                        <input type="hidden" name="IndexItemDetail.RefId" value="${IndexRef}">
+                                        <input type="hidden" name="IndexItemDetail.IndexDetailId" value="0">
+                                    </div>
+                                </div>
+                                <div class="col-span-1"></div>
+                                <div class="col-span-1" id="field-param-${IndexRef}" data-val="${IndexRef}">
+                                    <div id="extra-field-${IndexRef}">
 
-                                                        </div>
+                                    </div>
 
-                                                        <input type="hidden" name="CreateCommand.GroupSize" id="CreateCommand_GroupSize" value="1" id="field-counter" data-val="${paramValue}"/>
+                                    <button id="${IndexRef}" onclick="AddFieldExtra(this.id)"
+                                            type="button"
+                                            class="mt-1 mb-1 bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-700">
 
-                                                        <button id="${paramValue}" onclick="AddField(this.id)"
-                                                                type="button"
-                                                                class="mt-1 mb-1 bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-700">
-
-                                                            Field
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                                            </svg>
-                                                        </button>
-                                                    </div>
-                                                    <div class="mt-1 mb-1 border-b-2 border-gray-500 rounded-2xl col-span-2"></div>
-                                                </div>`
+                                        Field
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div class="mt-1 mb-1 border-b-2 border-gray-500 rounded-2xl col-span-2"></div>
+                            </div>`
             );
+            IndexRef --;
         }
 
         function RemoveParameter(val) {
@@ -251,30 +274,37 @@
             $(`div[id='${val}']`).addClass("hidden");
         }
 
-        $('#save').on('click', function (e) {
-            $("#overlay").removeClass('hidden');
-            var focusElement;
-            var element = document.querySelectorAll('input[type=text]');
-            function ValidateCheck() {
-                var result = true;
-                element.forEach(e => {
-                    if (e.value === "") {
-                        focusElement = e;
-                        result = false;
-                        return;
-                    }
-                });
-                return result;
-            }
-            if (ValidateCheck()) {
-                $('#form').submit();
-            } else {
-                $("#overlay").addClass('hidden');
-                alert('All the field are required.');
-                event.preventDefault();
-                focusElement.focus();
-            }
-        });
+        $('#save-nace').on('click',
+            function(e) {
+                $("#overlay").removeClass('hidden');
+                var focusElement;
+                var element = document.querySelectorAll('input[type=text]');
+
+                function ValidateCheck() {
+                    var result = true;
+                    element.forEach(e => {
+                        if (e.value === "") {
+                            focusElement = e;
+                            result = false;
+                            return;
+                        }
+                    });
+                    return result;
+                }
+
+                if (ValidateCheck()) {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth',
+                    });
+                    $('#form').submit();
+                } else {
+                    $("#overlay").addClass('hidden');
+                    alert('All the field are required.');
+                    event.preventDefault();
+                    focusElement.focus();
+                }
+            });
 
     </script>
 }

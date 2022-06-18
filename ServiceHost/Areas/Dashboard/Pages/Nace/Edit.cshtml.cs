@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using _0_Framework.Application;
 using AM.Application.Contracts.Nace;
 using Microsoft.AspNetCore.Mvc;
@@ -70,6 +71,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Nace
                                         IsDeleted = IndexItemDetail.IsDeleted[item],
                                         DetailString = IndexItemDetail.DetailString[item],
                                         IndexDetailId = IndexItemDetail.IndexDetailId[item],
+                                        RefId = IndexItemDetail.RefId[item]
                                     });
                             }
                         }

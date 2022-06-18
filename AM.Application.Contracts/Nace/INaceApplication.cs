@@ -9,6 +9,7 @@ namespace AM.Application.Contracts.Nace
         Task<OperationResult> CreateNace(CreateNace Command);
         Task<OperationResult> EditNace(EditNace Command);
         Task<OperationResult> DeleteNace(long Id);
+        Task<OperationResult> UndeleteNace(long Id);
         Task<List<NaceViewModel>> GetAllNaces();
         Task<NaceViewModel> GetSingleNace(long Id);
         Task<EditNace> EditSingleNace(long Id);

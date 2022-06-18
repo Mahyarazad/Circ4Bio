@@ -14,6 +14,7 @@ namespace AM.Infrastructure.Repository
     public class NaceRepository : RepositoryBase<long, Nace>, INaceRepository
     {
         private readonly AMContext _amContext;
+
         public NaceRepository(AMContext amContext) : base(amContext)
         {
             _amContext = amContext;
@@ -28,20 +29,24 @@ namespace AM.Infrastructure.Repository
                     NaceId = x.Id,
                     IsDeleted = x.IsDeleted,
                     Items = x.Items.Select(y => new DetailViewModel(y.NaceDetailId, y.DetailBody, y.IsDeleted,
-                        y.ListItems.Select(z => new ListItemsViewModel(z.ListItemDetailId, z.IsDeleted, z.ListItemDetail)).ToList())).ToList()
+                            y.ListItems.Select(z =>
+                                new ListItemsViewModel(z.ListItemDetailId, z.IsDeleted, z.ListItemDetail)).ToList()))
+                        .ToList()
                 }).ToList();
         }
 
         public NaceViewModel GetSingleNace(long Id)
         {
             return
-                _amContext.Naces.Where(x => x.Id == Id).Select(x => new NaceViewModel
+                _amContext.Naces.AsSingleQuery().Where(x => x.Id == Id).Select(x => new NaceViewModel
                 {
                     Title = x.Title,
                     NaceId = x.Id,
                     IsDeleted = x.IsDeleted,
                     Items = x.Items.Select(y => new DetailViewModel(y.NaceDetailId, y.DetailBody, y.IsDeleted,
-                        y.ListItems.Select(z => new ListItemsViewModel(z.ListItemDetailId, z.IsDeleted, z.ListItemDetail)).ToList())).ToList()
+                            y.ListItems.Select(z =>
+                                new ListItemsViewModel(z.ListItemDetailId, z.IsDeleted, z.ListItemDetail)).ToList()))
+                        .ToList()
                 }).First();
         }
 
@@ -68,13 +73,48 @@ namespace AM.Infrastructure.Repository
                     }).ToList()
                 }).First();
         }
-    }
-    public class NaceDataRepository : RepositoryBase<long, NaceData>, INaceDataRepository
-    {
-        private readonly AMContext _amContext;
-        public NaceDataRepository(AMContext amContext) : base(amContext)
+
+        public void DeleteIndexDetail(long naceId, int indexId, int indexDetailId)
         {
-            amContext = _amContext;
+            _amContext.Naces.AsSingleQuery()
+                .First(x => x.Id == naceId)
+                .Items.First(x => x.NaceDetailId == indexId)
+                .ListItems.First(x => x.ListItemDetailId == indexDetailId).DeleteNaceListDetail();
+        }
+
+        public void EditIndexDetail(long naceId, int indexId, int indexDetailId, string indexDetailString)
+        {
+            _amContext.Naces.AsSingleQuery()
+                .First(x => x.Id == naceId)
+                .Items.First(x => x.NaceDetailId == indexId)
+                .ListItems.First(x => x.ListItemDetailId == indexDetailId).Edit(indexDetailString);
+        }
+
+
+        public void AddIndexDetail(long naceId, string indexDetailString)
+        {
+            throw new NotImplementedException();
+        }
+
+        void INaceRepository.AddIndexDetail(long naceId, int indexDetailId, string indexDetailString)
+        {
+            _amContext.Naces.AsSingleQuery()
+                .First(x => x.Id == naceId)
+                .Items.First(x => x.NaceDetailId == indexDetailId)
+                .AddListItem(new ListItems(indexDetailString));
+        }
+
+        void INaceRepository.AddIndex(long naceId, string indexString)
+        {
+            _amContext.Naces.AsSingleQuery()
+                .First(x => x.Id == naceId)
+                .AddDetail(new Detail(indexString, new List<ListItems>()));
+        }
+
+        public int LastInputId(long naceId)
+        {
+            return _amContext.Naces.AsSingleQuery()
+                .First(x => x.Id == naceId).Items.Last().NaceDetailId;
         }
     }
 }

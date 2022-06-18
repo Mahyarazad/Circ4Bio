@@ -1,5 +1,4 @@
-﻿using System.Security.Cryptography.Xml;
-using _0_Framework.Infrastructure;
+﻿using _0_Framework.Infrastructure;
 using AM.Application;
 using AM.Application.Contracts.Blog;
 using AM.Application.Contracts.ContactUs;
@@ -64,7 +63,7 @@ namespace AM.Infrastructure.Core
             services.AddTransient<IDealRepository, DealRepository>();
 
             services.AddTransient<INaceRepository, NaceRepository>();
-            services.AddTransient<INaceDataRepository, NaceDataRepository>();
+            //services.AddTransient<INaceDataRepository, NaceRepository.NaceDataRepository>();
             services.AddTransient<INaceApplication, NaceApplication>();
 
 

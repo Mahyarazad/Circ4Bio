@@ -13,6 +13,16 @@ namespace AM.Domain.NaceAggregate
             IsDeleted = false;
         }
 
+        public void Edit(string? detailBody)
+        {
+            DetailBody = detailBody;
+        }
+
+        public void AddListItem(ListItems listItems)
+        {
+            ListItems.Add(listItems);
+        }
+
         public int NaceDetailId { get; private set; }
         public string? DetailBody { get; private set; }
         public List<ListItems> ListItems { get; private set; }
@@ -29,6 +39,11 @@ namespace AM.Domain.NaceAggregate
         {
             ListItemDetail = listItemDetail;
             IsDeleted = false;
+        }
+
+        public void Edit(string? listItemDetail)
+        {
+            ListItemDetail = listItemDetail;
         }
 
         public int ListItemDetailId { get; private set; }

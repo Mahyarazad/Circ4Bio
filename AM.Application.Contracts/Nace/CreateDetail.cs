@@ -45,6 +45,7 @@ namespace AM.Application.Contracts.Nace
         [Required(ErrorMessage = ValidationMessages.FieldRequired)]
         public List<string>? DetailBody { get; set; }
         public List<bool> IsDeleted { get; set; }
+
     }
 
     public class EditIndexDetailItemsTDO

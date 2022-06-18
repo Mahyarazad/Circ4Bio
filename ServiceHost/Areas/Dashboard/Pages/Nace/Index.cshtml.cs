@@ -1,9 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using _0_Framework.Application;
-using AM.Application.Contracts.Blog;
 using AM.Application.Contracts.Nace;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNetCore.Mvc;
@@ -35,11 +32,46 @@ namespace ServiceHost.Areas.Dashboard.Pages.Nace
                 NaceList = _naceApplication.GetAllNaces().Result;
                 return null;
             }
-            else
-            {
-                return RedirectToPage("/AccessDenied", new { area = "" });
-            }
+            return RedirectToPage("/AccessDenied", new { area = "" });
         }
 
+        public IActionResult OnPostGetDeletedNaces(bool isDeleted)
+        {
+            if (_authenticateHelper.CurrentAccountRole().Id == 1)
+            {
+                IsDeleted = isDeleted;
+                if (IsDeleted)
+                {
+                    NaceList = _naceApplication
+                        .GetAllNaces().Result
+                        .Where(x => x.IsDeleted).ToList();
+
+                    return null;
+                }
+                return RedirectToPage("/Nace/Index", new { area = "Dashboard" });
+
+            }
+            return RedirectToPage("/AccessDenied", new { area = "" });
+        }
+
+        public IActionResult OnGetDeleteNace(long id)
+        {
+            if (_authenticateHelper.CurrentAccountRole().Id == 1)
+            {
+                _naceApplication.DeleteNace(id);
+                return RedirectToPage("/Nace/Index", new { area = "Dashboard" });
+            }
+            return RedirectToPage("/AccessDenied", new { area = "" });
+        }
+
+        public IActionResult OnGetUnDeleteNace(long id)
+        {
+            if (_authenticateHelper.CurrentAccountRole().Id == 1)
+            {
+                _naceApplication.UndeleteNace(id);
+                return RedirectToPage("/Nace/Index", new { area = "Dashboard" });
+            }
+            return RedirectToPage("/AccessDenied", new { area = "" });
+        }
     }
 }

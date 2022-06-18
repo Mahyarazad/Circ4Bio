@@ -16,6 +16,16 @@ namespace AM.Domain.NaceAggregate
             IsDeleted = false;
         }
 
+        public void Edit(string? title)
+        {
+            Title = title;
+        }
+
+        public void AddDetail(Detail detail)
+        {
+            Items.Add(new Detail(detail.DetailBody, new List<ListItems>()));
+        }
+
         public string? Title { get; private set; }
         public bool IsDeleted { get; private set; }
         public List<Detail>? Items { get; private set; }
@@ -25,6 +35,10 @@ namespace AM.Domain.NaceAggregate
         public void DeleteNace()
         {
             IsDeleted = true;
+        }
+        public void UndeleteNace()
+        {
+            IsDeleted = false;
         }
     }
 }
