@@ -27,6 +27,7 @@
 
         //Listing Messages
         public const string ListingNewItemListed = "You added a new item in the listings";
+        public const string ListingAdmin = "Site Admin has been listed a new Item in the listing";
         public const string ListingPlantOwner = "Plant owner has been listed a new Item in the listing";
         public const string ListingTechnologyProvider = "Technology Provider has been listed a new Item in the listing";
         public const string ListingSupplierRawMaterial = "Supplier of Biomass-Raw Material has been listed a new Item in the listing";

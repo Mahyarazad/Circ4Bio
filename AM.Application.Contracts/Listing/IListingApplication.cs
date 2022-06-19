@@ -23,7 +23,6 @@ namespace AM.Application.Contracts.Listing
         Task<OperationResult> DeccrementAmount(InputAmount command);
         Task<List<ListingOperationLog>> GetListingOperationLog(long Id);
         Task<List<ActiveListing>> GetActiveListing(long userId);
-
-
+        long LastCreatedListingId();
     }
 }

@@ -213,5 +213,10 @@ namespace AM.Infrastructure.Repository
                     Id = x.Id
                 }).AsNoTracking().ToListAsync();
         }
+
+        public long GetTheLastListingId()
+        {
+            return _amContext.Listing.OrderByDescending(x => x.Id).FirstOrDefault().Id;
+        }
     }
 }

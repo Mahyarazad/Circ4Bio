@@ -1,8 +1,7 @@
-﻿    using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using _0_Framework.Domain;
 using AM.Application.Contracts.Listing;
-using AM.Application.Contracts.Negotiate;
 
 namespace AM.Domain.ListingAggregate
 {
@@ -16,6 +15,6 @@ namespace AM.Domain.ListingAggregate
         Task<EditListing> GetListingDetail(long ListingId);
         Task<long> GetOwnerUserID(long Id);
         Task<List<ActiveListing>> GetActiveListing(long userId);
-
+        long GetTheLastListingId();
     }
 }

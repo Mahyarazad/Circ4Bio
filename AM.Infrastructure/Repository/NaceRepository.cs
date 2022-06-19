@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.Xml;
-using System.Text;
-using System.Threading.Tasks;
 using _0_Framework.Infrastructure;
 using AM.Application.Contracts.Nace;
 using AM.Domain.NaceAggregate;
@@ -43,11 +40,13 @@ namespace AM.Infrastructure.Repository
                     Title = x.Title,
                     NaceId = x.Id,
                     IsDeleted = x.IsDeleted,
-                    Items = x.Items.Select(y => new DetailViewModel(y.NaceDetailId, y.DetailBody, y.IsDeleted,
-                            y.ListItems.Select(z =>
-                                new ListItemsViewModel(z.ListItemDetailId, z.IsDeleted, z.ListItemDetail)).ToList()))
-                        .ToList()
+                    Items = x.Items.Select(y =>
+                            new DetailViewModel(y.NaceDetailId, y.DetailBody, y.IsDeleted,
+                                y.ListItems.Select(z =>
+                                    new ListItemsViewModel(z.ListItemDetailId, z.IsDeleted, z.ListItemDetail)).ToList()))
+                .ToList()
                 }).First();
+
         }
 
         public EditNace EditSingleNace(long Id)

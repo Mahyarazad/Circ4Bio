@@ -24,7 +24,8 @@ namespace AM.Management.API
         {
             if (HttpContext.User.Claims.FirstOrDefault() != null)
             {
-                UserId = Convert.ToInt64(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "User Id").Value);
+                UserId = Convert.ToInt64(HttpContext.User.Claims
+                    .FirstOrDefault(x => x.Type == "User Id").Value);
                 JObject jsonObject = JObject.Parse(Command.ToString());
                 var locationId = Convert.ToInt32(jsonObject.First.First);
                 var target = new CreateDeliveryLocation

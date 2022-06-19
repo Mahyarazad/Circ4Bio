@@ -5,6 +5,7 @@ using AM.Application.Contracts.ContactUs;
 using AM.Application.Contracts.Deal;
 using AM.Application.Contracts.Listing;
 using AM.Application.Contracts.Nace;
+using AM.Application.Contracts.NaceData;
 using AM.Application.Contracts.Negotiate;
 using AM.Application.Contracts.Notification;
 using AM.Application.Contracts.ResetPassword;
@@ -63,9 +64,9 @@ namespace AM.Infrastructure.Core
             services.AddTransient<IDealRepository, DealRepository>();
 
             services.AddTransient<INaceRepository, NaceRepository>();
-            //services.AddTransient<INaceDataRepository, NaceRepository.NaceDataRepository>();
             services.AddTransient<INaceApplication, NaceApplication>();
-
+            services.AddTransient<INaceDataRepository, NaceDataRepository>();
+            services.AddTransient<INaceDataApplication, NaceDataApplication>();
 
 
             services.AddTransient<IPermissionExposer, UserPermissionExposer>();

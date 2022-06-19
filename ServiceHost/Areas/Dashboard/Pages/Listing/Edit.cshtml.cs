@@ -3,6 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using _0_Framework.Application;
 using AM.Application.Contracts.Listing;
+using AM.Application.Contracts.Nace;
+using AM.Application.Contracts.NaceData;
 using AM.Application.Contracts.Notification;
 using AM.Application.Contracts.User;
 using Microsoft.AspNetCore.Http;
@@ -16,34 +18,63 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
     {
         public EditListing Command;
         public SelectList CurrencyList;
-        private readonly IAuthenticateHelper _authenticateHelper;
-        private readonly IListingApplication _listingApplication;
-        public EditModel(
-            IAuthenticateHelper authenticateHelper,
-            IListingApplication listingApplication
-        )
+        public SelectList NaceSelectList;
+        public List<NaceViewModel> NaceViewModelList;
+        public NaceDataViewModel NaceData;
+        public List<NaceDataDetail> NaceDataDetail;
+        public NaceViewModel NaceViewModel;
+
+        public EditModel(INaceApplication naceApplication, IAuthenticateHelper authenticateHelper, IListingApplication listingApplication, INaceDataApplication naceDataApplication)
         {
+            _naceApplication = naceApplication;
             _authenticateHelper = authenticateHelper;
             _listingApplication = listingApplication;
+            _naceDataApplication = naceDataApplication;
         }
+
+        private readonly INaceApplication _naceApplication;
+        private readonly IAuthenticateHelper _authenticateHelper;
+        private readonly IListingApplication _listingApplication;
+        private readonly INaceDataApplication _naceDataApplication;
+
 
         public async Task<IActionResult> OnGet(long Id)
         {
             var loggedInUserId = _authenticateHelper.CurrentAccountRole().Id;
             Command = await _listingApplication.GetEditListing(Id);
+
             if (Command.OwnerUserId == loggedInUserId | loggedInUserId == 1)
             {
+                NaceData = _naceDataApplication.GetNaceData(Id);
+                NaceDataDetail = NaceData.NaceDataDetails;
+
+                NaceViewModel = _naceApplication.GetSingleNace(NaceData.NaceId).Result;
+                Command.NaceData = new NaceDataDTO();
+
                 CurrencyList = new SelectList(GenerateCurrencyList.GetList());
+                NaceViewModelList = new List<NaceViewModel>();
+
+                _naceApplication.GetAllNaces()
+                    .Result.ForEach(x =>
+                    {
+                        if (!x.IsDeleted)
+                            NaceViewModelList.Add(new NaceViewModel
+                            {
+                                NaceId = x.NaceId,
+                                Title = x.Title
+                            });
+                    });
+
+                NaceSelectList = new SelectList(NaceViewModelList, "NaceId", "Title");
                 return null;
             }
-            else
-            {
-                return RedirectToPage("/AccessDenied", new { area = "" });
-            }
+            return RedirectToPage("/AccessDenied", new { area = "" });
         }
 
         public JsonResult OnPost(EditListing command)
         {
+
+            _naceDataApplication.EditNaceData(command.NaceData);
             return new JsonResult(_listingApplication.Edit(command));
         }
 

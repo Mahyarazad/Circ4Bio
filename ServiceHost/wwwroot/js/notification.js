@@ -1,7 +1,8 @@
 ﻿
 "use strict";
-//var host = "https://localhost:5001";
-var host = "https://www.circ4bio.com";
+var host = "https://localhost:5001";
+//var host = "https://www.circ4bio.com";
+
 var connection = new signalR.HubConnectionBuilder()
     .withUrl(`/notificationHub`,
         {
@@ -255,5 +256,88 @@ function handleNotificationAllRead() {
         invokeCountUnreadNotifications();
     }).catch(function (err) {
         return console.error(err.toString());
+    });
+}
+
+function handleGetNaceDetail(id) {
+    if (id === "") {
+        $('#nace-table-wrapper').addClass('hidden');
+        $('#nace-info-wrapper').empty();
+        return;
+    }
+    var removeDeliveryLocation = {
+        "url": `${host}/api/Nace/GetSingleNace`,
+        "method": "POST",
+        "dataType": "json",
+        "crossDomain": "true",
+        "timeout": 0,
+        "headers": {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*"
+        },
+        "data": JSON.stringify({
+            "Id": id
+        }),
+    };
+    $.ajax(removeDeliveryLocation).done(function (response) {
+        if (response) {
+            console.log(response);
+            if (response.length !== 0) {
+                var selectListCounter = 1;
+                $('#nace-info-wrapper').empty();
+                $('#nace-table-wrapper').removeClass('hidden');
+                response.items.forEach(item => {
+
+                    $('#nace-info-wrapper').append(
+                        `<tr class="bg-white border border-grey-500 md:border-none block md:table-row">
+                            <td class="ml-2 md:border md:border-grey-200 text-left block md:table-cell">
+                                <span class="inline-block w-1/3 md:hidden font-bold"></span>
+                                <div>
+                                    <div class="ml-2 text-sm text-gray-800" id="index-title">
+                                        ${item.detailBody}
+                                    </div>
+                                    <input type="hidden" value="${response.naceId}" name="NaceData.NaceId">
+                                </div>
+                            </td>
+                            <td class="p-2 md:border md:border-grey-200 text-left block md:table-cell">
+                                <span class="inline-block w-1/3 md:hidden font-bold"></span>
+                                <div>
+                                    <div class="text-sm text-gray-800 flex-col" id="item-detail-body-${item.detailId}">
+
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>`);
+                    var indexDetail = item.listItems;
+
+                    if (indexDetail.length > 1) {
+
+                        $(`#item-detail-body-${item.detailId}`).append(`<select name="NaceData.SelectItemDetails"
+                                id="select-${selectListCounter}" class= "mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-sky-700 focus:border-sky-700 sm:text-sm rounded-md"></select>`);
+                        indexDetail.forEach(detail => {
+                            $(`#select-${selectListCounter}`).append(`
+                                    <option value="${detail.listItemDetailId}">
+                                        ${detail.listItemDetail}
+                                    </option>
+                            `);
+                        });
+                        selectListCounter++;
+                    } else {
+                        indexDetail.forEach(detail => {
+                            $(`#item-detail-body-${item.detailId}`).append(`
+                                <div class='flex'>
+                                    <input type="text" name="NaceData.ItemdetailValues"
+                                            class="mt-1 w-2/3 border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-700 focus:border-sky-500 sm:text-sm">
+                                    <input type="hidden" name="NaceData.ItemdetailIndex" value="${detail.listItemDetailId}">
+                                    <p class="self-center ml-2">${detail.listItemDetail}</p>
+                                </div>`
+                            );
+                        });
+                    }
+
+                });
+            }
+
+        }
     });
 }

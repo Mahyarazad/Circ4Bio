@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using _0_Framework;
 using _0_Framework.Application;
+using AM.Application.Contracts.Nace;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
@@ -36,10 +37,12 @@ namespace AM.Application.Contracts.Listing
         // 0 for public and 1 for private
         public bool Status { get; set; }
         public bool IsService { get; set; }
+        public long NaceId { get; set; }
     }
     public class EditListing : CreateListing
     {
         public long Id { get; set; }
         public long OwnerUserId { get; set; }
+        public NaceDataDTO NaceData { get; set; }
     }
 }

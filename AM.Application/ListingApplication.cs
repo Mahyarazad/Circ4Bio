@@ -69,6 +69,9 @@ namespace AM.Application
             string notificationTitle = null;
             switch (roleId)
             {
+                case 1:
+                    notificationTitle = ApplicationMessage.ListingAdmin;
+                    break;
                 case 2:
                     notificationTitle = ApplicationMessage.ListingTechnologyProvider;
                     break;
@@ -309,6 +312,11 @@ namespace AM.Application
         public Task<List<ActiveListing>> GetActiveListing(long userId)
         {
             return _listingRepository.GetActiveListing(userId);
+        }
+
+        public long LastCreatedListingId()
+        {
+            return _listingRepository.GetTheLastListingId();
         }
     }
 }
