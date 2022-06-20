@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using AM.Application.Contracts.Nace;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 
 namespace AM.Management.API
@@ -30,6 +30,12 @@ namespace AM.Management.API
                 item.ListItems = item.ListItems.Where(x => !x.IsDeleted).ToList();
             }
             return result;
+        }
+        [Route("[action]")]
+        [HttpGet]
+        public List<NaceViewModel> GetAllNaces()
+        {
+            return _naceApplication.GetAllNaces().Result;
         }
     }
 }

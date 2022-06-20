@@ -2,7 +2,7 @@
 "use strict";
 var host = "https://localhost:5001";
 //var host = "https://www.circ4bio.com";
-
+var timeOut = 2000;
 var connection = new signalR.HubConnectionBuilder()
     .withUrl(`/notificationHub`,
         {
@@ -140,7 +140,7 @@ function handleRemoveDeliveryAddress(id) {
         "method": "POST",
         "dataType": "json",
         "crossDomain": "true",
-        "timeout": 0,
+        "timeout": timeOut,
         "headers": {
             "Content-Type": "application/json",
             "Access-Control-Allow-Origin": "*"
@@ -265,7 +265,7 @@ function handleGetNaceDetail(id) {
         $('#nace-info-wrapper').empty();
         return;
     }
-    var removeDeliveryLocation = {
+    var getSingleNace = {
         "url": `${host}/api/Nace/GetSingleNace`,
         "method": "POST",
         "dataType": "json",
@@ -279,7 +279,7 @@ function handleGetNaceDetail(id) {
             "Id": id
         }),
     };
-    $.ajax(removeDeliveryLocation).done(function (response) {
+    $.ajax(getSingleNace).done(function (response) {
         if (response) {
             console.log(response);
             if (response.length !== 0) {
@@ -338,6 +338,79 @@ function handleGetNaceDetail(id) {
                 });
             }
 
+        }
+    });
+}
+
+function handleDeleteNaceData(id) {
+    var deleteNaceData = {
+        "url": `${host}/api/NaceData/DeleteSingleNaceData`,
+        "method": "POST",
+        "dataType": "json",
+        "crossDomain": "true",
+        "timeout": timeOut,
+        "headers": {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*"
+        },
+        "data": JSON.stringify({
+            "Id": id
+        }),
+    };
+
+    var GetNaceList = {
+        "url": `${host}/api/Nace/GetAllNaces`,
+        "method": "GET",
+        "dataType": "json",
+        "crossDomain": "true",
+        "timeout": timeOut,
+        "headers": {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*"
+        },
+    };
+
+    $.ajax(deleteNaceData).done(function (response) {
+        if (response) {
+            if (response.isSucceeded === true) {
+                alert('Selected NACE is marked as deleted');
+                $('#nace-data-wrapper').remove();
+                $('#new-nace-wrapper').append(`
+                        <div class="mt-6 grid grid-cols-12 gap-6">
+                            <div class="col-span-12 sm:col-span-6">
+                                <label class="block text-sm font-medium text-gray-700">
+                                    NACE Code
+                                </label>
+                                <select name="Model.Command.NaceId" onchange="RenderTable(this.value)"
+                                        class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-sky-700 focus:border-sky-700 sm:text-sm rounded-md">
+                                    <option value="">
+                                        Please Select a NACE
+                                    </option>
+                                </select>
+                                <p class="mt-2 text-sm text-gray-500">
+                                    Statistical Classification of Economic Activities in the European Community
+                                </p>
+                            </div>
+                            <div class="shadow border-b border-gray-200 sm:rounded-lg col-span-12 hidden" id="nace-table-wrapper">
+                                <table class="min-w-full border-collapse block md:table" id="main-table">
+                                    <thead class="block md:table-header-group">
+                                    </thead>
+                                    <tbody class="block md:table-row-group" id="nace-info-wrapper">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>`);
+
+                $.ajax(GetNaceList).done(function (response) {
+                    if (response) {
+                        response.forEach(item => {
+                            $('select[name="Model.Command.NaceId"]').append(`<option value="${item.naceId}">
+                                        ${item.title}
+                                    </option>`);
+                        });
+                    }
+                });
+            }
         }
     });
 }

@@ -9,5 +9,6 @@ namespace AM.Application.Contracts.NaceData
         Task<OperationResult> CreateNaceData(NaceDataDTO Command);
         Task<OperationResult> EditNaceData(NaceDataDTO Command);
         NaceDataViewModel GetNaceData(long ListingId);
+        Task<OperationResult> DeleteNaceData(long Id);
     }
 }

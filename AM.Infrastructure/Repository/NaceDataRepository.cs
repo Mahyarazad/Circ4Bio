@@ -17,11 +17,13 @@ namespace AM.Infrastructure.Repository
 
         public NaceDataViewModel GetNaceData(long ListingId)
         {
+
             return _amContext.NaceDatas.AsSingleQuery()
                 .Include(x => x.NaceDetailDatas)
-                .Where(x => x.ListingId == ListingId)
+                .Where(x => x.ListingId == ListingId && !x.IsDeleted)
                 .Select(x => new NaceDataViewModel
                 {
+                    Id = x.Id,
                     ListingId = x.ListingId,
                     NaceId = x.NaceId,
                     NaceDataDetails = x.NaceDetailDatas
@@ -29,6 +31,11 @@ namespace AM.Infrastructure.Repository
                             new NaceDataDetail(y.ItemId, y.NaceData)).ToList()
                 })
                     .First();
+        }
+
+        public void DeleteNaceData(long Id)
+        {
+            _amContext.NaceDatas.FirstOrDefault(x => x.Id == Id).Delete();
         }
     }
 }

@@ -71,12 +71,23 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
             return RedirectToPage("/AccessDenied", new { area = "" });
         }
 
-        public JsonResult OnPost(EditListing command)
+        public JsonResult OnPost(EditListing command, NaceDataDTO naceData)
         {
+            if (command.NaceData != null)
+                _naceDataApplication.EditNaceData(command.NaceData);
+            if (naceData.ItemdetailIndex != null)
+            {
+                naceData.ListingId = command.Id;
+                _naceDataApplication.CreateNaceData(naceData);
+            }
 
-            _naceDataApplication.EditNaceData(command.NaceData);
+
             return new JsonResult(_listingApplication.Edit(command));
         }
 
+        public void OnGetDeleteNace(long Id)
+        {
+            _naceDataApplication.DeleteNaceData(Id);
+        }
     }
 }

@@ -40,10 +40,10 @@ namespace AM.Infrastructure.Repository
                     Title = x.Title,
                     NaceId = x.Id,
                     IsDeleted = x.IsDeleted,
-                    Items = x.Items.Select(y =>
-                            new DetailViewModel(y.NaceDetailId, y.DetailBody, y.IsDeleted,
-                                y.ListItems.Select(z =>
-                                    new ListItemsViewModel(z.ListItemDetailId, z.IsDeleted, z.ListItemDetail)).ToList()))
+                    Items = x.Items.Where(x => !x.IsDeleted).Select(y =>
+                              new DetailViewModel(y.NaceDetailId, y.DetailBody, y.IsDeleted,
+                                  y.ListItems.Where(x => !x.IsDeleted).Select(z =>
+                                      new ListItemsViewModel(z.ListItemDetailId, z.IsDeleted, z.ListItemDetail)).ToList()))
                 .ToList()
                 }).First();
 

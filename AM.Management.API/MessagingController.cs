@@ -4,14 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using _0_Framework;
 using _0_Framework.Application;
-using AM.Application;
 using AM.Application.Contracts.Negotiate;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
-using Nancy.Json;
-using Nancy.Json.Simple;
-using Nancy.Responses;
 
 namespace AM.Management.API
 {

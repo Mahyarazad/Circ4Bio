@@ -4,6 +4,7 @@ namespace AM.Application.Contracts.Nace
 {
     public class NaceDataDTO
     {
+        public long Id { get; set; }
         public long NaceId { get; set; }
         public long ListingId { get; set; }
         public List<int> SelectItemDetails { get; set; }
@@ -13,6 +14,7 @@ namespace AM.Application.Contracts.Nace
 
     public class NaceDataViewModel
     {
+        public long Id { get; set; }
         public long NaceId { get; set; }
         public long ListingId { get; set; }
         public List<NaceDataDetail> NaceDataDetails { get; set; }
