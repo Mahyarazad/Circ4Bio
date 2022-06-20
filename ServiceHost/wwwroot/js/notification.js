@@ -1,7 +1,7 @@
 ﻿
 "use strict";
-var host = "https://localhost:5001";
-//var host = "https://www.circ4bio.com";
+//var host = "https://localhost:5001";
+var host = "https://www.circ4bio.com";
 var timeOut = 2000;
 var connection = new signalR.HubConnectionBuilder()
     .withUrl(`/notificationHub`,

@@ -6,269 +6,341 @@
 @{ ViewData["Title"] = $"Dashboard | Available Listing | {Model.Listing.Name}";}
 
 <div class="divide-y divide-gray-200 lg:col-span-9">
-    <div class="flex flex-col">
-        <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-            <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-                <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                    <!-- operation-result -->
-                    <div class="rounded-md bg-green-50 p-4 transition ease-in-out duration-75" id="operation-result" style="display: none">
-                        <div class="flex">
-                            <div class="flex-shrink-0">
-                                <!-- Heroicon name: solid/check-circle -->
-                                <svg class="h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                                </svg>
-                            </div>
-                            <div class="ml-3">
-                                <p class="text-sm font-medium text-green-800" id="operation-result-message">
+<div class="flex flex-col">
+<div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+<div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+<div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+<!-- operation-result -->
+<div class="rounded-md bg-green-50 p-4 transition ease-in-out duration-75" id="operation-result" style="display: none">
+    <div class="flex">
+        <div class="flex-shrink-0">
+            <!-- Heroicon name: solid/check-circle -->
+            <svg class="h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+            </svg>
+        </div>
+        <div class="ml-3">
+            <p class="text-sm font-medium text-green-800" id="operation-result-message">
 
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="rounded-md bg-red-50 p-4 transition ease-in-out duration-75" id="operation-result-failed" style="display: none">
-                        <div class="flex">
-                            <div class="flex-shrink-0">
-                                <!-- Heroicon name: solid/check-circle -->
-                                <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
-                                </svg>
-                            </div>
-                            <div class="ml-3">
-                                <p class="text-sm font-medium text-red-800" id="operation-result-failed-message">
-
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- end -->
-                    <div class="flex justify-start">
-
-
-                        @if (!Model.user.Status)
-                        {
-                            <span class="text-red-500 pb-3 mx-5 mt-4"> @ApplicationMessage.SubmitRequiredInfo</span>}
-                    </div>
-                <div class="lg:m-4 m-0 w-full grid grid-cols-1 gap-y-8 gap-x-6 px-2 py-2
-                     items-start sm:grid-cols-12 lg:gap-x-8">
-                        <div class="sm:col-span-4 lg:col-span-5 place-self-center lg:mx-0">
-                            <div class="rounded-lg bg-gray-100 overflow-hidden">
-                                <img src="~/Site Files/Listing_Images/@(Model.Listing.Image == "listing-default.png" ? "listing-default.png" : $"{Model.Listing.Type}/{Model.Listing.Image}")"
-                                     alt=Model.Listing.Image class="object-center object-cover">
-                            </div>
-                        </div>
-                        <div class="sm:col-span-8 lg:col-span-7">
-                            <h2 class="text-2xl font-extrabold text-gray-900 sm:pr-12">@Model.Listing.Name</h2>
-
-                            <section aria-labelledby="information-heading" class="mt-3">
-                                <h3 id="information-heading" class="sr-only">@Model.Listing.Description</h3>
-
-                                <p class="text-2xl text-gray-900">@Model.Listing.Currency @Model.Listing.UnitPrice</p>
-                                <p class="text-xl text-gray-900">Available Amount: @Model.Listing.Amount @Model.Listing.Unit</p>
-                                <p class="text-xl text-gray-900">Delivery Cost: by @Model.Listing.DeliveryMethod</p>
-                                <p class="text-xl text-gray-900">Owner of this Item: @Model.Listing.Email</p>
-                                <p class="text-xl text-gray-900">Supplies count: @Model.Listing.PurchaseCount</p>
-                                <!-- Reviews -->
-                                @* <div class="mt-3"> *@
-                                @*     <h4 class="sr-only">Reviews</h4> *@
-                                @*     <div class="flex items-center"> *@
-                                @*         <div class="flex items-center"> *@
-                                @*             <!-- *@
-                                @*               Heroicon name: solid/star *@
-                                @* *@
-                                @*               Active: "text-gray-400", Inactive: "text-gray-200" *@
-                                @*             --> *@
-                                @*             <svg class="h-5 w-5 flex-shrink-0 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"> *@
-                                @*                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /> *@
-                                @*             </svg> *@
-                                @* *@
-                                @*             <!-- Heroicon name: solid/star --> *@
-                                @*             <svg class="h-5 w-5 flex-shrink-0 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"> *@
-                                @*                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /> *@
-                                @*             </svg> *@
-                                @* *@
-                                @*             <!-- Heroicon name: solid/star --> *@
-                                @*             <svg class="h-5 w-5 flex-shrink-0 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"> *@
-                                @*                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /> *@
-                                @*             </svg> *@
-                                @* *@
-                                @*             <!-- Heroicon name: solid/star --> *@
-                                @*             <svg class="h-5 w-5 flex-shrink-0 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"> *@
-                                @*                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /> *@
-                                @*             </svg> *@
-                                @* *@
-                                @*             <!-- Heroicon name: solid/star --> *@
-                                @*             <svg class="h-5 w-5 flex-shrink-0 text-gray-200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"> *@
-                                @*                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /> *@
-                                @*             </svg> *@
-                                @*         </div> *@
-                                @*         <p class="sr-only">3.9 out of 5 stars</p> *@
-                                @*     </div> *@
-                                @* </div> *@
-
-                                <div class="mt-6">
-                                    <h4 class="">Description:</h4>
-                                    <p class="text-sm text-gray-700">@Model.Listing.Description</p>
-                                </div>
-                            </section>
-
-                            <section aria-labelledby="options-heading" class="mt-6">
-                                <h3 id="options-heading" class="sr-only">Product options</h3>
-
-                                <form method="post" asp-page="/AvailableListing/Index" id="form"
-                                      data-callback="" data-ajax="true" data-action="Refresh">
-                                    <!-- Colors -->
-                                    @* <div> *@
-                                    @*     <h4 class="text-sm text-gray-600">Color</h4> *@
-                                    @* *@
-                                    @*     <fieldset class="mt-2"> *@
-                                    @*         <legend class="sr-only">Choose a color</legend> *@
-                                    @*         <div class="flex items-center space-x-3"> *@
-                                    @*             <!-- *@
-                                    @*               Active and Checked: "ring ring-offset-1" *@
-                                    @*               Not Active and Checked: "ring-2" *@
-                                    @*             --> *@
-                                    @*             <label class="-m-0.5 relative p-0.5 rounded-full flex items-center justify-center cursor-pointer focus:outline-none ring-gray-700"> *@
-                                    @*                 <input type="radio" name="color-choice" value="Washed Black" class="sr-only" aria-labelledby="color-choice-0-label"> *@
-                                    @*                 <p id="color-choice-0-label" class="sr-only">Washed Black</p> *@
-                                    @*                 <span aria-hidden="true" class="h-8 w-8 bg-gray-700 border border-black border-opacity-10 rounded-full"></span> *@
-                                    @*             </label> *@
-                                    @* *@
-                                    @*             <!-- *@
-                                    @*               Active and Checked: "ring ring-offset-1" *@
-                                    @*               Not Active and Checked: "ring-2" *@
-                                    @*             --> *@
-                                    @*             <label class="-m-0.5 relative p-0.5 rounded-full flex items-center justify-center cursor-pointer focus:outline-none ring-gray-400"> *@
-                                    @*                 <input type="radio" name="color-choice" value="White" class="sr-only" aria-labelledby="color-choice-1-label"> *@
-                                    @*                 <p id="color-choice-1-label" class="sr-only">White</p> *@
-                                    @*                 <span aria-hidden="true" class="h-8 w-8 bg-white border border-black border-opacity-10 rounded-full"></span> *@
-                                    @*             </label> *@
-                                    @* *@
-                                    @*             <!-- *@
-                                    @*               Active and Checked: "ring ring-offset-1" *@
-                                    @*               Not Active and Checked: "ring-2" *@
-                                    @*             --> *@
-                                    @*             <label class="-m-0.5 relative p-0.5 rounded-full flex items-center justify-center cursor-pointer focus:outline-none ring-gray-500"> *@
-                                    @*                 <input type="radio" name="color-choice" value="Washed Gray" class="sr-only" aria-labelledby="color-choice-2-label"> *@
-                                    @*                 <p id="color-choice-2-label" class="sr-only">Washed Gray</p> *@
-                                    @*                 <span aria-hidden="true" class="h-8 w-8 bg-gray-500 border border-black border-opacity-10 rounded-full"></span> *@
-                                    @*             </label> *@
-                                    @*         </div> *@
-                                    @*     </fieldset> *@
-                                    @* </div> *@
-
-                                    <div class="mt-6 flex flex-col">
-                                        <div class="self-end flex mr-0 lg:mr-6">
-                                            <a asp-page="/AvailableListing/Index" asp-area="Dashboard"
-                                               class="bg-white border border-gray-300 rounded-md shadow-sm py-2 px-4 place-self-center
-                                           inline-flex justify-center text-sm font-medium text-gray-700 hover:bg-gray-50
-                                           focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700">
-                                                Back
-                                            </a>
-                                            <input type="hidden" value="@Model.Listing.Id" name="Id"/>
-                                            <button type="submit" onclick="gototop()"
-                                                    @(Model.Listing.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "disabled" : "")
-                                                    class="@(Model.Listing.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "bg-gray-100" : "bg-sky-700")
-                                                ml-2 border border-transparent rounded-md py-2 px-4 flex items-center justify-center text-sm font-medium
-                                                text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50
-                                                focus:ring-sky-800">
-                                                @(Model.Listing.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "Owend Item" : "Start Negotiation")
-                                            </button>
-
-                                        </div>
-
-                                    </div>
-                                    @* *@
-                                    @* <p class="absolute top-4 left-4 text-center sm:static sm:mt-6"> *@
-                                    @*     <a href="#" class="font-medium text-sky-700 hover:text-sky-500">View full details</a> *@
-                                    @* </p> *@
-                                </form>
-                            </section>
-                        </div>
-                    </div>
-                    @* <form class="divide-y divide-gray-200 lg:col-span-9" method="post" data-callback="" data-ajax="true" data-action="RefreshList"> *@
-                    @*     <div class="grid gap-4 sm:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3"> *@
-                    @*         <div class="col-span-2 m-7"> *@
-                    @*             <h2 class="text-lg font-medium text-gray-900">@Model.Listing.Listing.Name</h2> *@
-                    @*             <h2 class="font-medium text-gray-900">Description:</h2> *@
-                    @*             <div class="mt-1 prose prose-sm text-gray-500"> *@
-                    @*                 <p>@Model.Listing.Listing.Description</p> *@
-                    @*             </div> *@
-                    @*         </div> *@
-                    @*         <div class="col-span-1 m-7"> *@
-                    @*             <img class="h-24 w-24 rounded-full float-right" *@
-                    @*                  src="~/Site Files/Listing_Images/@(Model.Listing.Listing.Image == "listing-default.png" ? "listing-default.png" : $"{Model.Listing.Listing.Type}/{Model.Listing.Listing.Image}")" *@
-                    @*                  alt="" /> *@
-                    @*         </div> *@
-                    @* *@
-                    @*     </div> *@
-                    @* *@
-                    @* *@
-                    @*     <!-- Policies --> *@
-                    @*     <div aria-labelledby="policies-heading" class="mt-10 px-4"> *@
-                    @*         <h2 id="policies-heading" class="sr-only">Our Policies</h2> *@
-                    @* *@
-                    @*         <div class="my-4 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2"> *@
-                    @*             <div class="bg-gray-50 border border-gray-200 rounded-lg p-6 text-center"> *@
-                    @*                 <dt> *@
-                    @*                     <!-- Heroicon name: outline/globe --> *@
-                    @*                     <svg class="mx-auto h-6 w-6 flex-shrink-0 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"> *@
-                    @*                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /> *@
-                    @*                     </svg> *@
-                    @*                     <span class="mt-4 text-sm font-medium text-gray-900"> *@
-                    @*                         Delivery Method *@
-                    @*                     </span> *@
-                    @*                 </dt> *@
-                    @*                 <dd class="mt-1 text-sm text-gray-500"> *@
-                    @*                     @Model.Listing.Listing.DeliveryMethod *@
-                    @*                 </dd> *@
-                    @*             </div> *@
-                    @* *@
-                    @*             <div class="bg-gray-50 border border-gray-200 rounded-lg p-6 text-center"> *@
-                    @*                 <dt> *@
-                    @*                     <!-- Heroicon name: outline/currency-dollar --> *@
-                    @*                     <svg class="mx-auto h-6 w-6 flex-shrink-0 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"> *@
-                    @*                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /> *@
-                    @*                     </svg> *@
-                    @*                     <span class="mt-4 text-sm font-medium text-gray-900"> *@
-                    @*                         Unit Price & Available Amount *@
-                    @*                     </span> *@
-                    @*                 </dt> *@
-                    @*                 <dd class="mt-1 text-sm text-gray-500"> *@
-                    @*                     @Model.Listing.Listing.UnitPrice <b class="text-xs">@Model.Listing.Listing.Unit</b> *@
-                    @*                     @Model.Listing.Listing.Amount <b class="text-xs">@Model.Listing.Listing.Currency</b> *@
-                    @*                 </dd> *@
-                    @*             </div> *@
-                    @*         </div> *@
-                    @*     </div> *@
-                    @*     <input type="hidden" value="@Model.Listing.Listing.Id" asp-for="@Model.Listing.Listing.Id" /> *@
-                    @*     <div class="mt-4 py-4 px-4 flex justify-end sm:px-6"> *@
-                    @* *@
-                    @*         <a asp-page="/AvailableListing/Index" asp-area="Dashboard" class="bg-white border border-gray-300 rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-700"> *@
-                    @*             Back *@
-                    @*         </a> *@
-                    @*         @if (!AuthenticateHelper.CurrentAccountRole().Status) *@
-                    @*         { *@
-                    @*             <button type="submit" @(!AuthenticateHelper.CurrentAccountRole().Status ? "disabled" : "") onclick="gotoTop()" *@
-                    @*                     class="ml-5 @(!AuthenticateHelper.CurrentAccountRole().Status ? "bg-gray-100" : "bg-sky-700") border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white @(!AuthenticateHelper.CurrentAccountRole().Status ? "hover:bg-gray-200" : "hover:bg-sky-800") focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-700"> *@
-                    @*                 Start Negotiation *@
-                    @*             </button> *@
-                    @*         } *@
-                    @*         else *@
-                    @*         { *@
-                    @*             <button type="submit" onclick="gotoTop()" @(Model.Listing.Listing.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "disabled" : "") *@
-                    @*                     class="ml-5 @(Model.Listing.Listing.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "bg-gray-100": "bg-sky-700") border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white @(Model.Listing.Listing.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "hover:bg-gray-200": "hover:bg-sky-800") focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-700"> *@
-                    @*                 @(Model.Listing.Listing.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "Owend Item": "Start Negotiation") *@
-                    @*             </button> *@
-                    @*         } *@
-                    @*     </div> *@
-                    @* </form> *@
-                </div>
-            </div>
+            </p>
         </div>
     </div>
 </div>
+<div class="rounded-md bg-red-50 p-4 transition ease-in-out duration-75" id="operation-result-failed" style="display: none">
+    <div class="flex">
+        <div class="flex-shrink-0">
+            <!-- Heroicon name: solid/check-circle -->
+            <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+            </svg>
+        </div>
+        <div class="ml-3">
+            <p class="text-sm font-medium text-red-800" id="operation-result-failed-message">
+
+            </p>
+        </div>
+    </div>
+</div>
+<!-- end -->
+<div class="flex justify-start">
+
+
+    @if (!Model.user.Status)
+    {
+        <span class="text-red-500 pb-3 mx-5 mt-4"> @ApplicationMessage.SubmitRequiredInfo</span>}
+</div>
+<div class="lg:m-4 m-0 w-full grid grid-cols-1 gap-y-8 gap-x-6 px-2 py-2
+                     items-start sm:grid-cols-12 lg:gap-x-8">
+    <div class="sm:col-span-4 lg:col-span-5 place-self-center lg:mx-0">
+        <div class="rounded-lg bg-gray-100 overflow-hidden">
+            <img src="~/Site Files/Listing_Images/@(Model.Listing.Image == "listing-default.png" ? "listing-default.png" : $"{Model.Listing.Type}/{Model.Listing.Image}")"
+                 alt=Model.Listing.Image class="object-center object-cover">
+        </div>
+    </div>
+    <div class="sm:col-span-8 lg:col-span-7">
+        <h2 class="text-2xl font-extrabold text-gray-900 sm:pr-12">@Model.Listing.Name</h2>
+
+        <section aria-labelledby="information-heading" class="mt-3">
+            <h3 id="information-heading" class="sr-only">@Model.Listing.Description</h3>
+
+            <p class="text-2xl text-gray-900">@Model.Listing.Currency @Model.Listing.UnitPrice</p>
+            <p class="text-xl text-gray-900">Available Amount: @Model.Listing.Amount @Model.Listing.Unit</p>
+            <p class="text-xl text-gray-900">Delivery Cost: by @Model.Listing.DeliveryMethod</p>
+            <p class="text-xl text-gray-900">Owner of this Item: @Model.Listing.Email</p>
+            <p class="text-xl text-gray-900">Supplies count: @Model.Listing.PurchaseCount</p>
+            <!-- Reviews -->
+            @* <div class="mt-3"> *@
+            @*     <h4 class="sr-only">Reviews</h4> *@
+            @*     <div class="flex items-center"> *@
+            @*         <div class="flex items-center"> *@
+            @*             <!-- *@
+            @*               Heroicon name: solid/star *@
+            @* *@
+            @*               Active: "text-gray-400", Inactive: "text-gray-200" *@
+            @*             --> *@
+            @*             <svg class="h-5 w-5 flex-shrink-0 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"> *@
+            @*                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /> *@
+            @*             </svg> *@
+            @* *@
+            @*             <!-- Heroicon name: solid/star --> *@
+            @*             <svg class="h-5 w-5 flex-shrink-0 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"> *@
+            @*                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /> *@
+            @*             </svg> *@
+            @* *@
+            @*             <!-- Heroicon name: solid/star --> *@
+            @*             <svg class="h-5 w-5 flex-shrink-0 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"> *@
+            @*                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /> *@
+            @*             </svg> *@
+            @* *@
+            @*             <!-- Heroicon name: solid/star --> *@
+            @*             <svg class="h-5 w-5 flex-shrink-0 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"> *@
+            @*                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /> *@
+            @*             </svg> *@
+            @* *@
+            @*             <!-- Heroicon name: solid/star --> *@
+            @*             <svg class="h-5 w-5 flex-shrink-0 text-gray-200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"> *@
+            @*                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /> *@
+            @*             </svg> *@
+            @*         </div> *@
+            @*         <p class="sr-only">3.9 out of 5 stars</p> *@
+            @*     </div> *@
+            @* </div> *@
+
+            <div class="mt-6">
+                <h4 class="">Description:</h4>
+                <p class="text-sm text-gray-700">@Model.Listing.Description</p>
+            </div>
+        </section>
+
+        <section aria-labelledby="options-heading" class="mt-6">
+            <h3 id="options-heading" class="sr-only">Product options</h3>
+            <div class="pr-2 mr-2">
+                <table class="min-w-full border-collapse block md:table" id="main-table">
+                    <thead class="block md:table-header-group">
+                    </thead>
+                    <tbody class="block md:table-row-group">
+
+                        @foreach (var item in Model.NaceViewModel.Items)
+                        {
+                            if (!item.IsDeleted)
+                            {
+                                <tr class="bg-white border border-grey-500 md:border-none block md:table-row">
+                                    <td class="p-2 md:border md:border-grey-200 text-left block md:table-cell">
+                                        <span class="inline-block w-1/3 md:hidden font-bold">Index Title</span>
+                                        <div>
+                                            <div class="text-sm text-gray-800">
+                                                @item.DetailBody
+                                            </div>
+
+                                        </div>
+                                    </td>
+                                    <td class="p-2 md:border md:border-grey-200 text-left block md:table-cell">
+                                        <span class="inline-block w-1/3 md:hidden font-bold">Value</span>
+                                        <div>
+                                            <div class="text-sm text-gray-800 flex-col">
+                                                @if (item.ListItems.Count == 1)
+                                                {
+                                                    @foreach (var detailItem in item.ListItems)
+                                                    {
+                                                        @if (!@detailItem.IsDeleted)
+                                                        {
+                                                            <div class="flex">
+                                                                @foreach (var naceData in Model.NaceData.NaceDataDetails)
+                                                                {
+                                                                    if (naceData.ItemdetailIndex == detailItem.ListItemDetailId)
+                                                                    {
+                                                                        <div class="self-center ml-2" id="data-@detailItem.ListItemDetailId">
+                                                                            @(naceData.ItemdetailValues)
+                                                                        </div>
+                                                                    }
+                                                                }
+                                                                <div class="self-center ml-2" id="@detailItem.ListItemDetailId">
+                                                                    @(detailItem.ListItemDetail)
+                                                                </div>
+                                                            </div>}
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    foreach (var itemdetail in item.ListItems)
+                                                    {
+                                                        @foreach (var naceData in Model.NaceData.NaceDataDetails)
+                                                        {
+                                                            if (itemdetail.ListItemDetailId == naceData.ItemdetailIndex)
+                                                            {
+                                                                <div class="self-center ml-2" id="data-@naceData.ItemdetailIndex">
+                                                                    @(naceData.ItemdetailValues)
+                                                                </div>
+                                                            }
+                                                        }
+                                                    }
+
+
+                                                }
+
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <form method="post" asp-page="/AvailableListing/Index" id="form"
+                  data-callback="" data-ajax="true" data-action="Refresh">
+                <!-- Colors -->
+                @* <div> *@
+                @*     <h4 class="text-sm text-gray-600">Color</h4> *@
+                @* *@
+                @*     <fieldset class="mt-2"> *@
+                @*         <legend class="sr-only">Choose a color</legend> *@
+                @*         <div class="flex items-center space-x-3"> *@
+                @*             <!-- *@
+                @*               Active and Checked: "ring ring-offset-1" *@
+                @*               Not Active and Checked: "ring-2" *@
+                @*             --> *@
+                @*             <label class="-m-0.5 relative p-0.5 rounded-full flex items-center justify-center cursor-pointer focus:outline-none ring-gray-700"> *@
+                @*                 <input type="radio" name="color-choice" value="Washed Black" class="sr-only" aria-labelledby="color-choice-0-label"> *@
+                @*                 <p id="color-choice-0-label" class="sr-only">Washed Black</p> *@
+                @*                 <span aria-hidden="true" class="h-8 w-8 bg-gray-700 border border-black border-opacity-10 rounded-full"></span> *@
+                @*             </label> *@
+                @* *@
+                @*             <!-- *@
+                @*               Active and Checked: "ring ring-offset-1" *@
+                @*               Not Active and Checked: "ring-2" *@
+                @*             --> *@
+                @*             <label class="-m-0.5 relative p-0.5 rounded-full flex items-center justify-center cursor-pointer focus:outline-none ring-gray-400"> *@
+                @*                 <input type="radio" name="color-choice" value="White" class="sr-only" aria-labelledby="color-choice-1-label"> *@
+                @*                 <p id="color-choice-1-label" class="sr-only">White</p> *@
+                @*                 <span aria-hidden="true" class="h-8 w-8 bg-white border border-black border-opacity-10 rounded-full"></span> *@
+                @*             </label> *@
+                @* *@
+                @*             <!-- *@
+                @*               Active and Checked: "ring ring-offset-1" *@
+                @*               Not Active and Checked: "ring-2" *@
+                @*             --> *@
+                @*             <label class="-m-0.5 relative p-0.5 rounded-full flex items-center justify-center cursor-pointer focus:outline-none ring-gray-500"> *@
+                @*                 <input type="radio" name="color-choice" value="Washed Gray" class="sr-only" aria-labelledby="color-choice-2-label"> *@
+                @*                 <p id="color-choice-2-label" class="sr-only">Washed Gray</p> *@
+                @*                 <span aria-hidden="true" class="h-8 w-8 bg-gray-500 border border-black border-opacity-10 rounded-full"></span> *@
+                @*             </label> *@
+                @*         </div> *@
+                @*     </fieldset> *@
+                @* </div> *@
+
+                <div class="mt-6 flex flex-col">
+                    <div class="self-end flex mr-0 lg:mr-6">
+                        <a asp-page="/AvailableListing/Index" asp-area="Dashboard"
+                           class="bg-white border border-gray-300 rounded-md shadow-sm py-2 px-4 place-self-center
+                                           inline-flex justify-center text-sm font-medium text-gray-700 hover:bg-gray-50
+                                           focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700">
+                            Back
+                        </a>
+                        <input type="hidden" value="@Model.Listing.Id" name="Id" />
+                        <button type="submit" onclick="gototop()"
+                                @(Model.Listing.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "disabled" : "")
+                                class="@(Model.Listing.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "bg-gray-100" : "bg-sky-700")
+                                                ml-2 border border-transparent rounded-md py-2 px-4 flex items-center justify-center text-sm font-medium
+                                                text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50
+                                                focus:ring-sky-800">
+                            @(Model.Listing.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "Owend Item" : "Start Negotiation")
+                        </button>
+
+                    </div>
+
+                </div>
+                @* *@
+                @* <p class="absolute top-4 left-4 text-center sm:static sm:mt-6"> *@
+                @*     <a href="#" class="font-medium text-sky-700 hover:text-sky-500">View full details</a> *@
+                @* </p> *@
+            </form>
+        </section>
+    </div>
+</div>
+@* <form class="divide-y divide-gray-200 lg:col-span-9" method="post" data-callback="" data-ajax="true" data-action="RefreshList"> *@
+@*     <div class="grid gap-4 sm:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3"> *@
+@*         <div class="col-span-2 m-7"> *@
+@*             <h2 class="text-lg font-medium text-gray-900">@Model.Listing.Listing.Name</h2> *@
+@*             <h2 class="font-medium text-gray-900">Description:</h2> *@
+@*             <div class="mt-1 prose prose-sm text-gray-500"> *@
+@*                 <p>@Model.Listing.Listing.Description</p> *@
+@*             </div> *@
+@*         </div> *@
+@*         <div class="col-span-1 m-7"> *@
+@*             <img class="h-24 w-24 rounded-full float-right" *@
+@*                  src="~/Site Files/Listing_Images/@(Model.Listing.Listing.Image == "listing-default.png" ? "listing-default.png" : $"{Model.Listing.Listing.Type}/{Model.Listing.Listing.Image}")" *@
+@*                  alt="" /> *@
+@*         </div> *@
+@* *@
+@*     </div> *@
+@* *@
+@* *@
+@*     <!-- Policies --> *@
+@*     <div aria-labelledby="policies-heading" class="mt-10 px-4"> *@
+@*         <h2 id="policies-heading" class="sr-only">Our Policies</h2> *@
+@* *@
+@*         <div class="my-4 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2"> *@
+@*             <div class="bg-gray-50 border border-gray-200 rounded-lg p-6 text-center"> *@
+@*                 <dt> *@
+@*                     <!-- Heroicon name: outline/globe --> *@
+@*                     <svg class="mx-auto h-6 w-6 flex-shrink-0 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"> *@
+@*                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /> *@
+@*                     </svg> *@
+@*                     <span class="mt-4 text-sm font-medium text-gray-900"> *@
+@*                         Delivery Method *@
+@*                     </span> *@
+@*                 </dt> *@
+@*                 <dd class="mt-1 text-sm text-gray-500"> *@
+@*                     @Model.Listing.Listing.DeliveryMethod *@
+@*                 </dd> *@
+@*             </div> *@
+@* *@
+@*             <div class="bg-gray-50 border border-gray-200 rounded-lg p-6 text-center"> *@
+@*                 <dt> *@
+@*                     <!-- Heroicon name: outline/currency-dollar --> *@
+@*                     <svg class="mx-auto h-6 w-6 flex-shrink-0 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"> *@
+@*                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /> *@
+@*                     </svg> *@
+@*                     <span class="mt-4 text-sm font-medium text-gray-900"> *@
+@*                         Unit Price & Available Amount *@
+@*                     </span> *@
+@*                 </dt> *@
+@*                 <dd class="mt-1 text-sm text-gray-500"> *@
+@*                     @Model.Listing.Listing.UnitPrice <b class="text-xs">@Model.Listing.Listing.Unit</b> *@
+@*                     @Model.Listing.Listing.Amount <b class="text-xs">@Model.Listing.Listing.Currency</b> *@
+@*                 </dd> *@
+@*             </div> *@
+@*         </div> *@
+@*     </div> *@
+@*     <input type="hidden" value="@Model.Listing.Listing.Id" asp-for="@Model.Listing.Listing.Id" /> *@
+@*     <div class="mt-4 py-4 px-4 flex justify-end sm:px-6"> *@
+@* *@
+@*         <a asp-page="/AvailableListing/Index" asp-area="Dashboard" class="bg-white border border-gray-300 rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-700"> *@
+@*             Back *@
+@*         </a> *@
+@*         @if (!AuthenticateHelper.CurrentAccountRole().Status) *@
+@*         { *@
+@*             <button type="submit" @(!AuthenticateHelper.CurrentAccountRole().Status ? "disabled" : "") onclick="gotoTop()" *@
+@*                     class="ml-5 @(!AuthenticateHelper.CurrentAccountRole().Status ? "bg-gray-100" : "bg-sky-700") border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white @(!AuthenticateHelper.CurrentAccountRole().Status ? "hover:bg-gray-200" : "hover:bg-sky-800") focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-700"> *@
+@*                 Start Negotiation *@
+@*             </button> *@
+@*         } *@
+@*         else *@
+@*         { *@
+@*             <button type="submit" onclick="gotoTop()" @(Model.Listing.Listing.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "disabled" : "") *@
+@*                     class="ml-5 @(Model.Listing.Listing.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "bg-gray-100": "bg-sky-700") border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white @(Model.Listing.Listing.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "hover:bg-gray-200": "hover:bg-sky-800") focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-700"> *@
+@*                 @(Model.Listing.Listing.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "Owend Item": "Start Negotiation") *@
+@*             </button> *@
+@*         } *@
+@*     </div> *@
+@* </form> *@
+</div>
+</div>
+</div>
+</div>
+</div>
 
 @section CSS{
-    <link rel="stylesheet" href="~/css/Loader.css" />
+    <link rel="stylesheet" href="~/css/Loader.css"/>
 }

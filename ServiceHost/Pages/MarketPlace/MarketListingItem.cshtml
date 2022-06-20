@@ -52,8 +52,12 @@
                                 <form method="post" asp-page="/AvailableListing/Index" id="form"
                                       data-callback="" data-ajax="true" data-action="Refresh">
 
-                                    <div class="mt-6">
-                                        <div class="col-span-1 place-self-center">
+                                    <div class="mt-6 flex">
+                                        <a asp-page="/MarketPlace/ItemDetail" asp-area="" asp-route-id="@Model.Id"
+                                           class="bg-white border border-gray-300 rounded-md
+                   shadow-sm py-3 px-4 inline-flex justify-center text-sm font-medium text-gray-700 hover:bg-gray-50
+                   focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700 text-center mr-2"
+                                        >More Details</a>
                                             <a onclick="gototop()"
                                                asp-page="/AvailableListing/Detail" asp-area="Dashboard" asp-route-id="@Model.Id"
                                                class="border border-transparent rounded-md py-3 px-8 flex items-center justify-center
@@ -61,7 +65,6 @@
                                                focus:ring-offset-gray-50 focus:ring-sky-800 bg-sky-700">
                                                 Start Negotiation
                                             </a>
-                                        </div>
 
                                     </div>
                                     @* *@
