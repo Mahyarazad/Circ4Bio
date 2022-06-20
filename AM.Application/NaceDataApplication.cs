@@ -63,15 +63,13 @@ namespace AM.Application
                     }
                 }
 
-
-                foreach (var item in naceData.NaceDetailDatas)
+                for (var counter = 0; counter < Command.SelectItemDetails.Count; counter++)
                 {
-                    foreach (var stringValue in Command.SelectItemDetails)
-                    {
-                        if (item.NaceData == "")
-                            item.Edit(stringValue, "");
-                    }
+                    var item = naceData.NaceDetailDatas
+                        .Where(x => x.NaceData == "").ToList();
+                    item[counter].Edit(Command.SelectItemDetails[counter], "");
                 }
+
                 _naceDataRepository.SaveChanges();
 
                 return Task.FromResult(result.Succeeded());
