@@ -58,8 +58,8 @@ namespace AM.Application
             var RedirectUrl = _contextAccessor.HttpContext.Request.Headers
                 .FirstOrDefault(x => x.Key == "Referer").Value
                 .ToString()
-                .Replace("listing", "availablelisting")
-                .Replace("create", "detail");
+                .Replace("Listing", "Availablelisting")
+                .Replace("Create", "Detail");
 
             command.ImageString = _fileUploader
                     .Uploader(command.Image, $"Listing_Images/{typeofListing}", Guid.NewGuid().ToString());

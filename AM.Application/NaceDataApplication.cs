@@ -24,26 +24,29 @@ namespace AM.Application
         {
             var result = new OperationResult();
             var naceDataList = new List<NaceDetailData>();
-            for (var counter = 0; counter < Command.ItemdetailIndex.Count + Command.SelectItemDetails.Count; counter++)
+            if (Command.NaceId != 0)
             {
-                if (counter < Command.ItemdetailIndex.Count)
-                    naceDataList.Add(
-                        new NaceDetailData(Command.
-                            ItemdetailIndex[counter], Command.ItemdetailValues[counter]));
-                if (counter >= Command.ItemdetailIndex.Count)
+                for (var counter = 0; counter < Command.ItemdetailIndex.Count + Command.SelectItemDetails.Count; counter++)
                 {
-                    naceDataList.Add(
-                        new NaceDetailData(Command
-                            .SelectItemDetails[counter - Command.ItemdetailIndex.Count], ""));
+                    if (counter < Command.ItemdetailIndex.Count)
+                        naceDataList.Add(
+                            new NaceDetailData(Command.
+                                ItemdetailIndex[counter], Command.ItemdetailValues[counter]));
+                    if (counter >= Command.ItemdetailIndex.Count)
+                    {
+                        naceDataList.Add(
+                            new NaceDetailData(Command
+                                .SelectItemDetails[counter - Command.ItemdetailIndex.Count], ""));
+                    }
                 }
+
+                var naceData = new NaceData(naceDataList, Command.ListingId, Command.NaceId);
+                _naceDataRepository.Create(naceData);
+                _naceDataRepository.SaveChanges();
+                return Task.FromResult(result.Succeeded());
             }
 
-            var naceData = new NaceData(naceDataList, Command.ListingId, Command.NaceId);
-            _naceDataRepository.Create(naceData);
-            _naceDataRepository.SaveChanges();
-
-            return Task.FromResult(result.Succeeded());
-
+            return Task.FromResult(result.Failed(ApplicationMessage.RecordNotFound));
         }
 
         public Task<OperationResult> EditNaceData(NaceDataDTO Command)

@@ -71,7 +71,10 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
         {
             var result = _listingApplication.Create(command);
             naceData.ListingId = _listingApplication.LastCreatedListingId();
-            _naceDataApplication.CreateNaceData(naceData);
+            if (naceData.NaceId != 0)
+            {
+                _naceDataApplication.CreateNaceData(naceData);
+            }
             return new JsonResult(result);
         }
 

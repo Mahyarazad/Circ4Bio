@@ -1,6 +1,4 @@
 ﻿"use strict";
-//var host = "https://localhost:5001";
-var host = "https://www.circ4bio.com";
 
 function loading() {
     $("#overlay").removeClass('hidden');
@@ -336,6 +334,10 @@ $("#mobile-home-menu-close").on('click', function () {
 });
 
 $('html').click(function (e) {
+    if (e.target.id === "notification-markread" |
+        e.target.id === "notification-markread-svg" |
+        e.target.id === "notification-markread-path")
+        return;
     if (window.screen.width < 1024) {
         var element = $(e.target)[0]
         if (element.id === "mobile-home-menu-open") {

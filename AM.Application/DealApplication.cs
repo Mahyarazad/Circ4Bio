@@ -259,7 +259,7 @@ namespace AM.Application
             var RedirectUrlSeller = _contextAccessor.HttpContext.Request.Headers.FirstOrDefault(x => x.Key == "Referer")
                 .Value;
             var RedirectUrlBuyer = _contextAccessor.HttpContext.Request.Headers
-                .FirstOrDefault(x => x.Key == "Referer").Value.ToString().Replace("quatation", "confirmquatation");
+                .FirstOrDefault(x => x.Key == "Referer").Value.ToString().Replace("Quatation", "ConfirmQuatation");
 
             ////Notification Push
             var negotiate = _negotiateRepository.Get(Command.NegotiateId).Result;

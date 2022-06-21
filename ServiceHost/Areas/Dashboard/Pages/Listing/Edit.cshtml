@@ -105,7 +105,7 @@
             </label>
             <select asp-items="@Model.NaceSelectList" asp-for="@Model.Command.NaceId" onchange="RenderTable(this.value)"
                     class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-sky-700 focus:border-sky-700 sm:text-sm rounded-md">
-                <option value="">
+                <option value="0">
                     Please Select a NACE
                 </option>
             </select>

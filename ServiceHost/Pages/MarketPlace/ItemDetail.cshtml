@@ -34,6 +34,8 @@
 
                             <div aria-labelledby="options-heading" class="mt-6">
                                 <h3 id="options-heading" class="sr-only">Product options</h3>
+                                @if (Model.NaceData.Id != 0)
+                                {
                                 <div class="pr-2 mr-2">
                                     <table class="min-w-full border-collapse block md:table" id="main-table">
                                         <thead class="block md:table-header-group">
@@ -44,53 +46,53 @@
                                             {
                                                 if (!item.IsDeleted)
                                                 {
-                                                    <tr class="bg-white border border-grey-500 md:border-none block md:table-row">
-                                                        <td class="p-2 md:border md:border-grey-200 text-left block md:table-cell">
-                                                            <span class="inline-block w-1/3 md:hidden font-bold">Index Title</span>
-                                                            <div>
-                                                                <div class="text-sm text-gray-800">
-                                                                    @item.DetailBody
-                                                                </div>
+                                            <tr class="bg-white border border-grey-500 md:border-none block md:table-row">
+                                                <td class="p-2 md:border md:border-grey-200 text-left block md:table-cell">
+                                                    <span class="inline-block w-1/3 md:hidden font-bold">Index Title</span>
+                                                    <div>
+                                                        <div class="text-sm text-gray-800">
+                                                            @item.DetailBody
+                                                        </div>
 
-                                                            </div>
-                                                        </td>
-                                                        <td class="p-2 md:border md:border-grey-200 text-left block md:table-cell">
-                                                            <span class="inline-block w-1/3 md:hidden font-bold">Value</span>
-                                                            <div>
-                                                                <div class="text-sm text-gray-800 flex-col">
-                                                                    @if (item.ListItems.Count == 1)
+                                                    </div>
+                                                </td>
+                                                <td class="p-2 md:border md:border-grey-200 text-left block md:table-cell">
+                                                    <span class="inline-block w-1/3 md:hidden font-bold">Value</span>
+                                                    <div>
+                                                        <div class="text-sm text-gray-800 flex-col">
+                                                            @if (item.ListItems.Count == 1)
                                                                     {
-                                                                        @foreach (var detailItem in item.ListItems)
+                                                            @foreach (var detailItem in item.ListItems)
                                                                         {
-                                                                            @if (!@detailItem.IsDeleted)
+                                                            @if (!@detailItem.IsDeleted)
                                                                             {
-                                                                                <div class="flex">
-                                                                                    @foreach (var naceData in Model.NaceData.NaceDataDetails)
+                                                            <div class="flex">
+                                                                @foreach (var naceData in Model.NaceData.NaceDataDetails)
                                                                                     {
                                                                                         if (naceData.ItemdetailIndex == detailItem.ListItemDetailId)
                                                                                         {
-                                                                                            <div class="self-center ml-2" id="data-@detailItem.ListItemDetailId">
-                                                                                                @(naceData.ItemdetailValues)
-                                                                                            </div>
+                                                                <div class="self-center ml-2" id="data-@detailItem.ListItemDetailId">
+                                                                    @(naceData.ItemdetailValues)
+                                                                </div>
                                                                                         }
                                                                                     }
-                                                                                    <div class="self-center ml-2" id="@detailItem.ListItemDetailId">
-                                                                                        @(detailItem.ListItemDetail)
-                                                                                    </div>
-                                                                                </div>}
+                                                                <div class="self-center ml-2" id="@detailItem.ListItemDetailId">
+                                                                    @(detailItem.ListItemDetail)
+                                                                </div>
+                                                            </div>}
                                                                         }
                                                                     }
                                                                     else
                                                                     {
                                                                         foreach (var itemdetail in item.ListItems)
                                                                         {
-                                                                            @foreach (var naceData in Model.NaceData.NaceDataDetails)
+                                                            @foreach (var naceData in Model.NaceData.NaceDataDetails)
                                                                             {
                                                                                 if (itemdetail.ListItemDetailId == naceData.ItemdetailIndex)
                                                                                 {
-                                                                                    <div class="self-center ml-2" id="data-@naceData.ItemdetailIndex">
-                                                                                        @(naceData.ItemdetailValues)
-                                                                                    </div>
+                                                            <div class="self-center ml-2" id="data-@naceData.ItemdetailIndex">
+                                                                @(naceData.ItemdetailValues)
+                                                            </div>
                                                                                 }
                                                                             }
                                                                         }
@@ -98,21 +100,23 @@
 
                                                                     }
 
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
                                                 }
                                             }
                                         </tbody>
                                     </table>
                                 </div>
+                                }
+
                                 <div class="mt-6 flex mb-4 flex-col">
                                     <div class="self-end flex mr-0 lg:mr-6">
-                                        <a asp-page="/MarketPlace/Index" asp-area="Dashboard"
-                                           class="bg-white border border-gray-300 rounded-md shadow-sm py-2 px-4 inline-flex justify-center
+                                        <a asp-page="/MarketPlace/Index" asp-area=""
+                                           class="flex items-center bg-white border border-gray-300 rounded-md shadow-sm py-2 px-4 inline-flex justify-center
                                            text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2
-                                           focus:ring-offset-2 focus:ring-gray-500 place-self-center">
+                                           focus:ring-offset-2 focus:ring-gray-500">
                                             Back
                                         </a>
                                         <a onclick="gototop()" asp-page="/AvailableListing/Detail" asp-area="Dashboard" asp-route-id="@Model.Listing.Id"

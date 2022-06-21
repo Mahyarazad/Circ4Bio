@@ -46,21 +46,29 @@ namespace ServiceHost.Areas.Dashboard.Pages.AvailableListing
             user = await _userApplication.GetDetail(userId);
             Listing = await _listingApplication.GetDetailListing(Id);
             NaceData = _naceDataApplication.GetNaceData(Listing.Id);
-            NaceViewModel = _naceApplication.GetSingleNace(NaceData.NaceId).Result;
-            var naceSelectListStringData =
-                NaceViewModel.Items.Where(x => x.ListItems.Count > 1).ToList();
-
-            foreach (var item in NaceData.NaceDataDetails.Select((value, index) => new { value, index }))
+            if (NaceData.Id == 0)
             {
-                if (item.value.ItemdetailValues == "")
+                NaceViewModel = new NaceViewModel();
+            }
+            else
+            {
+                NaceViewModel = _naceApplication.GetSingleNace(NaceData.NaceId).Result;
+                var naceSelectListStringData =
+                    NaceViewModel.Items.Where(x => x.ListItems.Count > 1).ToList();
+
+                foreach (var item in NaceData.NaceDataDetails.Select((value, index) => new { value, index }))
                 {
-                    naceSelectListStringData.ForEach(x => x.ListItems.ForEach(y =>
-                      {
-                          if (y.ListItemDetailId == item.value.ItemdetailIndex)
-                              item.value.ItemdetailValues = y.ListItemDetail;
-                      }));
+                    if (item.value.ItemdetailValues == "")
+                    {
+                        naceSelectListStringData.ForEach(x => x.ListItems.ForEach(y =>
+                        {
+                            if (y.ListItemDetailId == item.value.ItemdetailIndex)
+                                item.value.ItemdetailValues = y.ListItemDetail;
+                        }));
+                    }
                 }
             }
+
         }
 
         public async Task<JsonResult> OnPost(long Id)

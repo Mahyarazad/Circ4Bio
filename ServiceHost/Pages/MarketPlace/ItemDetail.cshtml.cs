@@ -26,19 +26,26 @@ namespace ServiceHost.Pages.MarketPlace
         {
             Listing = await _listingApplication.GetDetailListing(Id);
             NaceData = _naceDataApplication.GetNaceData(Listing.Id);
-            NaceViewModel = _naceApplication.GetSingleNace(NaceData.NaceId).Result;
-            var naceSelectListStringData =
-                NaceViewModel.Items.Where(x => x.ListItems.Count > 1).ToList();
-
-            foreach (var item in NaceData.NaceDataDetails.Select((value, index) => new { value, index }))
+            if (NaceData.Id == 0)
             {
-                if (item.value.ItemdetailValues == "")
+                NaceViewModel = new NaceViewModel();
+            }
+            else
+            {
+                NaceViewModel = _naceApplication.GetSingleNace(NaceData.NaceId).Result;
+                var naceSelectListStringData =
+                    NaceViewModel.Items.Where(x => x.ListItems.Count > 1).ToList();
+
+                foreach (var item in NaceData.NaceDataDetails.Select((value, index) => new { value, index }))
                 {
-                    naceSelectListStringData.ForEach(x => x.ListItems.ForEach(y =>
+                    if (item.value.ItemdetailValues == "")
                     {
-                        if (y.ListItemDetailId == item.value.ItemdetailIndex)
-                            item.value.ItemdetailValues = y.ListItemDetail;
-                    }));
+                        naceSelectListStringData.ForEach(x => x.ListItems.ForEach(y =>
+                        {
+                            if (y.ListItemDetailId == item.value.ItemdetailIndex)
+                                item.value.ItemdetailValues = y.ListItemDetail;
+                        }));
+                    }
                 }
             }
         }

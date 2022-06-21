@@ -54,7 +54,7 @@
                 <div>
                     <label asp-for="@Model.Command.Name" class="block text-sm font-medium text-gray-700">
                     </label>
-                    <div class="mt-1 rounded-md shadow-sm flex">
+                    <div class="mt-1 rounded-md flex-col flex">
                         <input type="text" asp-for="@Model.Command.Name" class="focus:ring-sky-700 focus:border-sky-500 flex-grow block w-full min-w-0 rounded sm:text-sm border-gray-300">
                         <span class="text-red-500 sm:text-sm" asp-validation-for="@Model.Command.Name"></span>
                     </div>
@@ -120,9 +120,10 @@
                 <label asp-for="@Model.Command.NaceId" class="block text-sm font-medium text-gray-700">
                     NACE Code
                 </label>
-                <select asp-items="@Model.NaceSelectList" asp-for="@Model.Command.NaceId" onchange="RenderTable(this.value)"
+                <select asp-items="@Model.NaceSelectList" asp-for="@Model.Command.NaceId" formnovalidate="formnovalidate"
+                        onchange="RenderTable(this.value)"
                         class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-sky-700 focus:border-sky-700 sm:text-sm rounded-md">
-                    <option value="">
+                    <option value="0">
                         Please Select a NACE
                     </option>
                 </select>
@@ -130,88 +131,87 @@
                     Statistical Classification of Economic Activities in the European Community
                 </p>
             </div>
-            <div class="shadow border-b border-gray-200 sm:rounded-lg col-span-12 hidden" id="nace-table-wrapper" >
+            <div class="shadow border-b border-gray-200 sm:rounded-lg col-span-12 hidden" id="nace-table-wrapper">
                 <table class="min-w-full border-collapse block md:table" id="main-table">
                     <thead class="block md:table-header-group">
                     </thead>
                     <tbody class="block md:table-row-group" id="nace-info-wrapper">
-
                     </tbody>
                 </table>
             </div>
+        </div>
+
+        <!--End of Nace Section -->
+        <div class="mt-6 grid grid-cols-12 gap-6">
+            <div class="col-span-12 sm:col-span-6">
+                <label asp-for="@Model.Command.DeliveryMethod" class="block text-sm font-medium text-gray-700">
+                    Delivery Method
+                </label>
+                <select asp-items="@Model.DeliveryCharges" asp-for="@Model.Command.DeliveryMethod"
+                        class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-sky-700 focus:border-sky-700 sm:text-sm rounded-md">
+                    <option value="">
+                        Who Pays The Delivery Cost
+                    </option>
+                </select>
+                <span class="text-red-500 sm:text-sm" asp-validation-for="@Model.Command.DeliveryMethod">
+
+                </span>
             </div>
 
-            <!--End of Nace Section -->
-            <div class="mt-6 grid grid-cols-12 gap-6">
-                <div class="col-span-12 sm:col-span-6">
-                    <label asp-for="@Model.Command.DeliveryMethod" class="block text-sm font-medium text-gray-700">
-                        Delivery Method
-                    </label>
-                    <select asp-items="@Model.DeliveryCharges" asp-for="@Model.Command.DeliveryMethod"
-                            class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-sky-700 focus:border-sky-700 sm:text-sm rounded-md">
-                        <option value="">
-                            Who Pays The Delivery Cost
-                        </option>
-                    </select>
-                    <span class="text-red-500 sm:text-sm" asp-validation-for="@Model.Command.DeliveryMethod">
-
-                    </span>
-                </div>
-
-                <div class="col-span-12 sm:col-span-6" id="listing-unit">
-                    <label asp-for="@Model.Command.Unit" class="block text-sm font-medium text-gray-700"></label>
-                    <input type="text" asp-for="@Model.Command.Unit"
-                           class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-700 focus:border-sky-500 sm:text-sm">
-                    <span class="text-red-500 sm:text-sm" asp-validation-for="@Model.Command.Unit"></span>
-                </div>
-                <div class="col-span-12 sm:col-span-6">
-                    <label asp-for="@Model.Command.UnitPrice" class="block text-sm font-medium text-gray-700">
-                        Unit Price
-                    </label>
-                    <input type="text" asp-for="@Model.Command.UnitPrice"
-                           class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-700 focus:border-sky-500 sm:text-sm">
-                    <span class="text-red-500 sm:text-sm" asp-validation-for="@Model.Command.UnitPrice"></span>
-                </div>
-                <div class="col-span-12 sm:col-span-6">
-                    <label asp-for="@Model.Command.Currency" class="block text-sm font-medium text-gray-700"></label>
-                    <select asp-for="@Model.Command.Currency"
-                            asp-items="@Model.CurrencyList"
-                            class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-sky-700 focus:border-sky-700 sm:text-sm rounded-md">
-                        <option value="">
-                            Please select your currency
-                        </option>
-                    </select>
-                    <span asp-validation-for="@Model.Command.Currency" class="text-red-500 text-sm"></span>
-                </div>
-                <div class="col-span-12 sm:col-span-6" id="listing-amount">
-                    <label asp-for="@Model.Command.Amount" class="block text-sm font-medium text-gray-700"></label>
-                    <input type="text" asp-for="@Model.Command.Amount"
-                           class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-700 focus:border-sky-500 sm:text-sm">
-                    <span class="text-red-500 sm:text-sm" asp-validation-for="@Model.Command.Amount"></span>
-                </div>
-                <div class="col-span-12 sm:col-span-6 flex justify-start">
-                    <input asp-for="Command.Status" type="checkbox" class="h-4 w-4 text-sky-800 focus:ring-sky-700 border-gray-300 rounded mt-1">
-                    <label asp-for="Command.Status" class="block text-sm font-medium text-gray-700 ml-2 pt-0.5">
-                        Mark Private
-                    </label>
-                </div>
-
-
+            <div class="col-span-12 sm:col-span-6" id="listing-unit">
+                <label asp-for="@Model.Command.Unit" class="block text-sm font-medium text-gray-700"></label>
+                <input type="text" asp-for="@Model.Command.Unit"
+                       class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-700 focus:border-sky-500 sm:text-sm">
+                <span class="text-red-500 sm:text-sm" asp-validation-for="@Model.Command.Unit"></span>
             </div>
-            <div class="flex flex-col mt-4">
-                <div class="self-end">
-                    <a asp-page="/Listing/Index" asp-area="Dashboard" class="bg-white border border-gray-300 rounded-md shadow-sm
+            <div class="col-span-12 sm:col-span-6">
+                <label asp-for="@Model.Command.UnitPrice" class="block text-sm font-medium text-gray-700">
+                    Unit Price
+                </label>
+                <input type="text" asp-for="@Model.Command.UnitPrice"
+                       class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-700 focus:border-sky-500 sm:text-sm">
+                <span class="text-red-500 sm:text-sm" asp-validation-for="@Model.Command.UnitPrice"></span>
+            </div>
+            <div class="col-span-12 sm:col-span-6">
+                <label asp-for="@Model.Command.Currency" class="block text-sm font-medium text-gray-700"></label>
+                <select asp-for="@Model.Command.Currency"
+                        asp-items="@Model.CurrencyList"
+                        class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-sky-700 focus:border-sky-700 sm:text-sm rounded-md">
+                    <option value="">
+                        Please select your currency
+                    </option>
+                </select>
+                <span asp-validation-for="@Model.Command.Currency" class="text-red-500 text-sm"></span>
+            </div>
+            <div class="col-span-12 sm:col-span-6" id="listing-amount">
+                <label asp-for="@Model.Command.Amount" class="block text-sm font-medium text-gray-700"></label>
+                <input type="text" asp-for="@Model.Command.Amount"
+                       class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-700 focus:border-sky-500 sm:text-sm">
+                <span class="text-red-500 sm:text-sm" asp-validation-for="@Model.Command.Amount"></span>
+            </div>
+            <div class="col-span-12 sm:col-span-6 flex justify-start">
+                <input asp-for="Command.Status" type="checkbox" class="h-4 w-4 text-sky-800 focus:ring-sky-700 border-gray-300 rounded mt-1">
+                <label asp-for="Command.Status" class="block text-sm font-medium text-gray-700 ml-2 pt-0.5">
+                    Mark Private
+                </label>
+            </div>
+
+
+        </div>
+        <div class="flex flex-col mt-4">
+            <div class="self-end">
+                <a asp-page="/Listing/Index" asp-area="Dashboard" class="bg-white border border-gray-300 rounded-md shadow-sm
                py-2 px-4 inline-flex justify-center text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none
                focus:ring-2 focus:ring-offset-2 focus:ring-gray-700">
-                        Back
-                    </a>
-                    <button id="save" onclick="loading()"
-                            type="submit" class="ml-2 bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-700">
-                        Save
-                    </button>
-                </div>
+                    Back
+                </a>
+                <button id="save" onclick="loading()"
+                        type="submit" class="ml-2 bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-700">
+                    Save
+                </button>
             </div>
         </div>
+    </div>
 </form>
 
 @section CSS{
