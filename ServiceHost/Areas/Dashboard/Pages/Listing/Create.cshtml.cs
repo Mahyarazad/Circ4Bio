@@ -9,6 +9,7 @@ using AM.Application.Contracts.NaceData;
 using AM.Application.Contracts.Notification;
 using AM.Application.Contracts.User;
 using AM.Domain.NaceAggregate;
+using AM.Infrastructure.Core;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -41,7 +42,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
             _naceDataApplication = naceDataApplication;
             _listingApplication = listingApplication;
         }
-
+        [RequirePermission(UserPermission.CreateListing)]
         public void OnGet()
         {
             Command = new CreateListing();
@@ -66,7 +67,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
             NaceSelectList = new SelectList(NaceViewModelList, "NaceId", "Title");
 
         }
-
+        [RequirePermission(UserPermission.CreateListing)]
         public JsonResult OnPost(CreateListing command, NaceDataDTO naceData)
         {
             var result = _listingApplication.Create(command);

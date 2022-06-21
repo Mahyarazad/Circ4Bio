@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using _0_Framework.Application;
 using AM.Application.Contracts.Nace;
+using AM.Infrastructure.Core;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -25,6 +26,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Nace
         public bool IsDeleted { get; set; }
         public int Counter { get; set; }
         [Authorize]
+        [RequirePermission(UserPermission.GetNace)]
         public IActionResult OnGet()
         {
             if (_authenticateHelper.CurrentAccountRole().Id == 1)
@@ -34,7 +36,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Nace
             }
             return RedirectToPage("/AccessDenied", new { area = "" });
         }
-
+        [RequirePermission(UserPermission.GetNace)]
         public IActionResult OnPostGetDeletedNaces(bool isDeleted)
         {
             if (_authenticateHelper.CurrentAccountRole().Id == 1)
@@ -53,7 +55,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Nace
             }
             return RedirectToPage("/AccessDenied", new { area = "" });
         }
-
+        [RequirePermission(UserPermission.DeleteNace)]
         public IActionResult OnGetDeleteNace(long id)
         {
             if (_authenticateHelper.CurrentAccountRole().Id == 1)
@@ -63,7 +65,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Nace
             }
             return RedirectToPage("/AccessDenied", new { area = "" });
         }
-
+        [RequirePermission(UserPermission.DeleteNace)]
         public IActionResult OnGetUnDeleteNace(long id)
         {
             if (_authenticateHelper.CurrentAccountRole().Id == 1)

@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{id}"
 @model ServiceHost.Areas.Dashboard.Pages.Users.Role.EditModel
 @{ ViewData["Title"] = $"Dashboard | Role | Edit - {Model.Role.Name}"; }
 
@@ -7,35 +7,70 @@
         <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
                 <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                    <!-- operation-result -->
+                    <div class="rounded-md bg-green-50 p-4 transition ease-in-out duration-75" id="operation-result" style="display: none">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <!-- Heroicon name: solid/check-circle -->
+                                <svg class="h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm font-medium text-green-800" id="operation-result-message">
 
-                        <h2 class="m-2">@Model.Role.Name</h2>
-                    <form asp-page-handler="Edit" class=" lg:col-span-9 m-2" id="form"
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="rounded-md bg-red-50 p-4 transition ease-in-out duration-75" id="operation-result-failed" style="display: none">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <!-- Heroicon name: solid/check-circle -->
+                                <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm font-medium text-red-800" id="operation-result-failed-message">
+
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end -->
+                    <h2 class="m-2">@Model.Role.Name</h2>
+                    <form asp-page-handler="Edit" class=" lg:col-span-9 m-2" id="form" data-ajax="true"
                           method="post">
                         <div class="mt-6 grid grid-cols-12 gap-6">
                             <div class="col-span-12 sm:col-span-6">
-                                        <label asp-for="@Model.Role.Name" class="block text-sm font-medium text-gray-700"> Name </label>
-                                        <input asp-for="@Model.Role.Name" type="text" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-700 focus:border-sky-500 sm:text-sm" />
-                                        <span asp-validation-for="@Model.Role.Name" class="text-danger"></span>
+                                <label asp-for="@Model.Role.Name" class="block text-sm font-medium text-gray-700"> Name </label>
+                                <input asp-for="@Model.Role.Name" type="text" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-700 focus:border-sky-500 sm:text-sm" />
+                                <span asp-validation-for="@Model.Role.Name" class="text-danger"></span>
                             </div>
                             <div class="col-span-12 sm:col-span-6">
-                                    <label class="block text-sm font-medium text-gray-700" >Permissions</label>
-                                    <select asp-items="Model.PermissionItems" asp-for="@Model.Role.Permissions"
-                                            multiple="multiple" class="multi-select" id="permissions">
-                                    </select>
-                                </div>
+                                <label class="block text-sm font-medium text-gray-700">Permissions</label>
+                                <select asp-items="Model.PermissionItems" asp-for="@Model.Role.Permissions"
+                                        multiple="multiple" class="multi-select" id="permissions">
+                                </select>
+                            </div>
                         </div>
 
-                        <input type="hidden" asp-for="@Model.Role.Id" value="@Model.Role.Id"/>
+                        <input type="hidden" asp-for="@Model.Role.Id" value="@Model.Role.Id" />
                         <div class="flex flex-col my-4 lg:mx-4 mx-0">
-                        <div class="self-end">
-                            <a asp-page="Index" class="bg-white border border-gray-300 rounded-md shadow-sm py-2 px-4
+                            <div class="self-end">
+                                <a asp-page="Index" class="bg-white border border-gray-300 rounded-md shadow-sm py-2 px-4
                                inline-flex justify-center text-sm font-medium text-gray-700 hover:bg-gray-50
                                focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700">
-                                Back
-                            </a>
-                            <button type="submit" class="ml-2 bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-700">
-                                Save
-                            </button>
+                                    Back
+                                </a>
+                                <button type="submit"
+                                        class="ml-2 bg-sky-700 border border-transparent rounded-md shadow-sm
+                                    py-2 px-4 inline-flex justify-center text-sm font-medium text-white
+                                    hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2
+                                    focus:ring-sky-700">
+                                    Save
+                                </button>
                             </div>
                         </div>
                     </form>

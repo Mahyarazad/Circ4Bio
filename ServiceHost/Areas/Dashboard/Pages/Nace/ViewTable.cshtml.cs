@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using _0_Framework.Application;
 using AM.Application.Contracts.Nace;
+using AM.Infrastructure.Core;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -23,7 +24,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Nace
         public NaceViewModel NaceViewModel { get; set; }
         public int Counter { get; set; }
 
-        [Authorize]
+        [RequirePermission(UserPermission.GetNace)]
         public IActionResult OnGet(long Id)
         {
             if (_authenticateHelper.CurrentAccountRole().Id == 1)

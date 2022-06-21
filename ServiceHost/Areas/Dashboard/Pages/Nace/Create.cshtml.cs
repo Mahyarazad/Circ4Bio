@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using _0_Framework.Application;
 using AM.Application.Contracts.Nace;
+using AM.Infrastructure.Core;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -36,7 +37,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Nace
             }
             return RedirectToPage("/AccessDenied", new { area = "" });
         }
-
+        [RequirePermission(UserPermission.RegisterNace)]
         public JsonResult OnPost(CreateNace Command, GetDetailList createCommand)
         {
 

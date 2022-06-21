@@ -7,6 +7,7 @@ using AM.Application.Contracts.Nace;
 using AM.Application.Contracts.NaceData;
 using AM.Application.Contracts.Notification;
 using AM.Application.Contracts.User;
+using AM.Infrastructure.Core;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -37,7 +38,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
         private readonly IListingApplication _listingApplication;
         private readonly INaceDataApplication _naceDataApplication;
 
-
+        [RequirePermission(UserPermission.EditListing)]
         public async Task<IActionResult> OnGet(long Id)
         {
             var loggedInUserId = _authenticateHelper.CurrentAccountRole().Id;
@@ -70,7 +71,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
             }
             return RedirectToPage("/AccessDenied", new { area = "" });
         }
-
+        [RequirePermission(UserPermission.EditListing)]
         public JsonResult OnPost(EditListing command, NaceDataDTO naceData)
         {
             if (command.NaceData != null)
@@ -84,7 +85,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
 
             return new JsonResult(_listingApplication.Edit(command));
         }
-
+        [RequirePermission(UserPermission.DeleteNaceData)]
         public void OnGetDeleteNace(long Id)
         {
             _naceDataApplication.DeleteNaceData(Id);

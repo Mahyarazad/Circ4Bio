@@ -48,14 +48,10 @@ namespace ServiceHost.Areas.Dashboard.Pages.Users.Role
             }
         }
 
-        public IActionResult OnPost(EditRole Role)
+        public JsonResult OnPost(EditRole Role)
         {
-            if (!ModelState.IsValid)
-            {
-
-            }
             var result = _roleApplication.Edit(Role);
-            return RedirectToPage("Index");
+            return new JsonResult(result);
         }
     }
 }

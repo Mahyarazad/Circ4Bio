@@ -10,10 +10,8 @@ using _0_Framework.Application.PayPal;
 using AM.Application;
 using AM.Infrastructure.Core;
 using AM.Management.API;
-using Microsoft.AspNet.SignalR;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
-using Owin;
 
 namespace ServiceHost
 {

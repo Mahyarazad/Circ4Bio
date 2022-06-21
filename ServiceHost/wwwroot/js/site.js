@@ -69,7 +69,6 @@ $(window).on('hashchange',
     });
 
 function handleAjaxGet(formData, url, action, data) {
-
     $.get(url,
         data,
         function (data) {

@@ -4,12 +4,11 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using _0_Framework.Application;
 using AM.Application.Contracts.Listing;
-using AM.Application.Contracts.Notification;
 using AM.Application.Contracts.User;
+using AM.Infrastructure.Core;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ServiceHost.Areas.Dashboard.Pages.Listing
 {
@@ -32,7 +31,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
             _contextAccessor = contextAccessor;
             _listingApplication = listingApplication;
         }
-
+        [RequirePermission(UserPermission.GetListing)]
         public async Task OnGet()
         {
             var userId = long.Parse(_contextAccessor.HttpContext.User.Claims
@@ -53,6 +52,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
             }
 
         }
+        [RequirePermission(UserPermission.GetListing)]
         public async Task OnPostShowDeleted(bool IsFiltered)
         {
             var userId = long.Parse(_contextAccessor.HttpContext.User.Claims
@@ -88,15 +88,17 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
             }
 
         }
-
+        [RequirePermission(UserPermission.DeleteListing)]
         public Task<JsonResult> OnPostMarkDelete(long id)
         {
             return Task.FromResult(new JsonResult(_listingApplication.Delete(id)));
         }
+
         public Task<JsonResult> OnPostMarkPublic(long id)
         {
             return Task.FromResult(new JsonResult(_listingApplication.MarkPublic(id)));
         }
+
         public Task<JsonResult> OnPostMarkPrivate(long id)
         {
             return Task.FromResult(new JsonResult(_listingApplication.MarkPrivate(id)));
