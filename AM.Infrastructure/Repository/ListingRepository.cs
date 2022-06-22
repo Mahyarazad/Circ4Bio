@@ -24,6 +24,7 @@ namespace AM.Infrastructure.Repository
                 .Include(x => x.DealList)
                 .Include(x => x.SupplyList)
                 .Include(x => x.PurchaseList)
+                .Include(x => x.NaceData)
                 .Select(x => new ListingViewModel
                 {
                     Amount = x.Amount,
@@ -42,7 +43,8 @@ namespace AM.Infrastructure.Repository
                     PublicStatus = x.Status,
                     IsDeleted = x.IsDeleted,
                     IsService = x.IsService,
-                    Currency = x.Currency
+                    Currency = x.Currency,
+                    NaceId = x.NaceData.NaceId == null ? 0 : x.NaceData.NaceId
                 }).AsNoTracking()
                 .OrderByDescending(x => x.Id).ToListAsync();
 

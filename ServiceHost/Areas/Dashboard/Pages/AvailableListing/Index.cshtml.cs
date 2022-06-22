@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using AM.Application.Contracts.Listing;
+using AM.Application.Contracts.Nace;
 using AM.Application.Contracts.Negotiate;
 using AM.Application.Contracts.User;
 using Microsoft.AspNetCore.Http;
@@ -15,22 +16,23 @@ namespace ServiceHost.Areas.Dashboard.Pages.AvailableListing
         public EditUser user;
         public List<ListingViewModel> Listing;
         public ListingViewModel Item;
+        public List<NaceViewModel> NaceList;
+        private readonly INaceApplication _naceApplication;
         private readonly IUserApplication _userApplication;
-        private readonly IHttpContextAccessor _contextAccessor;
-        private readonly IListingApplication _listingApplication;
-        private readonly INegotiateApplication _negotiateApplication;
 
-        public AvailableListingModel(IUserApplication userApplication,
-            IHttpContextAccessor contextAccessor,
-            INegotiateApplication negotiateApplication,
-            IListingApplication listingApplication
-        )
+        public AvailableListingModel(INaceApplication naceApplication, IUserApplication userApplication, IHttpContextAccessor contextAccessor, IListingApplication listingApplication, INegotiateApplication negotiateApplication)
         {
+            _naceApplication = naceApplication;
             _userApplication = userApplication;
             _contextAccessor = contextAccessor;
             _listingApplication = listingApplication;
             _negotiateApplication = negotiateApplication;
         }
+
+        private readonly IHttpContextAccessor _contextAccessor;
+        private readonly IListingApplication _listingApplication;
+        private readonly INegotiateApplication _negotiateApplication;
+
 
         public async Task OnGet()
         {
@@ -39,6 +41,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.AvailableListing
 
             user = await _userApplication.GetDetail(userId);
             Listing = await _listingApplication.GetAllPublicListing();
+            NaceList = await _naceApplication.GetAllNaceTitles();
         }
         public async Task<JsonResult> OnPost(long Id)
         {

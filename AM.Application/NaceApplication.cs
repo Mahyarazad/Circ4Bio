@@ -141,6 +141,11 @@ namespace AM.Application
             return Task.FromResult(_naceRepository.GetAllNaces());
         }
 
+        public Task<List<NaceViewModel>> GetAllNaceTitles()
+        {
+            return Task.FromResult(_naceRepository.GetAllNaceTitles());
+        }
+
         public Task<NaceViewModel> GetSingleNace(long Id)
         {
             var result = new OperationResult();

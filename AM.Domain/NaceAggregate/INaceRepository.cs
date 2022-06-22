@@ -8,6 +8,7 @@ namespace AM.Domain.NaceAggregate
     public interface INaceRepository : IRepository<long, Nace>
     {
         List<NaceViewModel> GetAllNaces();
+        List<NaceViewModel> GetAllNaceTitles();
         NaceViewModel GetSingleNace(long iId);
         EditNace EditSingleNace(long id);
         void DeleteIndexDetail(long naceId, int indexId, int indexDetailId);

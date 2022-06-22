@@ -166,42 +166,83 @@ function createPagination(totalPages, page) {
     return liTag; //reurn the li tag
 }
 
-function handelFilter() {
+
+var cacheType = new Array();
+var cacheNaceType = new Set();
+
+
+var typeFilter = function (f1, f2, f3) {
+    return items.filter(function (data) {
+        element.innerHTML = '';
+        switch (f1 + "-" + f2 + "-" + f3) {
+            case "true-false-false":
+                return data.Type === "Technology Provider";
+            case "false-true-false":
+                return data.Type === "Plant";
+            case "false-false-true":
+                return data.Type === "Supplier of Raw Material";
+            case "true-false-true":
+                return data.Type !== "Plant";
+            case "false-true-true":
+                return data.Type !== "Technology Provider";
+            case "true-true-false":
+                return data.Type !== "Supplier of Raw Material";
+            default:
+                return items;
+        }
+    });
+}
+
+function handelFilter(id, val) {
 
     var _filter1 = $("#filter-technology").prop('checked');
     var _filter2 = $("#filter-plant").prop('checked');
     var _filter3 = $("#filter-supplier").prop('checked');
 
+    if (typeof (id) === 'undefined') {
+        filtered = typeFilter(_filter1, _filter2, _filter3);
+        cacheType = filtered;
+    }
 
-    filtered = items.filter(function (data) {
-        element.innerHTML = '';
-        switch (_filter1 + "-" + _filter2 + "-" + _filter3) {
-            case "true-false-false":
-                return data.Type === "Technology Provider";
-                break;
-            case "false-true-false":
-                return data.Type === "Plant";
-                break;
-            case "false-false-true":
-                return data.Type === "Supplier of Raw Material";
-                break;
-            case "true-false-true":
-                return data.Type !== "Plant";
-                break;
-            case "false-true-true":
-                return data.Type !== "Technology Provider";
-                break;
-            case "true-true-false":
-                return data.Type !== "Supplier of Raw Material";
-                break;
-            default:
-                return items
+    if (typeof (id) !== 'undefined' & val) {
+        cacheNaceType.add(id);
+        var temp = new Array();
+        if (cacheNaceType.size > 1) {
+            cacheNaceType.forEach(val => {
+                temp.push(cacheType.find(e => e.NaceId === val));
+            });
+            filtered = temp;
+        } else {
+            filtered = filtered.filter(function (data) {
+                return data.NaceId === id;
+            });
+            if (cacheType.length === 0) {
+                cacheType.push(filtered);
+            }
+        }
+    }
+
+    if (typeof (id) !== 'undefined' & !val) {
+        if (cacheNaceType.has(id)) {
+            cacheNaceType.delete(id);
+            cacheType.pop(cacheType.find(x => x.NaceId === id));
         }
 
-    });
+        var temp = new Array();
+        if (cacheNaceType.size > 0) {
+            cacheNaceType.forEach(val => {
+                temp.push(cacheType.find(e => e.NaceId === val));
+            });
+            filtered = temp;
+        } else {
+            filtered = typeFilter(_filter1, _filter2, _filter3);
+        }
+    }
+
+    element.innerHTML = '';
     paginateObject = paginate(filtered.length, 1);
     _totalPages = paginateObject.pages.length;
-    element.innerHTML = createPagination(_totalPages, page);
+    checkNoResult(_totalPages);
 };
 
 
@@ -225,6 +266,24 @@ function handleGridItem(pageSize) {
     }
 }
 
+var checkNoResult = function (tp) {
+    if (_totalPages === 1) {
+        hideItems();
+        showItems();
+        element.innerHTML = ''
+        $("#no-result").addClass('hidden');
+    } else if (filtered.length === 0) {
+        hideItems();
+        $("#no-result").removeClass('hidden');
+        $("#no-result").html("No Result");
+    } else {
+        hideItems();
+        showItems();
+        $("#no-result").addClass('hidden');
+        element.innerHTML = createPagination(tp, page);
+    }
+}
+
 function search(input) {
 
     filtered = items.filter(function (data) {
@@ -238,25 +297,10 @@ function search(input) {
     if (input.value.length === 0) {
         handelFilter();
     } else {
-
         element.innerHTML = '';
         paginateObject = paginate(filtered.length, 1);
         _totalPages = paginateObject.pages.length;
+        checkNoResult(_totalPages);
 
-        if (_totalPages === 1) {
-            hideItems();
-            showItems();
-            element.innerHTML = ''
-            $("#no-result").addClass('hidden');
-        } else if (filtered.length === 0) {
-            hideItems();
-            $("#no-result").removeClass('hidden');
-            $("#no-result").html("No Result");
-        } else {
-            hideItems();
-            showItems();
-            $("#no-result").addClass('hidden');
-            element.innerHTML = createPagination(_totalPages, page);
-        }
     }
 }

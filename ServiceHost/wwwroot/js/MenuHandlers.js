@@ -164,22 +164,23 @@ function DashboardSelect() {
     $('#dashboard').addClass("bg-black");
 }
 
-function handleFilter() {
-    var stat = $("#filter-section-0").css('visibility');
+function handleFilter(id) {
+    var stat = $(`#filter-section-${id}`).css('visibility');
     if (stat === 'hidden') {
-        $("#shrink-div").removeClass('h-10');
-        $("#svg-plus").addClass('invisible');
-        $("#svg-minus").removeClass('invisible');
-        $("#filter-section-0").removeClass('invisible');
-        $('#filter-section-0').removeClass('-translate-y-[5rem]');
-        $('#filter-section-0').css('opacity', '1');
+        $(`#shrink-div-${id}`).removeClass('h-10');
+        $(`#svg-plus-${id}`).addClass('invisible');
+        $(`#svg-minus-${id}`).removeClass('invisible');
+        $(`#filter-section-${id}`).removeClass('invisible');
+        $(`#filter-section-${id}`).removeClass('-translate-y-[5rem]');
+        $(`#filter-section-${id}`).css('opacity', '1');
     } else {
-        $("#shrink-div").addClass('h-10');
-        $("#svg-plus").removeClass('invisible');
-        $("#svg-minus").addClass('invisible');
-        $("#filter-section-0").addClass('invisible');
-        $('#filter-section-0').addClass('-translate-y-[5rem]');
-        $('#filter-section-0').css('opacity', '0');
+        $(`#shrink-div-${id}`).addClass('h-10');
+        $(`#svg-plus-${id}`).removeClass('invisible');
+        $(`#svg-minus-${id}`).addClass('invisible');
+        $(`#filter-section-${id}`).css('opacity', '0');
+        $(`#filter-section-${id}`).addClass('invisible');
+        $(`#filter-section-${id}`).addClass('-translate-y-[5rem]');
+
     }
 };
 
@@ -333,11 +334,25 @@ $("#mobile-home-menu-close").on('click', function () {
     closeLandingMobileMenu();
 });
 
+var closeFilterMenu = function () {
+    $('#available-filters').addClass("invisible");
+    $('#available-filters').addClass('translate-x-[30rem]');
+    $('#available-filters').css('opacity', '0');
+};
+
 $('html').click(function (e) {
     if (e.target.id === "notification-markread" |
         e.target.id === "notification-markread-svg" |
         e.target.id === "notification-markread-path")
         return;
+
+    if ($('#grid-size-container-unlogged').css('visibility') !== 'hidden') {
+        $("#grid-size-container-unlogged").addClass('invisible');
+        $("#grid-size-container-unlogged").addClass('scale-95');
+        $('#grid-size-container-unlogged').css('opacity', '0');
+    }
+
+
     if (window.screen.width < 1024) {
         var element = $(e.target)[0]
         if (element.id === "mobile-home-menu-open") {
@@ -347,7 +362,8 @@ $('html').click(function (e) {
         if (element.id !== "mobile-menu-trigger" &&
             element.id !== "notification-handler-mobile" &&
             element.id !== "dashboard-menu" &&
-            element.id !== "mobile-home-menu-open") {
+            element.id !== "mobile-home-menu-open"
+        ) {
             closeProfileMenu();
             closeNotificationPanel();
             closeSideMenu();
@@ -361,7 +377,7 @@ $('html').click(function (e) {
             var status = $('#notification-panel').css('visibility');
             if (status !== 'hidden') {
                 $('#notification-panel').css('visibility', 'hidden');
-                $('#notification-panel').addClass('-translate-y-[20rem]');
+                $('#notification-panel').addClass('-translate-y-[15rem]');
                 $('#notification-panel').css('opacity', '0');
                 $('#notification-panel').css('z-index', '-1');
             }
@@ -369,3 +385,17 @@ $('html').click(function (e) {
     }
 });
 
+
+
+$('#filter-menu-handler').on('click',
+    function () {
+        var status = $('#available-filters').css('visibility');
+        if (status === 'hidden') {
+            $('#available-filters').removeClass('invisible');
+            $('#available-filters').removeClass("invisible");
+            $('#available-filters').removeClass('translate-x-[30rem]');
+            $('#available-filters').css('opacity', '1');
+        } else {
+            closeFilterMenu();
+        }
+    });

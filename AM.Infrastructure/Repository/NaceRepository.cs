@@ -32,6 +32,18 @@ namespace AM.Infrastructure.Repository
                 }).ToList();
         }
 
+        public List<NaceViewModel> GetAllNaceTitles()
+        {
+            return
+                _amContext.Naces.AsSingleQuery().Where(x => !x.IsDeleted)
+                    .Select(x => new NaceViewModel
+                    {
+                        Title = x.Title,
+                        NaceId = x.Id,
+                        Items = new List<DetailViewModel>()
+                    }).ToList();
+        }
+
         public NaceViewModel GetSingleNace(long Id)
         {
             return
