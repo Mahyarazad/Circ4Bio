@@ -7,29 +7,41 @@
 
 <div class="divide-y divide-gray-200 lg:col-span-9">
     <div class="flex flex-col">
-        <div class="flex justify-between">
-            <input class="mt-1 lg:w-1/2 w-full border-gray-300 mx-2 my-2 border
+        <div class="flex justify-between bg-gray-50">
+            <div class="lg:w-2/3 w-full mx-2 lg:mx-0 mt-1">
+                <input class="mt-1 lg:w-1/2 w-full border-gray-300 mx-2 my-2 border
            rounded-md shadow-sm py-2 mb-2 px-3 focus:outline-none focus:border-sky-500
            focus:ring-sky-700 sm:text-sm float-left font-medium searchBox form-control"
-                   id="search-input"
-                   onkeyup="search(this)"
-                   placeholder="Search...">
+                       id="search-input"
+                       onkeyup="search(this)"
+                       placeholder="Search...">
 
-            <button type="button" id="grid-size-handler"
-                    class="mx-2 my-3 group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900" aria-expanded="false" aria-haspopup="true">
-                <!-- Heroicon name: solid/chevron-down -->
-                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                    <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
-                </svg>
-            </button>
+
+            </div>
+            <div class="flex self-center">
+                <button type="button" id="grid-size-handler-unlogged"
+                        class="mx-2 my-3 group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900" aria-expanded="false" aria-haspopup="true">
+                    <!-- Heroicon name: solid/chevron-down -->
+                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+                    </svg>
+                </button>
+                <button type="button" id="filter-menu-handler"
+                        class="mx-2 my-3 group inline-flex justify-center text-sm lg:hidden
+                            font-medium text-gray-700 hover:text-gray-900" aria-expanded="false" aria-haspopup="true">
+                    <!-- Heroicon name: solid/chevron-down -->
+                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/>
+                    </svg>
+                </button>
+            </div>
         </div>
 
-        <div class="origin-top-right
-             absolute lg:right-10 lg:top-8 top-40 right-6 mt-2 w-28 rounded-md shadow-2xl invisible opacity-0 transform duration-100 scale-95
-             bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
-             id="grid-size-container" role="menu" title="Grid Size" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+        <div class="absolute bg-gray-50 duration-100 focus:outline-none lg:right-10 opacity-0
+             origin-top-right right-16 ring-1 ring-black ring-opacity-5 rounded-md shadow-2xl
+             top-12 transform w-28 z-10"
+             id="grid-size-container-unlogged" role="menu" title="Grid Size" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
             <div class="py-1" role="none">
-
                 <a class="text-gray-900 block px-4 py-2 text-sm hover:cursor-pointer" onclick="handleGridItem(this.id)" role="menuitem" tabindex="-1" id="8"> 8 </a>
                 <a class="text-gray-900 block px-4 py-2 text-sm hover:cursor-pointer" onclick="handleGridItem(this.id)" role="menuitem" tabindex="-1" id="16"> 16 </a>
                 <a class="text-gray-900 block px-4 py-2 text-sm hover:cursor-pointer" onclick="handleGridItem(this.id)" role="menuitem" tabindex="-1" id="32"> 32 </a>
