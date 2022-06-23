@@ -7,5 +7,6 @@
         public const string Plant = "3";
         public const string SupplierofRawMaterial = "4";
         public const string CustomerofRawMaterial = "5";
+        public const string ContentProducer = "6";
     }
 }

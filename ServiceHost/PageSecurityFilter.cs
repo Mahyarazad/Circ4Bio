@@ -1,36 +1,50 @@
-﻿using System.Reflection;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
 using _0_Framework.Application;
-using Microsoft.AspNetCore.Http;
+using _0_Framework.Infrastructure;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace ServiceHost
 {
-    public class PageSecurityFilter : IPageFilter
+    public class PageSecurityFilter : IAsyncPageFilter
     {
         private readonly IAuthenticateHelper _authenticateHelper;
-
         public PageSecurityFilter(IAuthenticateHelper authenticateHelper)
         {
             _authenticateHelper = authenticateHelper;
         }
 
-        public void OnPageHandlerExecuted(PageHandlerExecutedContext context)
+        public Task OnPageHandlerSelectionAsync(PageHandlerSelectedContext context)
         {
-            throw new System.NotImplementedException();
+            return Task.CompletedTask;
         }
 
-        public void OnPageHandlerExecuting(PageHandlerExecutingContext context)
+        public async Task OnPageHandlerExecutionAsync(PageHandlerExecutingContext context
+            , PageHandlerExecutionDelegate next)
         {
-            var permissions =
-               (RequirePermission)context.HandlerMethod.MethodInfo.GetCustomAttributes(typeof(RequirePermission));
-            var accountPermission = _authenticateHelper.GetPermission();
-            if (!accountPermission.Contains(permissions.Permission))
-                context.HttpContext.Response.Redirect("./Login");
-        }
+            NeedsPermissionAttribute handlerPermission = null;
+            if (context.HandlerMethod != null)
+                handlerPermission =
+                    (NeedsPermissionAttribute)context.HandlerMethod.MethodInfo.GetCustomAttribute(
+                        typeof(NeedsPermissionAttribute));
 
-        public void OnPageHandlerSelected(PageHandlerSelectedContext context)
-        {
-            throw new System.NotImplementedException();
+            if (handlerPermission != null)
+            {
+                List<int> accountPermissions;
+                accountPermissions = _authenticateHelper.GetPermission();
+
+                if (accountPermissions.All(x => x != handlerPermission.Permission))
+                {
+                    context.Result = new RedirectResult("AccessDenied");
+                    await Task.CompletedTask;
+                    return;
+                }
+            }
+
+            await next.Invoke();
         }
     }
 }

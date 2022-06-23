@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using _0_Framework.Application;
+using _0_Framework.Infrastructure;
 using AM.Application.Contracts.Nace;
 using AM.Infrastructure.Core;
 using Microsoft.AspNetCore.Mvc;
@@ -34,7 +35,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Nace
             return null;
         }
 
-        [RequirePermission(UserPermission.RegisterNace)]
+        [NeedsPermission(UserPermission.RegisterNace)]
         public JsonResult OnPost(CreateNace Command, GetDetailList createCommand)
         {
 

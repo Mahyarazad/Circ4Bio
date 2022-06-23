@@ -1,4 +1,5 @@
 ﻿using _0_Framework.Application;
+using _0_Framework.Infrastructure;
 using AM.Application.Contracts.Blog;
 using AM.Infrastructure.Core;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +22,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Blog
             Command = new BlogViewModel();
 
         }
-        [RequirePermission(UserPermission.CreateBlogPost)]
+        [NeedsPermission(UserPermission.CreateBlogPost)]
         public JsonResult OnPost(CreateBlogModel command)
         {
             return new JsonResult(_blogApplication.CreateBlog(command));

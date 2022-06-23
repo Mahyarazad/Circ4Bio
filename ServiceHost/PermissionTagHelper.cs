@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using _0_Framework.Application;
+﻿using _0_Framework.Application;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 
 namespace ServiceHost
@@ -20,13 +16,13 @@ namespace ServiceHost
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
-            var permissions = _authenticateHelper.GetPermission();
+
             if (!_authenticateHelper.IsAuthenticated())
             {
                 output.SuppressOutput();
                 return;
             }
-
+            var permissions = _authenticateHelper.GetPermission();
             if (!permissions.Contains(Permission))
             {
                 output.SuppressOutput();

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using _0_Framework.Application;
+using _0_Framework.Infrastructure;
 using AM.Application.Contracts.Nace;
 using AM.Infrastructure.Core;
 using Microsoft.AspNetCore.Mvc;
@@ -26,7 +27,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Nace
             _naceApplication = naceApplication;
         }
 
-        [RequirePermission(UserPermission.GetNace)]
+        [NeedsPermission(UserPermission.GetNace)]
         public IActionResult OnGet(long Id)
         {
             Command = _naceApplication.EditSingleNace(Id).Result;
@@ -36,7 +37,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Nace
             return null;
         }
 
-        [RequirePermission(UserPermission.EditNace)]
+        [NeedsPermission(UserPermission.EditNace)]
         public JsonResult OnPost(EditNace Command, EditIndexDetailTDO IndexDetail,
             EditIndexDetailItemsTDO IndexItemDetail)
         {

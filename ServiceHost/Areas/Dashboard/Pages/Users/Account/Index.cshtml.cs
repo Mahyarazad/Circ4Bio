@@ -3,8 +3,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
 using _0_Framework.Application;
+using _0_Framework.Infrastructure;
 using AM.Application.Contracts.User;
 using AM.Infrastructure.Core;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -32,7 +34,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Users.Account
             _contextAccessor = contextAccessor;
         }
 
-        [RequirePermission(UserPermission.GetUserList)]
+        [NeedsPermission(UserPermission.GetUserList)]
         public async Task OnGet(UserSearchModel Command)
         {
             UserList = await _userApplication.Search(Command);
@@ -40,25 +42,25 @@ namespace ServiceHost.Areas.Dashboard.Pages.Users.Account
             user = await _userApplication.GetDetail(long.Parse(userId));
         }
 
-        [RequirePermission(UserPermission.VerifyUserEmail)]
+        [NeedsPermission(UserPermission.VerifyUserEmail)]
         public JsonResult OnPostActivateUser(long id)
         {
             return new JsonResult(_userApplication.AdminActivateUser(id));
         }
 
-        [RequirePermission(UserPermission.DisableUserEmail)]
+        [NeedsPermission(UserPermission.DisableUserEmail)]
         public JsonResult OnPostDeactivateUser(long id)
         {
             return new JsonResult(_userApplication.AdminDectivateUser(id));
         }
 
-        [RequirePermission(UserPermission.ActivateUserStatus)]
+        [NeedsPermission(UserPermission.ActivateUserStatus)]
         public JsonResult OnPostActivateUserStatus(long id)
         {
             return new JsonResult(_userApplication.AdminActivateUserStatus(id));
         }
 
-        [RequirePermission(UserPermission.DisableUserEmail)]
+        [NeedsPermission(UserPermission.DisableUserEmail)]
         public JsonResult OnPostDeactivateUserStatus(long id)
         {
             return new JsonResult(_userApplication.AdminDectivateUserStatus(id));

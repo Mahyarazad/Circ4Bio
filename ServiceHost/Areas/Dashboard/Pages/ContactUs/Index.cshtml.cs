@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using _0_Framework.Application;
+using _0_Framework.Infrastructure;
 using AM.Application.Contracts.ContactUs;
 using AM.Application.Contracts.User;
 using AM.Infrastructure.Core;
@@ -24,12 +24,14 @@ namespace ServiceHost.Areas.Dashboard.Pages.ContactUs
         {
             _contactUsApplication = contactUsApplication;
         }
-        [RequirePermission(UserPermission.GetContactUsMessages)]
+
+        [NeedsPermission(UserPermission.GetContactUsMessages)]
         public void OnGet()
         {
             ContactUsMessagList = _contactUsApplication.GetContactUsMessages().Result;
         }
-        [RequirePermission(UserPermission.GetContactUsMessages)]
+
+        [NeedsPermission(UserPermission.GetContactUsMessages)]
         public void OnPostGetReedMessages(bool IsReed)
         {
             if (IsReed)
@@ -42,7 +44,8 @@ namespace ServiceHost.Areas.Dashboard.Pages.ContactUs
                 ContactUsMessagList = _contactUsApplication.GetContactUsMessages().Result;
             }
         }
-        [RequirePermission(UserPermission.MarkAsReedMessages)]
+
+        [NeedsPermission(UserPermission.MarkAsReedMessages)]
         public JsonResult OnPostIsReed(long id)
         {
             return new JsonResult(_contactUsApplication.MarkAsRead(id));

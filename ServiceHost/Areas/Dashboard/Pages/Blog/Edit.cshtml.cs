@@ -1,4 +1,4 @@
-﻿using _0_Framework.Application;
+﻿using _0_Framework.Infrastructure;
 using AM.Application.Contracts.Blog;
 using AM.Infrastructure.Core;
 using Microsoft.AspNetCore.Mvc;
@@ -15,12 +15,12 @@ namespace ServiceHost.Areas.Dashboard.Pages.Blog
         {
             _blogApplication = blogApplication;
         }
-        [RequirePermission(UserPermission.EditBlogPost)]
+        [NeedsPermission(UserPermission.EditBlogPost)]
         public void OnGet(long Id)
         {
             Command = _blogApplication.GetSingleBlog(Id).Result;
         }
-        [RequirePermission(UserPermission.EditBlogPost)]
+        [NeedsPermission(UserPermission.EditBlogPost)]
         public JsonResult OnPost(BlogViewModel command)
         {
             return new JsonResult(_blogApplication.EditBlog(command));

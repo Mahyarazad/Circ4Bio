@@ -57,20 +57,23 @@ namespace ServiceHost
 
             var context = services.BuildServiceProvider()
                 .GetService<AMContext>();
-            var RoleList = new List<string>();
+
+            var staticRoleList = new List<string>();
             foreach (var role in context.Roles)
             {
-                RoleList.Add(role.Id.ToString());
+                staticRoleList.Add(role.Id.ToString());
             }
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("DashboardArea", builder =>
-                    builder.RequireRole(
-                       RoleList));
-                //options.AddPolicy("AdminArea", builder =>
-                //    builder.RequireRole(AuthorizationRoles.Admin));
+                options.AddPolicy("DashboardArea",
+                    builder => builder.RequireRole(staticRoleList));
 
+                options.AddPolicy("AdminArea",
+                    builder => builder.RequireRole(new List<string> { AuthorizationRoles.Admin }));
+
+                options.AddPolicy("ContentArea",
+                    builder => builder.RequireRole(new List<string> { AuthorizationRoles.Admin, AuthorizationRoles.ContentProducer }));
             });
 
             // services.AddRazorPages().WithRazorPagesRoot("/Index");
@@ -86,14 +89,17 @@ namespace ServiceHost
                 });
             });
 
-            services.AddRazorPages().AddRazorPagesOptions(options =>
-            {
-                options.Conventions.AuthorizeAreaFolder("Dashboard", "/", "DashboardArea");
-                //options.Conventions.AuthorizeAreaFolder("Dashboard", "/Users", "AdminArea");
-                //options.Conventions.AuthorizeAreaFolder("Dashboard", "/Blog", "AdminArea");
-                //options.Conventions.AuthorizeAreaFolder("Dashboard", "/ContactUs", "AdminArea");
-            })
-            .AddApplicationPart(typeof(NotificationController).Assembly);
+            services.AddRazorPages()
+                .AddMvcOptions(options => options.Filters.Add<PageSecurityFilter>())
+                .AddRazorPagesOptions(options =>
+                 {
+                     options.Conventions.AuthorizeAreaFolder("Dashboard", "/", "DashboardArea");
+                     options.Conventions.AuthorizeAreaFolder("Dashboard", "/Users", "AdminArea");
+                     options.Conventions.AuthorizeAreaFolder("Dashboard", "/Nace", "ContentArea");
+                     options.Conventions.AuthorizeAreaFolder("Dashboard", "/Blog", "ContentArea");
+                     options.Conventions.AuthorizeAreaFolder("Dashboard", "/ContactUs", "ContentArea");
+                 })
+                .AddApplicationPart(typeof(NotificationController).Assembly);
 
 
             services.Configure<CookiePolicyOptions>(options =>
@@ -102,18 +108,12 @@ namespace ServiceHost
                 options.MinimumSameSitePolicy = Microsoft.AspNetCore.Http.SameSiteMode.Lax;
             });
 
-            services.Configure<CookieTempDataProviderOptions>(options =>
-            {
-                options.Cookie.IsEssential = true;
-            });
+            services.Configure<CookieTempDataProviderOptions>(options => { options.Cookie.IsEssential = true; });
 
             // services.AddRouting(options => options.LowercaseUrls = true);
             services.AddMemoryCache();
 
-            services.AddAntiforgery(options =>
-            {
-                options.Cookie.Name = "__AntiForgery";
-            });
+            services.AddAntiforgery(options => { options.Cookie.Name = "__AntiForgery"; });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -135,14 +135,15 @@ namespace ServiceHost
             app.UseAuthentication();
 
             app.Use(async (context, next) =>
-             {
-                 await next();
-                 if (context.Response.StatusCode == 404)
-                 {
-                     context.Request.Path = "/Shared/_PageNotFound";
-                     await next();
-                 }
-             });
+            {
+                await next();
+                if (context.Response.StatusCode == 404)
+                {
+                    context.Request.Path = "/Shared/_PageNotFound";
+                    await next();
+                }
+            });
+
             app.UseRouting();
             app.UseCors(_corsPolicy);
             app.UseWebSockets();

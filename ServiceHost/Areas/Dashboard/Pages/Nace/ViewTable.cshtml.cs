@@ -1,4 +1,5 @@
 using _0_Framework.Application;
+using _0_Framework.Infrastructure;
 using AM.Application.Contracts.Nace;
 using AM.Infrastructure.Core;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +23,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Nace
         public NaceViewModel NaceViewModel { get; set; }
         public int Counter { get; set; }
 
-        [RequirePermission(UserPermission.GetNace)]
+        [NeedsPermission(UserPermission.GetNace)]
         public IActionResult OnGet(long Id)
         {
             NaceViewModel = _naceApplication.GetSingleNace(Id).Result;

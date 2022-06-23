@@ -43,7 +43,7 @@ namespace AM.Infrastructure.Core
                     {
                         new PermissionDTO(UserPermission.GetNace, "Get NACE"),
                         new PermissionDTO(UserPermission.RegisterNace, "Register NACE"),
-                        new PermissionDTO(UserPermission.DeleteNace, "Register NACE"),
+                        new PermissionDTO(UserPermission.DeleteNace, "Delete NACE"),
                         new PermissionDTO(UserPermission.EditNace, "Edit NACE"),
                         new PermissionDTO(UserPermission.ViewNace, "View NACE"),
                     }
