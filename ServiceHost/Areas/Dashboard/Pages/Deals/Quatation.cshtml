@@ -164,12 +164,12 @@
 
                     @if (Model.Command.ContractFileString != null)
                     {
-        <div class="py-2">
-            <a href="~/Site Files/Deal Documents/@Model.Command.NegotiateId/@Model.Command.ContractFileString"
-               class="w-full border rounded-md shadow-sm px-2 py-2 sm:text-sm bg-sky-700 text-white">
-                @(Model.Command.ContractFileString != null ? "Open Contract File" : "No Contract File")
-            </a>
-        </div>}
+                    <div class="py-2">
+                        <a href="~/Site Files/Deal Documents/@Model.Command.NegotiateId/@Model.Command.ContractFileString"
+                           class="w-full border rounded-md shadow-sm px-2 py-2 sm:text-sm bg-sky-700 text-white">
+                            @(Model.Command.ContractFileString != null ? "Open Contract File" : "No Contract File")
+                        </a>
+                    </div>}
                     <label class="block text-sm font-medium text-gray-700 mt-3">Contract</label>
                     <input type="file" asp-for="@Model.Command.ContractFile" accept="application/pdf"
                            class="mt-1 block w-full border border-gray-100 rounded-md shadow-sm py-2 px-3 sm:text-sm">
@@ -197,7 +197,7 @@
 
 @section CSS
 {
-    <link rel="stylesheet" href="~/css/mapbox-gl.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mapbox-gl/2.9.1/mapbox-gl.min.css" integrity="sha512-Wrc9YCdBwmoXlSZVGgjLlcda8Iy0bPYwj2u8+/5VEhd3aMOTzu/bfl6ho4ma17rPu1uwjQCOqSNHSUvDg+lRPw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="~/css/Loader.css" />
 }
 

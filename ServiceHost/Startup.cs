@@ -8,6 +8,7 @@ using _0_Framework.Application;
 using _0_Framework.Application.Email;
 using _0_Framework.Application.PayPal;
 using AM.Application;
+using AM.Infrastructure;
 using AM.Infrastructure.Core;
 using AM.Management.API;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -26,6 +27,7 @@ namespace ServiceHost
         public IConfiguration Configuration { get; }
         public IHostEnvironment _Host { get; }
         private readonly string _corsPolicy = "CorsPolicy";
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddHttpContextAccessor();
@@ -53,18 +55,21 @@ namespace ServiceHost
                 });
 
 
+            var context = services.BuildServiceProvider()
+                .GetService<AMContext>();
+            var RoleList = new List<string>();
+            foreach (var role in context.Roles)
+            {
+                RoleList.Add(role.Id.ToString());
+            }
+
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("DashboardArea", builder =>
                     builder.RequireRole(
-                        new List<string>
-                        {
-                            AuthorizationRoles.Admin, AuthorizationRoles.CustomerofRawMaterial,
-                            AuthorizationRoles.Plant, AuthorizationRoles.SupplierofRawMaterial,
-                            AuthorizationRoles.TechnologyProvider
-                        }));
-                options.AddPolicy("AdminArea", builder =>
-                    builder.RequireRole(AuthorizationRoles.Admin));
+                       RoleList));
+                //options.AddPolicy("AdminArea", builder =>
+                //    builder.RequireRole(AuthorizationRoles.Admin));
 
             });
 
@@ -84,9 +89,9 @@ namespace ServiceHost
             services.AddRazorPages().AddRazorPagesOptions(options =>
             {
                 options.Conventions.AuthorizeAreaFolder("Dashboard", "/", "DashboardArea");
-                options.Conventions.AuthorizeAreaFolder("Dashboard", "/Users", "AdminArea");
-                options.Conventions.AuthorizeAreaFolder("Dashboard", "/Blog", "AdminArea");
-                options.Conventions.AuthorizeAreaFolder("Dashboard", "/ContactUs", "AdminArea");
+                //options.Conventions.AuthorizeAreaFolder("Dashboard", "/Users", "AdminArea");
+                //options.Conventions.AuthorizeAreaFolder("Dashboard", "/Blog", "AdminArea");
+                //options.Conventions.AuthorizeAreaFolder("Dashboard", "/ContactUs", "AdminArea");
             })
             .AddApplicationPart(typeof(NotificationController).Assembly);
 

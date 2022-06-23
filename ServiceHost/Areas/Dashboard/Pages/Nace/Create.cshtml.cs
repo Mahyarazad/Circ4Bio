@@ -29,14 +29,11 @@ namespace ServiceHost.Areas.Dashboard.Pages.Nace
 
         public IActionResult OnGet()
         {
-            if (_authenticateHelper.CurrentAccountRole().RoleId == "1")
-            {
-                Command = new CreateNace();
-                CreateCommand = new GetDetailList();
-                return null;
-            }
-            return RedirectToPage("/AccessDenied", new { area = "" });
+            Command = new CreateNace();
+            CreateCommand = new GetDetailList();
+            return null;
         }
+
         [RequirePermission(UserPermission.RegisterNace)]
         public JsonResult OnPost(CreateNace Command, GetDetailList createCommand)
         {

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using _0_Framework.Application;
 using AM.Application.Contracts.Nace;
 using AM.Infrastructure.Core;
@@ -26,20 +25,17 @@ namespace ServiceHost.Areas.Dashboard.Pages.Nace
             _authenticateHelper = authenticateHelper;
             _naceApplication = naceApplication;
         }
+
         [RequirePermission(UserPermission.GetNace)]
         public IActionResult OnGet(long Id)
         {
-
-            if (_authenticateHelper.CurrentAccountRole().RoleId == "1")
-            {
-                Command = _naceApplication.EditSingleNace(Id).Result;
-                CreateCommand = new GetDetailList();
-                IndexDetail = new EditIndexDetailTDO();
-                IndexItemDetail = new EditIndexDetailItemsTDO();
-                return null;
-            }
-            return RedirectToPage("/AccessDenied", new { area = "" });
+            Command = _naceApplication.EditSingleNace(Id).Result;
+            CreateCommand = new GetDetailList();
+            IndexDetail = new EditIndexDetailTDO();
+            IndexItemDetail = new EditIndexDetailItemsTDO();
+            return null;
         }
+
         [RequirePermission(UserPermission.EditNace)]
         public JsonResult OnPost(EditNace Command, EditIndexDetailTDO IndexDetail,
             EditIndexDetailItemsTDO IndexItemDetail)
