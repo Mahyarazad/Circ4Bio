@@ -1,16 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Net.Mime;
-using System.Reflection;
-using System.Threading.Tasks;
 using _0_Framework.Application;
 using AM.Application.Contracts.Listing;
 using AM.Application.Contracts.Nace;
 using AM.Application.Contracts.NaceData;
-using AM.Application.Contracts.Notification;
 using AM.Application.Contracts.User;
-using AM.Domain.NaceAggregate;
 using AM.Infrastructure.Core;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -20,11 +14,13 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
     public class CreateModel : PageModel
     {
         public CreateListing Command;
+        public AuthViewModel LoggedUser;
         public SelectList CurrencyList;
         public SelectList DeliveryCharges;
         public SelectList NaceSelectList;
         public List<NaceViewModel> NaceViewModelList;
         public NaceDataDTO NaceData;
+        public SelectList DeliveryLocationSelectList;
 
         private readonly IUserApplication _userApplication;
         private readonly INaceApplication _naceApplication;
@@ -45,6 +41,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
         [RequirePermission(UserPermission.CreateListing)]
         public void OnGet()
         {
+            LoggedUser = _authenticateHelper.CurrentAccountRole();
             Command = new CreateListing();
             CurrencyList = new SelectList(GenerateCurrencyList.GetList());
             DeliveryCharges = new SelectList(new List<string>
@@ -65,7 +62,10 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
                 });
 
             NaceSelectList = new SelectList(NaceViewModelList, "NaceId", "Title");
-
+            var listView =
+                _userApplication
+                    .GetDeliveryLocationDropDown(_authenticateHelper.CurrentAccountRole().Id).Result;
+            DeliveryLocationSelectList = new SelectList(listView, "LocationId", "Name");
         }
         [RequirePermission(UserPermission.CreateListing)]
         public JsonResult OnPost(CreateListing command, NaceDataDTO naceData)

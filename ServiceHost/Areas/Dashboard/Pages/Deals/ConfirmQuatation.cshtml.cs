@@ -66,8 +66,8 @@ namespace ServiceHost.Areas.Dashboard.Pages.Deals
                     return RedirectToPage("/Deals/NotExists", new { area = "Dashboard" });
                 DeliveryCharges = new SelectList(new List<string>
                 {
-                    new string("Buyer"),
-                    new string("Seller"),
+                    new ("Buyer"),
+                    new ("Seller"),
                 });
                 DeliveryLocationSelectList =
                     new SelectList(await _userApplication.GetDeliveryLocationDropDown(_authenticateHelper.CurrentAccountRole().Id));

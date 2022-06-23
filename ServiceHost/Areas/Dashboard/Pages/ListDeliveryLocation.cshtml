@@ -108,26 +108,24 @@
 {
     <link rel="stylesheet" href="~/css/mapbox-gl.css" />
 }
-
 <script>
-    mapboxgl.accessToken = @Html.Raw(Json.Serialize(_Configuration.GetSection("MapBox")["SecretKey"]));
-    var ListAddress = @Html.Raw(JsonConvert.SerializeObject(Model));
+        mapboxgl.accessToken = @Html.Raw(Json.Serialize(_Configuration.GetSection("MapBox")["SecretKey"]));
+        var ListAddress = @Html.Raw(JsonConvert.SerializeObject(Model));
 
-    ListAddress.forEach(e => {
-        var map, marker;
-        map = new mapboxgl.Map({
-            container: e.LocationId.toString(),
-            style: 'mapbox://styles/mapbox/streets-v11',
-            center: [e.Longitude, e.Latitude],
-            zoom: 13
+        ListAddress.forEach(e => {
+            var map, marker;
+            map = new mapboxgl.Map({
+                container: e.LocationId.toString(),
+                style: 'mapbox://styles/mapbox/streets-v11',
+                center: [e.Longitude, e.Latitude],
+                zoom: 13
+            });
+
+            marker = new mapboxgl.Marker({ color: 'red', rotation: 0 })
+                .setLngLat([e.Longitude, e.Latitude])
+                .addTo(map);
+            map.on('load', () => {
+                map.resize();
+            });
         });
-
-        marker = new mapboxgl.Marker({ color: 'red', rotation: 0 })
-            .setLngLat([e.Longitude, e.Latitude])
-            .addTo(map);
-        map.on('load', () => {
-            map.resize();
-        });
-    });
-
 </script>

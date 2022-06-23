@@ -1,6 +1,8 @@
 ﻿@page "{id}"
-
 @using _0_Framework.Application
+@using Microsoft.Extensions.Configuration
+@using Newtonsoft.Json
+@inject IConfiguration _Configuration;
 @inject IAuthenticateHelper AuthenticateHelper;
 @model ServiceHost.Pages.MarketPlace.ItemDetail
 @{ ViewData["Title"] = $"Market Place | {Model.Listing.Name}";}
@@ -16,7 +18,7 @@
                             <div class="flex-shrink-0">
                                 <!-- Heroicon name: solid/check-circle -->
                                 <svg class="h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                                 </svg>
                             </div>
                             <div class="ml-3">
@@ -31,7 +33,7 @@
                             <div class="flex-shrink-0">
                                 <!-- Heroicon name: solid/check-circle -->
                                 <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
                                 </svg>
                             </div>
                             <div class="ml-3">
@@ -65,6 +67,45 @@
                                     <p class="text-sm text-gray-700 pr-0 lg:pr-4">@Model.Listing.Description</p>
                                 </div>
                             </div>
+                            @if (Model.Listing.DeliveryLocation.Name != "")
+                            {
+                                <div title="Delivery Location" class="mt-3 pr-0 lg:pr-3">
+                                    <label class="block text-sm font-medium text-gray-700 mt-3">Delivery Location</label>
+                                    <div class="mt-1 block bg-gray-100 border-gray-100 w-full px-2 py-2 text-base border-gray-300 sm:text-sm rounded-md">
+                                        <div class="flex justify-between flex-col">
+                                            <div class="text-sm text-gray-800">
+                                                <span class="text-sm text-gray-900 font-medium">Address Title:</span>
+                                                @Model.Listing.DeliveryLocation.Name
+                                                <div class="flex flex-col">
+                                                    <p class="text-sm text-gray-800">
+                                                        <span class="text-sm text-gray-900 font-medium">Country:</span>
+                                                        @Model.Listing.DeliveryLocation.Country
+                                                    </p>
+                                                    <p class="text-sm text-gray-800">
+                                                        <span class="text-sm text-gray-900 font-medium">City:</span>
+                                                        @Model.Listing.DeliveryLocation.City
+                                                    </p>
+                                                    <p class="text-sm text-gray-800">
+                                                        <span class="text-sm text-gray-900 font-medium">Address Line 1:</span>
+                                                        @Model.Listing.DeliveryLocation.AddressLineOne
+                                                    </p>
+                                                    <p class="text-sm text-gray-800">
+                                                        <span class="text-sm text-gray-900 font-medium">Address Line 2:</span>
+                                                        @Model.Listing.DeliveryLocation.AddressLineTwo
+                                                    </p>
+                                                    <p class="text-sm text-gray-800">
+                                                        <span class="text-sm text-gray-900 font-medium">Postal Code:</span>
+                                                        @Model.Listing.DeliveryLocation.PostalCode
+                                                    </p>
+
+                                                </div>
+                                                <div class="space-y-32 rounded-l-md w-full" id="@Model.Listing.DeliveryLocation.LocationId"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
 
                             <div aria-labelledby="options-heading" class="mt-6">
                                 <h3 id="options-heading" class="sr-only">Product options</h3>
@@ -76,68 +117,68 @@
                                             </thead>
                                             <tbody class="block md:table-row-group">
 
-                                            @foreach (var item in Model.NaceViewModel.Items)
-                                            {
-                                                if (!item.IsDeleted)
+                                                @foreach (var item in Model.NaceViewModel.Items)
                                                 {
-                                                    <tr class="bg-white border border-grey-500 md:border-none block md:table-row flex justify-between">
-                                                        <td class="p-2 md:border md:border-grey-200 text-left block md:table-cell">
-                                                            <div>
-                                                                <div class="text-sm text-gray-800">
-                                                                    @item.DetailBody
-                                                                </div>
+                                                    if (!item.IsDeleted)
+                                                    {
+                                                        <tr class="bg-white border border-grey-500 md:border-none block md:table-row flex justify-between">
+                                                            <td class="p-2 md:border md:border-grey-200 text-left block md:table-cell">
+                                                                <div>
+                                                                    <div class="text-sm text-gray-800">
+                                                                        @item.DetailBody
+                                                                    </div>
 
-                                                            </div>
-                                                        </td>
-                                                        <td class="p-2 md:border md:border-grey-200 text-left block md:table-cell">
-                                                            <div>
-                                                                <div class="text-sm text-gray-800 flex-col">
-                                                                    @if (item.ListItems.Count == 1)
-                                                                    {
-                                                                        @foreach (var detailItem in item.ListItems)
+                                                                </div>
+                                                            </td>
+                                                            <td class="p-2 md:border md:border-grey-200 text-left block md:table-cell">
+                                                                <div>
+                                                                    <div class="text-sm text-gray-800 flex-col">
+                                                                        @if (item.ListItems.Count == 1)
                                                                         {
-                                                                            @if (!@detailItem.IsDeleted)
+                                                                            @foreach (var detailItem in item.ListItems)
                                                                             {
-                                                                                <div class="flex">
-                                                                                    @foreach (var naceData in Model.NaceData.NaceDataDetails)
-                                                                                    {
-                                                                                        if (naceData.ItemdetailIndex == detailItem.ListItemDetailId)
-                                                                                        {
-                                                                                            <div class="self-center ml-2" id="data-@detailItem.ListItemDetailId">
-                                                                                                @(naceData.ItemdetailValues)
-                                                                                            </div>
-                                                                                        }
-                                                                                    }
-                                                                                    <div class="self-center ml-2" id="@detailItem.ListItemDetailId">
-                                                                                        @(detailItem.ListItemDetail)
-                                                                                    </div>
-                                                                                </div>}
-                                                                        }
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        foreach (var itemdetail in item.ListItems)
-                                                                        {
-                                                                            @foreach (var naceData in Model.NaceData.NaceDataDetails)
-                                                                            {
-                                                                                if (itemdetail.ListItemDetailId == naceData.ItemdetailIndex)
+                                                                                @if (!@detailItem.IsDeleted)
                                                                                 {
-                                                                                    <div class="self-center ml-2" id="data-@naceData.ItemdetailIndex">
-                                                                                        @(naceData.ItemdetailValues)
-                                                                                    </div>
-                                                                                }
+                                                                                    <div class="flex">
+                                                                                        @foreach (var naceData in Model.NaceData.NaceDataDetails)
+                                                                                        {
+                                                                                            if (naceData.ItemdetailIndex == detailItem.ListItemDetailId)
+                                                                                            {
+                                                                                                <div class="self-center ml-2" id="data-@detailItem.ListItemDetailId">
+                                                                                                    @(naceData.ItemdetailValues)
+                                                                                                </div>
+                                                                                            }
+                                                                                        }
+                                                                                        <div class="self-center ml-2" id="@detailItem.ListItemDetailId">
+                                                                                            @(detailItem.ListItemDetail)
+                                                                                        </div>
+                                                                                    </div>}
                                                                             }
                                                                         }
+                                                                        else
+                                                                        {
+                                                                            foreach (var itemdetail in item.ListItems)
+                                                                            {
+                                                                                @foreach (var naceData in Model.NaceData.NaceDataDetails)
+                                                                                {
+                                                                                    if (itemdetail.ListItemDetailId == naceData.ItemdetailIndex)
+                                                                                    {
+                                                                                        <div class="self-center ml-2" id="data-@naceData.ItemdetailIndex">
+                                                                                            @(naceData.ItemdetailValues)
+                                                                                        </div>
+                                                                                    }
+                                                                                }
+                                                                            }
 
 
-                                                                    }
+                                                                        }
 
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
+                                                            </td>
+                                                        </tr>
+                                                    }
                                                 }
-                                            }
                                             </tbody>
                                         </table>
                                     </div>
@@ -156,7 +197,7 @@
                                            focus:ring-offset-2 focus:ring-gray-500">
                                                     Back
                                                 </a>
-                                                <input type="hidden" value="@Model.Listing.Id" name="Id"/>
+                                                <input type="hidden" value="@Model.Listing.Id" name="Id" />
                                                 <button type="submit" onclick="gototop()"
                                                         @(Model.Listing.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "disabled" : "")
                                                         class="@(Model.Listing.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "bg-gray-100" : "bg-sky-700")
@@ -201,4 +242,25 @@
 
 @section CSS{
     <link rel="stylesheet" href="~/css/Loader.css" />
+    <link rel="stylesheet" href="~/css/mapbox-gl.css" />
+}
+
+@section Scripts
+{
+    <script src="~/js/mapbox-gl.js"></script>
+    <script>
+        mapboxgl.accessToken = @Html.Raw(Json.Serialize(_Configuration.GetSection("MapBox")["SecretKey"]));
+        var deliveryAddress = @Html.Raw(JsonConvert.SerializeObject(Model.Listing.DeliveryLocation));
+        var map = new mapboxgl.Map({
+            container: deliveryAddress.LocationId.toString(), // container ID
+            style: 'mapbox://styles/mapbox/streets-v11', // style URL
+            center: [deliveryAddress.Longitude, deliveryAddress.Latitude], // starting position [lng, lat]
+            zoom: 12 // starting zoom
+        });
+        // Create a default Marker and add it to the map.
+        var marker = new mapboxgl.Marker({ color: 'red', rotation: 0 })
+            .setLngLat([deliveryAddress.Longitude, deliveryAddress.Latitude])
+            .addTo(map);
+
+    </script>
 }

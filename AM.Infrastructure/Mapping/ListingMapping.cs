@@ -20,11 +20,10 @@ namespace AM.Infrastructure.Mapping
             builder.Property(x => x.Description).IsRequired().HasMaxLength(2000);
             builder.Property(x => x.Image).IsRequired().HasMaxLength(64);
             builder.Property(x => x.DeliveryMethod).IsRequired().HasMaxLength(50);
+            builder.Property(x => x.DeliveryLocationId).IsRequired();
             builder.Property(x => x.Currency).IsRequired().HasMaxLength(10);
 
             builder.HasOne(x => x.User).WithMany(x => x.Listings).HasForeignKey(x => x.UserId);
-            //builder.HasOne(x => x.Nace).WithOne(x => x.Listing).HasForeignKey<Nace>(x => x.ListingId);
-            //builder.HasOne(x => x.NaceData).WithOne(x => x.Listing).HasForeignKey<NaceData>(x => x.ListingId);
             builder.HasMany(x => x.PurchaseList).WithOne(x => x.Listing).HasForeignKey(x => x.ListingId);
             builder.HasMany(x => x.NegotiateList).WithOne(x => x.Listing).HasForeignKey(x => x.ListingId);
             builder.HasMany(x => x.SupplyList).WithOne(x => x.Listing).HasForeignKey(x => x.ListingId);

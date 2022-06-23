@@ -18,12 +18,13 @@ namespace AM.Domain.ListingAggregate
         public Listing(string name, string type,
             string description, string image, string deliveryMethod,
             string unit, double unitPrice, double amount, bool status,
-            long userId, bool isService, string currency)
+            long userId, bool isService, string currency, int deliveryLocationId)
         {
             Name = name;
             Type = type;
             Description = description;
             DeliveryMethod = deliveryMethod;
+            DeliveryLocationId = deliveryLocationId;
             Image = image;
             IsService = isService;
             if (!isService)
@@ -55,13 +56,14 @@ namespace AM.Domain.ListingAggregate
 
         public void Edit(string name,
             string description, string image, string deliveryMethod,
-            string unit, double unitPrice, string currency)
+            string unit, double unitPrice, string currency, int deliveryLocationId)
         {
             Name = name;
             Description = description;
             if (!string.IsNullOrWhiteSpace(image))
                 Image = image;
             DeliveryMethod = deliveryMethod;
+            DeliveryLocationId = deliveryLocationId;
             Unit = unit;
             UnitPrice = unitPrice;
             Currency = currency;
@@ -87,7 +89,8 @@ namespace AM.Domain.ListingAggregate
         public string? Description { get; private set; }
         public string? Image { get; private set; }
         public string? DeliveryMethod { get; private set; }
-        // It can be kg, lit, ton, peice and etc.
+        public int DeliveryLocationId { get; private set; }
+        // It can be kg, lit, ton, piece and etc.
         public string? Unit { get; private set; }
         public double UnitPrice { get; private set; }
         public string Currency { get; private set; }

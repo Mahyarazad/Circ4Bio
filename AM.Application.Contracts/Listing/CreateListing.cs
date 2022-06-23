@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using _0_Framework;
 using _0_Framework.Application;
 using AM.Application.Contracts.Nace;
+using AM.Application.Contracts.User;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
@@ -34,10 +35,14 @@ namespace AM.Application.Contracts.Listing
         [Required(ErrorMessage = ValidationMessages.IsRequired)]
         [MaxLength(3, ErrorMessage = ValidationMessages.Currency)]
         public string? Currency { get; set; }
+        [Required(ErrorMessage = ValidationMessages.DeliveryLocation)]
+        public int Location { get; set; }
+        public CreateDeliveryLocation? DeliveryLocation { get; set; }
         // 0 for public and 1 for private
         public bool Status { get; set; }
         public bool IsService { get; set; }
         public long NaceId { get; set; }
+
     }
     public class EditListing : CreateListing
     {

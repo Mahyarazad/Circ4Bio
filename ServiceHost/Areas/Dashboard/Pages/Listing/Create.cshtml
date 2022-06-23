@@ -1,6 +1,9 @@
 ﻿@page
 @using _0_Framework
 @using Microsoft.AspNetCore.Http
+@using Microsoft.Extensions.Configuration
+@using Newtonsoft.Json
+@inject IConfiguration Configuration;
 @model ServiceHost.Areas.Dashboard.Pages.Listing.CreateModel;
 @inject IHttpContextAccessor _ContextAccessor;
 @{ ViewData["Title"] = "Dashboard | Listing | Register a new listing"; }
@@ -73,6 +76,8 @@
                 </div>
             </div>
 
+
+
             <div class="mt-6 flex-grow lg:ml-6 lg:mr-16 lg:flex-grow-0 lg:flex-shrink-0">
                 <p class="text-sm font-medium text-gray-700" aria-hidden="true">
                     Photo
@@ -142,6 +147,43 @@
         </div>
 
         <!--End of Nace Section -->
+        <!--Start of Location Section-->
+
+        <div class="mt-6 grid grid-cols-12 gap-6">
+            <div class="col-span-12 sm:col-span-6">
+                <label class="block text-sm font-medium text-gray-700">Delivery Location Address</label>
+                <select asp-for="@Model.Command.Location"
+                        asp-items="@Model.DeliveryLocationSelectList" onchange="renderLocation(this.value)"
+                        class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-sky-700 focus:border-sky-500 sm:text-sm rounded-md">
+                    <option value="">
+                        Please select your delivery location
+                    </option>
+                </select>
+                <span asp-validation-for="@Model.Command.Location" class="text-red-500 text-sm"></span>
+            </div>
+            <div class="col-span-12 sm:col-span-6">
+                <div class="col-span-2 sm:col-span-1">
+                    <label class="block text-sm font-medium text-gray-700">Check Your Delivery Location</label>
+                    <a href="#showmodal=@Url.Page("../Profile", "AddDeliveryLocation", new {Id = Model.LoggedUser.Id})" id="showModal"
+                       onclick="showModal()"
+                       class="mt-1 bg-white border border-gray-300 rounded-md shadow-sm py-2 px-4 inline-flex
+                           justify-center text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none
+                           focus:ring-2 focus:ring-offset-2 focus:ring-gray-700">
+                        Add
+                    </a>
+                    <a href="#showmodal=@Url.Page("../Profile", "ListDeliveryLocation", new {Id = Model.LoggedUser.Id})" id="showModal"
+                       onclick="showModal()"
+                       class="mt-1 bg-white border border-gray-300 rounded-md shadow-sm py-2 px-4 inline-flex j
+                           ustify-center text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none
+                           focus:ring-2 focus:ring-offset-2 focus:ring-gray-700">
+                        List
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!-- End of Location section-->
+
+
         <div class="mt-6 grid grid-cols-12 gap-6">
             <div class="col-span-12 sm:col-span-6">
                 <label asp-for="@Model.Command.DeliveryMethod" class="block text-sm font-medium text-gray-700">
@@ -214,13 +256,18 @@
     </div>
 </form>
 
-@section CSS{
+@section CSS
+{
+    <link rel="stylesheet" href="~/css/mapbox-gl.css" />
     <link rel="stylesheet" href="~/css/Loader.css" />
 }
 
+
 @section Scripts
 {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mapbox-gl/2.9.1/mapbox-gl.js" integrity="sha512-p6t2FhDiO8dvaak6FTbEB0JJTV5T2duw8VVGj28Awd2U/ShqcKs/2dpC03J0bsbVlDRFUKyvuizFuUX/4SD9LQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
+
         function readURL(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
@@ -254,6 +301,5 @@
         function RenderTable(val) {
             handleGetNaceDetail(val);
         }
-
     </script>
 }

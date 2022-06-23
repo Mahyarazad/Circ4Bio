@@ -258,10 +258,6 @@
             $(`#parameter-row-${val}`).remove();
         }
 
-        function DeleteIndex(val) {
-            console.log(val);
-        }
-
         function DeleteIndexDetail(val) {
             $(`input[data-id='${val}']`).val('True');
             $(`input[data-replace='${val}']`).val('deleted');

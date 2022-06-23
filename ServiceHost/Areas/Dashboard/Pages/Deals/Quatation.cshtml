@@ -69,12 +69,12 @@
                         <label class="block text-sm font-medium text-gray-700">Check Your Delivery Location</label>
                         <a href="#showmodal=@Url.Page("../Profile", "AddDeliveryLocation", new {Id = Model.LoggedUser.Id})" id="showModal"
                            onclick="showModal()"
-                           class="mt-1 bg-white border border-gray-300 rounded-md shadow-sm py-1 px-4 inline-flex justify-center text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-700">
+                           class="mt-1 bg-white border border-gray-300 rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-700">
                             Add
                         </a>
                         <a href="#showmodal=@Url.Page("../Profile", "ListDeliveryLocation", new {Id = Model.LoggedUser.Id})" id="showModal"
                            onclick="showModal()"
-                           class="mt-1 bg-white border border-gray-300 rounded-md shadow-sm py-1 px-4 inline-flex justify-center text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-700">
+                           class="mt-1 bg-white border border-gray-300 rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-700">
                             List
                         </a>
                     </div>
@@ -164,14 +164,12 @@
 
                     @if (Model.Command.ContractFileString != null)
                     {
-                        <div class="py-2">
-                            <a href="~/Site Files/Deal Documents/@Model.Command.NegotiateId/@Model.Command.ContractFileString"
-                               class="w-full border rounded-md shadow-sm px-2 py-2 sm:text-sm bg-sky-700 text-white">
-                                @(Model.Command.ContractFileString != null ? "Open Contract File" : "No Contract File")
-                            </a>
-                        </div>
-
-                    }
+        <div class="py-2">
+            <a href="~/Site Files/Deal Documents/@Model.Command.NegotiateId/@Model.Command.ContractFileString"
+               class="w-full border rounded-md shadow-sm px-2 py-2 sm:text-sm bg-sky-700 text-white">
+                @(Model.Command.ContractFileString != null ? "Open Contract File" : "No Contract File")
+            </a>
+        </div>}
                     <label class="block text-sm font-medium text-gray-700 mt-3">Contract</label>
                     <input type="file" asp-for="@Model.Command.ContractFile" accept="application/pdf"
                            class="mt-1 block w-full border border-gray-100 rounded-md shadow-sm py-2 px-3 sm:text-sm">
@@ -200,18 +198,20 @@
 @section CSS
 {
     <link rel="stylesheet" href="~/css/mapbox-gl.css" />
+    <link rel="stylesheet" href="~/css/Loader.css" />
 }
 
 @section Scripts
 {
-    <script type="text/javascript" src="~/js/mapbox-gl.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mapbox-gl/2.9.1/mapbox-gl.js" integrity="sha512-p6t2FhDiO8dvaak6FTbEB0JJTV5T2duw8VVGj28Awd2U/ShqcKs/2dpC03J0bsbVlDRFUKyvuizFuUX/4SD9LQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         $(document).ready(() => {
             checkAmount();
             var locationId = @Html.Raw(Model.Command.DeliveryLocation.LocationId);
             setTimeout(() => {
-                renderLocation(locationId.toString())
-            }, 100)
+                    renderLocation(locationId.toString());
+                },
+                100);
         });
     </script>
 }

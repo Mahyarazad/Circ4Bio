@@ -12,10 +12,10 @@ namespace AM.Application.Contracts.Listing
         Task<List<ListingViewModel>> GetAllListing();
         Task<List<ListingViewModel>> GetAllPublicListing();
         Task<List<ListingViewModel>> GetUserListing(long id);
-        Task<ListingViewModel> GetDetailListing(long id);
+        Task<ListingViewModel> GetDetailListing(long listingid);
         Task<long> GetOwnerUserID(long id);
         Task<List<ListingViewModel>> GetDeletedUserListing(long id);
-        Task<EditListing> GetEditListing(long listingId);
+        Task<EditListing> GetEditListing(long listingid);
         Task<OperationResult> MarkPrivate(long id);
         Task<OperationResult> MarkPublic(long id);
         Task<OperationResult> Delete(long id);

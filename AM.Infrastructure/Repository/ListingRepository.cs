@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using _0_Framework.Infrastructure;
 using AM.Application.Contracts.Listing;
 using AM.Application.Contracts.Negotiate;
+using AM.Application.Contracts.User;
 using AM.Domain.ListingAggregate;
 using Microsoft.EntityFrameworkCore;
 
@@ -121,6 +122,7 @@ namespace AM.Infrastructure.Repository
                 .AsSingleQuery()
                 .AsNoTracking();
 
+
             var query = _amContext.Listing
                 .Include(x => x.User)
                 .Include(x => x.DealList)
@@ -131,6 +133,42 @@ namespace AM.Infrastructure.Repository
                     CreationTime = x.CreationTime,
                     DeliveryMethod = x.DeliveryMethod,
                     Description = x.Description,
+                    DeliveryLocation = new CreateDeliveryLocation
+                    {
+                        LocationId = x.DeliveryLocationId != null ? x.DeliveryLocationId : 0,
+                        Name = x.User.DeliveryLocations
+                            .FirstOrDefault(y => y.Id == x.DeliveryLocationId).Name != null ?
+                            x.User.DeliveryLocations
+                            .FirstOrDefault(y => y.Id == x.DeliveryLocationId).Name : "",
+                        AddressLineOne = x.User.DeliveryLocations
+                            .FirstOrDefault(y => y.Id == x.DeliveryLocationId).AddressLineOne != null ?
+                            x.User.DeliveryLocations
+                                .FirstOrDefault(y => y.Id == x.DeliveryLocationId).AddressLineOne : "",
+                        AddressLineTwo = x.User.DeliveryLocations
+                            .FirstOrDefault(y => y.Id == x.DeliveryLocationId).AddressLineTwo != null ?
+                            x.User.DeliveryLocations
+                                .FirstOrDefault(y => y.Id == x.DeliveryLocationId).AddressLineTwo : "",
+                        City = x.User.DeliveryLocations
+                            .FirstOrDefault(y => y.Id == x.DeliveryLocationId).City != null ?
+                            x.User.DeliveryLocations
+                                .FirstOrDefault(y => y.Id == x.DeliveryLocationId).City : "",
+                        Country = x.User.DeliveryLocations
+                            .FirstOrDefault(y => y.Id == x.DeliveryLocationId).Country != null ?
+                            x.User.DeliveryLocations
+                                .FirstOrDefault(y => y.Id == x.DeliveryLocationId).Country : "",
+                        PostalCode = x.User.DeliveryLocations
+                            .FirstOrDefault(y => y.Id == x.DeliveryLocationId).PostalCode != null ?
+                            x.User.DeliveryLocations
+                                .FirstOrDefault(y => y.Id == x.DeliveryLocationId).PostalCode : 0,
+                        Latitude = x.User.DeliveryLocations
+                            .FirstOrDefault(y => y.Id == x.DeliveryLocationId).Latitude != null ?
+                            x.User.DeliveryLocations
+                                .FirstOrDefault(y => y.Id == x.DeliveryLocationId).Latitude : 0,
+                        Longitude = x.User.DeliveryLocations
+                            .FirstOrDefault(y => y.Id == x.DeliveryLocationId).Longitude != null ?
+                            x.User.DeliveryLocations
+                                .FirstOrDefault(y => y.Id == x.DeliveryLocationId).Longitude : 0,
+                    },
                     Id = x.Id,
                     UserId = x.UserId,
                     Name = x.Name,
@@ -189,6 +227,7 @@ namespace AM.Infrastructure.Repository
                     Amount = x.Amount,
                     Description = x.Description,
                     DeliveryMethod = x.DeliveryMethod,
+                    Location = x.DeliveryLocationId,
                     Name = x.Name,
                     Unit = x.Unit,
                     Status = x.Status,

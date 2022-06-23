@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using AM.Application.Contracts.Deal;
+using AM.Application.Contracts.User;
 
 namespace AM.Application.Contracts.Listing
 {
@@ -17,6 +18,7 @@ namespace AM.Application.Contracts.Listing
         public string? Description { get; set; }
         public string? Image { get; set; }
         public string? DeliveryMethod { get; set; }
+        public CreateDeliveryLocation? DeliveryLocation { get; set; }
         public string? Unit { get; set; }
         public double UnitPrice { get; set; }
         public double Amount { get; set; }

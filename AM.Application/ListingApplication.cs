@@ -87,7 +87,7 @@ namespace AM.Application
 
             var listing = new Listing(command.Name, typeofListing, command.Description, command.ImageString,
                 command.DeliveryMethod, command.Unit, command.UnitPrice, command.Amount, command.Status,
-                issuerId, command.IsService, command.Currency);
+                issuerId, command.IsService, command.Currency, command.Location);
 
             _listingRepository.Create(listing);
             _listingRepository.SaveChanges();
@@ -148,7 +148,7 @@ namespace AM.Application
 
             var target = _listingRepository.Get(command.Id);
             target.Result.Edit(command.Name, command.Description, imageFileName,
-                command.DeliveryMethod, command.Unit, command.UnitPrice, command.Currency);
+                command.DeliveryMethod, command.Unit, command.UnitPrice, command.Currency, command.Location);
             _listingRepository.SaveChanges();
 
             return Task.FromResult(result.Succeeded());

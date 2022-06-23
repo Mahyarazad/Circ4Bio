@@ -166,53 +166,53 @@
                     </a>
                 </div>
             </div>
-        <!--
-            <div class="mt-6 grid grid-cols-12 gap-4">
-                <div class="col-span-12 sm:col-span-6">
-                    <label asp-for="@Model.user.Latitude" class="block text-sm font-medium text-gray-700"></label>
-                    <input type="text" asp-for="@Model.user.Latitude" id="latitude"
-                           class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-700 focus:border-sky-500 sm:text-sm">
-                </div>
+            <!--
+                <div class="mt-6 grid grid-cols-12 gap-4">
+                    <div class="col-span-12 sm:col-span-6">
+                        <label asp-for="@Model.user.Latitude" class="block text-sm font-medium text-gray-700"></label>
+                        <input type="text" asp-for="@Model.user.Latitude" id="latitude"
+                               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-700 focus:border-sky-500 sm:text-sm">
+                    </div>
 
-                <div class="col-span-12 sm:col-span-6">
-                    <label asp-for="@Model.user.Longitude" class="block text-sm font-medium text-gray-700"></label>
-                    <input type="text" asp-for="@Model.user.Longitude" id="longitude"
-                           class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-700 focus:border-sky-500 sm:text-sm">
-                </div>
-            </div>
-
-            <div class="py-4 flex flex-col justify-start">
-                <div id="location-message-wrapper" class="flex invisible bg-red-50 border border-red-500
-                 my-1 rounded-md transform duration-300 fixed top-0 -translate-y-[2rem]">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 self-center text-red-600 mx-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <span id="location-message" class="text-red-600 text-xs font-medium self-center py-1">
-                    </span>
-                </div>
-
-                <div onclick="getLocation()"
-                     class="bg-sky-700 border cursor-pointer border-transparent rounded-md shadow-sm py-2 mr-4 px-4 inline-flex
-                 w-40 justify-center text-sm font-medium h-10 text-white hover:bg-sky-800 focus:outline-none focus:ring-2
-                 focus:ring-offset-2 focus:ring-sky-700">
-                    <p id="get-current-location-button">Get Location</p>
-                    <div class="loadingio-spinner-eclipse-button mr-6 hidden" id="location-loader">
-                        <div class="ldio-button">
-                            <div></div>
-                        </div>
+                    <div class="col-span-12 sm:col-span-6">
+                        <label asp-for="@Model.user.Longitude" class="block text-sm font-medium text-gray-700"></label>
+                        <input type="text" asp-for="@Model.user.Longitude" id="longitude"
+                               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-sky-700 focus:border-sky-500 sm:text-sm">
                     </div>
                 </div>
-                <div onclick="hideMap()" id="hideMap" style="display: none"
-                     class="bg-gray-50 border h-10 cursor-pointer border-transparent rounded-md
-                 shadow-sm py-2 px-4 inline-flex w-40 mt-2 justify-center text-sm font-medium
-                 text-gray-800 text-center hover:bg-gray-100 focus:outline-none focus:ring-2
-                 focus:ring-offset-2 focus:ring-gray-100">
-                    Hide Map
-                </div>
-            </div>
 
-            <div class="flex-grow space-y-6 rounded-l-md mb-2" id="mapholder" style="height: 300px; display: none"></div>
-            -->
+                <div class="py-4 flex flex-col justify-start">
+                    <div id="location-message-wrapper" class="flex invisible bg-red-50 border border-red-500
+                     my-1 rounded-md transform duration-300 fixed top-0 -translate-y-[2rem]">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 self-center text-red-600 mx-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span id="location-message" class="text-red-600 text-xs font-medium self-center py-1">
+                        </span>
+                    </div>
+
+                    <div onclick="getLocation()"
+                         class="bg-sky-700 border cursor-pointer border-transparent rounded-md shadow-sm py-2 mr-4 px-4 inline-flex
+                     w-40 justify-center text-sm font-medium h-10 text-white hover:bg-sky-800 focus:outline-none focus:ring-2
+                     focus:ring-offset-2 focus:ring-sky-700">
+                        <p id="get-current-location-button">Get Location</p>
+                        <div class="loadingio-spinner-eclipse-button mr-6 hidden" id="location-loader">
+                            <div class="ldio-button">
+                                <div></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div onclick="hideMap()" id="hideMap" style="display: none"
+                         class="bg-gray-50 border h-10 cursor-pointer border-transparent rounded-md
+                     shadow-sm py-2 px-4 inline-flex w-40 mt-2 justify-center text-sm font-medium
+                     text-gray-800 text-center hover:bg-gray-100 focus:outline-none focus:ring-2
+                     focus:ring-offset-2 focus:ring-gray-100">
+                        Hide Map
+                    </div>
+                </div>
+
+                <div class="flex-grow space-y-6 rounded-l-md mb-2" id="mapholder" style="height: 300px; display: none"></div>
+                -->
             <div class="grid grid-cols-12 gap-4 mt-4">
                 <div class="col-span-12 sm:col-span-6">
                     <label asp-for="@Model.user.Country" class="block text-sm font-medium text-gray-700"></label>
@@ -273,8 +273,8 @@
 
                 </div>
 
-                </div>
             </div>
+        </div>
     </form>
     <form asp-page-handler="DeactivateUser" class="py-2 mx-3 divide-y divide-gray-200 lg:col-span-9 col-span-12 sm:col-span-6 flex justify-start"
           data-callback="" data-ajax="true" method="post" data-action="Refresh">
@@ -301,7 +301,7 @@
 
 @section Scripts
 {
-    <script src="~/js/mapbox-gl.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mapbox-gl/2.9.1/mapbox-gl.js" integrity="sha512-p6t2FhDiO8dvaak6FTbEB0JJTV5T2duw8VVGj28Awd2U/ShqcKs/2dpC03J0bsbVlDRFUKyvuizFuUX/4SD9LQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="~/js/ProfileLocation.js">
     </script>
 }

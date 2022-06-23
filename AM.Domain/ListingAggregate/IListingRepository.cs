@@ -9,7 +9,7 @@ namespace AM.Domain.ListingAggregate
     {
         Task<List<ListingViewModel>> GetAllListing();
         Task<List<ListingViewModel>> GetAllPublicListing();
-        Task<ListingViewModel> GetDetailListing(long Id);
+        Task<ListingViewModel> GetDetailListing(long ListingId);
         Task<List<ListingViewModel>> GetUserListing(long Id);
         Task<List<ListingViewModel>> GetDeletedUserListing(long Id);
         Task<EditListing> GetListingDetail(long ListingId);

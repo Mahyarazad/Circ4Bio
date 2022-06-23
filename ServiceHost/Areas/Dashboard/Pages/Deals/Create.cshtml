@@ -70,14 +70,14 @@
                         <label class="block text-sm font-medium text-gray-700">Check Your Delivery Location</label>
                         <a href="#showmodal=@Url.Page("../Profile", "AddDeliveryLocation", new {Id = Model.LoggedUser.Id})" id="showModal"
                            onclick="showModal()"
-                           class="mt-1 bg-white border border-gray-300 rounded-md shadow-sm py-1 px-4 inline-flex
+                           class="mt-1 bg-white border border-gray-300 rounded-md shadow-sm py-2 px-4 inline-flex
                            justify-center text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none
                            focus:ring-2 focus:ring-offset-2 focus:ring-gray-700">
                             Add
                         </a>
                         <a href="#showmodal=@Url.Page("../Profile", "ListDeliveryLocation", new {Id = Model.LoggedUser.Id})" id="showModal"
                            onclick="showModal()"
-                           class="mt-1 bg-white border border-gray-300 rounded-md shadow-sm py-1 px-4 inline-flex j
+                           class="mt-1 bg-white border border-gray-300 rounded-md shadow-sm py-2 px-4 inline-flex j
                            ustify-center text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none
                            focus:ring-2 focus:ring-offset-2 focus:ring-gray-700">
                             List
@@ -201,5 +201,10 @@
 
 @section Scripts
 {
-    <script type="text/javascript" src="~/js/mapbox-gl.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mapbox-gl/2.9.1/mapbox-gl.js" integrity="sha512-p6t2FhDiO8dvaak6FTbEB0JJTV5T2duw8VVGj28Awd2U/ShqcKs/2dpC03J0bsbVlDRFUKyvuizFuUX/4SD9LQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        $(document).ready(() => {
+            checkAmount();
+        });
+    </script>
 }
