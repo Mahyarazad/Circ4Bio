@@ -45,9 +45,10 @@ namespace AM.Infrastructure.Repository
                     IsDeleted = x.IsDeleted,
                     IsService = x.IsService,
                     Currency = x.Currency,
-                    NaceId = x.NaceData.NaceId == null ? 0 : x.NaceData.NaceId
+                    NaceId = x.NaceData.NaceId == null ? 0 : x.NaceData.NaceId,
+                    UserId = x.UserId
                 }).AsNoTracking()
-                .OrderByDescending(x => x.Id).ToListAsync();
+                .OrderByDescending(x => x.CreationTime).ToListAsync();
 
             return query;
         }
@@ -79,7 +80,7 @@ namespace AM.Infrastructure.Repository
                     IsDeleted = x.IsDeleted,
                     Currency = x.Currency
                 }).AsNoTracking()
-                .OrderByDescending(x => x.Id).ToListAsync();
+                .OrderByDescending(x => x.CreationTime).ToListAsync();
             return query;
         }
         public async Task<List<ListingViewModel>> GetUserListing(long Id)
@@ -110,7 +111,7 @@ namespace AM.Infrastructure.Repository
                     IsService = x.IsService,
                     Currency = x.Currency
                 }).AsNoTracking()
-                .OrderByDescending(x => x.Id).ToListAsync();
+                .OrderByDescending(x => x.CreationTime).ToListAsync();
 
             return query;
         }

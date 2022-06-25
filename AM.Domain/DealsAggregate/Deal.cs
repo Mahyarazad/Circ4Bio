@@ -38,6 +38,7 @@ namespace AM.Domain
             ListingId = listingId;
             NegotiateId = negotiateId;
             StartTime = DateTime.Now;
+            CreationTime = DateTime.Now;
             BuyerId = buyerId;
             SellerId = sellerId;
             PaymentInfo = null;

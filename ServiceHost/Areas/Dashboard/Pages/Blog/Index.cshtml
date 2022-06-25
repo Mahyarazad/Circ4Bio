@@ -152,8 +152,8 @@
                                     <div class="flex justify-start my-2 place-items-center">
 
                                         <a asp-page="Edit" asp-route-id="@item.Id" permission="@UserPermission.EditBlogPost"
-                                           class="mx-2 inline-flex items-center px-2 py-2 border border-gray-300 shadow-sm 
-                                           text-xs font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 
+                                           class="mx-2 inline-flex items-center px-2 py-2 border border-gray-300 shadow-sm
+                                           text-xs font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50
                                            focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
                                             Edit
                                         </a>
@@ -209,6 +209,7 @@
     <script src="~/js/AlterDataTableDesign.js"></script>
     <script>
         $('#main-table').DataTable({
+            "order": [],
             language: { searchPlaceholder: "Search ..." }
         });
     </script>

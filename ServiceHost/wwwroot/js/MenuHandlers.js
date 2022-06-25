@@ -4,6 +4,11 @@ function loading() {
     $("#overlay").removeClass('hidden');
 }
 
+function loaded() {
+    $("#overlay").addClass('hidden');
+    $("#overlay").css('display', 'none');
+}
+
 $("#operation-result-message").change(function () {
     $("#overlay").addClass('hidden');
 });

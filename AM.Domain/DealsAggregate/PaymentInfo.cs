@@ -17,6 +17,7 @@ namespace AM.Domain
             PayerLastName = payerLastName;
             PaidAmount = paidAmount;
             TransactionFee = transactionFee;
+
         }
 
 

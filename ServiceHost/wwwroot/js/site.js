@@ -95,7 +95,8 @@ function handleAjaxPost(formData, url, action) {
         processData: false,
         contentType: false,
         success: function (data) {
-            // Notify the user about the proccess detail
+
+
             if (!data.result.isSucceeded) {
                 $("#modal").hide();
                 $("#overlay").addClass('hidden');
@@ -197,9 +198,13 @@ function handleAjaxPost(formData, url, action) {
                 CallBackHandler(data, action, formData);;
             }, 1500);
         },
-        error: function (data) {
-            // Notify the user about the proccess detail
-            window.alert(data.statusText);
+        error: function (e) {
+            loaded();
+            if (e.statusText === 'parsererror') {
+                window.location.href = "/Dashboard/AccessDenied";
+            } else {
+                window.alert(`Http response status code: ${e.status}`);
+            }
         }
     });
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using _0_Framework.Domain;
 
 namespace AM.Domain.NaceAggregate
@@ -13,6 +14,7 @@ namespace AM.Domain.NaceAggregate
             ListingId = listingId;
             NaceId = naceId;
             IsDeleted = false;
+            CreationTime = DateTime.Now;
         }
 
         public void Edit(List<NaceDetailData> naceDetailDatas, long listingId, long naceId)

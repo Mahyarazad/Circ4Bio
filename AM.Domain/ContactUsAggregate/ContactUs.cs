@@ -1,4 +1,5 @@
-﻿using _0_Framework.Domain;
+﻿using System;
+using _0_Framework.Domain;
 
 namespace AM.Domain.ContactUsAggregate
 {
@@ -15,6 +16,7 @@ namespace AM.Domain.ContactUsAggregate
             Subject = subject;
             Phone = phone;
             Body = body;
+            CreationTime = DateTime.Now;
             IsRead = false;
         }
 

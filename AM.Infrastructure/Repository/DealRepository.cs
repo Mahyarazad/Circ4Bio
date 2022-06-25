@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using _0_Framework;
@@ -68,8 +69,7 @@ namespace AM.Infrastructure.Repository
                     CreationTime = x.CreationTime,
                     DueTime = x.DueTime
 
-                })
-                .OrderByDescending(x => x.CreationTime)
+                }).OrderByDescending(x => x.CreationTime)
                 .ToListAsync();
         }
 

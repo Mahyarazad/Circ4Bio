@@ -1,16 +1,19 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using _0_Framework.Infrastructure;
 using AM.Application.Contracts.Listing;
 using AM.Application.Contracts.Nace;
 using AM.Application.Contracts.Negotiate;
 using AM.Application.Contracts.User;
+using AM.Infrastructure.Core;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace ServiceHost.Areas.Dashboard.Pages.AvailableListing
 {
+
     public class AvailableListingModel : PageModel
     {
         public EditUser user;
@@ -33,16 +36,17 @@ namespace ServiceHost.Areas.Dashboard.Pages.AvailableListing
         private readonly IListingApplication _listingApplication;
         private readonly INegotiateApplication _negotiateApplication;
 
-
         public async Task OnGet()
         {
             var userId = long.Parse(_contextAccessor.HttpContext.User.Claims
                 .FirstOrDefault(x => x.Type == "User Id").Value);
 
             user = await _userApplication.GetDetail(userId);
-            Listing = await _listingApplication.GetAllPublicListing();
+            Listing = await _listingApplication.GetAllListing();
             NaceList = await _naceApplication.GetAllNaceTitles();
         }
+
+        [NeedsPermission(UserPermission.CreateNegotiation)]
         public async Task<JsonResult> OnPost(long Id)
         {
             var createNegotiation = new CreateNegotiate

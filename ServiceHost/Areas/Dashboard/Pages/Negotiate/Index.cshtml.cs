@@ -53,7 +53,8 @@ namespace ServiceHost.Areas.Dashboard.Pages.Negotiate
                     IsRejected = item.IsRejected,
                     QuatationSent = item.QuatationSent,
                     QuatationConfirm = item.QuatationConfirm,
-                    IsActive = item.IsActive
+                    IsActive = item.IsActive,
+                    CreationTime = item.CreationTime,
                 }));
             }
             foreach (var item in sellingNegotiation)
@@ -69,7 +70,8 @@ namespace ServiceHost.Areas.Dashboard.Pages.Negotiate
                     IsRejected = item.IsRejected,
                     QuatationSent = item.QuatationSent,
                     QuatationConfirm = item.QuatationConfirm,
-                    IsActive = item.IsActive
+                    IsActive = item.IsActive,
+                    CreationTime = item.CreationTime,
                 }));
             }
 

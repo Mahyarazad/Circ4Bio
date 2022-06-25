@@ -1,4 +1,5 @@
-﻿using System.Reflection.Metadata;
+﻿using System;
+using System.Reflection.Metadata;
 using System.Security.Cryptography.Xml;
 using _0_Framework.Domain;
 using AM.Domain.UserAggregate;
@@ -25,6 +26,7 @@ namespace AM.Domain.BlogAggregate
             UserId = userId;
             IsDeleted = false;
             Slug = slug;
+            CreationTime = DateTime.Now;
             AvatarImage = avatarImage;
         }
 

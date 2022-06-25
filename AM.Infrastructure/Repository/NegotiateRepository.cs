@@ -56,7 +56,7 @@ namespace AM.Infrastructure.Repository
             return _amContext.Listing.AsSingleQuery()
                 .Select(x => new NegotiateViewModel
                 {
-                    CreationTime = x.CreationTime,
+                    CreationTime = negotiate.CreationTime,
                     NegotiateId = Command.NegotiateId,
                     ListingId = x.Id,
                     ListingName = x.Name,
@@ -158,6 +158,7 @@ namespace AM.Infrastructure.Repository
                     QuatationSent = x.QuatationSent,
                     QuatationConfirm = x.QuatationConfirm,
                     IsActive = x.IsActive,
+                    CreationTime = x.CreationTime
                 }).AsNoTracking().OrderByDescending(x => x.NegotiateId).ToList();
         }
         public List<CreateNegotiate> AllListingItemsSeller(long SellerId)
@@ -174,7 +175,8 @@ namespace AM.Infrastructure.Repository
                     IsFinished = x.IsFinished,
                     QuatationSent = x.QuatationSent,
                     QuatationConfirm = x.QuatationConfirm,
-                    IsActive = x.IsActive
+                    IsActive = x.IsActive,
+                    CreationTime = x.CreationTime
                 }).AsNoTracking().OrderByDescending(x => x.NegotiateId).ToList();
         }
 

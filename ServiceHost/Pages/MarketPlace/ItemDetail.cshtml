@@ -1,5 +1,6 @@
 ﻿@page "{id}"
 @using _0_Framework.Application
+@using AM.Infrastructure.Core
 @using Microsoft.Extensions.Configuration
 @using Newtonsoft.Json
 @inject IConfiguration _Configuration;
@@ -198,17 +199,20 @@
                                                     Back
                                                 </a>
                                                 <input type="hidden" value="@Model.Listing.Id" name="Id" />
-                                                <button type="submit" onclick="gototop()"
-                                                        @(Model.Listing.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "disabled" : "")
-                                                        class="@(Model.Listing.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "bg-gray-100" : "bg-sky-700")
+                                                <div permission="@UserPermission.CreateNegotiation">
+                                                    <button type="submit" onclick="gototop()"
+                                                            @(Model.Listing.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "disabled" : "")
+                                                            class="@(Model.Listing.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "bg-gray-100" : "bg-sky-700")
                                                 ml-2 border border-transparent rounded-md py-2 px-4 flex items-center justify-center text-sm font-medium
-                                                text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50
+                                                text-white  @(Model.Listing.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "hover:cursor-not-allowed" : "")
+                                                            @(Model.Listing.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "bg-gray-100" : "hover:bg-sky-800")
+                                                            focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50
                                                 focus:ring-sky-800">
-                                                    @(Model.Listing.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "Owend Item" : "Start Negotiation")
-                                                </button>
-
+                                                        @(Model.Listing.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "Item Owned" : "Start Negotiation")
+                                                    </button>
+                                                </div>
+                                                </div>
                                             </div>
-                                        </div>
                                     </form>
                                 }
                                 else

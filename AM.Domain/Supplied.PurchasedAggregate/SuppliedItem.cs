@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using _0_Framework.Domain;
 using AM.Domain.ListingAggregate;
 using AM.Domain.UserAggregate;
@@ -21,6 +22,7 @@ namespace AM.Domain.Supplied.PurchasedAggregate
             UnitPrice = unitPrice;
             TotalPaid = totalPaid;
             Currency = currency;
+            CreationTime = DateTime.Now;
         }
 
         public long ListingId { get; private set; }

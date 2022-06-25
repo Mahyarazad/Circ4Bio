@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
 using _0_Framework.Domain;
@@ -51,6 +52,7 @@ namespace AM.Domain.ListingAggregate
             HasAmount = true;
             UserId = userId;
             Currency = currency;
+            CreationTime = DateTime.Now;
 
         }
 

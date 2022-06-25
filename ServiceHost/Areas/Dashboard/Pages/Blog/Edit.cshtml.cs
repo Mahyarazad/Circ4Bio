@@ -15,11 +15,13 @@ namespace ServiceHost.Areas.Dashboard.Pages.Blog
         {
             _blogApplication = blogApplication;
         }
+
         [NeedsPermission(UserPermission.EditBlogPost)]
         public void OnGet(long Id)
         {
             Command = _blogApplication.GetSingleBlog(Id).Result;
         }
+
         [NeedsPermission(UserPermission.EditBlogPost)]
         public JsonResult OnPost(BlogViewModel command)
         {

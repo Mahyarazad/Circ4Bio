@@ -16,6 +16,7 @@ namespace AM.Application.Contracts.Negotiate
         public bool QuatationSent { get; set; }
         public bool QuatationConfirm { get; set; }
         public bool IsRejected { get; set; }
+        public DateTime CreationTime { get; set; }
     }
 
     public class NegotiateViewModel : CreateNegotiate
@@ -24,7 +25,7 @@ namespace AM.Application.Contracts.Negotiate
         public string? ImageString { get; set; }
         public string? BuyerImageString { get; set; }
         public string? SellerName { get; set; }
-        public DateTime CreationTime { get; set; }
+
         public string? BuyerName { get; set; }
         public string? SellerEmail { get; set; }
         public string? BuyerEmail { get; set; }

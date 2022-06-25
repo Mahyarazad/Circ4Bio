@@ -1,5 +1,6 @@
 ﻿@page
 @using _0_Framework
+@using AM.Infrastructure.Core
 @using Newtonsoft.Json
 @model ServiceHost.Areas.Dashboard.Pages.AvailableListing.AvailableListingModel;
 @inject _0_Framework.Application.IAuthenticateHelper AuthenticateHelper;
@@ -131,7 +132,7 @@
                                                 <p class="font-medium text-gray-900">@item.Currency @item.UnitPrice</p>
                                             </div>
                                             <div class="self-end">
-                                                <form method="post" id="form"
+                                                <form method="post" id="form" permission="@UserPermission.CreateNegotiation"
                                                       data-callback="" data-ajax="true" data-action="Refresh">
                                                     <input type="hidden" value="@item.Id" name="Id"/>
                                                     @if (!AuthenticateHelper.CurrentAccountRole().Status)
@@ -148,7 +149,8 @@
                                                     }
                                                     else
                                                     {
-                                                        <button type="submit" onclick="gototop()" @(item.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "disabled" : "")
+                                                        <button type="submit" onclick="gototop()"
+                                                                @(item.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "disabled" : "")
                                                                 class="@(item.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "bg-gray-100" : "bg-sky-700") border
                                                                 border-transparent rounded-md shadow-sm py-1 px-1 inline-flex text-xs font-medium
                                                                 text-white @(item.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "hover:bg-gray-200" : "hover:bg-sky-800")
@@ -238,7 +240,7 @@
     <script src="~/js/AlterDataTableDesign.js"></script>
     <script>
         $('#main-table').DataTable({
-            "order": [[0, "desc"]],
+            "order": [],
             language: { searchPlaceholder: "Search ..." }
         });
     </script>

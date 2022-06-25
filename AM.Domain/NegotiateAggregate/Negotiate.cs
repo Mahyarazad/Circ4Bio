@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using _0_Framework.Domain;
 using AM.Domain.ListingAggregate;
@@ -22,6 +23,7 @@ namespace AM.Domain.NegotiateAggregate
             IsRejected = false;
             QuatationConfirm = false;
             QuatationSent = false;
+            CreationTime = DateTime.Now;
             Messages = new List<Message>();
         }
 

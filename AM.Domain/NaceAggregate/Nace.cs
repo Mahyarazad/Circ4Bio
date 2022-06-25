@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using _0_Framework.Domain;
 using AM.Domain.ListingAggregate;
 
@@ -14,6 +15,7 @@ namespace AM.Domain.NaceAggregate
             Items = items;
             ListingId = null;
             IsDeleted = false;
+            CreationTime = DateTime.Now;
         }
 
         public void Edit(string? title)

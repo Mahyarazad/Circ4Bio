@@ -14,6 +14,7 @@ namespace AM.Infrastructure.Core
                     {
                         new PermissionDTO(UserPermission.GetUserList, "Get User List"),
                         new PermissionDTO(UserPermission.RegisterUser, "Register User"),
+                        new PermissionDTO(UserPermission.EditUser, "Edit User"),
                         new PermissionDTO(UserPermission.VerifyUserEmail, "Verify User Email"),
                         new PermissionDTO(UserPermission.DisableUserEmail, "Disable User Email"),
                         new PermissionDTO(UserPermission.ActivateUserStatus, "Activate User Status"),
@@ -58,6 +59,7 @@ namespace AM.Infrastructure.Core
                         new PermissionDTO(UserPermission.AddNaceData, "Add Nace Data"),
                         new PermissionDTO(UserPermission.EditNaceData, "Edit Nace Data"),
                         new PermissionDTO(UserPermission.DeleteNaceData, "Delete Nace Data"),
+                        new PermissionDTO(UserPermission.CreateNegotiation, "Create Negotiation"),
                     }
                 }
             };

@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -73,7 +74,8 @@ namespace ServiceHost
                     builder => builder.RequireRole(new List<string> { AuthorizationRoles.Admin }));
 
                 options.AddPolicy("ContentArea",
-                    builder => builder.RequireRole(new List<string> { AuthorizationRoles.Admin, AuthorizationRoles.ContentProducer }));
+                    builder => builder.RequireRole(new List<string> { AuthorizationRoles.Admin,
+                        AuthorizationRoles.ContentProducer }));
             });
 
             // services.AddRazorPages().WithRazorPagesRoot("/Index");
@@ -142,6 +144,7 @@ namespace ServiceHost
                     context.Request.Path = "/Shared/_PageNotFound";
                     await next();
                 }
+
             });
 
             app.UseRouting();

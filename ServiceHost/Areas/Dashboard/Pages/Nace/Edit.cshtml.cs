@@ -27,7 +27,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Nace
             _naceApplication = naceApplication;
         }
 
-        [NeedsPermission(UserPermission.GetNace)]
+        [NeedsPermission(UserPermission.EditNace)]
         public IActionResult OnGet(long Id)
         {
             Command = _naceApplication.EditSingleNace(Id).Result;

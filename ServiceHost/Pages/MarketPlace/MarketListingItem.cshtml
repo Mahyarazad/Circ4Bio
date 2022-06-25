@@ -1,100 +1,108 @@
 ﻿@using _0_Framework.Application
+@using AM.Infrastructure.Core
 @inject IAuthenticateHelper AuthenticateHelper
 @model AM.Application.Contracts.Listing.ListingViewModel
-    <div class="fixed z-10 inset-0 overflow-y-auto" role="dialog" aria-modal="true">
-        <div class="flex min-h-screen text-center md:block md:px-2 lg:px-4" style="font-size: 0">
+<div class="fixed z-10 inset-0 overflow-y-auto" role="dialog" aria-modal="true">
+    <div class="flex min-h-screen text-center md:block md:px-2 lg:px-4" style="font-size: 0">
 
-            <div class="hidden fixed inset-0 bg-opacity-75 transition-opacity md:block" aria-hidden="true"></div>
+        <div class="hidden fixed inset-0 bg-opacity-75 transition-opacity md:block" aria-hidden="true"></div>
 
-            <!-- This element is to trick the browser into centering the modal contents. -->
-            <span class="hidden md:inline-block md:align-middle md:h-screen" aria-hidden="true">&#8203;</span>
+        <!-- This element is to trick the browser into centering the modal contents. -->
+        <span class="hidden md:inline-block md:align-middle md:h-screen" aria-hidden="true">&#8203;</span>
 
-            <div class="flex text-base text-left transform transition w-full md:inline-block md:max-w-2xl
+        <div class="flex text-base text-left transform transition w-full md:inline-block md:max-w-2xl
              md:px-4 md:my-8 md:align-middle lg:max-w-4xl">
-                <div class="rounded w-full relative flex items-center bg-white px-4 pt-4 pb-4
+            <div class="rounded w-full relative flex items-center bg-white px-4 pt-4 pb-4
                  overflow-hidden shadow-2xl sm:px-6 sm:pt-8 md:p-6 lg:p-8">
-                    <button type="button" onclick="hideModal()"
-                            class="h-6 absolute top-20 right-4 text-gray-400 hover:text-gray-500 sm:top-24
+                <button type="button" onclick="hideModal()"
+                        class="h-6 absolute top-20 right-4 text-gray-400 hover:text-gray-500 sm:top-24
                         sm:right-6 md:top-6 md:right-6 lg:top-8 lg:right-8">
-                        <span class="sr-only">Close</span>
-                        <!-- Heroicon name: outline/x -->
-                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
+                    <span class="sr-only">Close</span>
+                    <!-- Heroicon name: outline/x -->
+                    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
 
-                    <div class="w-full mt-7 grid grid-cols-1 gap-y-8 gap-x-6 items-start sm:grid-cols-12 lg:gap-x-8">
-                        <div class="sm:col-span-4 lg:col-span-5 place-self-center">
-                            <div class="rounded-lg bg-gray-100 overflow-hidden mt-16 sm:mt-0">
-                                <img src="~/Site Files/Listing_Images/@(Model.Image == "listing-default.png" ? "listing-default.png" : $"{Model.Type}/{Model.Image}")"
-                                     alt=Model.Image class="object-center object-cover">
+                <div class="w-full mt-7 grid grid-cols-1 gap-y-8 gap-x-6 items-start sm:grid-cols-12 lg:gap-x-8">
+                    <div class="sm:col-span-4 lg:col-span-5 place-self-center">
+                        <div class="rounded-lg bg-gray-100 overflow-hidden mt-16 sm:mt-0">
+                            <img src="~/Site Files/Listing_Images/@(Model.Image == "listing-default.png" ? "listing-default.png" : $"{Model.Type}/{Model.Image}")"
+                                 alt=Model.Image class="object-center object-cover">
+                        </div>
+                    </div>
+                    <div class="sm:col-span-8 lg:col-span-7">
+                        <h2 class="text-2xl font-extrabold text-gray-900 sm:pr-12">@Model.Name</h2>
+
+                        <div class="mt-3">
+
+                            <p class="text-2xl text-gray-900">@Model.Currency @Model.UnitPrice</p>
+                            <p class="text-xl text-gray-900">Available Amount: @Model.Amount @Model.Unit</p>
+                            <p class="text-xl text-gray-900">Delivery Cost: by @Model.DeliveryMethod</p>
+                            <p class="text-xl text-gray-900">Owner of this Item: @Model.Email</p>
+
+
+                            <div class="mt-6">
+                                <h4 >Description:</h4>
+                                <p class="text-sm text-gray-700">@Model.Description</p>
                             </div>
                         </div>
-                        <div class="sm:col-span-8 lg:col-span-7">
-                            <h2 class="text-2xl font-extrabold text-gray-900 sm:pr-12">@Model.Name</h2>
 
-                            <section aria-labelledby="information-heading" class="mt-3">
-                                <h3 id="information-heading" class="sr-only">@Model.Description</h3>
+                        <div  class="mt-6 flex float-right">
+                            @if (AuthenticateHelper.IsAuthenticated())
+                            {
+                                <form method="post" asp-area="Dashboard" asp-page="/AvailableListing/Index" id="form"
+                                      data-callback="" data-ajax="true" data-action="Refresh">
 
-                                <p class="text-2xl text-gray-900">@Model.Currency @Model.UnitPrice</p>
-                                <p class="text-xl text-gray-900">Available Amount: @Model.Amount @Model.Unit</p>
-                                <p class="text-xl text-gray-900">Delivery Cost: by @Model.DeliveryMethod</p>
-                                <p class="text-xl text-gray-900">Owner of this Item: @Model.Email</p>
-
-
-                                <div class="mt-6">
-                                    <h4 class="sr-only">Description</h4>
-                                    <p class="text-sm text-gray-700">@Model.Description</p>
-                                </div>
-                            </section>
-
-                            <section aria-labelledby="options-heading" class="mt-6">
-                                @if (AuthenticateHelper.IsAuthenticated())
-                                {
-                                    <form method="post" asp-area="Dashboard" asp-page="/AvailableListing/Index" id="form"
-                                          data-callback="" data-ajax="true" data-action="Refresh">
-
-                                        <div class="mt-6 flex flex-col">
-                                            <div class="self-end flex mr-0 lg:mr-6">
-                                                <a asp-page="/MarketPlace/ItemDetail" asp-area="" asp-route-id="@Model.Id"
-                                                   class="bg-white border border-gray-300 rounded-md
-                                           shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-gray-700 hover:bg-gray-50
-                                           focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700 text-center mr-2">More Details</a>
-                                                <input type="hidden" value="@Model.Id" name="Id" />
+                                        <div class="self-end flex mr-0">
+                                            <a asp-page="/MarketPlace/ItemDetail" asp-area="" asp-route-id="@Model.Id"
+                                               class="bg-white border border-gray-300 rounded-md
+                                           shadow-sm py-3 px-4 self-center text-sm font-medium
+                                        text-gray-700 hover:bg-gray-50
+                                           focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700 text-center">
+                                                Details
+                                            </a>
+                                            <input type="hidden" value="@Model.Id" name="Id"/>
+                                            <div permission="@UserPermission.CreateNegotiation">
                                                 <button type="submit" onclick="gototop()"
                                                         @(Model.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "disabled" : "")
                                                         class="@(Model.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "bg-gray-100" : "bg-sky-700")
-                                                ml-2 border border-transparent rounded-md py-2 px-4 flex items-center justify-center text-sm font-medium
-                                                text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50
-                                                focus:ring-sky-800">
-                                                    @(Model.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "Owend Item" : "Start Negotiation")
+                                               w-full border border-transparent rounded-md py-3 px-8 self-center
+                                           text-sm font-medium text-white @(Model.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "hover:cursor-not-allowed" : "")
+                                                            @(Model.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "bg-gray-100" : "hover:bg-sky-800") focus:outline-none
+                                            focus:ring-2 focus:ring-offset-2 text-center ml-2
+                                           focus:ring-offset-gray-50 focus:ring-sky-800">
+                                                    @(Model.UserId == AuthenticateHelper.CurrentAccountRole().Id ? "Item Owned" : "Start Negotiation")
                                                 </button>
-
                                             </div>
                                         </div>
-                                    </form>
-                                }
-                                else
-                                {
-                                    <div class="mt-6 flex">
-                                        <a asp-page="/MarketPlace/ItemDetail" asp-area="" asp-route-id="@Model.Id"
-                                           class="bg-white border border-gray-300 rounded-md
-                                           shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-gray-700 hover:bg-gray-50
-                                           focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700 text-center mr-2">More Details</a>
-                                        <a onclick="gototop()"
-                                           asp-page="/AvailableListing/Detail" asp-area="Dashboard" asp-route-id="@Model.Id"
-                                           class="w-full border border-transparent rounded-md py-3 px-8 flex items-center justify-center
-                                           text-base font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2 focus:ring-offset-2
+                                </form>
+                            }
+                            else
+                            {
+                                <div class="self-end flex mr-0">
+                                    <a asp-page="/MarketPlace/ItemDetail" asp-area="" asp-route-id="@Model.Id"
+                                       class="bg-white border border-gray-300 rounded-md
+                                           shadow-sm py-3 px-4 self-center text-sm font-medium
+                                        text-gray-700 hover:bg-gray-50
+                                           focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700 text-center">
+                                        Details
+                                    </a>
+                                    <a onclick="gototop()"
+                                       asp-page="/AvailableListing/Detail" asp-area="Dashboard" asp-route-id="@Model.Id"
+                                       class="w-full border border-transparent rounded-md py-3 px-8 self-center
+                                           text-sm font-medium text-white hover:bg-sky-800 focus:outline-none
+                                            focus:ring-2 focus:ring-offset-2 text-center ml-2
                                            focus:ring-offset-gray-50 focus:ring-sky-800 bg-sky-700">
-                                            Start Negotiation
-                                        </a>
-                                    </div>
-                                }
+                                        Start Negotiation
+                                    </a>
+                                </div>
+                            }
 
-                            </section>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
