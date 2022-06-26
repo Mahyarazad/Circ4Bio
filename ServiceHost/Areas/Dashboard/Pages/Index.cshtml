@@ -85,6 +85,7 @@
         const UserData = @Html.Raw(Json.Serialize(Model.UserStat));
         const ListingStat = @Html.Raw(Json.Serialize(Model.ListingStat));
 
+
         const ListingStatData = [];
         const UserOverviewData = [];
         const UserOverviewDataLabel = [];
@@ -317,6 +318,7 @@
                     },
                 },
             });
+
         const listingStatChart = new Chart(listingStat,
             {
                 type: 'bar',

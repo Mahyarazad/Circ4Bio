@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.Xml;
 using _0_Framework.Application;
 using AM.Application.Contracts.Deal;
 using AM.Application.Contracts.Listing;
@@ -54,19 +55,23 @@ namespace ServiceHost.Areas.Dashboard.Pages
 
             if (UserId == 1)
             {
-                ListingStat = _listingApplication.GetAllPublicListing().Result;
-                TotalUsers = _userApplication.GetFullList().Result.Count;
-                StatusFalseTotalUsers = _userApplication.GetFullList().Result.Where(x => !x.Status).Count();
+                ListingStat = _listingApplication.GetAllListing().Result;
+                TotalUsers = _userApplication.GetFullList()
+                    .Result.Where(x => x.RoleId < 6 & x.RoleId != 1).ToList()
+                    .Count;
+
+                StatusFalseTotalUsers = _userApplication.GetFullList().Result.Count(x => !x.Status);
                 NegotationStat = _negotiateApplication.GetAllListingNegotiation();
                 QuatationSentButNotFinishedNegotation =
-                    NegotationStat.Where(x => x.QuatationSent && !x.IsFinished).Count();
-                FinishedNegotation = NegotationStat.Where(x => x.IsFinished).Count();
-                CanceledNegotation = NegotationStat.Where(x => x.IsCanceled).Count();
-                ActiveNegotations = NegotationStat.Where(x => !x.QuatationSent && !x.IsFinished && !x.IsCanceled).Count();
+                    NegotationStat.Count(x => x.QuatationSent && !x.IsFinished);
+
+                FinishedNegotation = NegotationStat.Count(x => x.IsFinished);
+                CanceledNegotation = NegotationStat.Count(x => x.IsCanceled);
+                ActiveNegotations = NegotationStat.Count(x => !x.QuatationSent && !x.IsFinished && !x.IsCanceled);
                 AllNegotations = NegotationStat.Count;
 
-                PaymentsDone = _dealApplication.GetAllDeals().Result.Where(x => x.PaymentId != null).Count();
-                PaymentsPending = _dealApplication.GetAllDeals().Result.Where(x => x.PaymentId == null).Count();
+                PaymentsDone = _dealApplication.GetAllDeals().Result.Count(x => x.PaymentId != null);
+                PaymentsPending = _dealApplication.GetAllDeals().Result.Count(x => x.PaymentId == null);
 
 
                 foreach (var type in _userApplication.GetUsertypes().Result)
@@ -102,14 +107,15 @@ namespace ServiceHost.Areas.Dashboard.Pages
             else
             {
                 ActiveListingCount = _listingApplication.GetActiveListing(UserId).Result.Count;
+
                 ActiveNegotiationsSalesItems =
                     _negotiateApplication
-                        .AllListingItemsBuyyer(UserId)
-                        .Where(x => !x.IsFinished & !x.IsCanceled).Count();
+                        .AllListingItemsBuyyer(UserId).Count(x => !x.IsFinished & !x.IsCanceled);
+
                 ActiveNegotiationsBuyingItems =
                     _negotiateApplication
-                        .AllListingItemsSeller(UserId)
-                         .Where(x => !x.IsFinished & !x.IsCanceled).Count();
+                        .AllListingItemsSeller(UserId).Count(x => !x.IsFinished & !x.IsCanceled);
+
                 SuppliedItems = _dealApplication.GetSuppliedList(UserId).Result.Count;
                 PurchasedItems = _dealApplication.GetPurchasedList(UserId).Result.Count;
             }

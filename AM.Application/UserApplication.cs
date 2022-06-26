@@ -490,7 +490,8 @@ namespace AM.Application
 
         public Task<List<Usertype>> GetUsertypes()
         {
-            var userTypes = _roleRepository.GetAll();
+            var userTypes = _roleRepository.GetAll()
+                .Where(x => x.Id < 6 & x.Id != 1).ToList();
             var userTypeList = new List<Usertype>();
             foreach (var item in userTypes)
             {
