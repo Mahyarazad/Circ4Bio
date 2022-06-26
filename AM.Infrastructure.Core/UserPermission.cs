@@ -27,8 +27,8 @@
         public const int DeleteListing = 63;
         public const int GetListing = 64;
         public const int CreateNegotiation = 65;
-        public const int AddNaceData = 65;
-        public const int EditNaceData = 66;
-        public const int DeleteNaceData = 67;
+        public const int AddNaceData = 66;
+        public const int EditNaceData = 67;
+        public const int DeleteNaceData = 68;
     }
 }

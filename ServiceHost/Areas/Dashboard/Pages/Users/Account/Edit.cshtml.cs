@@ -25,7 +25,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Users.Account
         {
             user = await _userApplication.GetDetail(Id);
             CountrlyList = new SelectList(GenerateCountryList.GetList());
-            RoleList = new SelectList(await _userApplication.GetUsertypes(), "TypeId", "TypeName");
+            RoleList = new SelectList(await _userApplication.GetAllUsertypes(), "TypeId", "TypeName");
         }
 
         [NeedsPermission(UserPermission.EditUser)]

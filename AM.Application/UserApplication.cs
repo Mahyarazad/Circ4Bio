@@ -488,6 +488,17 @@ namespace AM.Application
             _authenticateHelper.Logout();
         }
 
+        public Task<List<Usertype>> GetAllUsertypes()
+        {
+            var userTypes = _roleRepository.GetAll();
+            var userTypeList = new List<Usertype>();
+            foreach (var item in userTypes)
+            {
+                userTypeList.Add(new Usertype(item.Id, item.Name));
+            }
+            return Task.FromResult(userTypeList);
+        }
+
         public Task<List<Usertype>> GetUsertypes()
         {
             var userTypes = _roleRepository.GetAll()
