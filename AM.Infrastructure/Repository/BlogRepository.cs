@@ -34,7 +34,7 @@ namespace AM.Infrastructure.Repository
                     CreationTime = x.CreationTime,
                     Slug = x.Slug
 
-                }).ToList();
+                }).OrderByDescending(x => x.CreationTime).ToList();
         }
 
         public BlogViewModel GetSingleBlog(long Id)

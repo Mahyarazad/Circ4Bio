@@ -166,14 +166,12 @@ function createPagination(totalPages, page) {
     return liTag; //reurn the li tag
 }
 
-
 var cacheType = new Array();
 var cacheNaceType = new Set();
 
 
-var typeFilter = function (f1, f2, f3) {
-    return items.filter(function (data) {
-        element.innerHTML = '';
+var typeFilter = function (f1, f2, f3, array) {
+    return array.filter(function (data) {
         switch (f1 + "-" + f2 + "-" + f3) {
             case "true-false-false":
                 return data.Type === "Technology Provider";
@@ -188,39 +186,48 @@ var typeFilter = function (f1, f2, f3) {
             case "true-true-false":
                 return data.Type !== "Supplier of Raw Material";
             default:
-                return items;
+                return array;
         }
     });
 }
 
 function handelFilter(id, val) {
-
     var _filter1 = $("#filter-technology").prop('checked');
     var _filter2 = $("#filter-plant").prop('checked');
     var _filter3 = $("#filter-supplier").prop('checked');
 
-    if (typeof (id) === 'undefined') {
-        filtered = typeFilter(_filter1, _filter2, _filter3);
-        cacheType = filtered;
+    if (typeof (id) === 'undefined' & typeof (val) === 'undefined') {
+        if (cacheNaceType.size > 0) {
+            var temp = new Array();
+            cacheNaceType.forEach(val => {
+                temp.push(...items.filter(data => { return data.NaceId === val }));
+            });
+            filtered = [...temp];
+            filtered = typeFilter(_filter1, _filter2, _filter3, filtered);
+        } else {
+            filtered = typeFilter(_filter1, _filter2, _filter3, items);
+        }
+
     }
 
     if (typeof (id) !== 'undefined' & val) {
         cacheNaceType.add(id);
-        var temp = new Array();
         if (cacheNaceType.size > 1) {
+            var temp = new Array();
             cacheNaceType.forEach(val => {
-                temp.push(cacheType.find(e => e.NaceId === val));
+                temp.push(...items.filter(data => { return data.NaceId === val }));
             });
-            filtered = temp;
+            filtered = [...temp];
         } else {
             filtered = filtered.filter(function (data) {
                 return data.NaceId === id;
             });
             if (cacheType.length === 0) {
-                cacheType.push(filtered);
-            }
+                cacheType = filtered;
+            };
         }
     }
+
 
     if (typeof (id) !== 'undefined' & !val) {
         if (cacheNaceType.has(id)) {
@@ -230,13 +237,27 @@ function handelFilter(id, val) {
 
         var temp = new Array();
         if (cacheNaceType.size > 0) {
+            var temp = new Array();
             cacheNaceType.forEach(val => {
-                temp.push(cacheType.find(e => e.NaceId === val));
+                temp.push(...items.filter(data => { return data.NaceId === val }));
             });
-            filtered = temp;
+            filtered = [...temp];
         } else {
-            filtered = typeFilter(_filter1, _filter2, _filter3);
+            filtered = typeFilter(_filter1, _filter2, _filter3, items);
         }
+    }
+
+    if (!_filter1 & !_filter2 & !_filter3 & typeof (id) === 'undefined' & typeof (val) === 'undefined') {
+        if (cacheNaceType.size > 0) {
+            var temp = new Array();
+            cacheNaceType.forEach(val => {
+                temp.push(...items.filter(data => { return data.NaceId === val }));
+            });
+            filtered = [...temp];
+        } else {
+            filtered = items;
+        }
+
     }
 
     element.innerHTML = '';

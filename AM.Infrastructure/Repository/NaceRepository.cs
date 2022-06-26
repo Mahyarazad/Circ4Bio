@@ -22,6 +22,7 @@ namespace AM.Infrastructure.Repository
             return
                 _amContext.Naces.AsSingleQuery().Select(x => new NaceViewModel
                 {
+                    CreationTime = x.CreationTime,
                     Title = x.Title,
                     NaceId = x.Id,
                     IsDeleted = x.IsDeleted,
@@ -29,7 +30,9 @@ namespace AM.Infrastructure.Repository
                             y.ListItems.Select(z =>
                                 new ListItemsViewModel(z.ListItemDetailId, z.IsDeleted, z.ListItemDetail)).ToList()))
                         .ToList()
-                }).ToList();
+                })
+                .OrderByDescending(x => x.CreationTime)
+                .ToList();
         }
 
         public List<NaceViewModel> GetAllNaceTitles()

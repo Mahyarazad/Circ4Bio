@@ -28,7 +28,7 @@ namespace AM.Infrastructure.Core
                     "Blog Management", new List<PermissionDTO>
                     {
                         new PermissionDTO(UserPermission.CreateBlogPost, "Create Blog Post"),
-                        new PermissionDTO(UserPermission.CreateBlogPost, "Create Blog Post"),
+                        new PermissionDTO(UserPermission.EditBlogPost, "Edit Blog Post"),
                         new PermissionDTO(UserPermission.GetBlogPost, "Get Blog Post"),
                     }
                 },

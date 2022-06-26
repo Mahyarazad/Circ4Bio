@@ -3,8 +3,10 @@
 @using Microsoft.AspNetCore.Http
 @inject IAuthenticateHelper AuthenticateHelper;
 @inject IHttpContextAccessor Context;
-<aside id="side-menu" class="py-6 lg:col-span-3 invisible fixed -translate-x-[10rem] shadow-xl lg:shadow-none
-       lg:block lg:visible lg:relative bg-white lg:-translate-x-[0rem] left-0 transform-gpu duration-300 rounded-md">
+<aside id="side-menu" class="py-6 lg:col-span-3 invisible fixed -translate-x-[10rem] shadow-xl
+       lg:shadow-none overflow-y-scroll overscroll-contain h-[calc(100vh-10rem)]
+       lg:block lg:visible lg:relative bg-white lg:-translate-x-[0rem] left-0 transform-gpu
+       duration-300 rounded-md">
     <nav class="space-y-1">
         <!-- Current: "bg-teal-50 border-teal-400 text-teal-700 hover:bg-teal-50 hover:text-teal-700", Default: "border-transparent text-gray-900 hover:bg-gray-50 hover:text-teal-500" -->
         <a asp-page="/Profile"

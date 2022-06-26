@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace AM.Application.Contracts.Nace
 {
     public class NaceViewModel
     {
+        public DateTime CreationTime { get; set; }
         public long NaceId { get; set; }
         public string? Title { get; set; }
         public List<DetailViewModel>? Items { get; set; }
