@@ -1,6 +1,5 @@
-using System;
-using System.Threading.Tasks;
 using _0_Framework;
+using _0_Framework.Application;
 using AM.Application.Contracts.User;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -21,20 +20,19 @@ namespace ServiceHost.Pages.Authentication
         private readonly IUserApplication _userApplication;
         public void OnGet()
         {
-            TempData.Clear();
+            TempData.Remove("RegisterSuccess");
         }
 
         public IActionResult OnPostRegister(RegisterUser command)
         {
-
-            TempData.Clear();
             var result = _userApplication.Register(command);
+
             if (result.IsSucceeded)
             {
-                RegisterSuccess = ApplicationMessage.SuccessfulRegister;
+                TempData["RegisterSuccess"] = ApplicationMessage.SuccessfulRegister;
                 return RedirectToPage("/Authentication/Registration");
             }
-            RegisterMessage = result.Message;
+            TempData["RegisterMessage"] = result.Message;
             return RedirectToPage("/Authentication/Registration");
         }
     }

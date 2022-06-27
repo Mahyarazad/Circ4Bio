@@ -1,53 +1,39 @@
-using System;
-using System.Collections.Generic;
+using System.Threading.Tasks;
 using _0_Framework;
 using AM.Application.Contracts.ResetPassword;
 using AM.Application.Contracts.User;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Nancy.Json;
 
 namespace ServiceHost.Pages.Authentication
 {
     public class ResendActivationEmailIndex : PageModel
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IUserApplication _userApplication;
-        private readonly IResetPasswordApplication _resetPasswordApplication;
         public ResetPasswordModel Command;
-        public ResendActivationEmailIndex(IHttpContextAccessor httpContextAccessor,
-            IUserApplication userApplication,
-            IResetPasswordApplication resetPasswordApplication
-            )
+        public ResendActivationEmailIndex(IUserApplication userApplication)
         {
-            _httpContextAccessor = httpContextAccessor;
             _userApplication = userApplication;
-            _resetPasswordApplication = resetPasswordApplication;
-
         }
-
         [TempData] public string Message { get; set; }
         [TempData] public string SuccessMessage { get; set; }
 
         public void OnGet()
         {
-            TempData.Clear();
         }
 
-        public async void OnPost(ResendActivationEmail command)
+        public async Task<IActionResult> OnPost(ResendActivationEmail command)
         {
-            TempData.Clear();
-
             var result = await _userApplication.SendActivationEmail(command.Email);
             if (result.IsSucceeded)
             {
-
-                SuccessMessage = ApplicationMessage.SuccessfulRegister;
+                TempData["SuccessMessage"] = ApplicationMessage.SuccessfulRegister;
+                return RedirectToPage("/Authentication/ResendActivationEmail", new { area = "" });
             }
             else
             {
-                Message = result.Message;
+                TempData["Message"] = result.Message;
+                return RedirectToPage("/Authentication/ResendActivationEmail", new { area = "" });
             }
         }
     }

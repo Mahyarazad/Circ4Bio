@@ -167,25 +167,24 @@ namespace AM.Infrastructure.Repository
             }).AsNoTracking().FirstOrDefaultAsync(x => x.Email == email);
 
         }
+
         public Task<EditUser> GetDetailByActivationUrl(string guid)
         {
-            var query = _amContext.Users.Where(x => x.ActivationGuid == Guid.Parse(guid))
+            bool isValid = Guid.TryParse(guid, out Guid result);
+            if (result == null || result == Guid.Empty)
+            {
+                return Task.FromResult(new EditUser());
+            }
+
+            return Task.FromResult(_amContext.Users.Where(x => x.ActivationGuid == Guid.Parse(guid))
                 .Select(x => new EditUser
                 {
                     Id = x.Id,
                     ActivationGuid = x.ActivationGuid.ToString()
 
-                }).AsNoTracking();
-
-            if (query.First() != null)
-            {
-                return Task.FromResult(query.First());
-            }
-            else
-            {
-                return Task.FromResult(new EditUser());
-            }
+                }).AsNoTracking().First());
         }
+
         public async Task<OperationResult> AddDeliveryLocation(CreateDeliveryLocation Commad)
         {
             var result = new OperationResult();

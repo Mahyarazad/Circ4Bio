@@ -5,6 +5,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Newtonsoft.Json;
 
 namespace _0_Framework.Application
@@ -16,6 +17,8 @@ namespace _0_Framework.Application
             _httpContextAccessor = httpContextAccessor;
         }
         private readonly IHttpContextAccessor _httpContextAccessor;
+
+
         public void Login(AuthViewModel model)
         {
             var permissions = JsonConvert.SerializeObject(model.Permissions);

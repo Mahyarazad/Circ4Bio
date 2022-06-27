@@ -1,13 +1,9 @@
 using System;
-using System.Collections.Generic;
 using _0_Framework;
 using AM.Application.Contracts.ResetPassword;
 using AM.Application.Contracts.User;
-using FluentEmail.Core;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Nancy.Json;
 
 namespace ServiceHost.Pages.Authentication
 {
@@ -28,7 +24,7 @@ namespace ServiceHost.Pages.Authentication
         public long UserId { get; set; }
         public void OnGet(string guid)
         {
-            TempData.Clear();
+            TempData.Remove("SuccessMessage");
             Command = _resetPasswordApplication.GetResetPasswordGuid(guid).Result;
             if (Command.Guid == new Guid())
             {
@@ -42,21 +38,18 @@ namespace ServiceHost.Pages.Authentication
 
         public IActionResult OnPostUpdate(ResetPasswordModel command)
         {
-            TempData.Clear();
-            var guid = HttpContext.Request.Path.Value.ToString().Split("/");
+            var guid = HttpContext.Request.Path.Value?.Split("/");
             command.UserId = _resetPasswordApplication.GetResetPasswordGuid(guid[3]).Result.UserId;
             var result = _userApplication.ResetPassword(command).Result;
 
+
             if (result.IsSucceeded)
             {
-                SuccessMessage = result.Message;
+                TempData["SuccessMessage"] = result.Message;
                 return RedirectToPage("/Authentication/Login");
             }
-            else
-            {
-                return RedirectToPage($"/Authentication/ResetPassword/{guid}");
-            }
-
+            TempData["Message"] = result.Message;
+            return RedirectToPage($"/Authentication/ResetPassword/{guid}");
         }
 
     }

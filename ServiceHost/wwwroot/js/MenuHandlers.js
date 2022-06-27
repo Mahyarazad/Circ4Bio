@@ -2,6 +2,7 @@
 
 function loading() {
     $("#overlay").removeClass('hidden');
+    $("#overlay").show();
 }
 
 function loaded() {
@@ -97,17 +98,19 @@ $("#notification-handler").on('click',
     });
 
 
-
 $(document).ready(() => {
+    $("#overlay").addClass('hidden');
+    $("#overlay").hide();
     $('#form').submit(function (e) {
         if ($(this).valid()) {
-            $("#overlay").removeClass('invisible');
             $("#overlay").removeClass('hidden');
             $("#overlay").show();
         } else {
+            $("#overlay").addClass('hidden');
+            $("#overlay").hide();
         }
     });
-})
+});
 
 
 $("button[id='save']").on('click',
@@ -115,7 +118,7 @@ $("button[id='save']").on('click',
         window.scrollTo({
             top: 0,
             behavior: 'smooth',
-        })
+        });
     });
 
 $("div[id='main-table_wrapper").scroll(function () {
@@ -214,18 +217,19 @@ $(document).on('keydown', function (e) {
     }
 });
 
-$("#grid-size-handler-unlogged").on('click', () => {
-    var stat = $("#grid-size-container-unlogged").css('visibility');
-    if (stat === 'hidden') {
-        $("#grid-size-container-unlogged").removeClass('invisible');
-        $("#grid-size-container-unlogged").removeClass('scale-95');
-        $('#grid-size-container-unlogged').css('opacity', '1');
-    } else {
-        $("#grid-size-container-unlogged").addClass('invisible');
-        $("#grid-size-container-unlogged").addClass('scale-95');
-        $('#grid-size-container-unlogged').css('opacity', '0');
-    }
-})
+$("#grid-size-handler-unlogged").on('click',
+    () => {
+        var stat = $("#grid-size-container-unlogged").css('visibility');
+        if (stat === 'hidden') {
+            $("#grid-size-container-unlogged").removeClass('invisible');
+            $("#grid-size-container-unlogged").removeClass('scale-95');
+            $('#grid-size-container-unlogged').css('opacity', '1');
+        } else {
+            $("#grid-size-container-unlogged").addClass('invisible');
+            $("#grid-size-container-unlogged").addClass('scale-95');
+            $('#grid-size-container-unlogged').css('opacity', '0');
+        }
+    });
 
 
 $("#IsFiltered").on("click", function () {

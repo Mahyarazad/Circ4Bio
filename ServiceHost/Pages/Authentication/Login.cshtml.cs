@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 using _0_Framework;
 using AM.Application.Contracts.User;
 using Microsoft.AspNetCore.Http;
@@ -31,7 +29,7 @@ namespace ServiceHost.Pages.Authentication
 
         public void OnGet()
         {
-            TempData.Clear();
+            TempData.Remove("SuccessMessage");
             if (!string.IsNullOrWhiteSpace(_httpContextAccessor.HttpContext.Request.Cookies["user-token"]))
             {
                 UserToken = new JavaScriptSerializer()
@@ -42,15 +40,13 @@ namespace ServiceHost.Pages.Authentication
 
         public IActionResult OnGetLogout()
         {
-            TempData.Clear();
-
+            TempData.Remove("SuccessMessage");
             _userApplication.Logout();
             return RedirectToPage("./Index");
         }
 
         public async Task<IActionResult> OnPostLogin(EditUser command)
         {
-            TempData.Clear();
 
             var result = await _userApplication.Login(command);
 
@@ -62,17 +58,17 @@ namespace ServiceHost.Pages.Authentication
             {
                 if (queryDictionary.Count > 0)
                     return Redirect(queryDictionary.First().Value);
-                SuccessMessage = ApplicationMessage.SuccessLogin;
+                TempData["SuccessMessage"] = ApplicationMessage.SuccessLogin;
                 return RedirectToPage("/Index", new { area = "Dashboard" });
             }
 
             if (result.Message == ApplicationMessage.UserNotActive)
             {
-                ActivationFailureMessage = result.Message;
+                TempData["ActivationFailureMessage"] = result.Message;
             }
             else
             {
-                FailureMessage = result.Message;
+                TempData["FailureMessage"] = result.Message;
             }
             return RedirectToPage("/Authentication/Login");
         }

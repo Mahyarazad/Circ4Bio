@@ -32,7 +32,8 @@ function showModal() {
     $('#modal').addClass('top-0');
     setTimeout(() => {
         $('#modal').css('background', 'rgba(0, 0, 0, 0.5)');
-    }, 180)
+    },
+        180);
 
 
     window.location.hash = "##";
@@ -49,7 +50,8 @@ function hideModal() {
         $('#modal').css('opacity', '0');
         $('#modal').css('z-index', '-1');
         $("#ModalContent").empty();
-    }, 220)
+    },
+        220);
 
     window.location.hash = "##";
 }
