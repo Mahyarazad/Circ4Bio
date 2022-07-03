@@ -46,7 +46,7 @@
                     <table class="min-w-full border-collapse block md:table" id="main-table">
                         <thead class="block md:table-header-group">
                         <tr class="border border-grey-500 md:border-none block md:table-row absolute -top-full md:top-auto -left-full md:left-auto  md:relative ">
-                            <th class="bg-gray-50 p-2 text-gray-600 font-bold md:border md:border-grey-500 text-left block md:table-cell">Quatation Info</th>
+                            <th class="bg-gray-50 p-2 text-gray-600 font-bold md:border md:border-grey-500 text-left block md:table-cell">Quotation Info</th>
                             <th class="bg-gray-50 p-2 text-gray-600 font-bold md:border md:border-grey-500 text-left block md:table-cell">Trader Info</th>
                             <th class="bg-gray-50 p-2 text-gray-600 font-bold md:border md:border-grey-500 text-left block md:table-cell">Payment Info</th>
                         </tr>
@@ -162,7 +162,11 @@
     <script>
         $('#main-table').DataTable({
             "order": [],
-            language: { searchPlaceholder: "Search ..." }
+            language: {
+                searchPlaceholder: "Search ...",
+                emptyTable: "There are no records"
+            }
+
         });
     </script>
 }

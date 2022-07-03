@@ -30,7 +30,8 @@ namespace ServiceHost.Pages.Authentication
         public void OnGet()
         {
             TempData.Remove("SuccessMessage");
-            if (!string.IsNullOrWhiteSpace(_httpContextAccessor.HttpContext.Request.Cookies["user-token"]))
+            if (_httpContextAccessor.HttpContext != null &&
+                !string.IsNullOrWhiteSpace(_httpContextAccessor.HttpContext.Request.Cookies["user-token"]))
             {
                 UserToken = new JavaScriptSerializer()
                     .Deserialize<RememberMe>(
@@ -50,16 +51,19 @@ namespace ServiceHost.Pages.Authentication
 
             var result = await _userApplication.Login(command);
 
-            var uri = new Uri(_httpContextAccessor.HttpContext.Request.Headers
-                .FirstOrDefault(x => x.Key == "Referer").Value);
-            var queryDictionary = Microsoft.AspNetCore.WebUtilities.QueryHelpers.ParseQuery(uri.Query);
-
-            if (result.IsSucceeded)
+            if (_httpContextAccessor.HttpContext != null)
             {
-                if (queryDictionary.Count > 0)
-                    return Redirect(queryDictionary.First().Value);
-                TempData["SuccessMessage"] = ApplicationMessage.SuccessLogin;
-                return RedirectToPage("/Index", new { area = "Dashboard" });
+                var uri = new Uri(_httpContextAccessor.HttpContext.Request.Headers
+                    .FirstOrDefault(x => x.Key == "Referer").Value);
+                var queryDictionary = Microsoft.AspNetCore.WebUtilities.QueryHelpers.ParseQuery(uri.Query);
+
+                if (result.IsSucceeded)
+                {
+                    if (queryDictionary.Count > 0)
+                        return Redirect(queryDictionary.First().Value);
+                    //TempData["SuccessMessage"] = ApplicationMessage.SuccessLogin;
+                    return RedirectToPage("/Index", new { area = "Dashboard" });
+                }
             }
 
             if (result.Message == ApplicationMessage.UserNotActive)

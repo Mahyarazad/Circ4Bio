@@ -21,8 +21,8 @@ namespace AM.Domain.NegotiateAggregate
             IsCanceled = false;
             IsActive = false;
             IsRejected = false;
-            QuatationConfirm = false;
-            QuatationSent = false;
+            QuotationConfirm = false;
+            QuotationSent = false;
             CreationTime = DateTime.Now;
             Messages = new List<Message>();
         }
@@ -43,8 +43,8 @@ namespace AM.Domain.NegotiateAggregate
         public bool IsActive { get; private set; }
         public bool IsCanceled { get; private set; }
         public bool IsRejected { get; private set; }
-        public bool QuatationConfirm { get; private set; }
-        public bool QuatationSent { get; private set; }
+        public bool QuotationConfirm { get; private set; }
+        public bool QuotationSent { get; private set; }
         public List<Message> Messages { get; private set; }
 
         public void AddMessage(string? messageBody, long userId, bool userEntity, string? filePathString)
@@ -68,13 +68,13 @@ namespace AM.Domain.NegotiateAggregate
         {
             IsRejected = true;
         }
-        public void QuatationHasSent()
+        public void QuotationHasSent()
         {
-            QuatationSent = true;
+            QuotationSent = true;
         }
-        public void QuatationConfirmed()
+        public void QuotationConfirmed()
         {
-            QuatationConfirm = true;
+            QuotationConfirm = true;
         }
     }
 }

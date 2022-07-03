@@ -109,9 +109,12 @@
     <script src="~/js/AlterDataTableDesign.js"></script>
     <script>
         $('#main-table').DataTable({
-            "order": [[0, "desc"]],
-            language: { searchPlaceholder: "Search ..." }
+            "order": [],
+            language: {
+                searchPlaceholder: "Search ...",
+                emptyTable: "There are no records"
+            }
+
         });
     </script>
-    <script src="~/js/NotificationBinder.js"></script>
 }

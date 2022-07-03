@@ -32,10 +32,7 @@ namespace ServiceHost.Areas.Dashboard.Pages
             {
                 return null;
             }
-            else
-            {
-                return RedirectToPage("/AccessDenied");
-            }
+            return RedirectToPage("/AccessDenied");
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace AM.Infrastructure.Migrations
 {
-    public partial class quatationsentnegotiation : Migration
+    public partial class Quotationsentnegotiation : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -15,7 +15,7 @@ namespace AM.Infrastructure.Migrations
                 defaultValue: false);
 
             migrationBuilder.AddColumn<bool>(
-                name: "QuatationSent",
+                name: "QuotationSent",
                 schema: "dbo",
                 table: "Negotiate",
                 type: "bit",
@@ -31,7 +31,7 @@ namespace AM.Infrastructure.Migrations
                 table: "Negotiate");
 
             migrationBuilder.DropColumn(
-                name: "QuatationSent",
+                name: "QuotationSent",
                 schema: "dbo",
                 table: "Negotiate");
         }

@@ -1,4 +1,7 @@
 ﻿using System.Threading.Tasks;
+using _0_Framework;
+using _0_Framework.Application;
+using _0_Framework.Application.Email;
 using _0_Framework.Application.PayPal;
 using AM.Application.Contracts.Deal;
 using Microsoft.AspNetCore.Mvc;
@@ -12,14 +15,18 @@ namespace ServiceHost.Areas.Dashboard.Pages
     {
         private readonly IPayPalService _payPalService;
         private readonly IDealApplication _dealApplication;
+        private readonly IAuthenticateHelper _authenticateHelper;
+        private readonly IEmailService<EmailModel> _emailService;
         public PayPalPaymentExecutedResponse Command;
         public JToken RelatedResource;
 
 
-        public Success(IPayPalService payPalService, IDealApplication dealApplication)
+        public Success(IPayPalService payPalService, IDealApplication dealApplication, IAuthenticateHelper authenticateHelper, IEmailService<EmailModel> emailService)
         {
             _payPalService = payPalService;
             _dealApplication = dealApplication;
+            _authenticateHelper = authenticateHelper;
+            _emailService = emailService;
         }
 
         public async Task OnGet([FromQuery(Name = "paymentId")] string paymentId,
@@ -41,7 +48,16 @@ namespace ServiceHost.Areas.Dashboard.Pages
                 dealViewModeltobeUpdated.TransactionFee = (double)RelatedResource["transaction_fee"]["value"];
                 var result = _dealApplication.FinishDeal(dealViewModeltobeUpdated);
 
-
+                _emailService.SendEmail(new EmailModel
+                {
+                    EmailTemplate = EmailType.QuotationCreated,
+                    Title = ApplicationMessage.PaymentDone,
+                    Recipient = _authenticateHelper.CurrentAccountRole().Email,
+                    Body = ApplicationMessage.PaymentDone,
+                    Body1 = $"Your payment ID: {dealViewModeltobeUpdated.PaymentId} @ {dealViewModeltobeUpdated.PaymentTime}",
+                    Body2 = $"The transaction fee is {dealViewModeltobeUpdated.TransactionFee}",
+                    Body3 = $"The total payment amount is {dealViewModeltobeUpdated.PaidAmount}",
+                });
             }
             else
             {

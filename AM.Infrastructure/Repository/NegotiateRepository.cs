@@ -72,8 +72,8 @@ namespace AM.Infrastructure.Repository
                     SellerId = Command.SellerId,
                     IsCanceled = Command.IsCanceled,
                     IsFinished = Command.IsFinished,
-                    QuatationSent = Command.QuatationSent,
-                    QuatationConfirm = Command.QuatationConfirm,
+                    QuotationSent = Command.QuotationSent,
+                    QuotationConfirm = Command.QuotationConfirm,
                     IsActive = Command.IsActive,
                     IsRejected = negotiate.IsRejected,
                     ItemType = x.Type,
@@ -134,7 +134,7 @@ namespace AM.Infrastructure.Repository
                     IsCanceled = negotiate.IsCanceled,
                     IsFinished = negotiate.IsFinished,
                     ItemType = x.Type,
-                    QuatationSent = negotiate.QuatationSent,
+                    QuotationSent = negotiate.QuotationSent,
                     SellerName = sellerInfo.Name,
                     BuyerName = buyerInfo.Name,
                     BuyerImageString = buyerInfo.ImageString,
@@ -155,8 +155,8 @@ namespace AM.Infrastructure.Repository
                     SellerId = x.SellerId,
                     IsCanceled = x.IsCanceled,
                     IsFinished = x.IsFinished,
-                    QuatationSent = x.QuatationSent,
-                    QuatationConfirm = x.QuatationConfirm,
+                    QuotationSent = x.QuotationSent,
+                    QuotationConfirm = x.QuotationConfirm,
                     IsActive = x.IsActive,
                     CreationTime = x.CreationTime
                 }).AsNoTracking().OrderByDescending(x => x.NegotiateId).ToList();
@@ -173,8 +173,8 @@ namespace AM.Infrastructure.Repository
                     SellerId = x.SellerId,
                     IsCanceled = x.IsCanceled,
                     IsFinished = x.IsFinished,
-                    QuatationSent = x.QuatationSent,
-                    QuatationConfirm = x.QuatationConfirm,
+                    QuotationSent = x.QuotationSent,
+                    QuotationConfirm = x.QuotationConfirm,
                     IsActive = x.IsActive,
                     CreationTime = x.CreationTime
                 }).AsNoTracking().OrderByDescending(x => x.NegotiateId).ToList();
@@ -189,8 +189,8 @@ namespace AM.Infrastructure.Repository
                     ListingId = x.ListingId,
                     IsCanceled = x.IsCanceled,
                     IsFinished = x.IsFinished,
-                    QuatationSent = x.QuatationSent,
-                    QuatationConfirm = x.QuatationConfirm,
+                    QuotationSent = x.QuotationSent,
+                    QuotationConfirm = x.QuotationConfirm,
                     IsActive = x.IsActive,
                 }).AsNoTracking().OrderByDescending(x => x.NegotiateId).ToList();
         }

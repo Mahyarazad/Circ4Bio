@@ -37,24 +37,28 @@
         //Negotiate Messaging
         public const string NewMessage = "You have a new message";
         public const string EmptyMessage = "You cannot send an empty message";
-        public const string SubmitNegotiationRequest = "You have requested a negotiation";
-        public const string ReceivedNegotiation = "Negotiation opened for your listing";
-        public const string CanceledNegotiationRequest = "Negotiation Caceled!";
+        public const string SubmitNegotiationRequest = "You have requested for a negotiation";
+        public const string ReceivedNegotiation = "Negotiation has opened for your listing";
+        public const string CanceledNegotiationRequest = "Negotiation Canceled!";
 
         //Email Title
         public const string ResetPassword = "Reset Password";
-        public const string AccountActivated = "Your account is activated";
+        public const string AccountActivated = "Your Account is Activated";
+        public const string QuotationCreated = "Quotation Created";
+        public const string ProvideInformation = "Please Provide the Required Informations";
 
         //Deal Title
         public const string DealsCreated = "New deal has issued";
         public const string ActiveDeal = "Your deal is active now";
-        public const string PaymentDone = "Payment has been done";
+        public const string ActiveDealDetail = "Please follow the link below to check your deal status.";
+        public const string PaymentDone = "Your payment has been done";
 
         //DeliveryLocationAddress
         public const string DuplicateDeliveryLocationName = "This name has been taken, please chose another name.";
 
         //Welcome Message
         public const string WelcomeMessage = "Thanks for registration and welcome to Circ4Bio";
+
 
     }
 }

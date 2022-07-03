@@ -28,7 +28,7 @@ namespace AM.Management.API
         {
             if (HttpContext.User.Claims.FirstOrDefault() != null)
             {
-                UserId = Convert.ToInt64(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "User Id").Value);
+                UserId = Convert.ToInt64(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "User Id")?.Value);
                 await _notificationApplication.MarkRead(command.Id);
                 return _notificationApplication.CountUnread(UserId).Result;
             }
@@ -43,7 +43,7 @@ namespace AM.Management.API
 
             if (HttpContext.User.Claims.FirstOrDefault() != null)
             {
-                UserId = Convert.ToInt64(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "User Id").Value);
+                UserId = Convert.ToInt64(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "User Id")?.Value);
                 return await _notificationApplication.CountUnread(UserId);
             }
             return 0;
@@ -54,7 +54,7 @@ namespace AM.Management.API
         {
             if (HttpContext.User.Claims.FirstOrDefault() != null)
             {
-                UserId = Convert.ToInt64(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "User Id").Value);
+                UserId = Convert.ToInt64(HttpContext.User.Claims.FirstOrDefault(x => x.Type == "User Id")?.Value);
                 List<NotificationViewModel> result = await _notificationApplication.GetLastNUnread(UserId, 5);
                 return result;
 

@@ -234,14 +234,18 @@
                 $("#content").removeClass("hidden");
                 $("#placeholder-wrapper").addClass("hidden");
             }
-        )
+        );
 
     </script>
     <script src="~/js/AlterDataTableDesign.js"></script>
     <script>
         $('#main-table').DataTable({
             "order": [],
-            language: { searchPlaceholder: "Search ..." }
+            language: {
+                searchPlaceholder: "Search ...",
+                emptyTable: "There are no records"
+            }
+
         });
     </script>
 }

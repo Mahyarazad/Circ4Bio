@@ -79,9 +79,9 @@
                                             </a>
                                             @if (AuthenticateHelper.CurrentAccountRole().Id != Model.CurrentNegotiate.BuyerId)
                                             {
-                                                if (Model.CurrentNegotiate.QuatationSent)
+                                                if (Model.CurrentNegotiate.QuotationSent)
                                                 {
-                                                    <a asp-page="../Deals/Quatation" asp-route-id="@Model.CurrentNegotiate.NegotiateId" title="Create a Quatation"
+                                                    <a asp-page="../Deals/Quotation" asp-route-id="@Model.CurrentNegotiate.NegotiateId" title="Create a Quotation"
                                                        class="mx-2 flex items-center justify-center bg-green-100 hover:bg-green-200 text-gray-400 h-10 w-10 rounded-full">
                                                         <span>
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -92,7 +92,7 @@
                                                 }
                                                 else
                                                 {
-                                                    <a asp-page="../Deals/Create" asp-route-id="@Model.CurrentNegotiate.NegotiateId" title="Create a Quatation"
+                                                    <a asp-page="../Deals/Create" asp-route-id="@Model.CurrentNegotiate.NegotiateId" title="Create a Quotation"
                                                        class="mx-2 flex items-center justify-center bg-green-100 hover:bg-green-200 text-gray-400 h-10 w-10 rounded-full">
                                                         <span>
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">

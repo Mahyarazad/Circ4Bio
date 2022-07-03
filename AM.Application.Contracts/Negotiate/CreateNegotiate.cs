@@ -13,8 +13,8 @@ namespace AM.Application.Contracts.Negotiate
         public bool IsCanceled { get; set; }
         public bool IsFinished { get; set; }
         public bool IsActive { get; set; }
-        public bool QuatationSent { get; set; }
-        public bool QuatationConfirm { get; set; }
+        public bool QuotationSent { get; set; }
+        public bool QuotationConfirm { get; set; }
         public bool IsRejected { get; set; }
         public DateTime CreationTime { get; set; }
     }

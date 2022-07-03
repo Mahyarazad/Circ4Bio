@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AM.Infrastructure.Migrations
 {
     [DbContext(typeof(AMContext))]
-    [Migration("20220226084154_quatationsentnegotiation")]
-    partial class quatationsentnegotiation
+    [Migration("20220226084154_Quotationsentnegotiation")]
+    partial class Quotationsentnegotiation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -167,7 +167,7 @@ namespace AM.Infrastructure.Migrations
                     b.Property<bool>("PaymentStatus")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("QuatationSent")
+                    b.Property<bool>("QuotationSent")
                         .HasColumnType("bit");
 
                     b.Property<long>("SellerId")
@@ -297,7 +297,7 @@ namespace AM.Infrastructure.Migrations
                     b.Property<long>("ListingId")
                         .HasColumnType("bigint");
 
-                    b.Property<bool>("QuatationSent")
+                    b.Property<bool>("QuotationSent")
                         .HasColumnType("bit");
 
                     b.Property<long>("SellerId")

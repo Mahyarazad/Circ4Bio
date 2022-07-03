@@ -197,7 +197,7 @@ namespace AM.Infrastructure.Migrations
                     b.Property<bool>("PaymentStatus")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("QuatationSent")
+                    b.Property<bool>("QuotationSent")
                         .HasColumnType("bit");
 
                     b.Property<long>("SellerId")
@@ -352,10 +352,10 @@ namespace AM.Infrastructure.Migrations
                     b.Property<long>("ListingId")
                         .HasColumnType("bigint");
 
-                    b.Property<bool>("QuatationConfirm")
+                    b.Property<bool>("QuotationConfirm")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("QuatationSent")
+                    b.Property<bool>("QuotationSent")
                         .HasColumnType("bit");
 
                     b.Property<long>("SellerId")

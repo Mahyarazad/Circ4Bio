@@ -38,7 +38,7 @@ namespace ServiceHost.Areas.Dashboard.Pages
         public long TotalUsers { get; set; }
         public long CanceledNegotation { get; set; }
         public long FinishedNegotation { get; set; }
-        public long QuatationSentButNotFinishedNegotation { get; set; }
+        public long QuotationSentButNotFinishedNegotation { get; set; }
         public long ActiveNegotations { get; set; }
         public long AllNegotations { get; set; }
         public long StatusFalseTotalUsers { get; set; }
@@ -62,12 +62,12 @@ namespace ServiceHost.Areas.Dashboard.Pages
 
                 StatusFalseTotalUsers = _userApplication.GetFullList().Result.Count(x => !x.Status);
                 NegotationStat = _negotiateApplication.GetAllListingNegotiation();
-                QuatationSentButNotFinishedNegotation =
-                    NegotationStat.Count(x => x.QuatationSent && !x.IsFinished);
+                QuotationSentButNotFinishedNegotation =
+                    NegotationStat.Count(x => x.QuotationSent && !x.IsFinished);
 
                 FinishedNegotation = NegotationStat.Count(x => x.IsFinished);
                 CanceledNegotation = NegotationStat.Count(x => x.IsCanceled);
-                ActiveNegotations = NegotationStat.Count(x => !x.QuatationSent && !x.IsFinished && !x.IsCanceled);
+                ActiveNegotations = NegotationStat.Count(x => !x.QuotationSent && !x.IsFinished && !x.IsCanceled);
                 AllNegotations = NegotationStat.Count;
 
                 PaymentsDone = _dealApplication.GetAllDeals().Result.Count(x => x.PaymentId != null);

@@ -2,12 +2,12 @@
 
 namespace AM.Infrastructure.Migrations
 {
-    public partial class quatationConfirmed : Migration
+    public partial class QuotationConfirmed : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<bool>(
-                name: "QuatationConfirm",
+                name: "QuotationConfirm",
                 schema: "dbo",
                 table: "Negotiate",
                 type: "bit",
@@ -34,7 +34,7 @@ namespace AM.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "QuatationConfirm",
+                name: "QuotationConfirm",
                 schema: "dbo",
                 table: "Negotiate");
         }

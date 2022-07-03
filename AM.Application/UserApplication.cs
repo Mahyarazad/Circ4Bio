@@ -30,7 +30,6 @@ namespace AM.Application
         private readonly IRecipientRepository _recipientRepository;
         private readonly INotificationApplication _notificationApplication;
         private readonly IResetPasswordApplication _resetPasswordApplication;
-
         public UserApplication(IUserRepository userRepository,
             IPasswordHasher passwordHasher,
             IAuthenticateHelper authenticateHelper,
@@ -122,11 +121,9 @@ namespace AM.Application
 
                 return result.Succeeded();
             }
-            else
-            {
-                return emailServiceResult;
-            }
+            return emailServiceResult;
         }
+
         public Task<OperationResult> ActivateUser(string command)
         {
             var request = _contextAccessor.HttpContext.Request;
@@ -246,11 +243,9 @@ namespace AM.Application
             {
                 return result.Succeeded();
             }
-            else
-            {
-                return emailServiceResult;
-            }
+            return emailServiceResult;
         }
+
         public async Task<OperationResult> AdminDectivateUser(long Id)
         {
             var result = new OperationResult();
@@ -485,6 +480,7 @@ namespace AM.Application
 
         public void Logout()
         {
+
             _authenticateHelper.Logout();
         }
 

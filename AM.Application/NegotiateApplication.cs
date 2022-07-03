@@ -147,26 +147,26 @@ namespace AM.Application
 
             var emailBuyer = new EmailModel
             {
-                EmailTemplate = EmailType.QuatationCreated,
+                EmailTemplate = EmailType.QuotationCreated,
                 Title = ApplicationMessage.SubmitNegotiationRequest,
                 Body3 = $"{Request.Scheme}://{Request.Host}/Dashboard/Negotiate/Messages/{negotiate.Id}",
                 Recipient = buyerInfo.Email,
                 Body = ApplicationMessage.SubmitNegotiationRequest,
                 Body1 = $"Negotiation opened for {listingInfo.Name} at {listingInfo.UnitPrice} {listingInfo.Currency}",
-                Body4 = "Go to the negotiation"
+                Body4 = "Open The Negotiation"
 
             };
             var emailSeller = new EmailModel
             {
-                EmailTemplate = EmailType.QuatationCreated,
+                EmailTemplate = EmailType.QuotationCreated,
                 Title = ApplicationMessage.ReceivedNegotiation,
                 Body3 = $"{Request.Scheme}://{Request.Host}/Dashboard/Negotiate/Messages/{negotiate.Id}",
                 Recipient = sellerInfo.Email,
                 Body = ApplicationMessage.ReceivedNegotiation,
                 Body1 = $"{buyerInfo.UserId.ToUpper()} opened a negotiation for {listingInfo.Name} at {listingInfo.UnitPrice} {listingInfo.Currency}",
-                Body4 = "Go to the negotiation"
-
+                Body4 = "Open The Negotiation"
             };
+
             var emailServiceResultBuyer = _emailService.SendEmail(emailBuyer);
             var emailServiceResultSeller = _emailService.SendEmail(emailSeller);
 
@@ -321,7 +321,7 @@ namespace AM.Application
 
             var target = _negotiateRepository.Get(Command.NegotiateId).Result;
             target.Canceled();
-            if (target.QuatationSent)
+            if (target.QuotationSent)
             {
                 var deal = _dealRepository.Get((long)target.DealId).Result;
                 deal.CancelDeal();
@@ -331,7 +331,7 @@ namespace AM.Application
             _negotiateRepository.SaveChanges();
 
 
-            if (target.QuatationSent)
+            if (target.QuotationSent)
             {
                 var dealAmount = _dealRepository.Get(Convert.ToInt64(target.DealId)).Result.Amount;
                 var listDomainModel = _listingRepository.Get(Command.ListingId);

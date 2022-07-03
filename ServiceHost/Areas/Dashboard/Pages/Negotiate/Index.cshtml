@@ -156,7 +156,7 @@
                                             }
                                             else
                                             {
-                                                @if (!item.QuatationConfirm)
+                                                @if (!item.QuotationConfirm)
                                                 {
                                                     <p class="mx-1 inline-flex items-center px-2 py-2 border
                                                        border-gray-100 shadow-sm text-xs font-medium rounded-md
@@ -166,35 +166,35 @@
                                                 }
                                                 else
                                                 {
-                                                    <a a asp-page="../Deals/ConfirmQuatation" asp-route-id="@item.NegotiateId"
+                                                    <a a asp-page="../Deals/ConfirmQuotation" asp-route-id="@item.NegotiateId"
                                                        class="mx-1 inline-flex items-center px-2 py-2 border
                                                        border-sky-700 shadow-sm text-xs font-medium rounded-md text-white
                                                        bg-sky-700 hover:bg-sky-700 focus:outline-none focus:ring-2
                                                        focus:ring-offset-2 focus:ring-sky-800">
-                                                        <i class="fa fa-edit"></i> View Final Quatation
+                                                        <i class="fa fa-edit"></i> View Final Quotation
                                                     </a>
                                                 }
                                             }
-                                            @if (!item.QuatationConfirm && item.QuatationSent)
+                                            @if (!item.QuotationConfirm && item.QuotationSent)
                                             {
-                                                <a a asp-page="../Deals/Quatation" asp-route-id="@item.NegotiateId"
+                                                <a a asp-page="../Deals/Quotation" asp-route-id="@item.NegotiateId"
                                                    class="mx-1 inline-flex items-center px-2 py-2 border border-sky-700
                                                    shadow-sm text-xs font-medium rounded-md text-white bg-sky-700
                                                    hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-800">
-                                                    <i class="fa fa-edit"></i> Modify Quatation
+                                                    <i class="fa fa-edit"></i> Modify Quotation
                                                 </a>
                                             }
                                         }
                                         else
                                         {
-                                            if (item.QuatationSent & !item.IsFinished)
+                                            if (item.QuotationSent & !item.IsFinished)
                                             {
-                                                <a a asp-page="../Deals/ConfirmQuatation" asp-route-id="@item.NegotiateId"
+                                                <a a asp-page="../Deals/ConfirmQuotation" asp-route-id="@item.NegotiateId"
                                                    class="mx-1 inline-flex items-center px-2 py-2 border border-sky-700
                                                    shadow-sm text-xs font-medium rounded-md text-white bg-sky-700
                                                    hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2
                                                    focus:ring-sky-800">
-                                                    <i class="fa fa-edit"></i> Open Quatation
+                                                    <i class="fa fa-edit"></i> Open Quotation
                                                 </a>
                                             }
                                         }
@@ -205,11 +205,11 @@
                                             </p>
                                             @if (AuthenticateHelper.CurrentAccountRole().Id != @item.SellerId)
                                             {
-                                                <a a asp-page="../Deals/ConfirmQuatation" asp-route-id="@item.NegotiateId"
+                                                <a a asp-page="../Deals/ConfirmQuotation" asp-route-id="@item.NegotiateId"
                                                    class="mx-1 inline-flex items-center px-2 py-2 border border-sky-700
                                                    shadow-sm text-xs font-medium rounded-md text-white bg-sky-700
                                                    hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-800">
-                                                    <i class="fa fa-edit"></i> View Final Quatation
+                                                    <i class="fa fa-edit"></i> View Final Quotation
                                                 </a>
                                             }
                                         }
@@ -319,7 +319,7 @@
                                             }
                                             else
                                             {
-                                                @if (!item.QuatationConfirm)
+                                                @if (!item.QuotationConfirm)
                                                 {
                                                     <p class="mx-1 inline-flex items-center px-2 py-2 border border-gray-100 shadow-sm text-xs font-medium rounded-md text-gray-700 bg-gray-100">
                                                         <i class="fa fa-edit"></i> Quotation Sent
@@ -327,35 +327,35 @@
                                                 }
                                                 else
                                                 {
-                                                    <a a asp-page="../Deals/ConfirmQuatation" asp-route-id="@item.NegotiateId"
+                                                    <a a asp-page="../Deals/ConfirmQuotation" asp-route-id="@item.NegotiateId"
                                                        class="mx-1 inline-flex items-center px-2 py-2 border border-sky-700
                                                        shadow-sm text-xs font-medium rounded-md text-white bg-sky-700
                                                        hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2
                                                        focus:ring-sky-800">
-                                                        <i class="fa fa-edit"></i> View Final Quatation
+                                                        <i class="fa fa-edit"></i> View Final Quotation
                                                     </a>
                                                 }
                                             }
-                                            @if (!item.QuatationConfirm && item.QuatationSent)
+                                            @if (!item.QuotationConfirm && item.QuotationSent)
                                             {
-                                                <a a asp-page="../Deals/Quatation" asp-route-id="@item.NegotiateId"
+                                                <a a asp-page="../Deals/Quotation" asp-route-id="@item.NegotiateId"
                                                    class="mx-1 inline-flex items-center px-2 py-2 border border-sky-700
                                                    shadow-sm text-xs font-medium rounded-md text-white bg-sky-700
                                                    hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-800">
-                                                    <i class="fa fa-edit"></i> Modify Quatation
+                                                    <i class="fa fa-edit"></i> Modify Quotation
                                                 </a>
                                             }
                                         }
                                         else
                                         {
-                                            if (item.QuatationSent & !item.IsFinished)
+                                            if (item.QuotationSent & !item.IsFinished)
                                             {
-                                                <a a asp-page="../Deals/ConfirmQuatation" asp-route-id="@item.NegotiateId"
+                                                <a a asp-page="../Deals/ConfirmQuotation" asp-route-id="@item.NegotiateId"
                                                    class="mx-1 inline-flex items-center px-2 py-2 border border-sky-700
                                                    shadow-sm text-xs font-medium rounded-md text-white bg-sky-700
                                                    hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2
                                                    focus:ring-sky-800">
-                                                    <i class="fa fa-edit"></i> Open Quatation
+                                                    <i class="fa fa-edit"></i> Open Quotation
                                                 </a>
                                             }
                                         }
@@ -366,12 +366,12 @@
                                             </p>
                                             @if (AuthenticateHelper.CurrentAccountRole().Id != @item.SellerId)
                                             {
-                                                <a a asp-page="../Deals/ConfirmQuatation" asp-route-id="@item.NegotiateId"
+                                                <a a asp-page="../Deals/ConfirmQuotation" asp-route-id="@item.NegotiateId"
                                                    class="mx-1 inline-flex items-center px-2 py-2 border border-sky-700
                                                    shadow-sm text-xs font-medium rounded-md text-white bg-sky-700
                                                    hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2
                                                    focus:ring-sky-800">
-                                                    <i class="fa fa-edit"></i> View Final Quatation
+                                                    <i class="fa fa-edit"></i> View Final Quotation
                                                 </a>
                                             }
                                         }
@@ -408,9 +408,13 @@
 @section Scripts{
     <script src="~/js/AlterDataTableDesign.js"></script>
     <script>
-        $('#main-table').dataTable({
+        $('#main-table').DataTable({
             "order": [],
-            language: { searchPlaceholder: "Search ..." }
+            language: {
+                searchPlaceholder: "Search ...",
+                emptyTable: "There are no records"
+            }
+
         });
     </script>
 }

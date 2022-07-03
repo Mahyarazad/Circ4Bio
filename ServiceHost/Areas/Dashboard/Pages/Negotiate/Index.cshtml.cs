@@ -51,8 +51,8 @@ namespace ServiceHost.Areas.Dashboard.Pages.Negotiate
                     IsCanceled = item.IsCanceled,
                     IsFinished = item.IsFinished,
                     IsRejected = item.IsRejected,
-                    QuatationSent = item.QuatationSent,
-                    QuatationConfirm = item.QuatationConfirm,
+                    QuotationSent = item.QuotationSent,
+                    QuotationConfirm = item.QuotationConfirm,
                     IsActive = item.IsActive,
                     CreationTime = item.CreationTime,
                 }));
@@ -68,8 +68,8 @@ namespace ServiceHost.Areas.Dashboard.Pages.Negotiate
                     IsCanceled = item.IsCanceled,
                     IsFinished = item.IsFinished,
                     IsRejected = item.IsRejected,
-                    QuatationSent = item.QuatationSent,
-                    QuatationConfirm = item.QuatationConfirm,
+                    QuotationSent = item.QuotationSent,
+                    QuotationConfirm = item.QuotationConfirm,
                     IsActive = item.IsActive,
                     CreationTime = item.CreationTime,
                 }));

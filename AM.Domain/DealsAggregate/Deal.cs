@@ -33,7 +33,7 @@ namespace AM.Domain
             IsActive = false;
             IsRejected = false;
             IsFinished = false;
-            QuatationSent = false;
+            QuotationSent = false;
             DueTime = dueDate;
             ListingId = listingId;
             NegotiateId = negotiateId;
@@ -73,7 +73,7 @@ namespace AM.Domain
         public bool IsDeleted { get; private set; }
         public bool IsRejected { get; private set; }
         public bool IsActive { get; private set; }
-        public bool QuatationSent { get; private set; }
+        public bool QuotationSent { get; private set; }
         public bool IsFinished { get; private set; }
         public DateTime StartTime { get; private set; }
         public DateTime DueTime { get; private set; }
@@ -82,9 +82,9 @@ namespace AM.Domain
         {
             IsRejected = true;
         }
-        public void QuatationHasSent()
+        public void QuotationHasSent()
         {
-            QuatationSent = true;
+            QuotationSent = true;
         }
         public void CancelDeal()
         {

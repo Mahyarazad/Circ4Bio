@@ -141,7 +141,7 @@ function handleAjaxPost(formData, url, action) {
                     return;
                 }
 
-                if (splited[splited.length - 2] === "Quatation") {
+                if (splited[splited.length - 2] === "Quotation") {
                     if (splited[splited.length - 1].includes('##')) {
                         redirect(url, data.result.message);
                         return;
@@ -157,7 +157,7 @@ function handleAjaxPost(formData, url, action) {
                     return;
                 }
 
-                if (splited[splited.length - 2] === "ConfirmQuatation") {
+                if (splited[splited.length - 2] === "ConfirmQuotation") {
                     redirect(url, data.result.message);
                     return;
                 }

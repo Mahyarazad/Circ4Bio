@@ -1,11 +1,9 @@
 ﻿using System;
 using System.IO;
-using FluentEmail.Core.Defaults;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
-using Nancy;
 
 namespace _0_Framework.Application.Email
 {
@@ -33,37 +31,41 @@ namespace _0_Framework.Application.Email
             {
                 case EmailType.ResetPassword:
                     {
-                        //FilePath = AppDomain.CurrentDomain.BaseDirectory
-                        //           + "\\wwwroot\\Email Templates\\ResetPasswordTemplate.html";
-                        FilePath = "C:\\Users\\mhyri\\OneDrive\\Desktop\\Circ4Bio\\Circ4Bio\\ServiceHost"
-                        + "\\wwwroot\\Email Templates\\ResetPasswordTemplate.html";
+                        FilePath = AppDomain.CurrentDomain.BaseDirectory
+                                   + "\\wwwroot\\Email Templates\\ResetPasswordTemplate.html";
+                        //FilePath = "C:\\Users\\mhyri\\OneDrive\\Desktop\\Circ4Bio\\Circ4Bio\\ServiceHost"
+                        //+ "\\wwwroot\\Email Templates\\ResetPassword.html";
                         StreamReader StreamReader = new(FilePath);
                         MailText = StreamReader.ReadToEnd();
                         StreamReader.Close();
-                        MailText = MailText.Replace("[link]", model.ResetPasswordLink);
+                        MailText = MailText.Replace("[link]", model.ResetPasswordLink)
+                            .Replace("[year]", DateTime.Today.Year.ToString())
+                            .Replace("[title]", model.Title);
                         break;
                     }
 
                 case EmailType.AccountVerificationLink:
                     {
 
-                        //FilePath = AppDomain.CurrentDomain.BaseDirectory
-                        //+ "\\wwwroot\\Email Templates\\AccountVerificationTemplate.html";
-                        FilePath = "C:\\Users\\mhyri\\OneDrive\\Desktop\\Circ4Bio\\Circ4Bio\\ServiceHost"
+                        FilePath = AppDomain.CurrentDomain.BaseDirectory
                         + "\\wwwroot\\Email Templates\\AccountVerificationTemplate.html";
+                        //FilePath = "C:\\Users\\mhyri\\OneDrive\\Desktop\\Circ4Bio\\Circ4Bio\\ServiceHost"
+                        //+ "\\wwwroot\\Email Templates\\AccountVerificationTemplate.html";
                         StreamReader StreamReader = new(FilePath);
                         MailText = StreamReader.ReadToEnd();
                         StreamReader.Close();
-                        MailText = MailText.Replace("[link]", model.AccountVerificationLink);
+                        MailText = MailText.Replace("[link]", model.AccountVerificationLink)
+                            .Replace("[year]", DateTime.Today.Year.ToString())
+                            .Replace("[title]", model.Title);
                         break;
                     }
 
                 case EmailType.ProvideInformation:
                     {
-                        //FilePath = AppDomain.CurrentDomain.BaseDirectory
-                        //           + "\\wwwroot\\Email Templates\\ProvideInformation.html";
-                        FilePath = "C:\\Users\\mhyri\\OneDrive\\Desktop\\Circ4Bio\\Circ4Bio\\ServiceHost"
-                        + "\\wwwroot\\Email Templates\\ProvideInformation.html";
+                        FilePath = AppDomain.CurrentDomain.BaseDirectory
+                                   + "\\wwwroot\\Email Templates\\ProvideInformation.html";
+                        //FilePath = "C:\\Users\\mhyri\\OneDrive\\Desktop\\Circ4Bio\\Circ4Bio\\ServiceHost"
+                        //+ "\\wwwroot\\Email Templates\\ProvideInformation.html";
                         StreamReader StreamReader = new(FilePath);
                         MailText = StreamReader.ReadToEnd();
                         StreamReader.Close();
@@ -71,24 +73,84 @@ namespace _0_Framework.Application.Email
                             .Replace("[body]", model.Body)
                             .Replace("[body1]", model.Body1)
                             .Replace("[body2]", model.Body2)
-                            .Replace("[body3]", model.Body3);
+                            .Replace("[body3]", model.Body3)
+                            .Replace("[year]", DateTime.Today.Year.ToString())
+                            .Replace("[title]", model.Title);
                         break;
                     }
-                case EmailType.QuatationCreated:
+                case EmailType.NegotiationOpened:
                     {
                         FilePath = AppDomain.CurrentDomain.BaseDirectory
-                                   + "\\wwwroot\\Email Templates\\QuatationCreated.html";
-                        // FilePath = "C:\\Users\\mhyri\\OneDrive\\Desktop\\Circ4Bio\\Circ4Bio\\ServiceHost"
-                        // + "\\wwwroot\\Email Templates\\QuatationCreated.html";
+                                   + "\\wwwroot\\Email Templates\\NegotiationOpened.html";
+                        //FilePath = "C:\\Users\\mhyri\\OneDrive\\Desktop\\Circ4Bio\\Circ4Bio\\ServiceHost"
+                        //+ "\\wwwroot\\Email Templates\\NegotiationOpened.html";
                         StreamReader StreamReader = new(FilePath);
                         MailText = StreamReader.ReadToEnd();
                         StreamReader.Close();
                         MailText = MailText
                             .Replace("[body]", model.Body)
                             .Replace("[body1]", model.Body1)
+                            .Replace("[body2]", model.Body2)
                             .Replace("[body3]", model.Body3)
                             .Replace("[body4]", model.Body4)
-                            .Replace("[Title]", model.Title);
+                            .Replace("[year]", DateTime.Today.Year.ToString())
+                            .Replace("[title]", model.Title);
+                        break;
+                    }
+                case EmailType.QuotationCreated:
+                    {
+                        FilePath = AppDomain.CurrentDomain.BaseDirectory
+                                   + "\\wwwroot\\Email Templates\\QuotationCreated.html";
+                        //FilePath = "C:\\Users\\mhyri\\OneDrive\\Desktop\\Circ4Bio\\Circ4Bio\\ServiceHost"
+                        //+ "\\wwwroot\\Email Templates\\QuotationCreated.html";
+                        StreamReader StreamReader = new(FilePath);
+                        MailText = StreamReader.ReadToEnd();
+                        StreamReader.Close();
+                        MailText = MailText
+                            .Replace("[body]", model.Body)
+                            .Replace("[body1]", model.Body1)
+                            .Replace("[body2]", model.Body2)
+                            .Replace("[body3]", model.Body3)
+                            .Replace("[body4]", model.Body4)
+                            .Replace("[year]", DateTime.Today.Year.ToString())
+                            .Replace("[title]", model.Title);
+                        break;
+                    }
+                case EmailType.ActiveDeal:
+                    {
+                        FilePath = AppDomain.CurrentDomain.BaseDirectory
+                                   + "\\wwwroot\\Email Templates\\ActiveDeal.html";
+                        //FilePath = "C:\\Users\\mhyri\\OneDrive\\Desktop\\Circ4Bio\\Circ4Bio\\ServiceHost"
+                        //+ "\\wwwroot\\Email Templates\\ActiveDeal.html";
+                        StreamReader StreamReader = new(FilePath);
+                        MailText = StreamReader.ReadToEnd();
+                        StreamReader.Close();
+                        MailText = MailText
+                            .Replace("[body]", model.Body)
+                            .Replace("[body1]", model.Body1)
+                            .Replace("[body2]", model.Body2)
+                            .Replace("[body3]", model.Body3)
+                            .Replace("[body4]", model.Body4)
+                            .Replace("[year]", DateTime.Today.Year.ToString())
+                            .Replace("[title]", model.Title);
+                        break;
+                    }
+                case EmailType.SuccessfulPayment:
+                    {
+                        FilePath = AppDomain.CurrentDomain.BaseDirectory
+                                   + "\\wwwroot\\Email Templates\\SuccessfulPayment.html";
+                        //FilePath = "C:\\Users\\mhyri\\OneDrive\\Desktop\\Circ4Bio\\Circ4Bio\\ServiceHost"
+                        //       + "\\wwwroot\\Email Templates\\SuccessfulPayment.html";
+                        StreamReader StreamReader = new(FilePath);
+                        MailText = StreamReader.ReadToEnd();
+                        StreamReader.Close();
+                        MailText = MailText
+                            .Replace("[body]", model.Body)
+                            .Replace("[body1]", model.Body1)
+                            .Replace("[body2]", model.Body2)
+                            .Replace("[body3]", model.Body3)
+                            .Replace("[year]", DateTime.Today.Year.ToString())
+                            .Replace("[title]", model.Title);
                         break;
                     }
             }

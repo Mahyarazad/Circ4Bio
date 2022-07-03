@@ -9,7 +9,7 @@ namespace AM.Application.Contracts.Deal
         public bool IsActive { get; set; }
         public bool IsFinished { get; set; }
         public bool IsRejected { get; set; }
-        public bool QuatationSent { get; set; }
+        public bool QuotationSent { get; set; }
         public string? ItemName { get; set; }
         public DateTime CreationTime { get; set; }
         public string? ContractFileString { get; set; }

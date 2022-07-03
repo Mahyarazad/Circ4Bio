@@ -3,9 +3,9 @@
 @using Microsoft.Extensions.Configuration
 @using Newtonsoft.Json
 @inject IConfiguration _Configuration;
-@model ServiceHost.Areas.Dashboard.Pages.Deals.ConfirmQuatationModel;
+@model ServiceHost.Areas.Dashboard.Pages.Deals.ConfirmQuotationModel;
 @inject IAuthenticateHelper AuthenticateHelper;
-@{ ViewData["Title"] = $"Dashboard | Deals | {@Model.Command.ItemName} Quatation";}
+@{ ViewData["Title"] = $"Dashboard | Deals | {@Model.Command.ItemName} Quotation";}
 
 
 <form class="divide-y divide-gray-200 lg:col-span-9" id="form"
@@ -47,10 +47,10 @@
     <!-- Profile section -->
     <div class="mt-6 flex flex-col lg:flex-row">
         <div class="flex-grow space-y-6 mx-4">
-            <div id="finished-quatation" class="mt-2 flex-col lg:flex-row justify-between
+            <div id="finished-Quotation" class="mt-2 flex-col lg:flex-row justify-between
                  flex @(Model.Command.IsFinished ? "bg-teal-400" : Model.Command.IsActive ?"bg-sky-800" : "bg-gray-700") rounded-md text-xl lg:text-2xl px-2 lg:px-10 text-white">
                 <p class="py-1 lg:place-self-center">
-                    @(Model.Command.IsFinished ? "Finished" : Model.Command.IsActive ? "Quatation Confirmed" : "Draft Quatation")
+                    @(Model.Command.IsFinished ? "Finished" : Model.Command.IsActive ? "Quotation Confirmed" : "Draft Quotation")
                 </p>
                 @if (Model.Command.IsFinished || Model.Command.IsActive)
                 {
@@ -195,7 +195,7 @@
         @if(!Model.Command.IsFinished) {
             @if (Model.Command.IsActive && Model.Command.Seller.Id != Model.LoggedUser.Id)
             {
-                <a asp-page="ConfirmQuatation" asp-route-id="@Model.Command.NegotiateId" asp-page-handler="CheckOut"
+                <a asp-page="ConfirmQuotation" asp-route-id="@Model.Command.NegotiateId" asp-page-handler="CheckOut"
                    onclick="loading()"
                    class="">
                     <img class="h-8 my-2 px-1"
@@ -210,7 +210,7 @@
                         px-4 h-9 place-self-center
                     justify-center text-sm font-medium text-white hover:bg-sky-800
                         focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-700">
-                    Confirm Quatation
+                    Confirm Quotation
                 </button>
             }
         }

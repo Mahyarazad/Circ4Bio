@@ -178,7 +178,7 @@ function checkAmount(amount, listingId) {
                     if (amount > response) {
                         $("#check-amount-wrapper").removeClass("hidden");
                         $("#check-amount")
-                            .text(`Available amount is ${response}, you cannot create quatation more than current amount.`);
+                            .text(`Available amount is ${response}, you cannot create Quotation more than current amount.`);
                         $("#save").prop('disabled', true);
                     }
                     if (amount <= response) {

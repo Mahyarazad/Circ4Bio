@@ -133,18 +133,18 @@
         NegotationStatData.push(@Html.Raw(Model.AllNegotations),
             @Html.Raw(Model.ActiveNegotations),
             @Html.Raw(Model.FinishedNegotation),
-            @Html.Raw(Model.QuatationSentButNotFinishedNegotation),
+            @Html.Raw(Model.QuotationSentButNotFinishedNegotation),
             @Html.Raw(Model.CanceledNegotation));
 
-        NegotationDataLabel.push("All", "Active", "Finished", "Quatation Sent", "Canceled");
+        NegotationDataLabel.push("All", "Active", "Finished", "Quotation Sent", "Canceled");
 
         NegotationStatPieData.push(
             @Html.Raw(Model.ActiveNegotations),
             @Html.Raw(Model.FinishedNegotation),
-            @Html.Raw(Model.QuatationSentButNotFinishedNegotation),
+            @Html.Raw(Model.QuotationSentButNotFinishedNegotation),
             @Html.Raw(Model.CanceledNegotation));
 
-        NegotationDataPieLabel.push("Active", "Finished", "Quatation Sent", "Canceled");
+        NegotationDataPieLabel.push("Active", "Finished", "Quotation Sent", "Canceled");
 
             for (var [_, value] of Object.entries(UserData)) {
                 if (value.id !== 1 ) {

@@ -213,7 +213,11 @@
     <script>
         $('#main-table').DataTable({
             "order": [],
-            language: { searchPlaceholder: "Search ..." }
+            language: {
+                searchPlaceholder: "Search ...",
+                emptyTable: "There are no records"
+            }
+
         });
     </script>
 }

@@ -37,14 +37,15 @@ namespace ServiceHost.Areas.Dashboard.Pages
                 return RedirectToPage("/AccessDenied", new { area = "" });
             }
         }
-        public async Task OnGetMarkAllRead(long Id)
+        public Task<JsonResult> OnGetMarkAllRead(long Id)
         {
-            await _notificationApplication.MarkAllRead(Id);
-            Command = await _notificationApplication.GetAllUnread(Id);
+            var result = _notificationApplication.MarkAllRead(Id);
+            Command = _notificationApplication.GetAllUnread(Id).Result;
+            return Task.FromResult(new JsonResult(result));
         }
-        public JsonResult OnPostMarkRead(long Id)
+        public Task<JsonResult> OnPostMarkRead(long Id)
         {
-            return new JsonResult(_notificationApplication.MarkRead(Id));
+            return Task.FromResult(new JsonResult(_notificationApplication.MarkRead(Id)));
         }
 
     }
