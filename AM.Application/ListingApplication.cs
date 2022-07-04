@@ -11,6 +11,7 @@ using AM.Application.Contracts.User;
 using AM.Domain.NotificationAggregate;
 using AM.Domain.UserAggregate;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace AM.Application
@@ -164,70 +165,79 @@ namespace AM.Application
             {
                 marketListing = _listingRepository.GetAllListing().Result;
 
-                var CacheExpirayOptions = new MemoryCacheEntryOptions
+                var cacheExpiryOptions = new MemoryCacheEntryOptions
                 {
                     AbsoluteExpiration = DateTime.Now.AddSeconds(50),
                     Priority = CacheItemPriority.High,
                     SlidingExpiration = TimeSpan.FromSeconds(20)
                 };
 
-                _memoryCache.Set(CacheKey, marketListing, CacheExpirayOptions);
+                _memoryCache.Set(CacheKey, marketListing, cacheExpiryOptions);
                 return Task.FromResult(marketListing);
             }
-            else
-            {
-                return Task.FromResult(_memoryCache.Get<List<ListingViewModel>>("MarketListing"));
-            }
+            return Task.FromResult(_memoryCache.Get<List<ListingViewModel>>("MarketListing"));
         }
-        public Task<List<ListingViewModel>> GetAllPublicListing()
+
+        public Task<List<ListingViewModel>> GetAllListingForAdmin()
         {
-            var CacheKey = "MarketListing";
-            if (!_memoryCache.TryGetValue(CacheKey, out List<ListingViewModel> marketListing))
-            {
-                marketListing = _listingRepository.GetAllPublicListing().Result;
-
-                var CacheExpirayOptions = new MemoryCacheEntryOptions
-                {
-                    AbsoluteExpiration = DateTime.Now.AddSeconds(50),
-                    Priority = CacheItemPriority.High,
-                    SlidingExpiration = TimeSpan.FromSeconds(20)
-                };
-
-                _memoryCache.Set(CacheKey, marketListing, CacheExpirayOptions);
-                return Task.FromResult(marketListing);
-            }
-            else
-            {
-                return Task.FromResult(_memoryCache.Get<List<ListingViewModel>>("MarketListing"));
-            }
+            return _listingRepository.GetAllListingForAdmin();
         }
+
         public Task<long> GetOwnerUserID(long id)
         {
             return _listingRepository.GetOwnerUserID(id);
         }
+
         public Task<List<ListingViewModel>> GetDeletedUserListing(long id)
         {
             return _listingRepository.GetUserListing(id);
         }
+
         public Task<ListingViewModel> GetDetailListing(long id)
         {
-            return _listingRepository.GetDetailListing(id);
+            if (_listingRepository.Exist(x => x.Id == id))
+                return _listingRepository.GetDetailListing(id);
+            return Task.FromResult(new ListingViewModel());
         }
+
         public Task<EditListing> GetEditListing(long listingId)
         {
-            return _listingRepository.GetListingDetail(listingId);
+            if (_listingRepository.Exist(x => x.Id == listingId))
+                return _listingRepository.GetListingDetail(listingId);
+            return Task.FromResult(new EditListing());
         }
+
         public Task<OperationResult> Delete(long id)
         {
             var result = new OperationResult();
             if (!_listingRepository.Exist(x => x.Id == id))
                 return Task.FromResult(result.Failed(ApplicationMessage.RecordNotFound));
             var target = _listingRepository.Get(id);
-            target.Result.MarkDeleted();
-            _listingRepository.SaveChanges();
-            return Task.FromResult(result.Succeeded());
+
+            if (target.Result != null)
+            {
+                if (target.Result.Image != "listing-default.png")
+                {
+                    var deleteFileResult =
+                        _fileUploader.DeleteFile(target.Result.Type!, target.Result.Image!);
+                    if (deleteFileResult.IsSucceeded)
+                    {
+                        target.Result.MarkDeleted();
+                        _listingRepository.SaveChanges();
+                        return Task.FromResult(result.Succeeded());
+                    }
+                    return Task.FromResult(deleteFileResult);
+                }
+
+                // Skip the default listing Image
+                return Task.FromResult(result.Succeeded());
+
+            }
+
+            return Task.FromResult(result.Failed(ApplicationMessage.SomethingWentWrong));
 
         }
+
         public Task<OperationResult> IncrementAmount(InputAmount command)
         {
             var result = new OperationResult();
@@ -248,7 +258,7 @@ namespace AM.Application
             return Task.FromResult(result.Succeeded());
 
         }
-        public Task<OperationResult> DeccrementAmount(InputAmount command)
+        public Task<OperationResult> DecrementAmount(InputAmount command)
         {
             var result = new OperationResult();
             if (!_listingRepository.Exist(x => x.Id == command.ListingId))

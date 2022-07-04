@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.Linq;
 using _0_Framework.Domain;
 using AM.Domain.NaceAggregate;

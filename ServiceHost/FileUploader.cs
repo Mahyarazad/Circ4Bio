@@ -24,6 +24,7 @@ namespace ServiceHost
         {
             _webHostEnvironment = webHostEnvironment;
         }
+
         public string Uploader(IFormFile file, string folder, string fileName)
         {
             string[] files;
@@ -78,6 +79,23 @@ namespace ServiceHost
             WriteFile(file, $"{path}{fileName}{fileExtension}");
             outputFileName = fileName;
             return $"{outputFileName}{fileExtension}";
+        }
+
+        public OperationResult DeleteFile(string folder, string fileName)
+        {
+            var result = new OperationResult();
+
+            try
+            {
+                File.Delete($"{_webHostEnvironment.WebRootPath}\\Site Files" +
+                            $"\\Listing_Images\\{folder}\\{fileName}");
+
+                return result.Succeeded();
+            }
+            catch (DirectoryNotFoundException dirNotFound)
+            {
+                return result.Failed(dirNotFound.Message);
+            }
         }
     }
 

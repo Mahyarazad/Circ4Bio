@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AM.Application.Contracts.Listing;
@@ -38,13 +36,20 @@ namespace ServiceHost.Areas.Dashboard.Pages.AvailableListing
             _negotiateApplication = negotiateApplication;
         }
 
-        public async void OnGet(long Id)
+        public async Task<IActionResult> OnGet(long Id)
         {
             var userId = long.Parse(_contextAccessor.HttpContext.User.Claims
                 .FirstOrDefault(x => x.Type == "User Id").Value);
 
-            user = await _userApplication.GetDetail(userId);
-            Listing = await _listingApplication.GetDetailListing(Id);
+            user = _userApplication.GetDetail(userId).Result;
+            Listing = _listingApplication.GetDetailListing(Id).Result;
+
+            if (Listing.Id == 0)
+                return RedirectToPage("/Shared/_PageNotFound", new { area = "Dashboard" });
+
+            if (Listing.UserId != user.Id && Listing.PublicStatus)
+                return RedirectToPage("/Shared/_PrivateListing", new { area = "Dashboard" });
+
             NaceData = _naceDataApplication.GetNaceData(Listing.Id);
             if (NaceData.Id == 0)
             {
@@ -69,6 +74,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.AvailableListing
                 }
             }
 
+            return null;
         }
 
         public async Task<JsonResult> OnPost(long Id)

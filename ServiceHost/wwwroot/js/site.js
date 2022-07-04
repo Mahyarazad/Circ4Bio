@@ -52,8 +52,8 @@ function hideModal() {
         $("#ModalContent").empty();
     },
         220);
-
-    window.location.hash = "##";
+    history.replaceState(null, null, ' ');
+    window.location.hash = "";
 }
 
 //We listen to any hashChange to open the modal
@@ -128,11 +128,18 @@ function handleAjaxPost(formData, url, action) {
                 }
 
                 if (splited[splited.length - 2] === "Edit") {
+                    var check = url.split('##');
+                    if (check.length > 1) {
+                        redirect(check[0], data.result.message);
+                        return;
+                    }
                     var updatedUrl = splited.slice(0, splited.length - 2);
                     url = updatedUrl.join('/', updatedUrl);
                     redirect(url, data.result.message);
                     return;
                 }
+
+
 
                 if (splited[splited.length - 2] === "Notification") {
                     var updatedUrl = splited.slice(0, splited.length);
@@ -167,7 +174,13 @@ function handleAjaxPost(formData, url, action) {
                     return;
                 }
 
-                if (splited[splited.length - 1] === "Create") {
+                if (splited[splited.length - 1] === "Create" || splited[splited.length - 1] === "Create##") {
+                    var check = url.split('##');
+                    if (check.length > 1) {
+                        redirect(check[0], data.result.message);
+                        hideModal();
+                        return;
+                    }
                     var updatedUrl = splited.slice(0, splited.length - 1);
                     url = updatedUrl.join('/', updatedUrl);
                     redirect(url, data.result.message);

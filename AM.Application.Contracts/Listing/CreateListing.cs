@@ -16,6 +16,7 @@ namespace AM.Application.Contracts.Listing
         public string? Name { get; set; }
         public string? Type { get; set; }
         [MaxLength(2000, ErrorMessage = ValidationMessages.MaxChar2000)]
+        [Required(ErrorMessage = ValidationMessages.IsRequired)]
         public string? Description { get; set; }
         [MaxFileSize(1 * 1024 * 1024, ErrorMessage = ValidationMessages.SizeError1M)]
         public IFormFile? Image { get; set; }

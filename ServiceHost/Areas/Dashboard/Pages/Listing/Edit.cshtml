@@ -46,8 +46,9 @@
                         <label asp-for="@Model.Command.Description" class="block text-sm font-medium text-gray-700">
                             Description
                         </label>
-                        <div class="mt-1">
+                        <div class="mt-1 flex-col flex">
                             <textarea asp-for="@Model.Command.Description" rows="3" class="shadow-sm focus:ring-sky-700 focus:border-sky-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"></textarea>
+                            <span class="text-red-500 sm:text-sm" asp-validation-for="@Model.Command.Description"></span>
                         </div>
                         <p class="mt-2 text-sm text-gray-500">
                             Brief description for your listing.

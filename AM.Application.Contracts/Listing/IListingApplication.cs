@@ -10,7 +10,7 @@ namespace AM.Application.Contracts.Listing
         Task<OperationResult> Create(CreateListing command);
         Task<OperationResult> Edit(EditListing command);
         Task<List<ListingViewModel>> GetAllListing();
-        Task<List<ListingViewModel>> GetAllPublicListing();
+        Task<List<ListingViewModel>> GetAllListingForAdmin();
         Task<List<ListingViewModel>> GetUserListing(long id);
         Task<ListingViewModel> GetDetailListing(long listingid);
         Task<long> GetOwnerUserID(long id);
@@ -20,7 +20,7 @@ namespace AM.Application.Contracts.Listing
         Task<OperationResult> MarkPublic(long id);
         Task<OperationResult> Delete(long id);
         Task<OperationResult> IncrementAmount(InputAmount command);
-        Task<OperationResult> DeccrementAmount(InputAmount command);
+        Task<OperationResult> DecrementAmount(InputAmount command);
         Task<List<ListingOperationLog>> GetListingOperationLog(long Id);
         Task<List<ActiveListing>> GetActiveListing(long userId);
         long LastCreatedListingId();

@@ -8,7 +8,7 @@ namespace AM.Domain.ListingAggregate
     public interface IListingRepository : IRepository<long, Listing>
     {
         Task<List<ListingViewModel>> GetAllListing();
-        Task<List<ListingViewModel>> GetAllPublicListing();
+        Task<List<ListingViewModel>> GetAllListingForAdmin();
         Task<ListingViewModel> GetDetailListing(long ListingId);
         Task<List<ListingViewModel>> GetUserListing(long Id);
         Task<List<ListingViewModel>> GetDeletedUserListing(long Id);

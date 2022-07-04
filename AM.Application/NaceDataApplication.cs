@@ -26,19 +26,32 @@ namespace AM.Application
             var naceDataList = new List<NaceDetailData>();
             if (Command.NaceId != 0)
             {
-                for (var counter = 0; counter < Command.ItemdetailIndex.Count + Command.SelectItemDetails.Count; counter++)
+                if (Command.SelectItemDetails != null)
                 {
-                    if (counter < Command.ItemdetailIndex.Count)
-                        naceDataList.Add(
-                            new NaceDetailData(Command.
-                                ItemdetailIndex[counter], Command.ItemdetailValues[counter]));
-                    if (counter >= Command.ItemdetailIndex.Count)
+                    for (var counter = 0;
+                        counter < (Command.ItemdetailIndex.Count + Command.SelectItemDetails.Count);
+                        counter++)
                     {
-                        naceDataList.Add(
-                            new NaceDetailData(Command
-                                .SelectItemDetails[counter - Command.ItemdetailIndex.Count], ""));
+                        if (counter < Command.ItemdetailIndex.Count)
+                            naceDataList.Add(
+                                new NaceDetailData(Command.
+                                    ItemdetailIndex[counter], Command.ItemdetailValues[counter]));
+                        if (counter >= Command.ItemdetailIndex.Count)
+                        {
+                            naceDataList.Add(
+                                new NaceDetailData(Command
+                                    .SelectItemDetails[counter - Command.ItemdetailIndex.Count], ""));
+                        }
                     }
                 }
+                else
+                {
+                    naceDataList.Add(
+                        new NaceDetailData(Command.
+                            ItemdetailIndex[0], Command.ItemdetailValues[0]));
+                    naceDataList.Add(new NaceDetailData(0, ""));
+                }
+
 
                 var naceData = new NaceData(naceDataList, Command.ListingId, Command.NaceId);
                 _naceDataRepository.Create(naceData);
@@ -65,12 +78,14 @@ namespace AM.Application
                             item.Edit(item.ItemId, Command.ItemdetailValues[stringValue.index]);
                     }
                 }
-
-                for (var counter = 0; counter < Command.SelectItemDetails.Count; counter++)
+                if (Command.SelectItemDetails != null)
                 {
-                    var item = naceData.NaceDetailDatas
-                        .Where(x => x.NaceData == "").ToList();
-                    item[counter].Edit(Command.SelectItemDetails[counter], "");
+                    for (var counter = 0; counter < Command.SelectItemDetails.Count; counter++)
+                    {
+                        var item = naceData.NaceDetailDatas
+                            .Where(x => x.NaceData == "").ToList();
+                        item[counter].Edit(Command.SelectItemDetails[counter], "");
+                    }
                 }
 
                 _naceDataRepository.SaveChanges();
@@ -83,8 +98,11 @@ namespace AM.Application
 
         public NaceDataViewModel GetNaceData(long ListingId)
         {
-            if (_naceDataRepository.Exist(x => x.ListingId == ListingId))
+            if (_naceDataRepository.Exist(x => x.ListingId == ListingId && !x.IsDeleted))
+            {
                 return _naceDataRepository.GetNaceData(ListingId);
+            }
+
             return new NaceDataViewModel();
         }
 

@@ -26,6 +26,7 @@ namespace AM.Infrastructure.Repository
                 .Include(x => x.SupplyList)
                 .Include(x => x.PurchaseList)
                 .Include(x => x.NaceData)
+                .Where(x => !x.IsDeleted && !x.Status)
                 .Select(x => new ListingViewModel
                 {
                     Amount = x.Amount,
@@ -52,14 +53,13 @@ namespace AM.Infrastructure.Repository
 
             return query;
         }
-        public async Task<List<ListingViewModel>> GetAllPublicListing()
+        public async Task<List<ListingViewModel>> GetAllListingForAdmin()
         {
             var query = await _amContext.Listing
                 .Include(x => x.User)
                 .Include(x => x.DealList)
                 .Include(x => x.SupplyList)
                 .Include(x => x.PurchaseList)
-                .Where(x => !x.Status & !x.IsDeleted)
                 .Select(x => new ListingViewModel
                 {
                     Amount = x.Amount,
@@ -182,6 +182,7 @@ namespace AM.Infrastructure.Repository
                     UnitPrice = x.UnitPrice,
                     PublicStatus = x.Status,
                     IsService = x.IsService,
+                    IsDeleted = x.IsDeleted,
                     Currency = x.Currency,
                     PurchaseCount = purchasedQuery.Count()
                 }).AsNoTracking().ToList().Last();

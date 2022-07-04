@@ -43,7 +43,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
                 .FirstOrDefault(x => x.Type == ClaimTypes.Role).Value;
             if (AdminCheck == "1")
             {
-                Listing = await _listingApplication.GetAllListing();
+                Listing = await _listingApplication.GetAllListingForAdmin();
                 Listing = Listing.Where(x => !x.IsDeleted).ToList();
             }
             else
@@ -66,7 +66,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
                 MasterFilter = true;
                 if (AdminCheck == "1")
                 {
-                    Listing = await _listingApplication.GetAllListing();
+                    Listing = await _listingApplication.GetAllListingForAdmin();
                 }
                 else
                 {
@@ -88,6 +88,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
             }
 
         }
+
         [RequirePermission(UserPermission.DeleteListing)]
         public Task<JsonResult> OnPostMarkDelete(long id)
         {
@@ -112,6 +113,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
             };
             return Partial("./Increment", inputAmount);
         }
+
         public IActionResult OnGetDecrement(long id)
         {
             var inputAmount = new InputAmount()
@@ -127,7 +129,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
         }
         public Task<JsonResult> OnPostDecrement(InputAmount command)
         {
-            return Task.FromResult(new JsonResult(_listingApplication.DeccrementAmount(command)));
+            return Task.FromResult(new JsonResult(_listingApplication.DecrementAmount(command)));
         }
         public async Task<IActionResult> OnGetLog(long id)
         {

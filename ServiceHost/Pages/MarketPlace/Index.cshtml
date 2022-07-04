@@ -187,62 +187,62 @@
                                 <h3 id="no-result" class="hidden"></h3>
                                 @foreach (var item in Model.Command)
                                 {
-                                    <div id="market-place-item"
-                                         class="group text-sm result" data-type="@item.Type" data-item="@item.Id">
-                                        <a class="w-full rounded-lg overflow-hidden bg-gray-100 group-hover:opacity-75"
-                                           href="#showmodal=@Url.Page("./Index", "Load", new {Id = item.Id})"
-                                           onclick="showModal()">
-                                            <img src="~/Site Files/Listing_Images/@(item.Image == "listing-default.png" ? "listing-default.png" : $"{item.Type}/{item.Image}")"
-                                                 alt="@item.Name" class="h-44 object-center object-cover rounded mx-auto">
-                                        </a>
-                                        <div class="flex flex-col">
-                                            <div class="col-span-2">
-                                                @if (item.PublicStatus)
-                                                {
-                                                    <h3 class="mt-1 font-medium text-gray-900">
-                                                        Private Listing
-                                                    </h3>}
-                                                @if (item.IsService)
-                                                {
-                                                    <h3 class="bg-green-50 float-right font-medium mt-1 px-1 rounded text-green-600 text-xs">
-                                                        Service Listing
-                                                    </h3>}
-                                                <h3 class="mt-1 font-medium text-gray-900 truncate">@item.Type</h3>
-                                                <p class="text-gray-500 italic text-sm truncate">
-                                                    @if (item.Name.Length > 25)
+                                        <div id="market-place-item"
+                                             class="group text-sm result" data-type="@item.Type" data-item="@item.Id">
+                                            <a class="w-full rounded-lg overflow-hidden bg-gray-100 group-hover:opacity-75"
+                                               href="#showmodal=@Url.Page("./Index", "Load", new {Id = item.Id})"
+                                               onclick="showModal()">
+                                                <img src="~/Site Files/Listing_Images/@(item.Image == "listing-default.png" ? "listing-default.png" : $"{item.Type}/{item.Image}")"
+                                                     alt="@item.Name" class="h-44 object-center object-cover rounded mx-auto">
+                                            </a>
+                                            <div class="flex flex-col">
+                                                <div class="col-span-2">
+                                                    @if (item.PublicStatus)
                                                     {
-                                                        @(item.Name.Substring(0, 25) + "...")
+                                                        <h3 class="mt-1 font-medium text-gray-900">
+                                                            Private Listing
+                                                        </h3>}
+                                                    @if (item.IsService)
+                                                    {
+                                                        <h3 class="bg-green-50 float-right font-medium mt-1 px-1 rounded text-green-600 text-xs">
+                                                            Service Listing
+                                                        </h3>}
+                                                    <h3 class="mt-1 font-medium text-gray-900 truncate">@item.Type</h3>
+                                                    <p class="text-gray-500 italic text-sm truncate">
+                                                        @if (item.Name.Length > 25)
+                                                        {
+                                                            @(item.Name.Substring(0, 25) + "...")
+                                                        }
+                                                        else
+                                                        {
+                                                            @item.Name
+                                                        }
+                                                    </p>
+                                                    <p class="font-medium text-gray-900">@item.Currency @item.UnitPrice</p>
+                                                </div>
+                                                <div class="self-end">
+
+                                                    @if (item.UserId == AuthenticateHelper.CurrentAccountRole().Id & AuthenticateHelper.IsAuthenticated())
+                                                    {
+                                                        <div class="bg-gray-100 border border-transparent rounded-md shadow-sm py-1 px-1
+                                                   inline-flex justify-center text-xs font-medium text-white hover:cursor-not-allowed">
+                                                            Item Owned
+                                                        </div>
                                                     }
                                                     else
                                                     {
-                                                        @item.Name
-                                                    }
-                                                </p>
-                                                <p class="font-medium text-gray-900">@item.Currency @item.UnitPrice</p>
-                                            </div>
-                                            <div class="self-end">
-
-                                                @if (item.UserId == AuthenticateHelper.CurrentAccountRole().Id & AuthenticateHelper.IsAuthenticated())
-                                                {
-                                                    <div
-                                                        class="bg-gray-100 border border-transparent rounded-md shadow-sm py-1 px-1
-                                                   inline-flex justify-center text-xs font-medium text-white hover:cursor-not-allowed">
-                                                        Item Owned
-                                                    </div>
-                                                }
-                                                else
-                                                {
-                                                    <a onclick="gototop()" asp-page="/AvailableListing/Detail" asp-area="Dashboard" asp-route-id="@item.Id"
-                                                       class="bg-sky-700 border border-transparent rounded-md shadow-sm py-1 px-1
+                                                        <a onclick="gototop()" asp-page="/AvailableListing/Detail" asp-area="Dashboard" asp-route-id="@item.Id"
+                                                           class="bg-sky-700 border border-transparent rounded-md shadow-sm py-1 px-1
                                                    inline-flex justify-center text-xs font-medium text-white hover:bg-sky-800
                                                    focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-700">
-                                                        Start Negotiation
-                                                    </a>
-                                                }
+                                                            Start Negotiation
+                                                        </a>
+                                                    }
 
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>}
+                                }
                             </div>
 
                             <div class="grid grid-cols-1 gap-y-4 gap-x-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-8" id="placeholder-wrapper">

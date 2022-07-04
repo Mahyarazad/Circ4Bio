@@ -1,7 +1,9 @@
 using System.Linq;
+using System.Threading.Tasks;
 using AM.Application.Contracts.Listing;
 using AM.Application.Contracts.Nace;
 using AM.Application.Contracts.NaceData;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace ServiceHost.Pages.MarketPlace
@@ -22,9 +24,12 @@ namespace ServiceHost.Pages.MarketPlace
             _naceDataApplication = naceDataApplication;
         }
 
-        public async void OnGet(long Id)
+        public async Task<IActionResult> OnGet(long Id)
         {
             Listing = await _listingApplication.GetDetailListing(Id);
+            if (Listing.Id == 0)
+                return RedirectToPage("/Shared/_PageNotFound", new { area = "" });
+
             NaceData = _naceDataApplication.GetNaceData(Listing.Id);
             if (NaceData.Id == 0)
             {
@@ -48,6 +53,8 @@ namespace ServiceHost.Pages.MarketPlace
                     }
                 }
             }
+
+            return null;
         }
     }
 }

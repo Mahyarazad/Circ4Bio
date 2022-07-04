@@ -277,6 +277,7 @@ var openNotificationPanel = function () {
     $('#notification-panel').css('opacity', '1');
     $('#notification-panel').css('z-index', '10');
 };
+
 var closeNotificationPanel = function () {
     $('#notification-panel').css('visibility', 'hidden');
     $('#notification-panel').addClass('-translate-y-[20rem]');
@@ -385,10 +386,7 @@ $('html').click(function (e) {
         if (element.id !== "notification-handler") {
             var status = $('#notification-panel').css('visibility');
             if (status !== 'hidden') {
-                $('#notification-panel').css('visibility', 'hidden');
-                $('#notification-panel').addClass('-translate-y-[15rem]');
-                $('#notification-panel').css('opacity', '0');
-                $('#notification-panel').css('z-index', '-1');
+                closeNotificationPanel();
             }
         }
     }

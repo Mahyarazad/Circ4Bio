@@ -31,6 +31,7 @@ namespace AM.Infrastructure.Repository
                             new NaceDataDetail(y.ItemId, y.NaceData)).ToList()
                 })
                     .First();
+
         }
 
         public void DeleteNaceData(long Id)
