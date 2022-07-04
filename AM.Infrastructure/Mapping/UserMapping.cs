@@ -1,7 +1,4 @@
-﻿using System.Security.Cryptography.Xml;
-using AM.Domain.RoleAggregate;
-using AM.Domain.Supplied.PurchasedAggregate;
-using AM.Domain.UserAggregate;
+﻿using AM.Domain.UserAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -25,6 +22,8 @@ namespace AM.Infrastructure.Mapping
             builder.Property(x => x.Country).HasMaxLength(50).IsRequired(false);
             builder.Property(x => x.CompanyName).HasMaxLength(100).IsRequired(false);
             builder.Property(x => x.City).HasMaxLength(50).IsRequired(false);
+            builder.Property(x => x.PostalCode).HasMaxLength(20).IsRequired(false);
+            builder.Property(x => x.VatNumber).HasMaxLength(20).IsRequired(false);
             builder.Property(x => x.Description).HasMaxLength(200).IsRequired(false);
             builder.Property(x => x.FirstName).HasMaxLength(100).IsRequired(false);
             builder.Property(x => x.LastName).HasMaxLength(100).IsRequired(false);

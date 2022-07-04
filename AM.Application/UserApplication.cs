@@ -302,7 +302,7 @@ namespace AM.Application
                     return result.Failed(ApplicationMessage.RecordExists);
             }
 
-            if (command.VatNumber != 0)
+            if (command.VatNumber != null)
             {
                 if (_userRepository.Exist(x => x.VatNumber == command.VatNumber && x.Id != command.Id))
                     return result.Failed(ApplicationMessage.RecordExists);
@@ -362,7 +362,7 @@ namespace AM.Application
                     return result.Failed(ApplicationMessage.RecordExists);
             }
 
-            if (command.VatNumber != 0)
+            if (command.VatNumber != null)
             {
                 if (_userRepository.Exist(x => x.VatNumber == command.VatNumber && x.Id != command.Id))
                     return result.Failed(ApplicationMessage.RecordExists);

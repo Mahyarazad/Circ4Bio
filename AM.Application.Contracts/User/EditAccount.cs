@@ -20,12 +20,12 @@ namespace AM.Application.Contracts.User
         public string? City { get; set; }
         public string? Country { get; set; }
         [DataType(DataType.PostalCode)]
-        public long PostalCode { get; set; }
+        public long? PostalCode { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         public string? Description { get; set; }
         public string? CompanyName { get; set; }
-        public long VatNumber { get; set; }
+        public string? VatNumber { get; set; }
         public string? Avatar { get; set; }
         public string? WebUrl { get; set; }
         public string? LinkdinUrl { get; set; }

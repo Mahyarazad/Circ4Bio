@@ -33,8 +33,8 @@ namespace AM.Domain.UserAggregate
         }
 
         public void Edit(string? firstName, string? lastName, string userId
-            , string address, string city, string country, long postalCode
-            , double latitude, double longitude, string description, string companyName, long vatNumber
+            , string address, string city, string country, long? postalCode
+            , double latitude, double longitude, string description, string companyName, string vatNumber
             , string avatar, string webUrl, string linkdinUrl
             , string twitterUrl, string instagramUrl, string faceBookUrl, int roleID)
         {
@@ -119,12 +119,12 @@ namespace AM.Domain.UserAggregate
         public List<DeliveryLocation> DeliveryLocations { get; private set; }
         public string? City { get; private set; }
         public string? Country { get; private set; }
-        public long PostalCode { get; private set; }
+        public long? PostalCode { get; private set; }
         public double Latitude { get; private set; }
         public double Longitude { get; private set; }
         public string? Description { get; private set; }
         public string? CompanyName { get; private set; }
-        public long VatNumber { get; private set; }
+        public string? VatNumber { get; private set; }
         public bool Status { get; private set; }
         public int Type { get; private set; }
         public int User_Type { get; private set; }
