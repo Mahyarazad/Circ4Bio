@@ -11,7 +11,6 @@ using AM.Application.Contracts.User;
 using AM.Domain.NotificationAggregate;
 using AM.Domain.UserAggregate;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace AM.Application
@@ -226,16 +225,18 @@ namespace AM.Application
                         _listingRepository.SaveChanges();
                         return Task.FromResult(result.Succeeded());
                     }
+
                     return Task.FromResult(deleteFileResult);
                 }
 
                 // Skip the default listing Image
+                target.Result.MarkDeleted();
+                _listingRepository.SaveChanges();
                 return Task.FromResult(result.Succeeded());
 
             }
 
             return Task.FromResult(result.Failed(ApplicationMessage.SomethingWentWrong));
-
         }
 
         public Task<OperationResult> IncrementAmount(InputAmount command)

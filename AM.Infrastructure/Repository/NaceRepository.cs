@@ -30,7 +30,7 @@ namespace AM.Infrastructure.Repository
                             y.ListItems.Select(z =>
                                 new ListItemsViewModel(z.ListItemDetailId, z.IsDeleted, z.ListItemDetail)).ToList()))
                         .ToList()
-                })
+                }).Where(x => !x.IsDeleted)
                 .OrderByDescending(x => x.CreationTime)
                 .ToList();
         }

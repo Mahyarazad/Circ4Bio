@@ -26,7 +26,7 @@ namespace AM.Application
             var naceDataList = new List<NaceDetailData>();
             if (Command.NaceId != 0)
             {
-                if (Command.SelectItemDetails != null)
+                if (Command.SelectItemDetails != null && Command.ItemdetailIndex != null && Command.ItemdetailValues != null)
                 {
                     for (var counter = 0;
                         counter < (Command.ItemdetailIndex.Count + Command.SelectItemDetails.Count);
@@ -44,12 +44,27 @@ namespace AM.Application
                         }
                     }
                 }
+                if (Command.SelectItemDetails != null)
+                {
+                    for (var counter = 0;
+                        counter < (Command.SelectItemDetails.Count);
+                        counter++)
+                    {
+                        naceDataList.Add(
+                                new NaceDetailData(Command
+                                    .SelectItemDetails[counter], ""));
+                    }
+                }
                 else
                 {
-                    naceDataList.Add(
-                        new NaceDetailData(Command.
-                            ItemdetailIndex[0], Command.ItemdetailValues[0]));
-                    naceDataList.Add(new NaceDetailData(0, ""));
+                    for (var counter = 0;
+                        counter < (Command.ItemdetailIndex.Count);
+                        counter++)
+                    {
+                        naceDataList.Add(
+                               new NaceDetailData(Command.
+                                   ItemdetailIndex[counter], Command.ItemdetailValues[counter]));
+                    }
                 }
 
 
@@ -68,23 +83,37 @@ namespace AM.Application
             if (_naceDataRepository.Exist(x => x.Id == Command.Id))
             {
                 var naceData = _naceDataRepository.Get(Command.Id).Result;
-
-                foreach (var stringValue in Command
-                    .ItemdetailIndex.Select((value, index) => new { value, index }))
-                {
-                    foreach (var item in naceData.NaceDetailDatas)
+                if (Command.ItemdetailIndex != null && Command.ItemdetailValues != null && Command.SelectItemDetails != null)
+                    foreach (var stringValue in Command
+                        .ItemdetailIndex.Select((value, index) => new { value, index }))
                     {
-                        if (item.ItemId == stringValue.value)
-                            item.Edit(item.ItemId, Command.ItemdetailValues[stringValue.index]);
+                        foreach (var item in naceData.NaceDetailDatas)
+                        {
+                            if (item.ItemId == stringValue.value)
+                                item.Edit(item.ItemId, Command.ItemdetailValues[stringValue.index]);
+                        }
                     }
-                }
+
                 if (Command.SelectItemDetails != null)
                 {
+                    var item = naceData.NaceDetailDatas
+                        .Where(x => x.NaceData == "").ToList();
                     for (var counter = 0; counter < Command.SelectItemDetails.Count; counter++)
                     {
-                        var item = naceData.NaceDetailDatas
-                            .Where(x => x.NaceData == "").ToList();
                         item[counter].Edit(Command.SelectItemDetails[counter], "");
+                    }
+                }
+
+                if (Command.SelectItemDetails == null)
+                {
+                    foreach (var stringValue in Command
+                        .ItemdetailIndex.Select((value, index) => new { value, index }))
+                    {
+                        foreach (var item in naceData.NaceDetailDatas)
+                        {
+                            if (item.ItemId == stringValue.value)
+                                item.Edit(item.ItemId, Command.ItemdetailValues[stringValue.index]);
+                        }
                     }
                 }
 

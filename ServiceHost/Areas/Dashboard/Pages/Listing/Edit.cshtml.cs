@@ -88,6 +88,12 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
                 _naceDataApplication.CreateNaceData(naceData);
             }
 
+            if (naceData.ItemdetailIndex == null && naceData.SelectItemDetails != null)
+            {
+                naceData.ListingId = command.Id;
+                _naceDataApplication.CreateNaceData(naceData);
+            }
+
 
             return new JsonResult(_listingApplication.Edit(command));
         }
