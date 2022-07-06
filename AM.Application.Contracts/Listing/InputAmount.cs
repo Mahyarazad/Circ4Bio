@@ -13,6 +13,7 @@ namespace AM.Application.Contracts.Listing
         [Required(ErrorMessage = ValidationMessages.IsRequired)]
         public double Count { get; set; }
         public string? Description { get; set; }
+        public string? ListingUnit { get; set; }
         public long DealId { get; set; }
         public long UserId { get; set; }
     }

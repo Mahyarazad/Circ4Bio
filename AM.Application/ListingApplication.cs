@@ -284,6 +284,7 @@ namespace AM.Application
         }
         public async Task<List<ListingOperationLog>> GetListingOperationLog(long id)
         {
+
             var result = _listingRepository.Get(id).Result.ListingOperations
                 .Select(x => new ListingOperationLog
                 {
@@ -294,7 +295,7 @@ namespace AM.Application
                     Description = x.Description,
                     ListingId = x.ListingId,
                     OperationTime = x.OperationTime,
-                    OperationType = x.OperationType,
+                    Unit = _listingRepository.Get(id).Result.Unit,
                     Id = x.Id
                 }).OrderByDescending(x => x.Id);
             return result.ToList();

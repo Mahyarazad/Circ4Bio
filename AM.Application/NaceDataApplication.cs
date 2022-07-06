@@ -26,6 +26,7 @@ namespace AM.Application
             var naceDataList = new List<NaceDetailData>();
             if (Command.NaceId != 0)
             {
+
                 if (Command.SelectItemDetails != null && Command.ItemdetailIndex != null && Command.ItemdetailValues != null)
                 {
                     for (var counter = 0;
@@ -44,7 +45,8 @@ namespace AM.Application
                         }
                     }
                 }
-                if (Command.SelectItemDetails != null)
+
+                if (Command.SelectItemDetails != null && Command.ItemdetailIndex == null && Command.ItemdetailValues == null)
                 {
                     for (var counter = 0;
                         counter < (Command.SelectItemDetails.Count);
@@ -55,7 +57,8 @@ namespace AM.Application
                                     .SelectItemDetails[counter], ""));
                     }
                 }
-                else
+
+                if (Command.SelectItemDetails == null && Command.ItemdetailIndex != null && Command.ItemdetailValues != null)
                 {
                     for (var counter = 0;
                         counter < (Command.ItemdetailIndex.Count);
@@ -84,6 +87,14 @@ namespace AM.Application
             {
                 var naceData = _naceDataRepository.Get(Command.Id).Result;
                 if (Command.ItemdetailIndex != null && Command.ItemdetailValues != null && Command.SelectItemDetails != null)
+                {
+                    var selectListitem = naceData.NaceDetailDatas
+                        .Where(x => x.NaceData == "").ToList();
+                    for (var counter = 0; counter < Command.SelectItemDetails.Count; counter++)
+                    {
+                        selectListitem[counter].Edit(Command.SelectItemDetails[counter], "");
+                    }
+
                     foreach (var stringValue in Command
                         .ItemdetailIndex.Select((value, index) => new { value, index }))
                     {
@@ -93,8 +104,10 @@ namespace AM.Application
                                 item.Edit(item.ItemId, Command.ItemdetailValues[stringValue.index]);
                         }
                     }
+                }
 
-                if (Command.SelectItemDetails != null)
+
+                if (Command.SelectItemDetails != null && Command.ItemdetailIndex == null && Command.ItemdetailValues == null)
                 {
                     var item = naceData.NaceDetailDatas
                         .Where(x => x.NaceData == "").ToList();
@@ -104,7 +117,7 @@ namespace AM.Application
                     }
                 }
 
-                if (Command.SelectItemDetails == null)
+                if (Command.SelectItemDetails == null && Command.ItemdetailIndex != null && Command.ItemdetailValues != null)
                 {
                     foreach (var stringValue in Command
                         .ItemdetailIndex.Select((value, index) => new { value, index }))

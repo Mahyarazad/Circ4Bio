@@ -20,12 +20,11 @@ namespace AM.Infrastructure.Repository
         }
         public async Task<List<ListingViewModel>> GetAllListing()
         {
-            var query = await _amContext.Listing
+            var query = _amContext.Listing
                 .Include(x => x.User)
                 .Include(x => x.DealList)
                 .Include(x => x.SupplyList)
                 .Include(x => x.PurchaseList)
-                .Include(x => x.NaceData)
                 .Where(x => !x.IsDeleted && !x.Status)
                 .Select(x => new ListingViewModel
                 {
@@ -46,10 +45,11 @@ namespace AM.Infrastructure.Repository
                     IsDeleted = x.IsDeleted,
                     IsService = x.IsService,
                     Currency = x.Currency,
-                    NaceId = x.NaceData.NaceId == null ? 0 : x.NaceData.NaceId,
+                    NaceId = _amContext.NaceDatas.AsNoTracking().FirstOrDefault(z => z.ListingId == x.Id).NaceId,
                     UserId = x.UserId
                 }).AsNoTracking()
-                .OrderByDescending(x => x.CreationTime).ToListAsync();
+                .OrderByDescending(x => x.CreationTime).ToList();
+
 
             return query;
         }

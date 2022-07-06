@@ -136,25 +136,69 @@ connection.onclose(async () => {
 start();
 
 function handleRemoveDeliveryAddress(id) {
-    var removeDeliveryLocation = {
-        "url": `${host}/api/UserDeliveryAddress/RemoveDeliveryLocation`,
-        "method": "POST",
-        "dataType": "json",
-        "crossDomain": "true",
-        "timeout": timeOut,
-        "headers": {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*"
+
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: `ml-2 bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4
+                        inline-flex justify-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2
+                        focus:ring-offset-2 focus:ring-sky-700`,
+            cancelButton: `bg-white border border-gray-300 rounded-md
+                            shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-gray-700
+                            hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700`,
+
         },
-        "data": JSON.stringify({
-            "LocationId": id
-        }),
-    };
-    $.ajax(removeDeliveryLocation).done(function (response) {
-        if (response) {
-            $(`td[data-delivery-address='${id}']`).remove();
+        buttonsStyling: false
+    })
+
+    swalWithBootstrapButtons.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'No, cancel!',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            var removeDeliveryLocation = {
+                "url": `${host}/api/UserDeliveryAddress/RemoveDeliveryLocation`,
+                "method": "POST",
+                "dataType": "json",
+                "crossDomain": "true",
+                "timeout": timeOut,
+                "headers": {
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Origin": "*"
+                },
+                "data": JSON.stringify({
+                    "LocationId": id
+                }),
+            };
+            $.ajax(removeDeliveryLocation).done(function (response) {
+                if (response) {
+                    $(`td[data-delivery-address='${id}']`).remove();
+                }
+            });
+            swalWithBootstrapButtons.fire(
+                'Deleted!',
+                'Your request has been processed successfully.',
+                'success'
+            );
+
+        } else if (
+            /* Read more about handling dismissals below */
+            result.dismiss === Swal.DismissReason.cancel
+        ) {
+            swalWithBootstrapButtons.fire(
+                'Cancelled',
+                'Your request has been cancelled.',
+                'error'
+            )
+            return;
         }
     });
+
+
 }
 
 function checkAmount(amount, listingId) {
@@ -231,7 +275,7 @@ function renderLocation(locationId) {
             }
         }
     }).catch(e => {
-        console.log(e);
+        console.warn(e);
     });
 }
 
@@ -344,39 +388,62 @@ function handleGetNaceDetail(id) {
 }
 
 function handleDeleteNaceData(id) {
-    var deleteNaceData = {
-        "url": `${host}/api/NaceData/DeleteSingleNaceData`,
-        "method": "POST",
-        "dataType": "json",
-        "crossDomain": "true",
-        "timeout": timeOut,
-        "headers": {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*"
-        },
-        "data": JSON.stringify({
-            "Id": id
-        }),
-    };
 
-    var GetNaceList = {
-        "url": `${host}/api/Nace/GetAllNaces`,
-        "method": "GET",
-        "dataType": "json",
-        "crossDomain": "true",
-        "timeout": timeOut,
-        "headers": {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*"
-        },
-    };
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: `ml-2 bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4
+                        inline-flex justify-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2
+                        focus:ring-offset-2 focus:ring-sky-700`,
+            cancelButton: `bg-white border border-gray-300 rounded-md
+                            shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-gray-700
+                            hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700`,
 
-    $.ajax(deleteNaceData).done(function (response) {
-        if (response) {
-            if (response.isSucceeded === true) {
-                alert('Selected NACE is marked as deleted');
-                $('#nace-data-wrapper').remove();
-                $('#new-nace-wrapper').append(`
+        },
+        buttonsStyling: false
+    })
+
+    swalWithBootstrapButtons.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, confirm it!',
+        cancelButtonText: 'No, cancel!',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            var deleteNaceData = {
+                "url": `${host}/api/NaceData/DeleteSingleNaceData`,
+                "method": "POST",
+                "dataType": "json",
+                "crossDomain": "true",
+                "timeout": timeOut,
+                "headers": {
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Origin": "*"
+                },
+                "data": JSON.stringify({
+                    "Id": id
+                }),
+            };
+
+            var GetNaceList = {
+                "url": `${host}/api/Nace/GetAllNaces`,
+                "method": "GET",
+                "dataType": "json",
+                "crossDomain": "true",
+                "timeout": timeOut,
+                "headers": {
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Origin": "*"
+                },
+            };
+
+            $.ajax(deleteNaceData).done(function (response) {
+                if (response) {
+                    if (response.isSucceeded === true) {
+                        $('#nace-data-wrapper').remove();
+                        $('#new-nace-wrapper').append(`
                         <div class="mt-6 grid grid-cols-12 gap-6">
                             <div class="col-span-12 sm:col-span-6">
                                 <label class="block text-sm font-medium text-gray-700">
@@ -402,16 +469,32 @@ function handleDeleteNaceData(id) {
                             </div>
                         </div>`);
 
-                $.ajax(GetNaceList).done(function (response) {
-                    if (response) {
-                        response.forEach(item => {
-                            $('select[name="Model.Command.NaceId"]').append(`<option value="${item.naceId}">
+                        $.ajax(GetNaceList).done(function (response) {
+                            if (response) {
+                                response.forEach(item => {
+                                    $('select[name="Model.Command.NaceId"]').append(`<option value="${item.naceId}">
                                         ${item.title}
                                     </option>`);
+                                });
+                            }
                         });
                     }
-                });
-            }
+                }
+            });
+            swalWithBootstrapButtons.fire(
+                'Done!',
+                'Your request has been processed successfully.',
+                'success'
+            )
+        } else if (
+            /* Read more about handling dismissals below */
+            result.dismiss === Swal.DismissReason.cancel
+        ) {
+            swalWithBootstrapButtons.fire(
+                'Cancelled',
+                'Your request has been cancelled.',
+                'error'
+            )
         }
     });
 }

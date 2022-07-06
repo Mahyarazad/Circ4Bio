@@ -39,18 +39,18 @@
                             <div class="text-xs text-gray-900">
                                 <span class="text:xs"> Current Amount:</span>
 
-                                @item.CurrentAmount
+                                @item.CurrentAmount <b>@item.Unit</b>
                             </div>
                             @if (item.OperationType)
                             {
                                 <div class="text-xs text-red-600">
-                                    @item.Count
+                                    @item.Count <b>@item.Unit</b>
                                 </div>
                             }
                             else
                             {
                                 <div class="text-xs text-green-600">
-                                    @item.Count
+                                    @item.Count <b>@item.Unit</b>
                                 </div>
                             }
                         </div>

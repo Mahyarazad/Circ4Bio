@@ -30,7 +30,7 @@ namespace AM.Application.Contracts.Listing
         public List<DealViewModel>? DealList { get; set; }
         public long PurchaseCount { get; set; }
         public long SupplyCount { get; set; }
-        public long NaceId { get; set; }
+        public long? NaceId { get; set; }
     }
 
 

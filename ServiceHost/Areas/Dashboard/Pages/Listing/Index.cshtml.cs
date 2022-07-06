@@ -16,6 +16,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
     {
         public EditUser user;
         public List<ListingViewModel> Listing;
+        public string ListingUnit;
         public bool IsFiltered { get; set; }
         public bool MasterFilter;
         private readonly IUserApplication _userApplication;
@@ -109,6 +110,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
         {
             var inputAmount = new InputAmount()
             {
+                ListingUnit = _listingApplication.GetDetailListing(id).Result.Unit,
                 ListingId = id
             };
             return Partial("./Increment", inputAmount);
@@ -118,6 +120,7 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
         {
             var inputAmount = new InputAmount()
             {
+                ListingUnit = _listingApplication.GetDetailListing(id).Result.Unit,
                 ListingId = id
             };
             return Partial("./Decrement", inputAmount);
@@ -127,10 +130,12 @@ namespace ServiceHost.Areas.Dashboard.Pages.Listing
         {
             return Task.FromResult(new JsonResult(_listingApplication.IncrementAmount(command)));
         }
+
         public Task<JsonResult> OnPostDecrement(InputAmount command)
         {
             return Task.FromResult(new JsonResult(_listingApplication.DecrementAmount(command)));
         }
+
         public async Task<IActionResult> OnGetLog(long id)
         {
             return Partial("./Log", await _listingApplication.GetListingOperationLog(id));

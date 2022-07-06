@@ -40,6 +40,7 @@ function showModal() {
 }
 
 function hideModal() {
+
     $('#modal').css('background', 'rgba(0, 0, 0, 0)');
     setTimeout(() => {
         $('#modal').addClass('translate-y-full');
@@ -52,7 +53,8 @@ function hideModal() {
         $("#ModalContent").empty();
     },
         220);
-    history.replaceState(null, null, ' ');
+
+    history.replaceState(null, null, window.location.href.replace(/##/, ""));
     window.location.hash = "";
 }
 
@@ -88,6 +90,7 @@ function redirect(url, message) {
 }
 
 function handleAjaxPost(formData, url, action) {
+
     $.ajax({
         url: url,
         type: "post",
@@ -116,73 +119,82 @@ function handleAjaxPost(formData, url, action) {
                 if (splited[splited.length - 1] === "AvailableListing" || splited[splited.length - 1] === "AvailableListing##") {
                     var updatedUrl = splited.slice(0, splited.length - 1);
                     url = updatedUrl.join('/', updatedUrl) + "/Negotiate";
-                    redirect(url, data.result.message);
+                    hideModal();
+                    redirect(url.replace(/##/, ""), data.result.message);
                     return;
                 }
 
                 if (splited[splited.length - 2] === "Detail") {
                     var updatedUrl = splited.slice(0, splited.length - 3);
                     url = updatedUrl.join('/', updatedUrl) + "/Negotiate";
-                    redirect(url, data.result.message);
+                    hideModal();
+                    redirect(url.replace(/##/, ""), data.result.message);
                     return;
                 }
 
                 if (splited[splited.length - 2] === "Edit") {
                     var check = url.split('##');
                     if (check.length > 1) {
+                        hideModal();
                         redirect(check[0], data.result.message);
                         return;
                     }
                     var updatedUrl = splited.slice(0, splited.length - 2);
                     url = updatedUrl.join('/', updatedUrl);
-                    redirect(url, data.result.message);
+                    hideModal();
+                    redirect(url.replace(/##/, ""), data.result.message);
                     return;
                 }
-
-
 
                 if (splited[splited.length - 2] === "Notification") {
                     var updatedUrl = splited.slice(0, splited.length);
                     url = updatedUrl.join('/', updatedUrl);
-                    redirect(url, data.result.message);
+                    hideModal();
+                    redirect(url.replace(/##/, ""), data.result.message);
                     return;
                 }
 
                 if (splited[splited.length - 2] === "Quotation") {
                     if (splited[splited.length - 1].includes('##')) {
-                        redirect(url, data.result.message);
+                        hideModal();
+                        redirect(url.replace(/##/, ""), data.result.message);
+
                         return;
                     }
-                    redirect(url, data.result.message);
+                    hideModal();
+                    redirect(url.replace(/##/, ""), data.result.message);
                     return;
                 }
 
                 if (action === "CancelNegotiation") {
                     var updatedUrl = splited.slice(0, splited.length - 2);
                     url = updatedUrl.join('/', updatedUrl);
-                    redirect(url, data.result.message);
+                    hideModal();
+                    redirect(url.replace(/##/, ""), data.result.message);
                     return;
                 }
 
                 if (splited[splited.length - 2] === "ConfirmQuotation") {
-                    redirect(url, data.result.message);
+                    hideModal();
+                    redirect(url.replace(/##/, ""), data.result.message);
                     return;
                 }
 
                 if (splited[splited.length - 2] === "Deals") {
-                    redirect(url, data.result.message);
+                    hideModal();
+                    redirect(url.replace(/##/, ""), data.result.message);
                     return;
                 }
 
                 if (splited[splited.length - 1] === "Create" || splited[splited.length - 1] === "Create##") {
-                    var check = url.split('##');
                     if (check.length > 1) {
-                        redirect(check[0], data.result.message);
                         hideModal();
+                        redirect(url.replace(/##/, ""), data.result.message);
                         return;
                     }
                     var updatedUrl = splited.slice(0, splited.length - 1);
                     url = updatedUrl.join('/', updatedUrl);
+                    hideModal();
                     redirect(url, data.result.message);
                     return;
                 }
@@ -192,7 +204,8 @@ function handleAjaxPost(formData, url, action) {
                     if (splited[splited.length - 2] === "Profile" | splited[splited.length - 2] === "Create") {
                         $("#overlay").addClass('hidden');
                         $("#overlay").hide();
-                        redirect(url, data.result.message);
+                        hideModal();
+                        redirect(url.replace(/##/, ""), data.result.message);
                         //return;
                     } else {
                         if (parseInt(splited[splited.length - 1]) > 0) {
@@ -202,10 +215,12 @@ function handleAjaxPost(formData, url, action) {
                             var updatedUrl = splited.slice(0, splited.length - 1);
                             url = updatedUrl.join('/', updatedUrl);
                         }
+
                         $("#overlay").addClass('hidden');
                         $("#overlay").hide();
+                        hideModal();
                         //Timeout was 1000 ms, the current function is 3000
-                        redirect(url, data.result.message);
+                        redirect(url.replace(/##/, ""), data.result.message);
                     }
                 }
             }
@@ -228,21 +243,67 @@ function handleAjaxPost(formData, url, action) {
 $(document).on("submit",
     //We listen to submit on any form that has data-ajax attribute to handel it
     'form[data-ajax="true"]',
+
     function (e) {
         e.preventDefault();
-        var form = $(this);
-        const method = form.attr("method").toLocaleLowerCase();
-        const url = form.attr("action");
-        var action = form.attr("data-action");
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: `ml-2 bg-sky-700 border border-transparent rounded-md shadow-sm py-2 px-4
+                        inline-flex justify-center text-sm font-medium text-white hover:bg-sky-800 focus:outline-none focus:ring-2
+                        focus:ring-offset-2 focus:ring-sky-700`,
+                cancelButton: `bg-white border border-gray-300 rounded-md
+                            shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-gray-700
+                            hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700`,
 
-        if (method === "get") {
-            const data = form.serializeArray();
-            handleAjaxGet(formData, url, action, data)
-        } else {
-            var formData = new FormData(this);
-            handleAjaxPost(formData, url, action);
-        }
-        return false;
+            },
+            buttonsStyling: false
+        })
+
+        swalWithBootstrapButtons.fire({
+            title: 'Are you sure?',
+            text: "Do you want to proceed?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, confirm it!',
+            cancelButtonText: 'No, cancel!',
+            reverseButtons: true,
+            closeOnConfirm: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                //swalWithBootstrapButtons.fire(
+                //    'Done!',
+                //    'Your request has been processed successfully.',
+                //    'success'
+                //);
+                var form = $(this);
+                const method = form.attr("method").toLocaleLowerCase();
+                const url = form.attr("action");
+                var action = form.attr("data-action");
+
+                if (method === "get") {
+                    const data = form.serializeArray();
+                    handleAjaxGet(formData, url, action, data)
+                } else {
+                    var formData = new FormData(this);
+                    handleAjaxPost(formData, url, action);
+                }
+                return false;
+
+            } else if (
+                /* Read more about handling dismissals below */
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+                loaded();
+                //swalWithBootstrapButtons.fire(
+                //    'Cancelled',
+                //    'Your request has been cancelled.',
+                //    'error'
+                //)
+
+                return;
+            }
+        });
     });
 
 $(document).on("submit",
@@ -259,6 +320,7 @@ $(document).on("submit",
             const data = form.serializeArray();
             handleAjaxGet(formData, url, action, data)
         } else {
+
             var formData = new FormData(this);
             handleAjaxPost(formData, url, action);
         }

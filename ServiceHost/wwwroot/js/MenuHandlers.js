@@ -136,14 +136,11 @@ function listingIsService() {
 }
 
 $(document).on('keydown', function (e) {
-    if (e.keyCode === 27) {
+    var stat = $('#modal').css('visibility', 'visible');
+    if (e.keyCode === 27 && stat !== 'hidden') {
         // ESC
-        window.location.hash = "##";
         hideModal();
-        $('#notification-panel').css('visibility', 'hidden');
-        $('#notification-panel').addClass('-translate-y-[20rem]');
-        $('#notification-panel').css('opacity', '0');
-        $('#notification-panel').css('z-index', '-1');
+        closeNotificationPanel();
     }
 });
 
