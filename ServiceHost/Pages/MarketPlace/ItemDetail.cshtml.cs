@@ -24,9 +24,42 @@ namespace ServiceHost.Pages.MarketPlace
             _naceDataApplication = naceDataApplication;
         }
 
-        public async Task<IActionResult> OnGet(long Id)
+        //public async Task<IActionResult> OnGet(long Id)
+        //{
+        //    Listing = await _listingApplication.GetDetailListing(Id);
+        //    if (Listing.Id == 0)
+        //        return RedirectToPage("/Shared/_PageNotFound", new { area = "" });
+
+        //    NaceData = _naceDataApplication.GetNaceData(Listing.Id);
+        //    if (NaceData.Id == 0)
+        //    {
+        //        NaceViewModel = new NaceViewModel();
+        //    }
+        //    else
+        //    {
+        //        NaceViewModel = _naceApplication.GetSingleNace(NaceData.NaceId).Result;
+        //        var naceSelectListStringData =
+        //            NaceViewModel.Items.Where(x => x.ListItems.Count > 1).ToList();
+
+        //        foreach (var item in NaceData.NaceDataDetails.Select((value, index) => new { value, index }))
+        //        {
+        //            if (item.value.ItemdetailValues == "")
+        //            {
+        //                naceSelectListStringData.ForEach(x => x.ListItems.ForEach(y =>
+        //                {
+        //                    if (y.ListItemDetailId == item.value.ItemdetailIndex)
+        //                        item.value.ItemdetailValues = y.ListItemDetail;
+        //                }));
+        //            }
+        //        }
+        //    }
+
+        //    return null;
+        //}
+
+        public async Task<IActionResult> OnGet(string listing, long id)
         {
-            Listing = await _listingApplication.GetDetailListing(Id);
+            Listing = await _listingApplication.GetDetailListingBySlug(listing, id);
             if (Listing.Id == 0)
                 return RedirectToPage("/Shared/_PageNotFound", new { area = "" });
 

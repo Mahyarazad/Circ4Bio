@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using _0_Framework.Application;
 using _0_Framework.Infrastructure;
 using AM.Application.Contracts.Listing;
 using AM.Application.Contracts.Negotiate;
@@ -13,11 +14,11 @@ namespace AM.Infrastructure.Repository
     public class ListingRepository : RepositoryBase<long, Listing>, IListingRepository
     {
         private readonly AMContext _amContext;
-
         public ListingRepository(AMContext amContext) : base(amContext)
         {
             _amContext = amContext;
         }
+
         public async Task<List<ListingViewModel>> GetAllListing()
         {
             var query = _amContext.Listing
@@ -184,7 +185,7 @@ namespace AM.Infrastructure.Repository
                     IsService = x.IsService,
                     IsDeleted = x.IsDeleted,
                     Currency = x.Currency,
-                    PurchaseCount = purchasedQuery.Count()
+                    PurchaseCount = purchasedQuery.Count(),
                 }).AsNoTracking().ToList().Last();
 
             return Task.FromResult(query);

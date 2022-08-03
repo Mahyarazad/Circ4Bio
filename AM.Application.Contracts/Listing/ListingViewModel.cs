@@ -31,6 +31,7 @@ namespace AM.Application.Contracts.Listing
         public long PurchaseCount { get; set; }
         public long SupplyCount { get; set; }
         public long? NaceId { get; set; }
+        public string Slug { get; set; }
     }
 
 

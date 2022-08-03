@@ -13,6 +13,7 @@ namespace AM.Application.Contracts.Listing
         Task<List<ListingViewModel>> GetAllListingForAdmin();
         Task<List<ListingViewModel>> GetUserListing(long id);
         Task<ListingViewModel> GetDetailListing(long listingid);
+        Task<ListingViewModel> GetDetailListingBySlug(string slug, long id);
         Task<long> GetOwnerUserID(long id);
         Task<List<ListingViewModel>> GetDeletedUserListing(long id);
         Task<EditListing> GetEditListing(long listingid);

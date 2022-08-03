@@ -199,6 +199,13 @@ namespace AM.Application
             return Task.FromResult(new ListingViewModel());
         }
 
+        public Task<ListingViewModel> GetDetailListingBySlug(string slug, long id)
+        {
+            if (_listingRepository.Exist(x => x.Id == id))
+                return _listingRepository.GetDetailListing(id);
+            return Task.FromResult(new ListingViewModel());
+        }
+
         public Task<EditListing> GetEditListing(long listingId)
         {
             if (_listingRepository.Exist(x => x.Id == listingId))

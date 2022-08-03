@@ -131,6 +131,7 @@ namespace ServiceHost
                 app.UseHsts();
             }
 
+            app.UseMiddleware(typeof(VisitorCounterMiddleware));
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();

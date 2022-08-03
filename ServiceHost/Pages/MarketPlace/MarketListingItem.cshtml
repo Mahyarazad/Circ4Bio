@@ -55,7 +55,7 @@
                                       data-callback="" data-ajax="true" data-action="Refresh">
 
                                         <div class="self-end flex mr-0">
-                                            <a asp-page="/MarketPlace/ItemDetail" asp-area="" asp-route-id="@Model.Id"
+                                            <a asp-page="/MarketPlace/ItemDetail" asp-area="" asp-route-listing="@Model.Slug" asp-route-id="@Model.Id"
                                                class="bg-white border border-gray-300 rounded-md
                                            shadow-sm py-3 px-4 self-center text-sm font-medium
                                         text-gray-700 hover:bg-gray-50
@@ -81,7 +81,7 @@
                             else
                             {
                                 <div class="self-end flex mr-0">
-                                    <a asp-page="/MarketPlace/ItemDetail" asp-area="" asp-route-id="@Model.Id"
+                                    <a asp-page="/MarketPlace/ItemDetail" asp-area="" asp-route-listing="@Model.Slug" asp-route-id="@Model.Id"
                                        class="bg-white border border-gray-300 rounded-md
                                            shadow-sm py-3 px-4 self-center text-sm font-medium
                                         text-gray-700 hover:bg-gray-50

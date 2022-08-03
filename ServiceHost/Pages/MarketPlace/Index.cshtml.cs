@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using _0_Framework.Application;
 using AM.Application.Contracts.Listing;
 using AM.Application.Contracts.Nace;
 using AM.Domain.NaceAggregate;
@@ -17,6 +18,7 @@ namespace ServiceHost.Pages.MarketPlace
         private readonly INaceApplication _naceApplication;
         private readonly IListingApplication _listingApplication;
 
+
         public IndexModel(INaceApplication naceApplication, IListingApplication listingApplication)
         {
             _naceApplication = naceApplication;
@@ -31,6 +33,7 @@ namespace ServiceHost.Pages.MarketPlace
         public IActionResult OnGetLoad(long Id)
         {
             Item = _listingApplication.GetDetailListing(Id).Result;
+            Item.Slug = Slugify.GenerateSlug(Item.Name);
             return Partial("./MarketListingItem", Item);
         }
     }
