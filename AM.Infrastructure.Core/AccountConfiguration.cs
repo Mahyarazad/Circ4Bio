@@ -71,7 +71,7 @@ namespace AM.Infrastructure.Core
 
             services.AddTransient<IPermissionExposer, UserPermissionExposer>();
 
-            services.AddDbContext<AMContext>(x =>
+            services.AddDbContextPool<AMContext>(x =>
             {
                 x.UseSqlServer(connectionString);
             });

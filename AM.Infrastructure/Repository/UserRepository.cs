@@ -25,6 +25,7 @@ namespace AM.Infrastructure.Repository
         {
             var query = _amContext.Users
                 .Include(x => x.Role)
+                .AsSplitQuery()
                 .Select(x => new UserViewModel
                 {
                     Id = x.Id,
@@ -54,6 +55,7 @@ namespace AM.Infrastructure.Repository
         {
             return _amContext.Users
                 .Include(x => x.Role)
+                .AsSplitQuery()
                 .Select(x => new UserViewModel
                 {
                     Id = x.Id,
@@ -69,6 +71,7 @@ namespace AM.Infrastructure.Repository
         {
             return await _amContext.Users
                 .Include(x => x.Role)
+                .AsSplitQuery()
                 .Where(x => x.Id != id && x.Id != 1)
                 .Select(x => new RecipientViewModel
                 {
@@ -257,8 +260,8 @@ namespace AM.Infrastructure.Repository
         public Task<CreateDeliveryLocation> GetDeliveryLocation(long userId, long locationId)
         {
             var query = _amContext.Users
-                .Where(x => x.Id == userId)
-                .AsNoTracking().AsSplitQuery().FirstAsync().Result.DeliveryLocations;
+                .FirstAsync(x => x.Id == userId)
+                .Result.DeliveryLocations;
 
             var result = query.Select(x => new CreateDeliveryLocation
             {
@@ -280,8 +283,8 @@ namespace AM.Infrastructure.Repository
         public async Task<List<CreateDeliveryLocation>> GetDeliveryLocationDropDown(long userId)
         {
             var query = _amContext.Users
-                .Where(x => x.Id == userId)
-                .AsNoTracking().AsSplitQuery().FirstAsync().Result.DeliveryLocations;
+                .FirstAsync(x => x.Id == userId)
+                .Result.DeliveryLocations;
             var result = query.Select(x => new CreateDeliveryLocation
             {
                 Name = x.Name,
@@ -293,8 +296,8 @@ namespace AM.Infrastructure.Repository
         public Task<bool> CheckDeliveryLocationName(string Name, long userId)
         {
             var query = _amContext.Users
-                .Where(x => x.Id == userId)
-                .AsNoTracking().AsSplitQuery().First().DeliveryLocations;
+                .First(x => x.Id == userId)
+                .DeliveryLocations;
 
             return Task.FromResult(!query.Any(x => x.Name == Name));
 

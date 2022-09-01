@@ -23,8 +23,7 @@ namespace AM.Infrastructure.Repository
         public Task<List<RecipientViewModel>> GetRecipientViewModel(long Id)
         {
             var recipientList = new List<RecipientViewModel>();
-            var query = _amContext.Notifications.AsNoTracking()
-                .FirstOrDefaultAsync(x => x.Id == Id).Result.Recipient;
+            var query = _amContext.Notifications.FirstAsync(x => x.Id == Id).Result.Recipient;
             foreach (var item in query)
             {
                 recipientList.Add(new RecipientViewModel
@@ -72,6 +71,7 @@ namespace AM.Infrastructure.Repository
             List<NotificationViewModel> result = await _amContext.Recipients
                 .AsNoTracking()
                 .Include(x => x.Notification)
+                .AsSplitQuery()
                 .Where(x => x.UserId == Id && !x.IsReed)
                 .Select(x => new NotificationViewModel
                 {

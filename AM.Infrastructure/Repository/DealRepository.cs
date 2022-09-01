@@ -48,22 +48,22 @@ namespace AM.Infrastructure.Repository
                     Unit = x.Unit,
                     Listing = new ListingViewModel
                     {
-                        Name = _amContext.Listing.AsNoTracking().FirstOrDefault(z => z.Id == x.ListingId).Name,
-                        Image = _amContext.Listing.AsNoTracking().FirstOrDefault(z => z.Id == x.ListingId).Image,
+                        Name = _amContext.Listing.First(z => z.Id == x.ListingId).Name,
+                        Image = _amContext.Listing.First(z => z.Id == x.ListingId).Image,
                     },
                     Seller = new UserViewModel
                     {
                         Id = x.SellerId,
-                        FullName = $"{_amContext.Users.AsNoTracking().FirstOrDefault(z => z.Id == x.SellerId).FirstName} {_amContext.Users.AsNoTracking().FirstOrDefault(z => z.Id == x.SellerId).LastName}",
-                        Avatar = _amContext.Users.AsNoTracking().FirstOrDefault(z => z.Id == x.SellerId).Avatar,
-                        Email = _amContext.Users.AsNoTracking().FirstOrDefault(z => z.Id == x.SellerId).Email
+                        FullName = $"{_amContext.Users.First(z => z.Id == x.SellerId).FirstName} {_amContext.Users.First(z => z.Id == x.SellerId).LastName}",
+                        Avatar = _amContext.Users.First(z => z.Id == x.SellerId).Avatar,
+                        Email = _amContext.Users.First(z => z.Id == x.SellerId).Email
                     },
                     Buyer = new UserViewModel
                     {
                         Id = x.BuyerId,
-                        FullName = $"{_amContext.Users.AsNoTracking().FirstOrDefault(z => z.Id == x.BuyerId).FirstName} {_amContext.Users.AsNoTracking().FirstOrDefault(z => z.Id == x.BuyerId).LastName}",
-                        Avatar = _amContext.Users.AsNoTracking().FirstOrDefault(z => z.Id == x.BuyerId).Avatar,
-                        Email = _amContext.Users.AsNoTracking().FirstOrDefault(z => z.Id == x.BuyerId).Email
+                        FullName = $"{_amContext.Users.First(z => z.Id == x.BuyerId).FirstName} {_amContext.Users.First(z => z.Id == x.BuyerId).LastName}",
+                        Avatar = _amContext.Users.First(z => z.Id == x.BuyerId).Avatar,
+                        Email = _amContext.Users.First(z => z.Id == x.BuyerId).Email
                     },
                     TrackingCode = x.TrackingCode,
                     CreationTime = x.CreationTime,
@@ -132,22 +132,22 @@ namespace AM.Infrastructure.Repository
                     Unit = x.Unit,
                     Listing = new ListingViewModel
                     {
-                        Name = _amContext.Listing.AsNoTracking().FirstOrDefault(z => z.Id == x.ListingId).Name,
-                        Image = _amContext.Listing.AsNoTracking().FirstOrDefault(z => z.Id == x.ListingId).Image,
+                        Name = _amContext.Listing.First(z => z.Id == x.ListingId).Name,
+                        Image = _amContext.Listing.First(z => z.Id == x.ListingId).Image,
                     },
                     Seller = new UserViewModel
                     {
                         Id = x.SellerId,
-                        FullName = $"{_amContext.Users.AsNoTracking().FirstOrDefault(z => z.Id == x.SellerId).FirstName} {_amContext.Users.AsNoTracking().FirstOrDefault(z => z.Id == x.SellerId).LastName}",
-                        Avatar = _amContext.Users.AsNoTracking().FirstOrDefault(z => z.Id == x.SellerId).Avatar,
-                        Email = _amContext.Users.AsNoTracking().FirstOrDefault(z => z.Id == x.SellerId).Email
+                        FullName = $"{_amContext.Users.First(z => z.Id == x.SellerId).FirstName} {_amContext.Users.First(z => z.Id == x.SellerId).LastName}",
+                        Avatar = _amContext.Users.First(z => z.Id == x.SellerId).Avatar,
+                        Email = _amContext.Users.First(z => z.Id == x.SellerId).Email
                     },
                     Buyer = new UserViewModel
                     {
                         Id = x.BuyerId,
-                        FullName = $"{_amContext.Users.AsNoTracking().FirstOrDefault(z => z.Id == x.BuyerId).FirstName} {_amContext.Users.AsNoTracking().FirstOrDefault(z => z.Id == x.BuyerId).LastName}",
-                        Avatar = _amContext.Users.AsNoTracking().FirstOrDefault(z => z.Id == x.BuyerId).Avatar,
-                        Email = _amContext.Users.AsNoTracking().FirstOrDefault(z => z.Id == x.BuyerId).Email
+                        FullName = $"{_amContext.Users.First(z => z.Id == x.BuyerId).FirstName} {_amContext.Users.First(z => z.Id == x.BuyerId).LastName}",
+                        Avatar = _amContext.Users.First(z => z.Id == x.BuyerId).Avatar,
+                        Email = _amContext.Users.First(z => z.Id == x.BuyerId).Email
                     },
                     TrackingCode = x.TrackingCode,
                     CreationTime = x.CreationTime,
@@ -163,7 +163,7 @@ namespace AM.Infrastructure.Repository
             var deal = _amContext.Deals
                 .Include(x => x.Listing)
                 .AsNoTracking()
-                .AsSingleQuery()
+                .AsSplitQuery()
                 .FirstOrDefault(x => x.NegotiateId == NegotiateId);
 
             var negotiate = _amContext.Negotiates
@@ -199,16 +199,16 @@ namespace AM.Infrastructure.Repository
                 Buyer = new UserViewModel
                 {
                     Id = deal.BuyerId,
-                    FullName = $"{_amContext.Users.AsNoTracking().FirstOrDefault(z => z.Id == deal.BuyerId).FirstName} {_amContext.Users.AsNoTracking().FirstOrDefault(z => z.Id == deal.BuyerId).LastName}",
-                    Avatar = _amContext.Users.AsNoTracking().FirstOrDefault(z => z.Id == deal.BuyerId).Avatar,
-                    Email = _amContext.Users.AsNoTracking().FirstOrDefault(z => z.Id == deal.BuyerId).Email
+                    FullName = $"{_amContext.Users.First(z => z.Id == deal.BuyerId).FirstName} {_amContext.Users.First(z => z.Id == deal.BuyerId).LastName}",
+                    Avatar = _amContext.Users.First(z => z.Id == deal.BuyerId).Avatar,
+                    Email = _amContext.Users.First(z => z.Id == deal.BuyerId).Email
                 },
                 Seller = new UserViewModel
                 {
                     Id = deal.SellerId,
-                    FullName = $"{_amContext.Users.AsNoTracking().FirstOrDefault(z => z.Id == deal.SellerId).FirstName} {_amContext.Users.AsNoTracking().FirstOrDefault(z => z.Id == deal.SellerId).LastName}",
-                    Avatar = _amContext.Users.AsNoTracking().FirstOrDefault(z => z.Id == deal.SellerId).Avatar,
-                    Email = _amContext.Users.AsNoTracking().FirstOrDefault(z => z.Id == deal.SellerId).Email
+                    FullName = $"{_amContext.Users.First(z => z.Id == deal.SellerId).FirstName} {_amContext.Users.First(z => z.Id == deal.SellerId).LastName}",
+                    Avatar = _amContext.Users.First(z => z.Id == deal.SellerId).Avatar,
+                    Email = _amContext.Users.First(z => z.Id == deal.SellerId).Email
                 },
                 Unit = deal.Unit,
                 Listing = new ListingViewModel

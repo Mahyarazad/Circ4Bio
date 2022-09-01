@@ -187,6 +187,7 @@ function handleAjaxPost(formData, url, action) {
                 }
 
                 if (splited[splited.length - 1] === "Create" || splited[splited.length - 1] === "Create##") {
+                    var check = url.split('##');
                     if (check.length > 1) {
                         hideModal();
                         redirect(url.replace(/##/, ""), data.result.message);

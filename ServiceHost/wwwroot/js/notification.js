@@ -1,7 +1,5 @@
 ﻿"use strict";
 
-
-
 var timeOut = 2000;
 var connection = new signalR.HubConnectionBuilder()
     .withUrl(`/notificationHub`,

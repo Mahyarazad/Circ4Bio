@@ -66,7 +66,6 @@ namespace ServiceHost.Areas.Dashboard.Pages.Nace
                 }
 
                 startIndex += createCommand.GroupSize[item];
-                Console.WriteLine(startIndex);
                 Command.Items.Add(Detail);
             };
             return new JsonResult(_naceApplication.CreateNace(Command));

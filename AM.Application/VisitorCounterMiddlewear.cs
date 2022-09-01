@@ -28,7 +28,6 @@ namespace AM.Application
                         Secure = false
                     });
                 count++;
-                Console.WriteLine(count);
             }
 
             await _requestDelegate(httpContext);

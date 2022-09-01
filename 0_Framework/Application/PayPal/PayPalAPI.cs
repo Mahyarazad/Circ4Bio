@@ -147,7 +147,7 @@ namespace _0_Framework.Application.PayPal
             var response = await Http.SendAsync(request);
 
             var content = await response.Content.ReadAsStringAsync();
-            Console.WriteLine(content);
+            //Console.WriteLine(content);
             PayPalPaymentExecutedResponse? executedResponse
                 = JsonConvert.DeserializeObject<PayPalPaymentExecutedResponse>(content);
 

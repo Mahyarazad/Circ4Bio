@@ -84,9 +84,9 @@ namespace ServiceHost
                 options.AddPolicy(name: _corsPolicy, builder =>
                 {
                     builder
-                        // .AllowAnyOrigin()
+                        .AllowAnyOrigin()
                         .AllowAnyHeader()
-                        .AllowCredentials()
+                        //.AllowCredentials()
                         .AllowAnyMethod();
                 });
             });

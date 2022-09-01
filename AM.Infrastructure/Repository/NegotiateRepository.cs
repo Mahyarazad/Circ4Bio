@@ -21,7 +21,7 @@ namespace AM.Infrastructure.Repository
             var negotiate = _amContext.Negotiates
                 .Include(x => x.UserNegotiate)
                 .AsNoTracking()
-                .AsSingleQuery()
+                .AsSplitQuery()
                 .FirstOrDefault(x => x.Id == Command.NegotiateId);
 
             var sellerId = negotiate.UserNegotiate
@@ -89,7 +89,7 @@ namespace AM.Infrastructure.Repository
             var negotiate = _amContext.Negotiates
                 .Include(x => x.UserNegotiate)
                 .AsNoTracking()
-                .AsSingleQuery()
+                .AsSplitQuery()
                 .FirstOrDefault(x => x.Id == NegotiateId);
 
             var sellerId = negotiate.UserNegotiate.Where(x => !x.BuyerBool).First().UserId;
@@ -200,7 +200,7 @@ namespace AM.Infrastructure.Repository
             var query = _amContext.Negotiates
                 .Include(x => x.UserNegotiate)
                 .AsNoTracking()
-                .AsSingleQuery()
+                .AsSplitQuery()
                 .FirstOrDefault(x => x.Id == NegotiateId);
 
             var sellerId = query.UserNegotiate.Where(x => !x.BuyerBool).First().UserId;

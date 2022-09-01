@@ -26,6 +26,7 @@ namespace AM.Infrastructure.Repository
                 .Include(x => x.DealList)
                 .Include(x => x.SupplyList)
                 .Include(x => x.PurchaseList)
+                .AsSplitQuery()
                 .Where(x => !x.IsDeleted && !x.Status)
                 .Select(x => new ListingViewModel
                 {
@@ -61,6 +62,7 @@ namespace AM.Infrastructure.Repository
                 .Include(x => x.DealList)
                 .Include(x => x.SupplyList)
                 .Include(x => x.PurchaseList)
+                .AsSplitQuery()
                 .Select(x => new ListingViewModel
                 {
                     Amount = x.Amount,
@@ -91,6 +93,7 @@ namespace AM.Infrastructure.Repository
                 .Include(x => x.DealList)
                 .Include(x => x.SupplyList)
                 .Include(x => x.PurchaseList)
+                .AsSplitQuery()
                 .Where(x => x.UserId == Id)
                 .Select(x => new ListingViewModel
                 {
@@ -120,14 +123,14 @@ namespace AM.Infrastructure.Repository
         {
             var purchasedQuery =
                 _amContext.PurchasedItems
-                .Where(x => x.ListingId == Id)
-                .AsSingleQuery()
-                .AsNoTracking();
+                .Where(x => x.ListingId == Id).AsSingleQuery().AsNoTracking();
+
 
 
             var query = _amContext.Listing
                 .Include(x => x.User)
                 .Include(x => x.DealList)
+                .AsSplitQuery()
                 .Where(x => x.Id == Id)
                 .Select(x => new ListingViewModel
                 {
@@ -139,37 +142,37 @@ namespace AM.Infrastructure.Repository
                     {
                         LocationId = x.DeliveryLocationId != null ? x.DeliveryLocationId : 0,
                         Name = x.User.DeliveryLocations
-                            .FirstOrDefault(y => y.Id == x.DeliveryLocationId).Name != null ?
+                            .First(y => y.Id == x.DeliveryLocationId).Name != null ?
                             x.User.DeliveryLocations
-                            .FirstOrDefault(y => y.Id == x.DeliveryLocationId).Name : "",
+                            .First(y => y.Id == x.DeliveryLocationId).Name : "",
                         AddressLineOne = x.User.DeliveryLocations
-                            .FirstOrDefault(y => y.Id == x.DeliveryLocationId).AddressLineOne != null ?
+                            .First(y => y.Id == x.DeliveryLocationId).AddressLineOne != null ?
                             x.User.DeliveryLocations
-                                .FirstOrDefault(y => y.Id == x.DeliveryLocationId).AddressLineOne : "",
+                                .First(y => y.Id == x.DeliveryLocationId).AddressLineOne : "",
                         AddressLineTwo = x.User.DeliveryLocations
-                            .FirstOrDefault(y => y.Id == x.DeliveryLocationId).AddressLineTwo != null ?
+                            .First(y => y.Id == x.DeliveryLocationId).AddressLineTwo != null ?
                             x.User.DeliveryLocations
-                                .FirstOrDefault(y => y.Id == x.DeliveryLocationId).AddressLineTwo : "",
+                                .First(y => y.Id == x.DeliveryLocationId).AddressLineTwo : "",
                         City = x.User.DeliveryLocations
-                            .FirstOrDefault(y => y.Id == x.DeliveryLocationId).City != null ?
+                            .First(y => y.Id == x.DeliveryLocationId).City != null ?
                             x.User.DeliveryLocations
-                                .FirstOrDefault(y => y.Id == x.DeliveryLocationId).City : "",
+                                .First(y => y.Id == x.DeliveryLocationId).City : "",
                         Country = x.User.DeliveryLocations
-                            .FirstOrDefault(y => y.Id == x.DeliveryLocationId).Country != null ?
+                            .First(y => y.Id == x.DeliveryLocationId).Country != null ?
                             x.User.DeliveryLocations
-                                .FirstOrDefault(y => y.Id == x.DeliveryLocationId).Country : "",
+                                .First(y => y.Id == x.DeliveryLocationId).Country : "",
                         PostalCode = x.User.DeliveryLocations
-                            .FirstOrDefault(y => y.Id == x.DeliveryLocationId).PostalCode != null ?
+                            .First(y => y.Id == x.DeliveryLocationId).PostalCode != null ?
                             x.User.DeliveryLocations
-                                .FirstOrDefault(y => y.Id == x.DeliveryLocationId).PostalCode : 0,
+                                .First(y => y.Id == x.DeliveryLocationId).PostalCode : 0,
                         Latitude = x.User.DeliveryLocations
-                            .FirstOrDefault(y => y.Id == x.DeliveryLocationId).Latitude != null ?
+                            .First(y => y.Id == x.DeliveryLocationId).Latitude != null ?
                             x.User.DeliveryLocations
-                                .FirstOrDefault(y => y.Id == x.DeliveryLocationId).Latitude : 0,
+                                .First(y => y.Id == x.DeliveryLocationId).Latitude : 0,
                         Longitude = x.User.DeliveryLocations
-                            .FirstOrDefault(y => y.Id == x.DeliveryLocationId).Longitude != null ?
+                            .First(y => y.Id == x.DeliveryLocationId).Longitude != null ?
                             x.User.DeliveryLocations
-                                .FirstOrDefault(y => y.Id == x.DeliveryLocationId).Longitude : 0,
+                                .First(y => y.Id == x.DeliveryLocationId).Longitude : 0,
                     },
                     Id = x.Id,
                     UserId = x.UserId,
@@ -197,6 +200,7 @@ namespace AM.Infrastructure.Repository
                 .Include(x => x.DealList)
                 .Include(x => x.SupplyList)
                 .Include(x => x.PurchaseList)
+                .AsSplitQuery()
                 .Where(x => x.UserId == Id && x.IsDeleted)
                 .Select(x => new ListingViewModel
                 {
